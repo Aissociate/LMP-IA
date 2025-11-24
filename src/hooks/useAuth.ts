@@ -1,0 +1,87 @@
+import { useState, useEffect } from 'react';
+import { User } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase';
+
+interface UserProfile {
+  full_name?: string;
+  company?: string;
+}
+
+export const useAuth = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdminStatus(session.user.id);
+      }
+      setLoading(false);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          checkAdminStatus(session.user.id);
+        } else {
+          setIsAdmin(false);
+        }
+        setLoading(false);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const checkAdminStatus = async (userId: string) => {
+    try {
+      const { data } = await supabase
+        .from('user_profiles')
+        .select('full_name, company')
+        .eq('user_id', userId)
+        .limit(1);
+
+      if (data && data.length > 0) {
+        const profile = data[0];
+        const isUserAdmin = 
+          profile.company?.toLowerCase().includes('admin') ||
+          profile.full_name?.toLowerCase().includes('admin') ||
+          profile.company?.toLowerCase().includes('administrateur');
+        setIsAdmin(isUserAdmin);
+      } else {
+        setIsAdmin(false);
+      }
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+      setIsAdmin(false);
+    }
+  };
+
+  const signIn = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    return { data, error };
+  };
+
+  const signUp = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    return { data, error };
+  };
+
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    return { error };
+  };
+
+  return { user, loading, isAdmin, signIn, signUp, signOut };
+};

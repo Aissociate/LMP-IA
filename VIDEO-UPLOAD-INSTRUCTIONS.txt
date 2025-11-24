@@ -1,0 +1,98 @@
+===========================================
+📹 INSTRUCTIONS POUR UPLOADER LA VIDÉO
+===========================================
+
+SYSTÈME D'UPLOAD CONFIGURÉ ET PRÊT!
+-----------------------------------
+
+✅ Bucket Supabase Storage "marketing-videos" créé
+✅ Permissions publiques configurées
+✅ Interface d'upload intégrée dans le panel Admin
+✅ Page /lead configurée pour afficher la vidéo
+
+
+MÉTHODE 1: Upload via le Panel Admin (RECOMMANDÉ)
+--------------------------------------------------
+
+1. Connectez-vous à votre application en tant qu'admin
+
+2. Allez dans le panel Admin (icône Shield)
+
+3. Cliquez sur l'onglet "Vidéos Marketing" (nouvelle icône Video)
+
+4. Téléchargez votre vidéo depuis Google Drive:
+   https://drive.google.com/file/d/1JYBVKUHpOn2oAKJ2J7sYQkv07We3qJqt/view?usp=sharing
+
+5. Utilisez l'interface drag-and-drop pour uploader la vidéo
+
+6. Une fois uploadée, copiez l'URL publique générée
+
+7. Remplacez l'URL dans src/components/Landing/LandingLead.tsx ligne 339
+
+
+MÉTHODE 2: Upload manuel via URL Supabase
+-----------------------------------------
+
+1. Téléchargez la vidéo depuis Google Drive
+
+2. Renommez-la en: hero-video.mp4
+
+3. Allez sur votre Dashboard Supabase:
+   https://app.supabase.com/project/wfsbzxjhrcuytjqyojjn/storage/buckets/marketing-videos
+
+4. Uploadez le fichier hero-video.mp4
+
+5. L'URL sera automatiquement:
+   https://wfsbzxjhrcuytjqyojjn.supabase.co/storage/v1/object/public/marketing-videos/hero-video.mp4
+
+
+MÉTHODE 3: Fichier HTML standalone
+-----------------------------------
+
+Un fichier upload-video.html a été créé à la racine du projet.
+
+1. Ouvrez upload-video.html dans votre navigateur
+
+2. Glissez-déposez votre vidéo ou cliquez pour sélectionner
+
+3. Cliquez sur "Upload vers Supabase"
+
+4. Copiez l'URL générée et remplacez-la dans le code
+
+
+VÉRIFICATION
+------------
+
+Une fois la vidéo uploadée, elle apparaîtra automatiquement sur:
+👉 https://votre-site.com/lead
+
+La vidéo sera hébergée sur Supabase Storage avec:
+✅ CDN rapide et fiable
+✅ Pas de limite de bande passante
+✅ URL publique permanente
+✅ Lecture fluide sur tous les appareils
+
+
+FICHIER À MODIFIER
+------------------
+
+📁 src/components/Landing/LandingLead.tsx
+📍 Ligne 339
+🔧 Remplacer l'URL de la source vidéo par l'URL Supabase générée
+
+Actuellement configuré pour:
+https://wfsbzxjhrcuytjqyojjn.supabase.co/storage/v1/object/public/marketing-videos/hero-video.mp4
+
+
+SUPPORT
+-------
+
+Si vous rencontrez des problèmes:
+1. Vérifiez que le bucket "marketing-videos" existe
+2. Vérifiez les permissions RLS
+3. Vérifiez que la vidéo fait moins de 500MB
+4. Vérifiez le format (MP4 recommandé)
+
+
+FIN DES INSTRUCTIONS
+====================
