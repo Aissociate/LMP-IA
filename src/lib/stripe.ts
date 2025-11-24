@@ -1,12 +1,6 @@
 import { supabase } from './supabase';
 import { SecurityValidation } from './securityValidation';
 
-interface CheckoutItem {
-  planId?: string;
-  addonTypes?: string[];
-  metadata?: Record<string, string>;
-}
-
 export class StripeService {
   private static instance: StripeService;
 
@@ -17,95 +11,7 @@ export class StripeService {
     return StripeService.instance;
   }
 
-  async getPriceIdForPlan(planId: string): Promise<string | null> {
-    try {
-      const { data, error } = await supabase
-        .from('subscription_plans')
-        .select('stripe_price_id')
-        .eq('id', planId)
-        .eq('is_active', true)
-        .maybeSingle();
-
-      if (error || !data?.stripe_price_id) {
-        console.error('Erreur récupération price_id pour le plan:', planId, error);
-        return null;
-      }
-
-      return data.stripe_price_id;
-    } catch (error) {
-      console.error('Erreur getPriceIdForPlan:', error);
-      return null;
-    }
-  }
-
-  async getPriceIdForAddon(addonType: string): Promise<string | null> {
-    try {
-      const { data, error } = await supabase
-        .from('addon_catalog')
-        .select('stripe_price_id')
-        .eq('addon_type', addonType)
-        .eq('is_active', true)
-        .maybeSingle();
-
-      if (error || !data?.stripe_price_id) {
-        console.error('Erreur récupération price_id pour l\'addon:', addonType, error);
-        return null;
-      }
-
-      return data.stripe_price_id;
-    } catch (error) {
-      console.error('Erreur getPriceIdForAddon:', error);
-      return null;
-    }
-  }
-
-  async createCheckoutSessionFromPlan(planId: string, addonTypes: string[] = []): Promise<{ url: string; sessionId: string }> {
-    try {
-      const priceId = await this.getPriceIdForPlan(planId);
-      if (!priceId) {
-        throw new Error(`Aucun price_id Stripe trouvé pour le plan: ${planId}`);
-      }
-
-      const addonPriceIds: string[] = [];
-      for (const addonType of addonTypes) {
-        const addonPriceId = await this.getPriceIdForAddon(addonType);
-        if (addonPriceId) {
-          addonPriceIds.push(addonPriceId);
-        }
-      }
-
-      return await this.createCheckoutSession(priceId, 'subscription', {
-        plan_id: planId,
-        addon_types: addonTypes.join(','),
-      });
-    } catch (error) {
-      console.error('Erreur createCheckoutSessionFromPlan:', error);
-      throw error;
-    }
-  }
-
-  async createCheckoutSessionForAddons(addonTypes: string[]): Promise<{ url: string; sessionId: string }> {
-    try {
-      if (!addonTypes || addonTypes.length === 0) {
-        throw new Error('Aucun addon sélectionné');
-      }
-
-      const firstAddonPriceId = await this.getPriceIdForAddon(addonTypes[0]);
-      if (!firstAddonPriceId) {
-        throw new Error(`Aucun price_id Stripe trouvé pour l'addon: ${addonTypes[0]}`);
-      }
-
-      return await this.createCheckoutSession(firstAddonPriceId, 'payment', {
-        addon_types: addonTypes.join(','),
-        purchase_type: 'addons_only',
-      });
-    } catch (error) {
-      console.error('Erreur createCheckoutSessionForAddons:', error);
-      throw error;
-    }
-  }
-
-  async createCheckoutSession(priceId: string, mode: 'payment' | 'subscription' = 'subscription', metadata: Record<string, string> = {}) {
+  async createCheckoutSession(priceId: string, mode: 'payment' | 'subscription' = 'subscription') {
     try {
       // Validation de sécurité
       if (!priceId || typeof priceId !== 'string' || priceId.length > 100) {
@@ -146,7 +52,6 @@ export class StripeService {
           success_url: `${window.location.origin}/parametres?checkout=success`,
           cancel_url: `${window.location.origin}/parametres?checkout=cancel`,
           mode,
-          metadata,
         }),
       });
 

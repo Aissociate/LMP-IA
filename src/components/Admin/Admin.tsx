@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Brain, Settings as SettingsIcon, MessageSquare, CreditCard, BarChart3, Bug, Video, DollarSign } from 'lucide-react';
+import { Shield, Brain, Settings as SettingsIcon, MessageSquare, CreditCard, BarChart3, Bug, Video } from 'lucide-react';
 import { AIModelSelector } from './AIModelSelector';
 import { AIParameters } from './AIParameters';
 import { PromptManager } from './PromptManager';
@@ -7,17 +7,15 @@ import { SubscriptionManager } from './SubscriptionManager';
 import { MarketingAnalytics } from './MarketingAnalytics';
 import { BugManager } from './BugManager';
 import { VideoUploader } from './VideoUploader';
-import { StripeCatalogManager } from './StripeCatalogManager';
 import { useTheme } from '../../hooks/useTheme';
 
-type AdminTab = 'ai-models' | 'ai-parameters' | 'prompts' | 'subscriptions' | 'marketing' | 'bugs' | 'videos' | 'stripe-catalog';
+type AdminTab = 'ai-models' | 'ai-parameters' | 'prompts' | 'subscriptions' | 'marketing' | 'bugs' | 'videos';
 
 const adminTabs = [
   { id: 'ai-models' as const, label: 'Modèles IA', icon: Brain },
   { id: 'ai-parameters' as const, label: 'Paramètres IA', icon: SettingsIcon },
   { id: 'prompts' as const, label: 'Gestion des prompts', icon: MessageSquare },
   { id: 'subscriptions' as const, label: 'Abonnements', icon: CreditCard },
-  { id: 'stripe-catalog' as const, label: 'Catalogue Stripe', icon: DollarSign },
   { id: 'marketing' as const, label: 'Analytics Marketing', icon: BarChart3 },
   { id: 'bugs' as const, label: 'Gestion des bugs', icon: Bug },
   { id: 'videos' as const, label: 'Vidéos Marketing', icon: Video },
@@ -37,8 +35,6 @@ export const Admin: React.FC = () => {
         return <PromptManager />;
       case 'subscriptions':
         return <SubscriptionManager />;
-      case 'stripe-catalog':
-        return <StripeCatalogManager />;
       case 'marketing':
         return <MarketingAnalytics />;
       case 'bugs':

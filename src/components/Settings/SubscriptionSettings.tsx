@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Check, Zap, Users, Crown, Package, Sparkles, Infinity, Star, Plus, ShoppingBag } from 'lucide-react';
+import { Check, Zap, Users, Crown, Package, Sparkles, Infinity, Star, Plus } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
 import { useSubscription } from '../../hooks/useSubscription';
 import { UpsellModal } from '../Common/UpsellModal';
-import { AddonMarketplace } from '../Common/AddonMarketplace';
 
 export const SubscriptionSettings: React.FC = () => {
   const { user, isAdmin } = useAuth();
@@ -17,7 +16,6 @@ export const SubscriptionSettings: React.FC = () => {
     hasMarketPro
   } = useSubscription();
   const [showUpsellModal, setShowUpsellModal] = useState(false);
-  const [showAddonMarketplace, setShowAddonMarketplace] = useState(false);
 
   const remainingMemories = getRemainingMemories ? getRemainingMemories() : 0;
   const hasProAccess = hasMarketPro ? hasMarketPro() : false;
@@ -49,11 +47,6 @@ export const SubscriptionSettings: React.FC = () => {
         currentPlan={plan?.name || 'Freemium'}
       />
 
-      <AddonMarketplace
-        isOpen={showAddonMarketplace}
-        onClose={() => setShowAddonMarketplace(false)}
-      />
-
       <div className="space-y-6">
         <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-sm border p-6 transition-colors duration-200`}>
           <div className="flex items-center justify-between mb-6">
@@ -78,22 +71,13 @@ export const SubscriptionSettings: React.FC = () => {
               </div>
             </div>
             {!isAdmin && (
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setShowAddonMarketplace(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-                >
-                  <ShoppingBag className="w-4 h-4" />
-                  <span>Options</span>
-                </button>
-                <button
-                  onClick={() => setShowUpsellModal(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
-                >
-                  <Package className="w-4 h-4" />
-                  <span>Changer de plan</span>
-                </button>
-              </div>
+              <button
+                onClick={() => setShowUpsellModal(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+              >
+                <Package className="w-4 h-4" />
+                <span>Gérer mon abonnement</span>
+              </button>
             )}
           </div>
 

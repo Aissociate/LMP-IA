@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Check, Zap, Users, Crown, Star, Sparkles, Plus } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
-import { stripeService } from '../../lib/stripe';
 import { useAuth } from '../../hooks/useAuth';
 
 interface UpsellModalProps {
@@ -22,7 +21,6 @@ interface SubscriptionPlan {
   borderColor: string;
   bgColor: string;
   recommended?: boolean;
-  stripe_price_id?: string;
 }
 
 interface AddonOption {
@@ -32,49 +30,99 @@ interface AddonOption {
   description: string;
   isRecurring: boolean;
   color: string;
-  stripe_price_id?: string;
 }
 
-interface DBPlan {
-  id: string;
-  name: string;
-  price: number;
-  technical_memories_limit: number;
-  features: string[];
-  is_recommended?: boolean;
-  stripe_price_id?: string;
-}
+const subscriptionPlans: SubscriptionPlan[] = [
+  {
+    id: 'solo',
+    name: 'SOLO',
+    price: 199,
+    subtitle: '1 Marché / Mois',
+    memories: 1,
+    features: [
+      '1 mémoire IA / mois',
+      'Veille marchés incluse',
+      'Score GO/NO-GO',
+      'Assistant IA Marchés & BPU',
+      'Export Word / PDF',
+      'Formations vidéo'
+    ],
+    icon: <Zap className="w-6 h-6" />,
+    color: 'orange',
+    borderColor: 'border-orange-300',
+    bgColor: 'bg-orange-50'
+  },
+  {
+    id: 'pme',
+    name: 'PME',
+    price: 349,
+    subtitle: '2 Marchés / Mois',
+    memories: 2,
+    features: [
+      '2 mémoires IA / mois',
+      'Priorité de génération vs SOLO',
+      '1 point de contact trimestriel',
+      'Tout du plan SOLO'
+    ],
+    icon: <Users className="w-6 h-6" />,
+    color: 'green',
+    borderColor: 'border-green-300',
+    bgColor: 'bg-green-50',
+    recommended: true
+  },
+  {
+    id: 'projeteur',
+    name: 'PROJETEUR',
+    price: 849,
+    subtitle: '5 Marchés / Mois',
+    memories: 5,
+    features: [
+      '5 mémoires IA / mois',
+      'Priorité maximale',
+      'Suivi mensuel mail/visio',
+      'Assistant IA illimité'
+    ],
+    icon: <Star className="w-6 h-6" />,
+    color: 'blue',
+    borderColor: 'border-blue-300',
+    bgColor: 'bg-blue-50'
+  }
+];
 
-interface DBAddon {
-  addon_type: string;
-  addon_name: string;
-  description: string;
-  price_cents: number;
-  is_recurring: boolean;
-  stripe_price_id?: string;
-}
-
-const getPlanIcon = (planId: string) => {
-  if (planId === 'solo') return <Zap className="w-6 h-6" />;
-  if (planId === 'pme') return <Users className="w-6 h-6" />;
-  if (planId === 'projeteur') return <Star className="w-6 h-6" />;
-  return <Zap className="w-6 h-6" />;
-};
-
-const getPlanColor = (planId: string) => {
-  if (planId === 'solo') return { color: 'orange', borderColor: 'border-orange-300', bgColor: 'bg-orange-50' };
-  if (planId === 'pme') return { color: 'green', borderColor: 'border-green-300', bgColor: 'bg-green-50' };
-  if (planId === 'projeteur') return { color: 'blue', borderColor: 'border-blue-300', bgColor: 'bg-blue-50' };
-  return { color: 'orange', borderColor: 'border-orange-300', bgColor: 'bg-orange-50' };
-};
-
-const getAddonColor = (addonType: string) => {
-  if (addonType === 'market_pro') return 'purple';
-  if (addonType === 'extra_memory') return 'orange';
-  if (addonType === 'booster_expert_4h') return 'blue';
-  if (addonType === 'booster_expert_3d') return 'yellow';
-  return 'gray';
-};
+const addonOptions: AddonOption[] = [
+  {
+    id: 'market_pro',
+    name: 'IA Premium',
+    price: 99,
+    description: 'Upgrade vers IA avancée pour toutes vos mémoires',
+    isRecurring: true,
+    color: 'purple'
+  },
+  {
+    id: 'extra_memory',
+    name: 'Mémoire supplémentaire',
+    price: 299,
+    description: 'Ajoutez des mémoires selon vos besoins',
+    isRecurring: false,
+    color: 'orange'
+  },
+  {
+    id: 'booster_4h',
+    name: 'Booster Expert 4h',
+    price: 590,
+    description: 'Relecture approfondie + renforcement des arguments',
+    isRecurring: false,
+    color: 'blue'
+  },
+  {
+    id: 'booster_3d',
+    name: 'Booster Expert Senior 3 jours',
+    price: 2490,
+    description: 'Expert dédié 3 jours sur votre marché stratégique',
+    isRecurring: false,
+    color: 'yellow'
+  }
+];
 
 export function UpsellModal({ isOpen, onClose, currentPlan }: UpsellModalProps) {
   const { user } = useAuth();
@@ -82,71 +130,7 @@ export function UpsellModal({ isOpen, onClose, currentPlan }: UpsellModalProps) 
   const [selectedAddons, setSelectedAddons] = useState<Record<string, boolean>>({});
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [loadingData, setLoadingData] = useState(true);
   const [success, setSuccess] = useState(false);
-  const [subscriptionPlans, setSubscriptionPlans] = useState<SubscriptionPlan[]>([]);
-  const [addonOptions, setAddonOptions] = useState<AddonOption[]>([]);
-
-  useEffect(() => {
-    if (isOpen) {
-      loadPlansAndAddons();
-    }
-  }, [isOpen]);
-
-  const loadPlansAndAddons = async () => {
-    setLoadingData(true);
-    try {
-      const { data: plans, error: plansError } = await supabase
-        .from('subscription_plans')
-        .select('*')
-        .eq('is_active', true)
-        .in('id', ['solo', 'pme', 'projeteur'])
-        .order('price', { ascending: true });
-
-      if (plansError) throw plansError;
-
-      const { data: addons, error: addonsError } = await supabase
-        .from('addon_catalog')
-        .select('*')
-        .eq('is_active', true)
-        .order('price_cents', { ascending: true });
-
-      if (addonsError) throw addonsError;
-
-      const formattedPlans: SubscriptionPlan[] = (plans || []).map((plan: DBPlan) => {
-        const colors = getPlanColor(plan.id);
-        return {
-          id: plan.id,
-          name: plan.name.toUpperCase(),
-          price: plan.price,
-          subtitle: `${plan.technical_memories_limit} Marché${plan.technical_memories_limit > 1 ? 's' : ''} / Mois`,
-          memories: plan.technical_memories_limit,
-          features: Array.isArray(plan.features) ? plan.features : [],
-          icon: getPlanIcon(plan.id),
-          ...colors,
-          recommended: plan.is_recommended || false,
-          stripe_price_id: plan.stripe_price_id
-        };
-      });
-
-      const formattedAddons: AddonOption[] = (addons || []).map((addon: DBAddon) => ({
-        id: addon.addon_type,
-        name: addon.addon_name,
-        price: addon.price_cents / 100,
-        description: addon.description,
-        isRecurring: addon.is_recurring,
-        color: getAddonColor(addon.addon_type),
-        stripe_price_id: addon.stripe_price_id
-      }));
-
-      setSubscriptionPlans(formattedPlans);
-      setAddonOptions(formattedAddons);
-    } catch (error) {
-      console.error('Erreur lors du chargement des plans et addons:', error);
-    } finally {
-      setLoadingData(false);
-    }
-  };
 
   if (!isOpen) return null;
 
@@ -175,19 +159,50 @@ export function UpsellModal({ isOpen, onClose, currentPlan }: UpsellModalProps) 
       const plan = subscriptionPlans.find(p => p.id === selectedPlan);
       if (!plan) return;
 
-      const selectedAddonTypes = Object.keys(selectedAddons).filter(key => selectedAddons[key]);
+      const addonsList = getSelectedAddonsText();
+      const fullRequest = `${plan.name} - ${plan.price}€ HT/mois${addonsList}`;
 
-      const { url } = await stripeService.createCheckoutSessionFromPlan(
-        selectedPlan,
-        selectedAddonTypes
+      await supabase
+        .from('upsell_requests')
+        .insert({
+          user_id: user.id,
+          user_email: user.email || '',
+          requested_plan: fullRequest,
+          current_plan: currentPlan,
+          message: message || `Demande d'abonnement au plan ${plan.name}${addonsList}`
+        });
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-upsell-email`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userEmail: user.email,
+            userName: user.user_metadata?.full_name || user.email,
+            requestedPlan: fullRequest,
+            currentPlan,
+            message: message || `Demande d'abonnement au plan ${plan.name}${addonsList}`
+          })
+        }
       );
 
-      if (url) {
-        window.location.href = url;
+      if (response.ok) {
+        setSuccess(true);
+        setTimeout(() => {
+          onClose();
+          setSuccess(false);
+          setSelectedPlan('');
+          setSelectedAddons({});
+          setMessage('');
+        }, 3000);
       }
     } catch (error) {
-      console.error('Error creating checkout session:', error);
-      alert('Une erreur est survenue lors de la création de la session de paiement. Vérifiez que les prix Stripe sont bien configurés.');
+      console.error('Error submitting upsell request:', error);
+      alert('Une erreur est survenue. Veuillez réessayer.');
     } finally {
       setLoading(false);
     }
@@ -224,11 +239,6 @@ export function UpsellModal({ isOpen, onClose, currentPlan }: UpsellModalProps) 
             <p className="text-gray-600">
               Nous vous contacterons très rapidement à l'adresse {user?.email}
             </p>
-          </div>
-        ) : loadingData ? (
-          <div className="p-12 text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
-            <p className="mt-4 text-gray-600">Chargement des offres...</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6">
@@ -352,7 +362,7 @@ export function UpsellModal({ isOpen, onClose, currentPlan }: UpsellModalProps) 
                 disabled={!selectedPlan || loading}
                 className="flex-1 bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Redirection vers le paiement...' : 'Continuer vers le paiement'}
+                {loading ? 'Envoi en cours...' : 'Demander à être contacté'}
               </button>
               <button
                 type="button"
@@ -364,7 +374,7 @@ export function UpsellModal({ isOpen, onClose, currentPlan }: UpsellModalProps) 
             </div>
 
             <p className="text-xs text-gray-500 text-center mt-4">
-              Paiement sécurisé par Stripe
+              Un membre de notre équipe vous contactera sous 24h à l'adresse {user?.email}
             </p>
           </form>
         )}

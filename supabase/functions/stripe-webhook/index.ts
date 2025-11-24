@@ -142,12 +142,9 @@ async function handleEvent(event: Stripe.Event) {
       if (isSubscription) {
         console.info(`Starting subscription sync for customer: ${customerId}`);
         await syncCustomerFromStripe(customerId);
-
-        if (event.type === 'checkout.session.completed') {
-          await processMetadataAddons(stripeData as Stripe.Checkout.Session, customerId);
-        }
       } else if (mode === 'payment' && payment_status === 'paid') {
         try {
+          // Extract the necessary information from the session
           const {
             id: checkout_session_id,
             payment_intent,
@@ -156,6 +153,7 @@ async function handleEvent(event: Stripe.Event) {
             currency,
           } = stripeData as Stripe.Checkout.Session;
 
+          // Insert the order into the stripe_orders table
           const { error: orderError } = await supabase.from('stripe_orders').insert({
             checkout_session_id,
             payment_intent_id: payment_intent,
@@ -164,16 +162,13 @@ async function handleEvent(event: Stripe.Event) {
             amount_total,
             currency,
             payment_status,
-            status: 'completed',
+            status: 'completed', // assuming we want to mark it as completed since payment is successful
           });
 
           if (orderError) {
             console.error('Error inserting order:', orderError);
             return;
           }
-
-          await processMetadataAddons(stripeData as Stripe.Checkout.Session, customerId);
-
           console.info(`Successfully processed one-time payment for session: ${checkout_session_id}`);
         } catch (error) {
           console.error('Error processing one-time payment:', error);
@@ -183,110 +178,6 @@ async function handleEvent(event: Stripe.Event) {
   } catch (error) {
     console.error('Error in handleEvent:', error);
     // Ne pas faire remonter l'erreur pour éviter les retry infinis
-  }
-}
-
-async function processMetadataAddons(session: Stripe.Checkout.Session, customerId: string) {
-  try {
-    const metadata = session.metadata || {};
-    const userId = metadata.user_id;
-    const addonTypes = metadata.addon_types ? metadata.addon_types.split(',') : [];
-    const planId = metadata.plan_id;
-
-    if (!userId) {
-      console.warn('No user_id in metadata, skipping addon processing');
-      return;
-    }
-
-    const { data: customer } = await supabase
-      .from('stripe_customers')
-      .select('user_id')
-      .eq('customer_id', customerId)
-      .maybeSingle();
-
-    const actualUserId = customer?.user_id || userId;
-
-    if (!addonTypes || addonTypes.length === 0) {
-      console.info('No addons in metadata');
-      return;
-    }
-
-    console.info(`Processing ${addonTypes.length} addon(s) for user ${actualUserId}: ${addonTypes.join(', ')}`);
-
-    for (const addonType of addonTypes) {
-      if (!addonType.trim()) continue;
-
-      const { data: addonInfo } = await supabase
-        .from('addon_catalog')
-        .select('*')
-        .eq('addon_type', addonType.trim())
-        .maybeSingle();
-
-      if (!addonInfo) {
-        console.error(`Addon not found in catalog: ${addonType}`);
-        continue;
-      }
-
-      const { error: insertError } = await supabase
-        .from('subscription_addons')
-        .insert({
-          user_id: actualUserId,
-          addon_type: addonInfo.addon_type,
-          addon_name: addonInfo.addon_name,
-          price_cents: addonInfo.price_cents,
-          is_recurring: addonInfo.is_recurring,
-          quantity: 1,
-          status: 'active'
-        });
-
-      if (insertError) {
-        console.error(`Error inserting addon ${addonType}:`, insertError);
-        continue;
-      }
-
-      if (addonType.trim() === 'extra_memory') {
-        const monthYear = new Date().toISOString().slice(0, 7);
-        const { error: updateError } = await supabase.rpc('increment_extra_memories', {
-          p_user_id: actualUserId,
-          p_month_year: monthYear,
-          p_quantity: 1
-        });
-
-        if (updateError) {
-          console.error('Error updating extra memories:', updateError);
-        }
-      }
-
-      if (addonType.trim() === 'market_pro') {
-        const monthYear = new Date().toISOString().slice(0, 7);
-        const { error: updateError } = await supabase
-          .from('monthly_memory_usage')
-          .update({ market_pro_enabled: true })
-          .eq('user_id', actualUserId)
-          .eq('month_year', monthYear);
-
-        if (updateError) {
-          console.error('Error enabling market pro:', updateError);
-        }
-      }
-
-      console.info(`Successfully added addon ${addonType} for user ${actualUserId}`);
-    }
-
-    if (planId) {
-      const { error: updatePlanError } = await supabase
-        .from('user_subscriptions')
-        .update({ plan_id: planId })
-        .eq('user_id', actualUserId);
-
-      if (updatePlanError) {
-        console.error('Error updating user plan:', updatePlanError);
-      } else {
-        console.info(`Updated user ${actualUserId} to plan ${planId}`);
-      }
-    }
-  } catch (error) {
-    console.error('Error processing metadata addons:', error);
   }
 }
 

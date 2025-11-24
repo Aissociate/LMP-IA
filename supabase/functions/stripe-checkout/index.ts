@@ -56,7 +56,7 @@ Deno.serve(async (req) => {
       return corsResponse({ error: 'Method not allowed' }, 405);
     }
 
-    const { price_id, success_url, cancel_url, mode, metadata = {} } = await req.json();
+    const { price_id, success_url, cancel_url, mode } = await req.json();
 
     // Validation de sécurité des paramètres
     if (!price_id || typeof price_id !== 'string' || price_id.length > 100) {
@@ -251,9 +251,8 @@ Deno.serve(async (req) => {
         user_id: user.id,
         user_email: user.email,
         created_at: new Date().toISOString(),
-        ...metadata,
       },
-      allow_promotion_codes: true,
+      allow_promotion_codes: true, // Permettre les codes promo
     });
 
     console.log(`Created checkout session ${session.id} for customer ${customerId}`);
