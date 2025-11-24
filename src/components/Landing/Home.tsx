@@ -114,6 +114,21 @@ export default function Home() {
       {/* HERO SECTION */}
       <Section className="pt-20 pb-16 sm:pt-32 sm:pb-24">
         <div className="text-center">
+          {/* Video Section */}
+          <div className="mb-12 max-w-4xl mx-auto">
+            <video
+              className="w-full rounded-2xl shadow-2xl"
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
+            >
+              <source src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6924ceb137de76697febb126.mp4" type="video/mp4" />
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
+          </div>
+
           <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <Sparkles className="w-4 h-4" />
             L'IA qui transforme vos réponses aux marchés publics
