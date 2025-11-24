@@ -116,17 +116,18 @@ export default function Home() {
         <div className="text-center">
           {/* Video Section */}
           <div className="mb-12 max-w-4xl mx-auto">
-            <video
-              className="w-full rounded-2xl shadow-2xl"
-              controls
-              autoPlay
-              muted
-              loop
-              playsInline
-            >
-              <source src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6924ceb137de76697febb126.mp4" type="video/mp4" />
-              Votre navigateur ne supporte pas la lecture de vidéos.
-            </video>
+            <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
+              <video
+                className="w-full h-full object-contain"
+                controls
+                muted
+                playsInline
+                preload="metadata"
+              >
+                <source src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6924ceb137de76697febb126.mp4" type="video/mp4" />
+                Votre navigateur ne supporte pas la lecture de vidéos.
+              </video>
+            </div>
           </div>
 
           <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
