@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Target, ChevronLeft, ChevronRight, Mail } from 'lucide-react';
+import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Target, ChevronLeft, ChevronRight, Mail, Play, Loader } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { initAnalytics, trackClick } from '../../lib/analytics';
 import { MarketModelComparison } from './MarketModelComparison';
@@ -26,6 +26,59 @@ const Section = ({ children, className = "", id = "" }: { children: React.ReactN
     </div>
   </section>
 );
+
+const VideoPlayer = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  return (
+    <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-800 to-gray-900">
+      {isLoading && !hasError && (
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <div className="text-white text-center">
+            <Loader className="w-12 h-12 mx-auto mb-4 animate-spin" />
+            <div className="text-lg font-semibold">Chargement de la vidéo...</div>
+            <div className="text-sm text-gray-300 mt-2">La vidéo est volumineuse (307 MB)</div>
+          </div>
+        </div>
+      )}
+
+      {hasError && (
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <div className="text-white text-center px-4">
+            <div className="text-lg font-semibold mb-2">Impossible de charger la vidéo</div>
+            <a
+              href="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6924ceb137de76697febb126.mp4"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#F77F00] underline hover:text-[#E06F00]"
+            >
+              Ouvrir la vidéo dans un nouvel onglet
+            </a>
+          </div>
+        </div>
+      )}
+
+      <video
+        className="w-full h-full object-contain bg-black"
+        controls
+        playsInline
+        onLoadedData={() => setIsLoading(false)}
+        onError={() => {
+          setIsLoading(false);
+          setHasError(true);
+        }}
+        poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23374151' width='1920' height='1080'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-size='48' fill='%23F77F00'%3EDémo Le Marché Public%3C/text%3E%3C/svg%3E"
+      >
+        <source
+          src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6924ceb137de76697febb126.mp4"
+          type="video/mp4"
+        />
+        Votre navigateur ne supporte pas la lecture de vidéos.
+      </video>
+    </div>
+  );
+};
 
 const Carousel = () => {
   const images = ['/caroussel 1.png', '/caroussel 2.png', '/caroussel 3.png', '/caroussel 5.png', '/caroussel 6.png', '/caroussel 7.png', '/caroussel 8.png'];
@@ -116,18 +169,7 @@ export default function Home() {
         <div className="text-center">
           {/* Video Section */}
           <div className="mb-12 max-w-4xl mx-auto">
-            <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
-              <video
-                className="w-full h-full object-contain"
-                controls
-                muted
-                playsInline
-                preload="metadata"
-              >
-                <source src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6924ceb137de76697febb126.mp4" type="video/mp4" />
-                Votre navigateur ne supporte pas la lecture de vidéos.
-              </video>
-            </div>
+            <VideoPlayer />
           </div>
 
           <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
