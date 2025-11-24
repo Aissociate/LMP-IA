@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Target, ChevronLeft, ChevronRight, Mail, Play, Loader } from 'lucide-react';
+import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Target, ChevronLeft, ChevronRight, Mail } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { initAnalytics, trackClick } from '../../lib/analytics';
 import { MarketModelComparison } from './MarketModelComparison';
@@ -26,26 +26,6 @@ const Section = ({ children, className = "", id = "" }: { children: React.ReactN
     </div>
   </section>
 );
-
-const VideoPlayer = () => {
-  return (
-    <a
-      href="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6924ceb137de76697febb126.mp4"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-800 to-gray-900 group hover:scale-[1.02] transition-transform duration-300"
-    >
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10">
-        <div className="bg-[#F77F00] rounded-full p-6 mb-4 group-hover:bg-[#E06F00] transition-colors">
-          <Play className="w-16 h-16 text-white fill-white" />
-        </div>
-        <div className="text-2xl font-bold mb-2">Découvrez Le Marché Public en vidéo</div>
-        <div className="text-gray-300">Cliquez pour voir la démo complète</div>
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-    </a>
-  );
-};
 
 const Carousel = () => {
   const images = ['/caroussel 1.png', '/caroussel 2.png', '/caroussel 3.png', '/caroussel 5.png', '/caroussel 6.png', '/caroussel 7.png', '/caroussel 8.png'];
@@ -134,11 +114,6 @@ export default function Home() {
       {/* HERO SECTION */}
       <Section className="pt-20 pb-16 sm:pt-32 sm:pb-24">
         <div className="text-center">
-          {/* Video Section */}
-          <div className="mb-12 max-w-4xl mx-auto">
-            <VideoPlayer />
-          </div>
-
           <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <Sparkles className="w-4 h-4" />
             L'IA qui transforme vos réponses aux marchés publics
