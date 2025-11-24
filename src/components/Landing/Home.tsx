@@ -28,55 +28,22 @@ const Section = ({ children, className = "", id = "" }: { children: React.ReactN
 );
 
 const VideoPlayer = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-
   return (
-    <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-800 to-gray-900">
-      {isLoading && !hasError && (
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <div className="text-white text-center">
-            <Loader className="w-12 h-12 mx-auto mb-4 animate-spin" />
-            <div className="text-lg font-semibold">Chargement de la vidéo...</div>
-            <div className="text-sm text-gray-300 mt-2">La vidéo est volumineuse (307 MB)</div>
-          </div>
+    <a
+      href="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6924ceb137de76697febb126.mp4"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-800 to-gray-900 group hover:scale-[1.02] transition-transform duration-300"
+    >
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10">
+        <div className="bg-[#F77F00] rounded-full p-6 mb-4 group-hover:bg-[#E06F00] transition-colors">
+          <Play className="w-16 h-16 text-white fill-white" />
         </div>
-      )}
-
-      {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <div className="text-white text-center px-4">
-            <div className="text-lg font-semibold mb-2">Impossible de charger la vidéo</div>
-            <a
-              href="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6924ceb137de76697febb126.mp4"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#F77F00] underline hover:text-[#E06F00]"
-            >
-              Ouvrir la vidéo dans un nouvel onglet
-            </a>
-          </div>
-        </div>
-      )}
-
-      <video
-        className="w-full h-full object-contain bg-black"
-        controls
-        playsInline
-        onLoadedData={() => setIsLoading(false)}
-        onError={() => {
-          setIsLoading(false);
-          setHasError(true);
-        }}
-        poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23374151' width='1920' height='1080'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-size='48' fill='%23F77F00'%3EDémo Le Marché Public%3C/text%3E%3C/svg%3E"
-      >
-        <source
-          src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6924ceb137de76697febb126.mp4"
-          type="video/mp4"
-        />
-        Votre navigateur ne supporte pas la lecture de vidéos.
-      </video>
-    </div>
+        <div className="text-2xl font-bold mb-2">Découvrez Le Marché Public en vidéo</div>
+        <div className="text-gray-300">Cliquez pour voir la démo complète</div>
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+    </a>
   );
 };
 
