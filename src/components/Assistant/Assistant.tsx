@@ -187,11 +187,12 @@ export const Assistant: React.FC = () => {
       .select(`
         id,
         title,
+        reference,
         client,
         description,
         deadline,
-        amount,
-        location,
+        budget,
+        status,
         market_documents (
           name,
           extracted_content,
@@ -223,11 +224,12 @@ export const Assistant: React.FC = () => {
 
     for (const market of data) {
       context += `## Marché: ${market.title}\n`;
+      context += `- Référence: ${market.reference}\n`;
       context += `- Client: ${market.client}\n`;
+      context += `- Statut: ${market.status}\n`;
       if (market.description) context += `- Description: ${market.description}\n`;
       if (market.deadline) context += `- Date limite: ${new Date(market.deadline).toLocaleDateString('fr-FR')}\n`;
-      if (market.amount) context += `- Montant estimé: ${market.amount}€\n`;
-      if (market.location) context += `- Localisation: ${market.location}\n`;
+      if (market.budget) context += `- Budget: ${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(market.budget)}\n`;
 
       // Documents d'appel d'offres
       if (market.market_documents && market.market_documents.length > 0) {
