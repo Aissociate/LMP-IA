@@ -207,9 +207,10 @@ export const AIModelSelector: React.FC = () => {
                     {model.context_length.toLocaleString()} tokens
                   </p>
                   {model.pricing && (
-                    <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                      ${(model.pricing.prompt * 1000000).toFixed(2)}/M tokens
-                    </p>
+                    <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <p>Input: ${(model.pricing.prompt * 1000000).toFixed(2)}/M</p>
+                      <p>Output: ${(model.pricing.completion * 1000000).toFixed(2)}/M</p>
+                    </div>
                   )}
                 </div>
               </div>
