@@ -719,11 +719,6 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* MARKET MODEL COMPARISON */}
-      <Section className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <MarketModelComparison />
-      </Section>
-
       {/* PRICING */}
       <Section id="tarifs" className="py-20 bg-white">
         <div className="text-center mb-16">
