@@ -149,18 +149,8 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
 - Modalités de reporting`
   },
   {
-    id: 'variantes_optimisations',
-    title: '12. Variantes & optimisations',
-    icon: Euro,
-    defaultPrompt: `Propose des variantes et optimisations :
-- Description des variantes
-- Bénéfices et impacts
-- Analyse coût/délai/qualité
-- Conditions d'acceptation`
-  },
-  {
     id: 'annexes',
-    title: '13. Annexes',
+    title: '12. Annexes',
     icon: FolderOpen,
     defaultPrompt: `Compile les annexes techniques :
 - CV et habilitations de l'équipe
