@@ -82,11 +82,15 @@ export const marketSentinelService = {
 
   async getUserContext(userId: string): Promise<UserContext> {
     try {
-      const { data: profile } = await supabase
+      const { data: profile, error: profileError } = await supabase
         .from('user_profiles')
         .select('company_name, activity_sectors, expertise_areas, geographical_zones')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
+
+      if (profileError) {
+        console.error('Error fetching profile:', profileError);
+      }
 
       const { data: knowledgeFiles, error: kbError } = await supabase
         .from('knowledge_files')
@@ -94,6 +98,10 @@ export const marketSentinelService = {
         .eq('user_id', userId)
         .eq('extraction_status', 'completed')
         .order('created_at', { ascending: false });
+
+      if (kbError) {
+        console.error('Error fetching knowledge files:', kbError);
+      }
 
       let knowledgeBase;
       if (knowledgeFiles && knowledgeFiles.length > 0) {
@@ -113,7 +121,10 @@ export const marketSentinelService = {
       }
 
       return {
-        ...profile,
+        company_name: profile?.company_name || profile?.company || undefined,
+        activity_sectors: profile?.activity_sectors || [],
+        expertise_areas: profile?.expertise_areas || [],
+        geographical_zones: profile?.geographical_zones || [],
         knowledge_base: knowledgeBase
       };
     } catch (error) {
