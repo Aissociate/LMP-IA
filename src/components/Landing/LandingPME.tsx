@@ -586,7 +586,7 @@ export const LandingPME: React.FC = () => {
               Sans nous : 10 à 20h par mémoire, décisions "au feeling", risques d'erreurs dans le BPU
             </p>
             <p className="text-sm text-gray-700">
-              <strong>Avec LeMarchéPublic.fr :</strong> la veille vous présente les bons marchés, le GO/NO-GO aide à décider rapidement, l'IA génère vos mémoires, l'assistant sécurise le BPU. <strong className="text-[#F77F00]">Un seul marché gagné peut amortir plusieurs mois d'abonnement.</strong>
+              <strong>Avec LeMarchéPublic.fr :</strong> la veille vous présente les bons marchés, le GO/NO-GO aide à décider rapidement, l'IA génère vos mémoires, l\'assistant sécurise le BPU. <strong className="text-[#F77F00]">Un seul marché gagné peut amortir plusieurs mois d'abonnement.</strong>
             </p>
           </div>
         </div>
