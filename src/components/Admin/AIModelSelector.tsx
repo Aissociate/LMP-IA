@@ -18,13 +18,6 @@ interface AIModel {
 // Liste des modèles disponibles via OpenRouter (sera enrichie plus tard)
 const availableModels: AIModel[] = [
   {
-    id: 'google/gemini-2.5-pro',
-    name: 'Gemini 2.5 Pro',
-    description: 'Modèle Gemini 2.5 Pro avec capacités avancées',
-    context_length: 1048576,
-    pricing: { prompt: 0.00000125, completion: 0.000005 }
-  },
-  {
     id: 'google/gemini-2.5-flash-lite-preview-09-2025',
     name: 'Gemini 2.5 Flash Lite Preview',
     description: 'Modèle Gemini 2.5 Flash Lite optimisé pour la vitesse et l\'efficacité',
@@ -32,25 +25,11 @@ const availableModels: AIModel[] = [
     pricing: { prompt: 0.0000005, completion: 0.000002 }
   },
   {
-    id: 'x-ai/grok-4-fast:free',
-    name: 'Grok 4 Fast (Free)',
-    description: 'Modèle Grok 4 rapide et gratuit de xAI',
-    context_length: 2000000,
-    pricing: { prompt: 0, completion: 0 }
-  },
-  {
-    id: 'openai/gpt-5-nano',
-    name: 'GPT-5 Nano',
-    description: 'Modèle compact et efficace de la série GPT-5',
-    context_length: 128000,
-    pricing: { prompt: 0.000001, completion: 0.000003 }
-  },
-  {
-    id: 'anthropic/claude-sonnet-4',
-    name: 'Claude Sonnet 4',
-    description: 'Nouveau modèle Sonnet 4 d\'Anthropic avec capacités avancées',
-    context_length: 200000,
-    pricing: { prompt: 0.000003, completion: 0.000015 }
+    id: 'google/gemini-3-pro-preview',
+    name: 'Gemini 3 Pro Preview',
+    description: 'Nouveau modèle Gemini 3 Pro avec capacités avancées',
+    context_length: 2097152,
+    pricing: { prompt: 0.000002, completion: 0.000008 }
   }
 ];
 
@@ -79,7 +58,7 @@ export const AIModelSelector: React.FC = () => {
         return acc;
       }, {} as Record<string, any>) || {};
 
-      setSelectedModel(settings.selected_ai_model || 'openai/gpt-5-nano');
+      setSelectedModel(settings.selected_ai_model || 'google/gemini-2.5-flash-lite-preview-09-2025');
     } catch (error) {
       console.error('Error fetching settings:', error);
     } finally {
