@@ -227,15 +227,19 @@ export default function Home() {
             Une solution intuitive et puissante pour gagner plus de marchés
           </p>
         </div>
-        <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl">
-          <iframe
-            src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6926384f76cd823d57d4746d.mp4"
+        <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl bg-gray-900">
+          <video
+            controls
+            muted
+            loop
+            playsInline
+            preload="metadata"
             className="w-full aspect-video"
-            style={{ minHeight: '400px', border: 'none' }}
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            title="Démo Le Marché Public"
-          />
+            style={{ minHeight: '400px' }}
+          >
+            <source src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6926384f76cd823d57d4746d.mp4" type="video/mp4" />
+            Votre navigateur ne supporte pas la lecture de vidéos.
+          </video>
         </div>
       </Section>
 
