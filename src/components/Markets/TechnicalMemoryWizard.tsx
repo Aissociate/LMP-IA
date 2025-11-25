@@ -60,7 +60,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'organisation_gouvernance',
-    title: '5. Organisation & gouvernance',
+    title: '3. Organisation & gouvernance',
     icon: Building,
     defaultPrompt: `Décris notre organisation projet :
 - Organigramme de l'équipe projet
@@ -70,7 +70,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'methodologie_execution',
-    title: '6. Méthodologie d\'exécution',
+    title: '4. Méthodologie d\'exécution',
     icon: Cogs,
     defaultPrompt: `Détaille notre méthodologie d'exécution :
 - Phases de préparation et installation
@@ -80,7 +80,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'moyens_humains_materiels',
-    title: '7. Moyens humains & matériels',
+    title: '5. Moyens humains & matériels',
     icon: Users,
     defaultPrompt: `Présente nos moyens déployés :
 - Équipe par phase d'exécution
@@ -90,7 +90,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'planification_phasage',
-    title: '8. Planification & phasage',
+    title: '6. Planification & phasage',
     icon: Calendar,
     defaultPrompt: `Expose notre planification :
 - Planning directeur et jalons majeurs
@@ -100,7 +100,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'qualite_smq',
-    title: '9. Qualité (SMQ)',
+    title: '7. Qualité (SMQ)',
     icon: Award,
     defaultPrompt: `Décris notre système qualité :
 - Plan Qualité Projet
@@ -110,7 +110,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'securite_sante',
-    title: '10. Sécurité & santé (SSE)',
+    title: '8. Sécurité & santé (SSE)',
     icon: Shield,
     defaultPrompt: `Présente notre approche sécurité :
 - Analyse des risques et plan de prévention
@@ -120,7 +120,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'environnement_rse',
-    title: '11. Environnement & RSE',
+    title: '9. Environnement & RSE',
     icon: Leaf,
     defaultPrompt: `Détaille notre engagement environnemental :
 - Gestion des déchets et nuisances
@@ -130,7 +130,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'innovation_performance',
-    title: '12. Innovation & performance',
+    title: '10. Innovation & performance',
     icon: Zap,
     defaultPrompt: `Présente nos innovations :
 - Choix techniques innovants
@@ -140,7 +140,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'risques_opportunites',
-    title: '13. Risques & opportunités',
+    title: '11. Risques & opportunités',
     icon: AlertTriangle,
     defaultPrompt: `Analyse les risques et opportunités :
 - Méthode d'identification et cotation
@@ -150,7 +150,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'gestion_documentaire',
-    title: '15. Gestion documentaire',
+    title: '12. Gestion documentaire',
     icon: FolderOpen,
     defaultPrompt: `Présente notre gestion documentaire :
 - Système GED et workflow
@@ -160,7 +160,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'engagements_kpi',
-    title: '18. Engagements & KPI',
+    title: '13. Engagements & KPI',
     icon: BarChart3,
     defaultPrompt: `Définit nos engagements chiffrés :
 - KPI de délais et productivité
@@ -170,7 +170,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'variantes_optimisations',
-    title: '19. Variantes & optimisations',
+    title: '14. Variantes & optimisations',
     icon: Euro,
     defaultPrompt: `Propose des variantes et optimisations :
 - Description des variantes
@@ -180,7 +180,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'annexes',
-    title: '20. Annexes',
+    title: '15. Annexes',
     icon: FolderOpen,
     defaultPrompt: `Compile les annexes techniques :
 - CV et habilitations de l'équipe
