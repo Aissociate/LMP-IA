@@ -235,12 +235,17 @@ export const Assistant: React.FC = () => {
       if (market.market_documents && market.market_documents.length > 0) {
         context += '\n### Documents du marché:\n';
         for (const doc of market.market_documents) {
-          context += `- **${doc.name}**\n`;
-          if (doc.extracted_content) {
-            context += `  Contenu: ${doc.extracted_content.substring(0, 800)}...\n`;
-          }
+          context += `\n#### ${doc.name}\n`;
+
           if (doc.analysis_result) {
-            context += `  Analyse: ${doc.analysis_result.substring(0, 800)}...\n`;
+            context += `\n**Analyse IA complète du document:**\n${doc.analysis_result}\n`;
+          }
+
+          if (doc.extracted_content) {
+            const contentPreview = doc.extracted_content.length > 2000
+              ? doc.extracted_content.substring(0, 2000) + '...'
+              : doc.extracted_content;
+            context += `\n**Extrait du contenu:**\n${contentPreview}\n`;
           }
         }
       }
