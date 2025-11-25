@@ -99,38 +99,18 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
 - Pilotage des délais et aléas`
   },
   {
-    id: 'qualite_smq',
-    title: '7. Qualité (SMQ)',
-    icon: Award,
-    defaultPrompt: `Décris notre système qualité :
-- Plan Qualité Projet
-- Procédures de contrôle et réception
-- Gestion des non-conformités
-- Management des changements`
-  },
-  {
-    id: 'securite_sante',
-    title: '8. Sécurité & santé (SSE)',
+    id: 'qsse',
+    title: '7. QSSE (Qualité, Sécurité, Santé, Environnement)',
     icon: Shield,
-    defaultPrompt: `Présente notre approche sécurité :
-- Analyse des risques et plan de prévention
-- Procédures d'accueil et de formation
-- Protections collectives et individuelles
-- Suivi des indicateurs sécurité`
-  },
-  {
-    id: 'environnement_rse_risques',
-    title: '9. Environnement, RSE & Risques',
-    icon: Leaf,
-    defaultPrompt: `Présente notre approche environnementale et gestion des risques :
-- Gestion des déchets et impact carbone
-- Protection de la biodiversité et clauses sociales
-- Analyse des risques et mesures préventives
-- Opportunités d'optimisation`
+    defaultPrompt: `Présente notre démarche QSSE intégrée :
+- Plan Qualité et contrôles
+- Sécurité : analyse des risques et prévention
+- Environnement : déchets, carbone, biodiversité
+- RSE et clauses sociales`
   },
   {
     id: 'gestion_documentaire',
-    title: '10. Gestion documentaire',
+    title: '8. Gestion documentaire',
     icon: FolderOpen,
     defaultPrompt: `Présente notre gestion documentaire :
 - Système GED et workflow
@@ -140,7 +120,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'engagements_kpi',
-    title: '11. Engagements & KPI',
+    title: '9. Engagements & KPI',
     icon: BarChart3,
     defaultPrompt: `Définit nos engagements chiffrés :
 - KPI de délais et productivité
@@ -150,7 +130,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'annexes',
-    title: '12. Annexes',
+    title: '10. Annexes',
     icon: FolderOpen,
     defaultPrompt: `Compile les annexes techniques :
 - CV et habilitations de l'équipe
