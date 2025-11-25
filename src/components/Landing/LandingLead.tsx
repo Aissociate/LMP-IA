@@ -891,9 +891,12 @@ export const LandingLead: React.FC = () => {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <img src="/logo1.png" alt="Logo" className="h-12 w-auto mx-auto mb-4" />
-            <p className="text-gray-400">
+            <p className="text-gray-400 mb-2">
               © 2025 LeMarchéPublic.fr - Tous droits réservés
             </p>
+            <a href="/cgv" className="text-gray-400 hover:text-[#F77F00] transition-colors text-sm">
+              Conditions Générales de Vente
+            </a>
           </div>
         </div>
       </footer>

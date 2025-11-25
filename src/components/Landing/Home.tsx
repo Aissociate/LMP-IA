@@ -1116,7 +1116,12 @@ export default function Home() {
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400">© 2025 Le Marché Public.fr - Tous droits réservés</p>
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <p className="text-gray-400">© 2025 Le Marché Public.fr - Tous droits réservés</p>
+              <a href="/cgv" className="text-gray-400 hover:text-[#F77F00] transition-colors text-sm">
+                Conditions Générales de Vente
+              </a>
+            </div>
             <div className="flex items-center gap-6">
               <a
                 href="mailto:contact@lemarchepublic.fr"

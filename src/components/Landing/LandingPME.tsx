@@ -669,7 +669,12 @@ export const LandingPME: React.FC = () => {
       <footer className="border-t border-gray-100 py-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-            <p>© {new Date().getFullYear()} Le Marché Public.fr — L'IA des PME qui gagnent leurs marchés publics.</p>
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <p>© {new Date().getFullYear()} Le Marché Public.fr — L'IA des PME qui gagnent leurs marchés publics.</p>
+              <a href="/cgv" className="hover:text-[#F77F00] transition-colors">
+                CGV
+              </a>
+            </div>
             <div className="flex items-center gap-6">
               <a
                 href="mailto:contact@lemarchepublic.fr"
