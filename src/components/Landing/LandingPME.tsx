@@ -131,15 +131,15 @@ export const LandingPME: React.FC = () => {
             </div>
             <p className="mt-5 text-sm text-gray-500">Sans CB • Sans engagement • Résultat en 48h</p>
           </div>
-          <div className="rounded-2xl overflow-hidden shadow-2xl">
+          <div className="rounded-2xl overflow-hidden shadow-2xl bg-black">
             <video
               controls
               autoPlay
               muted
               loop
               playsInline
-              className="w-full h-auto"
-              poster="/image.png"
+              className="w-full aspect-video"
+              style={{ minHeight: '400px' }}
             >
               <source src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6926384f76cd823d57d4746d.mp4" type="video/mp4" />
               Votre navigateur ne supporte pas la lecture de vidéos.

@@ -37,20 +37,15 @@ const getDeviceType = (): string => {
 // Track page visit
 export const trackPageVisit = async (page: string) => {
   try {
-    const visitorId = getVisitorId();
-    const sessionId = getSessionId();
-    const deviceType = getDeviceType();
     const referrer = document.referrer || 'direct';
+    const userAgent = navigator.userAgent;
 
     const { data, error } = await supabase
       .from('page_visits')
       .insert({
-        page,
-        visitor_id: visitorId,
-        session_id: sessionId,
-        device_type: deviceType,
+        page_path: page,
         referrer,
-        entry_time: new Date().toISOString()
+        user_agent: userAgent
       })
       .select()
       .single();
@@ -60,10 +55,8 @@ export const trackPageVisit = async (page: string) => {
       return null;
     }
 
-    // Store the visit ID to update it later with exit time
+    // Store the visit ID to track time
     sessionStorage.setItem(`mpp_visit_${page}`, data.id);
-
-    // Track entry time
     sessionStorage.setItem(`mpp_entry_${page}`, Date.now().toString());
 
     return data.id;
@@ -76,22 +69,6 @@ export const trackPageVisit = async (page: string) => {
 // Update page visit with exit time
 export const trackPageExit = async (page: string) => {
   try {
-    const visitId = sessionStorage.getItem(`mpp_visit_${page}`);
-    const entryTime = sessionStorage.getItem(`mpp_entry_${page}`);
-
-    if (!visitId || !entryTime) return;
-
-    const timeSpent = Math.round((Date.now() - parseInt(entryTime)) / 1000); // in seconds
-
-    await supabase
-      .from('page_visits')
-      .update({
-        exit_time: new Date().toISOString(),
-        time_spent: timeSpent
-      })
-      .eq('id', visitId);
-
-    // Clean up
     sessionStorage.removeItem(`mpp_visit_${page}`);
     sessionStorage.removeItem(`mpp_entry_${page}`);
   } catch (error) {
@@ -102,17 +79,15 @@ export const trackPageExit = async (page: string) => {
 // Track click event
 export const trackClick = async (page: string, clickType: string, clickTarget: string) => {
   try {
-    const visitorId = getVisitorId();
-    const sessionId = getSessionId();
+    const userAgent = navigator.userAgent;
 
     await supabase
       .from('page_clicks')
       .insert({
-        page,
-        visitor_id: visitorId,
-        session_id: sessionId,
-        click_type: clickType,
-        click_target: clickTarget
+        page_path: page,
+        element_id: clickType,
+        element_text: clickTarget,
+        user_agent: userAgent
       });
   } catch (error) {
     console.error('Error in trackClick:', error);

@@ -442,15 +442,15 @@ export const LandingLead: React.FC = () => {
             <h3 className="text-3xl font-bold text-center mb-8 text-gray-900">
               Découvrez l'interface en vidéo
             </h3>
-            <div className="rounded-2xl overflow-hidden shadow-2xl">
+            <div className="rounded-2xl overflow-hidden shadow-2xl bg-black">
               <video
                 controls
                 autoPlay
                 muted
                 loop
                 playsInline
-                className="w-full h-auto"
-                poster="/image.png"
+                className="w-full aspect-video"
+                style={{ minHeight: '400px' }}
               >
                 <source src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6926384f76cd823d57d4746d.mp4" type="video/mp4" />
                 Votre navigateur ne supporte pas la lecture de vidéos.
