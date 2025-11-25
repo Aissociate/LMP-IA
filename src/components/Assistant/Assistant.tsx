@@ -77,12 +77,18 @@ export const Assistant: React.FC = () => {
   const checkAdminStatus = async () => {
     if (!user) return;
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('user_profiles')
       .select('is_admin')
-      .eq('id', user.id)
+      .eq('user_id', user.id)
       .maybeSingle();
 
+    if (error) {
+      console.error('Error checking admin status:', error);
+      return;
+    }
+
+    console.log('Admin status check:', data);
     setIsAdmin(data?.is_admin || false);
   };
 
