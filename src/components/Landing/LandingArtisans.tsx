@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { MarketModelComparison } from "./MarketModelComparison";
 
 const Button = ({ className = "", children, onClick, ...props }: any) => (
   <button
@@ -382,9 +381,214 @@ export const LandingArtisans: React.FC = () => {
         </div>
       </Section>
 
-      {/* MARKET MODEL COMPARISON */}
-      <Section className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <MarketModelComparison />
+      {/* PRICING */}
+      <Section id="tarifs" className="py-20 bg-white">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <span className="text-xl">🎁</span>
+            1 mémoire IA offert pour commencer
+          </div>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
+            Nos abonnements
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
+            Tous nos plans incluent <strong>veille marchés, GO/NO-GO et assistant IA</strong>
+          </p>
+          <p className="text-lg text-gray-500">
+            Vous choisissez simplement combien de mémoires IA vous voulez par mois
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
+          {/* SOLO */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 border-2 border-gray-200 hover:border-[#F77F00] transition-all hover:shadow-2xl">
+            <div className="text-center mb-6">
+              <div className="text-4xl font-extrabold text-gray-900 mb-2">199€</div>
+              <div className="text-gray-500 text-sm">HT / mois</div>
+              <div className="text-xl font-bold mt-4">Plan SOLO</div>
+              <div className="text-sm text-gray-600">1 Marché / Mois</div>
+            </div>
+            <ul className="space-y-3 mb-8 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🔎 Veille marchés incluse</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🎯 Score GO/NO-GO</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🤖 Assistant IA Marchés & BPU</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🧠 1 mémoire Market Light / mois</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>📂 Espace client & historique</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🎓 Formations vidéo</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>📨 Export Word / PDF</span>
+              </li>
+            </ul>
+            <div className="text-xs text-gray-500 mb-4 space-y-1">
+              <div>⚙️ Market Pro : +99€/mois</div>
+              <div>💼 Booster Expert 4h : +590€/mémoire</div>
+            </div>
+            <button
+              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-semibold shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 border border-gray-300 bg-white text-gray-900 hover:bg-gray-50"
+            >
+              Commencer
+            </button>
+          </div>
+
+          {/* PME - RECOMMANDÉ */}
+          <div className="bg-gradient-to-br from-[#F77F00] to-[#E06F00] rounded-3xl shadow-2xl p-8 border-2 border-[#F77F00] transform scale-105 relative">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white text-[#F77F00] px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+              ⭐ Recommandé
+            </div>
+            <div className="text-center mb-6 text-white">
+              <div className="text-4xl font-extrabold mb-2">349€</div>
+              <div className="text-white/80 text-sm">HT / mois</div>
+              <div className="text-xl font-bold mt-4">Plan PME</div>
+              <div className="text-sm text-white/90">2 Marchés / Mois</div>
+            </div>
+            <ul className="space-y-3 mb-8 text-sm text-white">
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>🔎 Veille marchés incluse</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>🎯 GO/NO-GO illimité</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>🤖 Assistant IA Marchés & BPU</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>🧠 2 mémoires Market Light / mois</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>📊 Espace client complet</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>🚀 Priorité de génération vs SOLO</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>📞 1 point de contact trimestriel</span>
+              </li>
+            </ul>
+            <div className="text-xs text-white/70 mb-4 space-y-1">
+              <div>⚙️ Market Pro : +99€/mois</div>
+              <div>💼 Booster Expert 4h : +590€/mémoire</div>
+            </div>
+            <button
+              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-semibold shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-white text-[#F77F00] border-2 border-[#F77F00] hover:bg-[#F77F00] hover:text-white"
+            >
+              Commencer
+            </button>
+          </div>
+
+          {/* PROJETEUR */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 border-2 border-gray-200 hover:border-[#F77F00] transition-all hover:shadow-2xl">
+            <div className="text-center mb-6">
+              <div className="text-4xl font-extrabold text-gray-900 mb-2">849€</div>
+              <div className="text-gray-500 text-sm">HT / mois</div>
+              <div className="text-xl font-bold mt-4">Plan PROJETEUR</div>
+              <div className="text-sm text-gray-600">5 Marchés / Mois</div>
+            </div>
+            <ul className="space-y-3 mb-8 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🔎 Veille marchés incluse</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🎯 GO/NO-GO illimité</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🤖 Assistant IA illimité</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🧠 5 mémoires Market Light / mois</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>📊 Historique détaillé</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🚀 Priorité maximale</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>📆 1 point de suivi mensuel</span>
+              </li>
+            </ul>
+            <div className="text-xs text-gray-500 mb-4 space-y-1">
+              <div>⚙️ Market Pro : +99€/mois</div>
+              <div>🧠 Booster Senior 3j : +2490€/marché</div>
+            </div>
+            <button
+              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-semibold shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 border border-gray-300 bg-white text-gray-900 hover:bg-gray-50"
+            >
+              Commencer
+            </button>
+          </div>
+        </div>
+
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="bg-blue-50 p-6 rounded-2xl">
+            <h3 className="font-bold text-gray-900 mb-3">💡 Pourquoi ça a du sens financièrement</h3>
+            <p className="text-sm text-gray-700 mb-3">
+              Sans nous : 10 à 20h par mémoire, décisions "au feeling", risques d'erreurs dans le BPU
+            </p>
+            <p className="text-sm text-gray-700">
+              <strong>Avec LeMarchéPublic.fr :</strong> la veille vous présente les bons marchés, le GO/NO-GO aide à décider rapidement, l'IA génère vos mémoires, l'assistant sécurise le BPU. <strong className="text-[#F77F00]">Un seul marché gagné peut amortir plusieurs mois d'abonnement.</strong>
+            </p>
+          </div>
+        </div>
+
+        {/* REASSURANCE BADGES */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          <div className="bg-white p-6 rounded-xl shadow-md text-center border border-gray-100">
+            <div className="text-3xl mb-3">🔒</div>
+            <div className="font-bold text-gray-900 mb-2">Données sécurisées</div>
+            <div className="text-sm text-gray-600">Hébergement français conforme RGPD</div>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-md text-center border border-gray-100">
+            <div className="text-3xl mb-3">✓</div>
+            <div className="font-bold text-gray-900 mb-2">Sans engagement</div>
+            <div className="text-sm text-gray-600">Résiliable à tout moment en 1 clic</div>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-md text-center border border-gray-100">
+            <div className="text-3xl mb-3">💳</div>
+            <div className="font-bold text-gray-900 mb-2">Essai gratuit</div>
+            <div className="text-sm text-gray-600">1 mémoire offert sans CB</div>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-md text-center border border-gray-100">
+            <div className="text-3xl mb-3">🎓</div>
+            <div className="font-bold text-gray-900 mb-2">Formation incluse</div>
+            <div className="text-sm text-gray-600">Vidéos et support pour démarrer</div>
+          </div>
+        </div>
       </Section>
 
       {/* PRIX */}
