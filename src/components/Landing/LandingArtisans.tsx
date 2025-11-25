@@ -200,7 +200,7 @@ export const LandingArtisans: React.FC = () => {
             className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
           >
-            💼 Je réserve ma démo (2h) <ArrowRight className="w-4 h-4" />
+            💼 Je réserve ma démo <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
       </Section>
@@ -629,7 +629,7 @@ export const LandingArtisans: React.FC = () => {
             className="bg-white text-[#F77F00] hover:bg-white/90"
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
           >
-            🚀 Voir ma démo maintenant (réponse 2h)
+            🚀 Voir ma démo maintenant
           </Button>
           <Button
             className="border border-white/30 bg-transparent text-white hover:bg-white/10"

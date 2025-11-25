@@ -1007,14 +1007,14 @@ export default function Home() {
               variant="secondary"
               className="text-lg px-8 py-4"
             >
-              🚀 Obtenir ma démo personnalisée (2h)
+              🚀 Obtenir ma démo personnalisée
             </Button>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-sm text-white/90 mb-8">
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5" />
-              <span>Réponse sous 2h</span>
+              <span>Réponse rapide</span>
             </div>
             <div className="flex items-center gap-2">
               <Target className="w-5 h-5" />
