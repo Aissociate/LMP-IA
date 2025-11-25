@@ -208,7 +208,7 @@ export const AIModelSelector: React.FC = () => {
                   </p>
                   {model.pricing && (
                     <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                      ${model.pricing.prompt}/1K tokens
+                      ${(model.pricing.prompt * 1000000).toFixed(2)}/M tokens
                     </p>
                   )}
                 </div>
