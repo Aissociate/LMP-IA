@@ -11,9 +11,7 @@ import { EditMarketModal } from './EditMarketModal';
 import { MarketListCompact } from './MarketListCompact';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
-import { useSubscription } from '../../hooks/useSubscription';
 import { favoritesService } from '../../services/favoritesService';
-import { UpsellModal } from '../Common';
 
 const statusConfig = {
   en_cours: { label: 'En cours', icon: Clock, color: 'text-yellow-600 bg-yellow-50' },
@@ -25,7 +23,6 @@ const statusConfig = {
 export const MarketList: React.FC = () => {
   const { isDark } = useTheme();
   const { user, isAdmin } = useAuth();
-  const { canCreateTechnicalMemory, incrementMemoryUsage, isFreemium, plan } = useSubscription();
   const [markets, setMarkets] = useState<Market[]>([]);
   const [favorites, setFavorites] = useState<BOAMPFavorite[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,7 +32,6 @@ export const MarketList: React.FC = () => {
   const [selectedMarketForEconomicDocs, setSelectedMarketForEconomicDocs] = useState<Market | null>(null);
   const [selectedMarketForEdit, setSelectedMarketForEdit] = useState<Market | null>(null);
   const [activeTab, setActiveTab] = useState<'markets' | 'favorites'>('markets');
-  const [showUpsellModal, setShowUpsellModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -260,12 +256,8 @@ export const MarketList: React.FC = () => {
               onTechnicalMemory={() => {
                 if (isAdmin) {
                   setSelectedMarketForTechnicalMemory(market);
-                } else if (isFreemium && isFreemium()) {
-                  setShowUpsellModal(true);
-                } else if (canCreateTechnicalMemory && canCreateTechnicalMemory()) {
-                  setSelectedMarketForTechnicalMemory(market);
                 } else {
-                  setShowUpsellModal(true);
+                  setSelectedMarketForTechnicalMemory(market);
                 }
               }}
               onEconomicDocs={() => setSelectedMarketForEconomicDocs(market)}
@@ -405,11 +397,6 @@ export const MarketList: React.FC = () => {
         />
       )}
 
-      <UpsellModal
-        isOpen={showUpsellModal}
-        onClose={() => setShowUpsellModal(false)}
-        currentPlan={plan?.name || 'Freemium'}
-      />
     </div>
   );
 };

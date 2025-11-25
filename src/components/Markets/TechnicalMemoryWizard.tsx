@@ -14,8 +14,6 @@ import { PromptEditor } from '../TechnicalMemory/PromptEditor';
 import { SectionEditor } from '../TechnicalMemory/SectionEditor';
 import { DocumentGenerationService } from '../../services/documentGenerationService';
 import { PDFGenerationService } from '../../services/pdfGenerationService';
-import { useSubscription } from '../../hooks/useSubscription';
-import { SubscriptionLimitBanner, UpsellModal } from '../Common';
 import { useTheme } from '../../hooks/useTheme';
 import { ImageLibraryModal } from '../TechnicalMemory/ImageLibraryModal';
 
@@ -148,20 +146,6 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
 }) => {
   const { isDark } = useTheme();
   const { user } = useAuth();
-  const {
-    subscription,
-    plan,
-    canCreateTechnicalMemory,
-    canGenerateSection,
-    getAvailableCredits,
-    getFreeSectionsRemaining,
-    incrementSectionUsage,
-    useMemoryCredit,
-    hasMarketPro,
-    getRemainingMemories,
-    incrementMemoryUsage,
-    loading: subscriptionLoading
-  } = useSubscription();
   
   const contextService = ContextService.getInstance();
   const logService = LogService.getInstance();
@@ -170,7 +154,6 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
   const documentGenerationService = DocumentGenerationService.getInstance();
   const pdfGenerationService = PDFGenerationService.getInstance();
   
-  const [showUpsellModal, setShowUpsellModal] = useState(false);
   const [sections, setSections] = useState<Section[]>(
     defaultSections.map(section => ({
       ...section,
@@ -411,25 +394,13 @@ Consignes:
     const section = sectionService.getSectionById(sections, sectionId);
     if (!section) return;
 
-    // Vérifier si l'utilisateur peut générer une section
-    if (!canGenerateSection()) {
-      setShowUpsellModal(true);
-      return;
-    }
-
-    // Incrémenter l'usage de sections
-    const freeSections = getFreeSectionsRemaining();
-    if (freeSections > 0) {
-      await incrementSectionUsage();
-    }
-
     await handleSectionUpdate(sectionId, { isGenerating: true });
 
     try {
       const generatedContent = await aiGenerationService.generateSectionContent({
         sectionId,
         sectionTitle: section.title,
-        useMarketPro: hasMarketPro ? hasMarketPro() : false,
+        useMarketPro: false,
         prompt: customPrompt,
         globalPrompt,
         marketContext,
@@ -468,7 +439,7 @@ Consignes:
         sections,
         {
           globalPrompt,
-          useMarketPro: hasMarketPro ? hasMarketPro() : false,
+          useMarketPro: false,
           marketContext,
           knowledgeContext,
           imageAssets,
@@ -479,11 +450,6 @@ Consignes:
         handleSectionUpdate
       );
 
-      // Incrémenter l'usage pour les nouvelles sections générées
-      const emptySections = sectionService.getEmptySections(sections);
-      if (emptySections.length > 0) {
-        await incrementMemoryUsage();
-      }
 
     } catch (error) {
       console.error('Error generating all sections:', error);
@@ -512,7 +478,7 @@ Consignes:
         updatedSections,
         {
           globalPrompt,
-          useMarketPro: hasMarketPro ? hasMarketPro() : false,
+          useMarketPro: false,
           marketContext,
           knowledgeContext,
           imageAssets,
@@ -522,9 +488,6 @@ Consignes:
         },
         handleSectionUpdate
       );
-
-      // Incrémenter l'usage pour toutes les sections régénérées
-      await incrementMemoryUsage();
 
     } catch (error) {
       console.error('Error regenerating all sections:', error);
@@ -649,10 +612,6 @@ Consignes:
         sections: sectionsWithContent
       });
 
-      if (incrementMemoryUsage && getRemainingMemories && getRemainingMemories() >= 0) {
-        await incrementMemoryUsage();
-        logService.addLog('✅ Crédit mémoire décrémenté après export Word');
-      }
     } catch (error) {
       console.error('Error exporting Word:', error);
       alert(`Erreur lors de l'export Word: ${(error as Error).message}`);
@@ -720,51 +679,8 @@ Consignes:
 
   return (
     <>
-      <UpsellModal
-        isOpen={showUpsellModal}
-        onClose={() => setShowUpsellModal(false)}
-        currentPlan={plan?.name || 'Freemium'}
-      />
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className={`${isDark ? 'bg-gray-900' : 'bg-white'} rounded-2xl shadow-xl w-full max-w-7xl h-[90vh] flex flex-col transition-colors duration-200 relative`}>
-        {/* Bannière d'abonnement et modèle */}
-        {!subscriptionLoading && (
-          <div className="px-6 py-3 bg-gradient-to-r from-blue-50 to-purple-50 border-b border-blue-200">
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-4">
-                {hasMarketPro && hasMarketPro() ? (
-                  <div className="flex items-center gap-2 bg-purple-100 border border-purple-300 px-3 py-1.5 rounded-lg">
-                    <Sparkles className="w-4 h-4 text-purple-600" />
-                    <span className="text-purple-900 font-semibold">Mode Premium</span>
-                    <span className="text-purple-700 text-xs">IA avancée</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 bg-orange-100 border border-orange-300 px-3 py-1.5 rounded-lg">
-                    <Zap className="w-4 h-4 text-orange-600" />
-                    <span className="text-orange-900 font-semibold">Mode Standard</span>
-                    <span className="text-orange-700 text-xs">IA rapide</span>
-                  </div>
-                )}
-                {getRemainingMemories && (
-                  <span className="text-blue-700">
-                    <strong>{getRemainingMemories() === -1 ? '∞' : getRemainingMemories()}</strong> mémoires {getRemainingMemories() === -1 ? '' : 'restantes ce mois'}
-                  </span>
-                )}
-              </div>
-              <div className="flex items-center gap-2">
-                {!hasMarketPro?.() && (
-                  <button
-                    onClick={() => setShowUpsellModal(true)}
-                    className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
-                  >
-                    <Sparkles className="w-4 h-4" />
-                    Passer en Premium
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Header */}
         <div className={`px-4 py-3 border-b ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
