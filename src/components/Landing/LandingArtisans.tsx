@@ -102,10 +102,10 @@ export const LandingArtisans: React.FC = () => {
               1 mémoire IA offert pour commencer
             </div>
             <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-              Gagnez vos appels d'offres sans galérer avec la paperasse.
+              Gagnez vos appels d'offres artisans à La Réunion sans la paperasse
             </h1>
             <p className="mt-6 text-lg text-gray-600 md:text-xl">
-              Le Marché Public.fr, l'IA pensée pour les artisans, lit les dossiers, remplit les formulaires et rédige les mémoires à votre place. Vous gagnez du temps, du calme, et plus de marchés.
+              Le Marché Public.fr, l'IA pensée pour les artisans réunionnais : lit les dossiers CINOR, TCO, CIREST et communes 974, remplit les formulaires et rédige les mémoires à votre place. Vous gagnez du temps, du calme, et plus de marchés.
             </p>
             <div className="mt-10 flex flex-col items-center lg:items-start gap-3 sm:flex-row">
               <Button
@@ -130,11 +130,11 @@ export const LandingArtisans: React.FC = () => {
       {/* PROBLEME */}
       <Section id="problem" className="py-20 bg-gray-900 text-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl">Marre de perdre du temps avec les dossiers d'appels d'offres ?</h2>
+          <h2 className="text-3xl font-bold sm:text-4xl">Vous perdez des marchés publics à La Réunion faute de temps ?</h2>
           <p className="mt-6 text-gray-300 text-lg">
-            Entre les documents à lire, les tableaux à remplir et les textes à rédiger, chaque marché devient une épreuve. Pendant ce temps, vous pourriez être sur vos chantiers ou avec vos clients.
+            Vous êtes sur vos chantiers à Saint-Denis, Saint-Pierre ou Le Port, mais les appels d'offres CINOR, TCO, CIREST et des communes 974 demandent des heures de paperasse. Résultat ? Vos concurrents mieux organisés raflent les marchés pendant que vous travaillez.
           </p>
-          <p className="mt-4 text-[#F77F00] font-medium">Le Marché Public.fr s'occupe du papier. Vous, du métier.</p>
+          <p className="mt-4 text-[#F77F00] font-medium">Le Marché Public.fr s'occupe du papier réunionnais. Vous, du métier.</p>
           <div className="mt-8">
             <Button
               className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
@@ -149,16 +149,16 @@ export const LandingArtisans: React.FC = () => {
       {/* SOLUTION */}
       <Section id="solution" className="py-20">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl">Votre assistant administratif intelligent</h2>
+          <h2 className="text-3xl font-bold sm:text-4xl">Votre assistant marchés publics spécial Réunion 974</h2>
           <p className="mt-4 text-gray-600 text-lg">
-            Le Marché Public.fr automatise les tâches les plus lourdes : recherche des marchés, lecture des dossiers, rédaction du mémoire technique, tout en s'adaptant à votre activité. Simple, rapide et efficace.
+            Le Marché Public.fr automatise les tâches les plus lourdes : veille CINOR, TCO, CIREST et communes 974, lecture des DCE, rédaction du mémoire technique adapté au contexte réunionnais. Simple, rapide et efficace.
           </p>
         </div>
         <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: "🔍", title: "Veille automatique", desc: "L'IA trouve pour vous les marchés qui correspondent à votre métier et votre secteur." },
-            { icon: "📄", title: "Lecture simplifiée", desc: "LMP lit les documents pour vous et vous explique ce qu'il faut faire, sans jargon." },
-            { icon: "✍️", title: "Rédaction rapide", desc: "Le mémoire technique est rédigé pour vous, adapté à votre entreprise et votre façon de travailler." },
+            { icon: "🔍", title: "Veille automatique Réunion 974", desc: "L'IA trouve pour vous les marchés CINOR, TCO, CIREST et communes qui correspondent à votre métier d'artisan." },
+            { icon: "📄", title: "Lecture DCE simplifiée", desc: "LMP lit les documents des collectivités réunionnaises pour vous et vous explique ce qu'il faut faire, sans jargon." },
+            { icon: "✍️", title: "Rédaction adaptée 974", desc: "Le mémoire technique est rédigé pour vous, adapté à votre entreprise artisanale réunionnaise et aux spécificités locales." },
             { icon: "🤝", title: "Aide humaine disponible", desc: "Un expert vous explique comment ça marche, répond à vos questions et vous aide sur vos premiers dossiers. Accessible par téléphone ou visio." }
           ].map((item, i) => (
             <div key={i} className="p-6 border rounded-3xl shadow-sm hover:shadow-md transition text-left">
@@ -226,9 +226,9 @@ export const LandingArtisans: React.FC = () => {
       {/* USE CASES */}
       <Section id="usecases" className="py-20 bg-white">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-center text-3xl font-bold sm:text-4xl mb-4">Des artisans qui réussissent</h2>
+          <h2 className="text-center text-3xl font-bold sm:text-4xl mb-4">Des artisans réunionnais qui réussissent</h2>
           <p className="text-center text-gray-600 text-lg mb-12 max-w-3xl mx-auto">
-            Des artisans et petites entreprises utilisent LMP pour gagner plus de marchés
+            Des artisans et TPE de La Réunion utilisent LMP pour gagner plus de marchés CINOR, TCO, CIREST et communes 974
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-8 border-2 border-gray-100 rounded-3xl hover:border-[#F77F00] transition-all hover:shadow-lg">

@@ -110,10 +110,10 @@ export const LandingPME: React.FC = () => {
               1 mémoire IA offert pour commencer
             </div>
             <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-              L'IA stratégique qui fait gagner les appels d'offres de votre PME.
+              L'IA stratégique qui fait gagner les marchés publics de votre PME à La Réunion
             </h1>
             <p className="mt-6 text-lg text-gray-600 md:text-xl">
-              Le Marché Public.fr équipe les dirigeants de PME d'une IA capable d'analyser, rédiger et optimiser chaque réponse marché public, pour gagner plus souvent, plus vite et avec moins de ressources.
+              Le Marché Public.fr équipe les dirigeants de PME réunionnaises d'une IA capable d'analyser les appels d'offres CINOR, TCO, CIREST et Région 974, rédiger et optimiser chaque réponse pour gagner plus souvent, plus vite.
             </p>
             <div className="mt-10 flex flex-col items-center lg:items-start gap-3 sm:flex-row">
               <Button
@@ -138,11 +138,11 @@ export const LandingPME: React.FC = () => {
       {/* PROBLEME */}
       <Section id="problem" className="py-20 bg-gray-900 text-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl">Votre PME perd des marchés… sans comprendre pourquoi ?</h2>
+          <h2 className="text-3xl font-bold sm:text-4xl">Votre PME réunionnaise perd des marchés CINOR, TCO, CIREST… sans comprendre pourquoi ?</h2>
           <p className="mt-6 text-gray-300 text-lg">
-            Vous avez la compétence, les références et les équipes. Mais vos concurrents, souvent plus gros, ont un service achats, des experts marchés et du temps. Vous, non. Le Marché Public.fr change cet équilibre.
+            Vous avez la compétence, les références réunionnaises et les équipes. Mais vos concurrents, souvent des groupes métropolitains, ont un service achats, des experts marchés publics et du temps. Vous, non. Le Marché Public.fr rééquilibre la balance dans le 974.
           </p>
-          <p className="mt-4 text-[#F77F00] font-medium">Transformez vos réponses marchés en avantage concurrentiel durable.</p>
+          <p className="mt-4 text-[#F77F00] font-medium">Transformez vos réponses marchés 974 en avantage concurrentiel durable.</p>
           <div className="mt-8">
             <Button
               className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
@@ -157,17 +157,17 @@ export const LandingPME: React.FC = () => {
       {/* SOLUTION */}
       <Section id="solution" className="py-20">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl">Votre direction marchés publics, propulsée par IA.</h2>
+          <h2 className="text-3xl font-bold sm:text-4xl">Votre direction marchés publics Réunion 974, propulsée par IA</h2>
           <p className="mt-4 text-gray-600 text-lg">
-            Le Marché Public.fr centralise votre savoir-faire, anticipe les attentes des acheteurs publics et rédige des dossiers techniques optimisés. Chaque marché devient une opportunité mesurable, pas un pari administratif.
+            Le Marché Public.fr centralise votre savoir-faire réunionnais, anticipe les attentes des acheteurs publics du CINOR, TCO, CIREST et Région, et rédige des dossiers techniques optimisés pour le contexte local. Chaque marché 974 devient une opportunité mesurable.
           </p>
         </div>
         <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: "📊", title: "Veille marchés Réunion automatique", desc: "Repérez en temps réel les marchés CINOR, TCO, CIREST, Région et communes 974 qui correspondent à votre positionnement et votre secteur d'activité." },
-            { icon: "🧾", title: "Analyse IA des documents", desc: "L'IA lit et interprète chaque CCTP et RC, identifie les risques et critères clés de notation." },
+            { icon: "📊", title: "Veille marchés 974 automatique", desc: "Repérez en temps réel les marchés CINOR, TCO, CIREST, Région Réunion et communes 974 qui correspondent à votre positionnement PME et votre secteur d'activité." },
+            { icon: "🧾", title: "Analyse IA des DCE réunionnais", desc: "L'IA lit et interprète chaque CCTP et RC des collectivités 974, identifie les risques et critères clés de notation spécifiques." },
             { icon: "👨‍🏫", title: "Accompagnement stratégique dédié", desc: "Un consultant expert vous forme, audite vos dossiers clés et vous conseille mensuellement sur votre stratégie marchés publics pour maximiser vos résultats." },
-            { icon: "✍️", title: "Argumentaire adapté au contexte 974", desc: "Des mémoires techniques alignés avec votre ADN d'entreprise réunionnaise et validés par des experts marchés publics locaux." }
+            { icon: "✍️", title: "Mémoires optimisés Réunion", desc: "Des mémoires techniques alignés avec votre ADN d'entreprise réunionnaise, les spécificités du 974 et validés par des experts marchés publics locaux." }
           ].map((item, i) => (
             <div key={i} className="p-6 border rounded-3xl shadow-sm hover:shadow-md transition text-left">
               <div className="text-3xl mb-3">{item.icon}</div>
@@ -234,33 +234,33 @@ export const LandingPME: React.FC = () => {
       {/* USE CASES */}
       <Section id="usecases" className="py-20 bg-white">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-center text-3xl font-bold sm:text-4xl mb-4">Cas d'usage concrets</h2>
+          <h2 className="text-center text-3xl font-bold sm:text-4xl mb-4">PME réunionnaises qui gagnent avec LMP</h2>
           <p className="text-center text-gray-600 text-lg mb-12 max-w-3xl mx-auto">
-            Des PME de toutes tailles utilisent Le Marché Public.fr pour gagner plus de marchés publics
+            Des PME de La Réunion utilisent Le Marché Public.fr pour gagner plus de marchés CINOR, TCO, CIREST et Région 974
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-8 border-2 border-gray-100 rounded-3xl hover:border-[#F77F00] transition-all hover:shadow-lg">
               <div className="text-4xl mb-4">🏢</div>
-              <h3 className="text-xl font-bold mb-3">ESN Régionale</h3>
-              <p className="text-gray-600 mb-4">Une ESN de 45 personnes cherchait à diversifier son portefeuille client vers le secteur public.</p>
+              <h3 className="text-xl font-bold mb-3">ESN Réunionnaise - Saint-Denis</h3>
+              <p className="text-gray-600 mb-4">Une ESN de 45 personnes du Nord cherchait à diversifier son portefeuille vers le secteur public réunionnais (CINOR, Région).</p>
               <div className="bg-[#F77F00]/10 p-4 rounded-xl">
-                <p className="text-sm font-semibold text-[#F77F00]">Résultat : +150% de marchés remportés en 6 mois</p>
+                <p className="text-sm font-semibold text-[#F77F00]">Résultat : +150% de marchés CINOR et Région remportés en 6 mois</p>
               </div>
             </div>
             <div className="p-8 border-2 border-gray-100 rounded-3xl hover:border-[#F77F00] transition-all hover:shadow-lg">
               <div className="text-4xl mb-4">🔧</div>
-              <h3 className="text-xl font-bold mb-3">Bureau d'Études Techniques</h3>
-              <p className="text-gray-600 mb-4">Un bureau d'études de 30 personnes perdait du temps sur des dossiers mal ciblés.</p>
+              <h3 className="text-xl font-bold mb-3">Bureau d'Études - Le Port</h3>
+              <p className="text-gray-600 mb-4">Un bureau d'études de 30 personnes du TCO perdait du temps sur des dossiers mal ciblés CINOR et TCO.</p>
               <div className="bg-[#F77F00]/10 p-4 rounded-xl">
-                <p className="text-sm font-semibold text-[#F77F00]">Résultat : 40h/mois économisées, taux de réussite x2</p>
+                <p className="text-sm font-semibold text-[#F77F00]">Résultat : 40h/mois économisées sur marchés TCO, taux de réussite x2</p>
               </div>
             </div>
             <div className="p-8 border-2 border-gray-100 rounded-3xl hover:border-[#F77F00] transition-all hover:shadow-lg">
               <div className="text-4xl mb-4">🌱</div>
-              <h3 className="text-xl font-bold mb-3">PME Transition Énergétique</h3>
-              <p className="text-gray-600 mb-4">Startup de 15 personnes souhaitant accélérer sur les marchés publics d'énergie renouvelable.</p>
+              <h3 className="text-xl font-bold mb-3">PME Énergies Renouvelables - Saint-Pierre</h3>
+              <p className="text-gray-600 mb-4">Startup réunionnaise de 15 personnes du Sud souhaitant accélérer sur les marchés publics CIREST et Région énergie solaire.</p>
               <div className="bg-[#F77F00]/10 p-4 rounded-xl">
-                <p className="text-sm font-semibold text-[#F77F00]">Résultat : Premier marché public remporté en 3 semaines</p>
+                <p className="text-sm font-semibold text-[#F77F00]">Résultat : Premier marché CIREST remporté en 3 semaines</p>
               </div>
             </div>
           </div>
