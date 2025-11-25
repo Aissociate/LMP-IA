@@ -11,7 +11,10 @@ import {
   FileText,
   X,
   RefreshCw,
-  AlertCircle
+  AlertCircle,
+  Terminal,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { openRouterService } from '../../lib/openrouter';
@@ -36,6 +39,12 @@ interface Market {
   client: string;
 }
 
+interface LogEntry {
+  timestamp: string;
+  message: string;
+  type: 'info' | 'error' | 'success';
+}
+
 export const Assistant: React.FC = () => {
   const { user } = useAuth();
   const { isDark } = useTheme();
@@ -45,14 +54,45 @@ export const Assistant: React.FC = () => {
   const [markets, setMarkets] = useState<Market[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
   const [showMarketSelector, setShowMarketSelector] = useState(false);
+  const [showLogs, setShowLogs] = useState(false);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const logsEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (user) {
+      checkAdminStatus();
       loadMarkets();
       loadConversationHistory();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (showLogs && logsEndRef.current) {
+      logsEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [logs, showLogs]);
+
+  const checkAdminStatus = async () => {
+    if (!user) return;
+
+    const { data } = await supabase
+      .from('user_profiles')
+      .select('is_admin')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    setIsAdmin(data?.is_admin || false);
+  };
+
+  const addLog = (message: string, type: 'info' | 'error' | 'success' = 'info') => {
+    setLogs(prev => [...prev, {
+      timestamp: new Date().toLocaleTimeString('fr-FR'),
+      message,
+      type
+    }]);
+  };
 
   useEffect(() => {
     scrollToBottom();
@@ -65,10 +105,12 @@ export const Assistant: React.FC = () => {
   const loadMarkets = async () => {
     if (!user) {
       console.log('No user, skipping market load');
+      addLog('Aucun utilisateur connecté', 'error');
       return;
     }
 
     console.log('Loading markets for user:', user.id);
+    addLog(`Chargement des marchés pour l'utilisateur ${user.id}`, 'info');
     const { data, error } = await supabase
       .from('markets')
       .select('id, title, client')
@@ -77,10 +119,12 @@ export const Assistant: React.FC = () => {
 
     if (error) {
       console.error('Error loading markets:', error);
+      addLog(`Erreur lors du chargement des marchés: ${error.message}`, 'error');
       return;
     }
 
     console.log('Markets loaded:', data);
+    addLog(`${data?.length || 0} marchés chargés`, 'success');
     setMarkets(data || []);
   };
 
@@ -125,10 +169,12 @@ export const Assistant: React.FC = () => {
   const buildContextFromMarkets = async (): Promise<string> => {
     if (selectedMarkets.length === 0) {
       console.log('No markets selected for context');
+      addLog('Aucun marché sélectionné pour le contexte', 'info');
       return '';
     }
 
     console.log('Building context for markets:', selectedMarkets);
+    addLog(`Construction du contexte pour ${selectedMarkets.length} marché(s)`, 'info');
 
     const { data, error } = await supabase
       .from('markets')
@@ -156,15 +202,18 @@ export const Assistant: React.FC = () => {
 
     if (error) {
       console.error('Error fetching market context:', error);
+      addLog(`Erreur lors de la récupération du contexte: ${error.message}`, 'error');
       return '';
     }
 
     if (!data || data.length === 0) {
       console.log('No market data found');
+      addLog('Aucune donnée de marché trouvée', 'error');
       return '';
     }
 
     console.log('Market data retrieved:', data.length, 'markets');
+    addLog(`Contexte récupéré: ${data.length} marché(s)`, 'success');
 
     let context = '\n\n=== CONTEXTE DES MARCHÉS SÉLECTIONNÉS ===\n\n';
 
@@ -226,8 +275,10 @@ export const Assistant: React.FC = () => {
     setLoading(true);
 
     try {
+      addLog('Début de la génération de réponse', 'info');
       const marketContext = await buildContextFromMarkets();
       console.log('Market context:', marketContext);
+      addLog(`Contexte construit: ${marketContext.length} caractères`, marketContext ? 'success' : 'info');
 
       const conversationHistory = messages
         .slice(-10)
@@ -245,7 +296,10 @@ Sois professionnel, précis et constructif. Si des contextes de marchés sont fo
 ${marketContext ? `${marketContext}\n\nIMPORTANT: Utilise les informations ci-dessus sur les marchés pour personnaliser tes réponses et donner des conseils spécifiques au contexte fourni.` : ''}`;
 
       console.log('System prompt with context:', systemPrompt);
+      addLog(`System prompt: ${systemPrompt.length} caractères`, 'info');
+      addLog(`Prompt utilisateur: ${fullPrompt.length} caractères`, 'info');
 
+      addLog('Appel à l\'API OpenRouter...', 'info');
       const response = await openRouterService.generateContent(
         fullPrompt,
         systemPrompt,
@@ -254,6 +308,7 @@ ${marketContext ? `${marketContext}\n\nIMPORTANT: Utilise les informations ci-de
           maxTokens: 4000
         }
       );
+      addLog(`Réponse reçue: ${response.length} caractères`, 'success');
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -267,6 +322,7 @@ ${marketContext ? `${marketContext}\n\nIMPORTANT: Utilise les informations ci-de
 
     } catch (error) {
       console.error('Error sending message:', error);
+      addLog(`Erreur: ${error instanceof Error ? error.message : 'Erreur inconnue'}`, 'error');
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -393,6 +449,22 @@ ${marketContext ? `${marketContext}\n\nIMPORTANT: Utilise les informations ci-de
                 </span>
               )}
             </button>
+            {isAdmin && (
+              <button
+                onClick={() => setShowLogs(!showLogs)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                  showLogs
+                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    : isDark
+                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <Terminal className="w-4 h-4" />
+                <span>Logs</span>
+                {showLogs ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+            )}
             <button
               onClick={handleClearConversation}
               className={`p-2 rounded-lg transition-colors ${
@@ -459,6 +531,54 @@ ${marketContext ? `${marketContext}\n\nIMPORTANT: Utilise les informations ci-de
                   Aucun marché disponible
                 </p>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Logs Panel */}
+        {isAdmin && showLogs && (
+          <div className={`mt-4 p-4 rounded-xl border ${
+            isDark ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'
+          }`}>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className={`font-semibold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <Terminal className="w-4 h-4" />
+                Logs de débogage
+              </h3>
+              <button
+                onClick={() => setLogs([])}
+                className={`text-xs px-3 py-1 rounded-lg ${
+                  isDark ? 'bg-gray-600 hover:bg-gray-500 text-gray-300' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                }`}
+              >
+                Effacer
+              </button>
+            </div>
+            <div className={`max-h-64 overflow-y-auto space-y-1 font-mono text-xs ${
+              isDark ? 'bg-gray-800' : 'bg-white'
+            } p-3 rounded-lg`}>
+              {logs.length === 0 ? (
+                <p className={`text-center py-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                  Aucun log disponible
+                </p>
+              ) : (
+                logs.map((log, index) => (
+                  <div
+                    key={index}
+                    className={`flex gap-2 ${
+                      log.type === 'error'
+                        ? 'text-red-400'
+                        : log.type === 'success'
+                        ? 'text-green-400'
+                        : isDark ? 'text-gray-300' : 'text-gray-700'
+                    }`}
+                  >
+                    <span className={isDark ? 'text-gray-500' : 'text-gray-400'}>[{log.timestamp}]</span>
+                    <span>{log.message}</span>
+                  </div>
+                ))
+              )}
+              <div ref={logsEndRef} />
             </div>
           </div>
         )}
