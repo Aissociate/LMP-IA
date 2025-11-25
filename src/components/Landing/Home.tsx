@@ -227,19 +227,26 @@ export default function Home() {
             Une solution intuitive et puissante pour gagner plus de marchés
           </p>
         </div>
-        <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl bg-gray-900">
-          <video
-            controls
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="w-full aspect-video"
-            style={{ minHeight: '400px' }}
+        <div className="max-w-5xl mx-auto">
+          <a
+            href="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6926384f76cd823d57d4746d.mp4"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative block rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
           >
-            <source src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6926384f76cd823d57d4746d.mp4" type="video/mp4" />
-            Votre navigateur ne supporte pas la lecture de vidéos.
-          </video>
+            <img
+              src="/caroussel 6.png"
+              alt="Miniature vidéo démo"
+              className="w-full aspect-video object-cover"
+            />
+            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+              <div className="w-20 h-20 bg-[#F77F00] group-hover:bg-[#E06F00] rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-2xl">
+                <svg className="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+          </a>
         </div>
       </Section>
 
@@ -971,7 +978,7 @@ export default function Home() {
               Sans nous : 10 à 20h par mémoire, décisions "au feeling", risques d'erreurs dans le BPU
             </p>
             <p className="text-sm text-gray-700">
-              <strong>Avec LeMarchéPublic.fr :</strong> la veille vous présente les bons marchés, le GO/NO-GO aide à décider rapidement, l'IA génère vos mémoires, l\'assistant sécurise le BPU. <strong className="text-[#F77F00]">Un seul marché gagné peut amortir plusieurs mois d'abonnement.</strong>
+              <strong>Avec LeMarchéPublic.fr :</strong> la veille vous présente les bons marchés, le GO/NO-GO aide à décider rapidement, l'IA génère vos mémoires, l'assistant sécurise le BPU. <strong className="text-[#F77F00]">Un seul marché gagné peut amortir plusieurs mois d'abonnement.</strong>
             </p>
           </div>
         </div>
