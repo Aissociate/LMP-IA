@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Shield, Brain, Settings as SettingsIcon, MessageSquare, BarChart3, Bug, Video } from 'lucide-react';
+import { Shield, Brain, Settings as SettingsIcon, MessageSquare, BarChart3, Bug, Video, UserCheck } from 'lucide-react';
 import { AIModelSelector } from './AIModelSelector';
 import { AIParameters } from './AIParameters';
 import { PromptManager } from './PromptManager';
 import { MarketingAnalytics } from './MarketingAnalytics';
 import { BugManager } from './BugManager';
 import { VideoUploader } from './VideoUploader';
+import { UserImpersonation } from './UserImpersonation';
 import { useTheme } from '../../hooks/useTheme';
 
-type AdminTab = 'ai-models' | 'ai-parameters' | 'prompts' | 'marketing' | 'bugs' | 'videos';
+type AdminTab = 'ai-models' | 'ai-parameters' | 'prompts' | 'marketing' | 'bugs' | 'videos' | 'impersonation';
 
 const adminTabs = [
   { id: 'ai-models' as const, label: 'Modèles IA', icon: Brain },
@@ -17,6 +18,7 @@ const adminTabs = [
   { id: 'marketing' as const, label: 'Analytics Marketing', icon: BarChart3 },
   { id: 'bugs' as const, label: 'Gestion des bugs', icon: Bug },
   { id: 'videos' as const, label: 'Vidéos Marketing', icon: Video },
+  { id: 'impersonation' as const, label: 'Prise de contrôle', icon: UserCheck },
 ];
 
 export const Admin: React.FC = () => {
@@ -37,6 +39,8 @@ export const Admin: React.FC = () => {
         return <BugManager />;
       case 'videos':
         return <VideoUploader />;
+      case 'impersonation':
+        return <UserImpersonation />;
       default:
         return <AIModelSelector />;
     }
