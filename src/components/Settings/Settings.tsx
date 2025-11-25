@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import { User, BookOpen, Palette, Webhook, CreditCard } from 'lucide-react';
+import { User, BookOpen, Palette, Webhook } from 'lucide-react';
 import { Image } from 'lucide-react';
 import { ProfileSettings } from './ProfileSettings';
-import { SubscriptionSettings } from './SubscriptionSettings';
 import { KnowledgeBase } from './KnowledgeBase';
 import { ThemeSettings } from './ThemeSettings';
 import { WebhookSettings } from './WebhookSettings';
 import { ReportAssetManager } from './ReportAssetManager';
 import { useTheme } from '../../hooks/useTheme';
 
-type SettingsTab = 'profile' | 'subscription' | 'knowledge' | 'assets' | 'webhook' | 'theme';
+type SettingsTab = 'profile' | 'knowledge' | 'assets' | 'webhook' | 'theme';
 
 const tabs = [
   { id: 'profile' as const, label: 'Informations personnelles', icon: User },
-  { id: 'subscription' as const, label: 'Abonnement', icon: CreditCard },
   { id: 'knowledge' as const, label: 'Base de connaissance', icon: BookOpen },
   { id: 'assets' as const, label: 'Mes images', icon: Image },
   { id: 'webhook' as const, label: 'Intégrations', icon: Webhook },
@@ -28,8 +26,6 @@ export const Settings: React.FC = () => {
     switch (activeTab) {
       case 'profile':
         return <ProfileSettings />;
-      case 'subscription':
-        return <SubscriptionSettings />;
       case 'knowledge':
         return <KnowledgeBase />;
       case 'assets':

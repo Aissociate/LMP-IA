@@ -15,7 +15,6 @@ import { SectionEditor } from '../TechnicalMemory/SectionEditor';
 import { DocumentGenerationService } from '../../services/documentGenerationService';
 import { PDFGenerationService } from '../../services/pdfGenerationService';
 import { useTheme } from '../../hooks/useTheme';
-import { useSubscription } from '../../hooks/useSubscription';
 import { ImageLibraryModal } from '../TechnicalMemory/ImageLibraryModal';
 
 interface TechnicalMemoryWizardProps {
@@ -147,7 +146,6 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
 }) => {
   const { isDark } = useTheme();
   const { user } = useAuth();
-  const { memoryStats, canGenerateMemory, incrementMemoryUsage, loading: subLoading } = useSubscription();
   
   const contextService = ContextService.getInstance();
   const logService = LogService.getInstance();
@@ -599,11 +597,6 @@ Consignes:
   };
 
   const handleExportWord = async () => {
-    if (!canGenerateMemory()) {
-      alert('Limite mensuelle de mémoires techniques atteinte. Passez à un plan supérieur.');
-      return;
-    }
-
     const sectionsWithContent = sectionService.getCompletedSections(sections);
     if (sectionsWithContent.length === 0) {
       alert('Aucune section avec du contenu à exporter');
@@ -619,10 +612,6 @@ Consignes:
         sections: sectionsWithContent
       });
 
-      const result = await incrementMemoryUsage();
-      if (result.success) {
-        console.log('Mémoire technique comptée avec succès');
-      }
     } catch (error) {
       console.error('Error exporting Word:', error);
       alert(`Erreur lors de l'export Word: ${(error as Error).message}`);
@@ -632,11 +621,6 @@ Consignes:
   };
 
   const handleExportPDF = async () => {
-    if (!canGenerateMemory()) {
-      alert('Limite mensuelle de mémoires techniques atteinte. Passez à un plan supérieur.');
-      return;
-    }
-
     const sectionsWithContent = sectionService.getCompletedSections(sections);
     if (sectionsWithContent.length === 0) {
       alert('Aucune section avec du contenu à exporter');
@@ -652,9 +636,9 @@ Consignes:
         sections: sectionsWithContent
       });
 
-      const result = await incrementMemoryUsage();
-      if (result.success) {
-        console.log('Mémoire technique comptée avec succès');
+      if (incrementMemoryUsage && getRemainingMemories && getRemainingMemories() >= 0) {
+        await incrementMemoryUsage();
+        logService.addLog('✅ Crédit mémoire décrémenté après export PDF');
       }
     } catch (error) {
       console.error('Error exporting PDF:', error);
@@ -697,35 +681,6 @@ Consignes:
     <>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className={`${isDark ? 'bg-gray-900' : 'bg-white'} rounded-2xl shadow-xl w-full max-w-7xl h-[90vh] flex flex-col transition-colors duration-200 relative`}>
-
-        {/* Bandeau abonnement */}
-        {!subLoading && memoryStats && memoryStats.status === 'active' && (
-          <div className={`px-4 py-2 border-b ${
-            memoryStats.remaining === 0
-              ? 'bg-red-50 border-red-200'
-              : memoryStats.remaining <= 1
-              ? 'bg-orange-50 border-orange-200'
-              : 'bg-blue-50 border-blue-200'
-          }`}>
-            <div className="flex items-center justify-between text-sm">
-              <span className={
-                memoryStats.remaining === 0
-                  ? 'text-red-700 font-medium'
-                  : memoryStats.remaining <= 1
-                  ? 'text-orange-700 font-medium'
-                  : 'text-blue-700'
-              }>
-                {memoryStats.remaining === 0
-                  ? '⚠️ Limite atteinte - Passez à un plan supérieur pour générer plus de mémoires'
-                  : `${memoryStats.remaining} / ${memoryStats.limit} mémoire${memoryStats.remaining > 1 ? 's' : ''} restante${memoryStats.remaining > 1 ? 's' : ''} ce mois`
-                }
-              </span>
-              <span className="text-xs text-gray-600">
-                Plan {memoryStats.plan_name}
-              </span>
-            </div>
-          </div>
-        )}
 
         {/* Header */}
         <div className={`px-4 py-3 border-b ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
