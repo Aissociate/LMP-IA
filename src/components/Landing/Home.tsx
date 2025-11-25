@@ -116,20 +116,43 @@ export default function Home() {
         <div className="text-center">
           <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <Sparkles className="w-4 h-4" />
-            L'IA qui transforme vos réponses aux marchés publics
+            Votre copilote IA pour gagner du temps ET des marchés publics
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <span className="bg-gradient-to-r from-gray-900 via-[#F77F00] to-gray-900 bg-clip-text text-transparent">
-              Arrêtez de perdre des marchés
+              Ne partez plus jamais de zéro
             </span>
             <br />
-            <span className="text-gray-900">à cause de la paperasse.</span>
+            <span className="text-gray-900">sur vos mémoires techniques</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            Chaque jour, des entreprises comme la vôtre perdent des opportunités parce que répondre aux appels d'offres publics prend trop de temps, coûte trop cher, et demande trop d'énergie.
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            LeMarchéPublic.fr combine veille intelligente, score GO/NO-GO, génération automatique de mémoires et assistant IA pour vos marchés et BPU.
           </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12 text-left">
+            <div className="bg-white p-4 rounded-xl shadow-md">
+              <div className="text-2xl mb-2">🔍</div>
+              <div className="text-sm font-semibold text-gray-900">Veille marchés</div>
+              <div className="text-xs text-gray-600">Les marchés viennent à vous</div>
+            </div>
+            <div className="bg-white p-4 rounded-xl shadow-md">
+              <div className="text-2xl mb-2">🎯</div>
+              <div className="text-sm font-semibold text-gray-900">Score GO/NO-GO</div>
+              <div className="text-xs text-gray-600">Décidez vite et bien</div>
+            </div>
+            <div className="bg-white p-4 rounded-xl shadow-md">
+              <div className="text-2xl mb-2">🧠</div>
+              <div className="text-sm font-semibold text-gray-900">Mémoires IA</div>
+              <div className="text-xs text-gray-600">Générés en quelques clics</div>
+            </div>
+            <div className="bg-white p-4 rounded-xl shadow-md">
+              <div className="text-2xl mb-2">🤖</div>
+              <div className="text-sm font-semibold text-gray-900">Assistant IA</div>
+              <div className="text-xs text-gray-600">Interrogez DCE & BPU</div>
+            </div>
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1200">
             <Button
@@ -140,19 +163,19 @@ export default function Home() {
               variant="primary"
               className="text-lg px-8 py-4"
             >
-              🚀 Je veux gagner plus de marchés
+              🎁 Tester gratuitement - 1 mémoire offert
             </Button>
             <Button
-              onClick={() => document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('fonctionnalites')?.scrollIntoView({ behavior: 'smooth' })}
               variant="outline"
               className="text-lg px-8 py-4"
             >
-              Découvrir comment
+              Voir les fonctionnalités
             </Button>
           </div>
 
           <p className="text-sm text-gray-500">
-            ⚡ Réponse en 2h • 🎯 Premiers résultats sous 48h • 💼 +30% de taux de réussite en moyenne
+            ⚡ Sans carte bancaire • 🎯 Résultats en 48h • 💼 Sans engagement
           </p>
         </div>
       </Section>
@@ -191,14 +214,219 @@ export default function Home() {
         </div>
       </Section>
 
+      {/* FONCTIONNALITÉS DÉTAILLÉES */}
+      <Section id="fonctionnalites" className="py-20 bg-white">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
+            Un système complet pour vos marchés publics
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            4 outils puissants qui travaillent ensemble pour vous faire gagner du temps et des marchés
+          </p>
+        </div>
+
+        <div className="space-y-16 max-w-6xl mx-auto">
+          {/* Veille Marchés */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">🔍</span>
+                Inclus dans tous les plans
+              </div>
+              <h3 className="text-3xl font-bold mb-4">1. Veille marchés intégrée</h3>
+              <p className="text-lg text-gray-600 mb-6">
+                Vous ne cherchez plus les marchés : ils viennent à vous.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Paramétrage par secteur, zone géographique et type de marché</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Liste de marchés détectés directement dans votre espace</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Actualisation continue en temps réel</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="text-4xl mb-4 text-center">🔍</div>
+                <div className="text-center text-gray-700 font-semibold">Veille automatique</div>
+                <div className="mt-4 space-y-2 text-sm text-gray-600">
+                  <div className="flex justify-between">
+                    <span>Marchés détectés</span>
+                    <span className="font-bold text-green-600">24 nouveaux</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Zone</span>
+                    <span className="font-bold">Réunion (974)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Secteur</span>
+                    <span className="font-bold">BTP / Travaux</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Market Sentinel */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1 bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-lg font-bold">Marché analysé</span>
+                  <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">85/100 GO</span>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <div className="font-semibold text-gray-700 mb-1">Points forts :</div>
+                    <ul className="text-gray-600 space-y-1 text-xs">
+                      <li>• Correspond à vos zones d'intervention</li>
+                      <li>• Budget adapté à votre capacité</li>
+                      <li>• Critères techniques maîtrisés</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-700 mb-1">Recommandation :</div>
+                    <div className="text-[#F77F00] font-semibold text-xs">📝 Répondre en priorité</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">🎯</span>
+                Inclus pour tous
+              </div>
+              <h3 className="text-3xl font-bold mb-4">2. Score GO / NO-GO avec Market Sentinel</h3>
+              <p className="text-lg text-gray-600 mb-6">
+                Décidez vite avant d'y passer des heures.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Score de pertinence</strong> de 0 à 100 pour chaque marché</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Statut clair</strong> : 🟢 GO / 🟡 Conditionnel / 🔴 NO-GO</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Analyse IA</strong> expliquant pourquoi répondre ou pas</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Mémoires IA */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">🧠</span>
+                Market Light & Market Pro
+              </div>
+              <h3 className="text-3xl font-bold mb-4">3. Génération de mémoires techniques</h3>
+              <p className="text-lg text-gray-600 mb-6">
+                L'IA qui vous évite la page blanche et structure votre réponse.
+              </p>
+              <div className="space-y-4 mb-6">
+                <div className="bg-blue-50 p-4 rounded-xl">
+                  <div className="font-bold text-blue-900 mb-2">🔹 Market Light (inclus)</div>
+                  <p className="text-sm text-gray-700">Brouillon structuré généré automatiquement à partir du DCE et de vos infos. Parfait pour gagner du temps.</p>
+                </div>
+                <div className="bg-purple-50 p-4 rounded-xl">
+                  <div className="font-bold text-purple-900 mb-2">🔸 Market Pro (+99€/mois)</div>
+                  <p className="text-sm text-gray-700">Version avancée avec argumentaire poussé, exploitation fine des critères de notation, style percutant orienté "score".</p>
+                </div>
+              </div>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Sections standard pré-remplies (présentation, moyens, méthodologie, QSE...)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Export Word / PDF en un clic</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="text-sm font-semibold text-gray-700 mb-4">Mémoire technique généré</div>
+                <div className="space-y-2 text-xs text-gray-600">
+                  <div className="bg-gray-50 p-2 rounded">1. Présentation entreprise ✓</div>
+                  <div className="bg-gray-50 p-2 rounded">2. Moyens humains ✓</div>
+                  <div className="bg-gray-50 p-2 rounded">3. Moyens matériels ✓</div>
+                  <div className="bg-gray-50 p-2 rounded">4. Méthodologie ✓</div>
+                  <div className="bg-gray-50 p-2 rounded">5. Démarche QSE ✓</div>
+                  <div className="bg-gray-50 p-2 rounded">6. Planning prévisionnel ✓</div>
+                </div>
+                <div className="mt-4 text-center">
+                  <span className="text-green-600 font-semibold text-sm">✓ Prêt à être personnalisé</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Assistant IA */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1 bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="text-sm font-semibold text-gray-700 mb-4">💬 Assistant IA</div>
+                <div className="space-y-3 text-xs">
+                  <div className="bg-gray-100 p-3 rounded-lg">
+                    <div className="font-semibold text-gray-900 mb-1">Vous :</div>
+                    <div className="text-gray-600">"Quels sont les critères les plus pondérés ?"</div>
+                  </div>
+                  <div className="bg-blue-50 p-3 rounded-lg">
+                    <div className="font-semibold text-blue-900 mb-1">IA :</div>
+                    <div className="text-gray-700">"Les critères principaux sont : méthodologie (40%), moyens techniques (30%), prix (30%)"</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">🤖</span>
+                Inclus dans tous les plans
+              </div>
+              <h3 className="text-3xl font-bold mb-4">4. Assistant IA Marchés & BPU</h3>
+              <p className="text-lg text-gray-600 mb-6">
+                Posez vos questions comme à un collaborateur expert.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Interrogez le DCE, les pièces du marché, la grille de notation</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Analysez les lignes du BPU, détectez les incohérences</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Gagnez du temps sur la compréhension et la vérification</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* PAIN POINTS */}
-      <Section className="py-20">
+      <Section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Vous reconnaissez-vous ?
+            Le problème aujourd'hui
           </h2>
           <p className="text-xl text-gray-600">
-            Ces frustrations quotidiennes qui vous empêchent de développer votre activité
+            Ces obstacles qui vous empêchent de répondre à plus de marchés
           </p>
         </div>
 
@@ -494,6 +722,204 @@ export default function Home() {
       {/* MARKET MODEL COMPARISON */}
       <Section className="py-20 bg-gradient-to-b from-white to-gray-50">
         <MarketModelComparison />
+      </Section>
+
+      {/* PRICING */}
+      <Section id="tarifs" className="py-20 bg-white">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <span className="text-xl">🎁</span>
+            1 mémoire IA offert pour commencer
+          </div>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
+            Nos abonnements
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
+            Tous nos plans incluent <strong>veille marchés, GO/NO-GO et assistant IA</strong>
+          </p>
+          <p className="text-lg text-gray-500">
+            Vous choisissez simplement combien de mémoires IA vous voulez par mois
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
+          {/* SOLO */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 border-2 border-gray-200 hover:border-[#F77F00] transition-all hover:shadow-2xl">
+            <div className="text-center mb-6">
+              <div className="text-4xl font-extrabold text-gray-900 mb-2">199€</div>
+              <div className="text-gray-500 text-sm">HT / mois</div>
+              <div className="text-xl font-bold mt-4">Plan SOLO</div>
+              <div className="text-sm text-gray-600">1 Marché / Mois</div>
+            </div>
+            <ul className="space-y-3 mb-8 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🔎 Veille marchés incluse</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🎯 Score GO/NO-GO</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🤖 Assistant IA Marchés & BPU</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🧠 1 mémoire Market Light / mois</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>📂 Espace client & historique</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🎓 Formations vidéo</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>📨 Export Word / PDF</span>
+              </li>
+            </ul>
+            <div className="text-xs text-gray-500 mb-4 space-y-1">
+              <div>⚙️ Market Pro : +99€/mois</div>
+              <div>💼 Booster Expert 4h : +590€/mémoire</div>
+            </div>
+            <Button
+              onClick={() => {
+                trackClick('home', 'cta', 'pricing_solo');
+                window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+              }}
+              variant="outline"
+              className="w-full"
+            >
+              Commencer
+            </Button>
+          </div>
+
+          {/* PME - RECOMMANDÉ */}
+          <div className="bg-gradient-to-br from-[#F77F00] to-[#E06F00] rounded-3xl shadow-2xl p-8 border-2 border-[#F77F00] transform scale-105 relative">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white text-[#F77F00] px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+              ⭐ Recommandé
+            </div>
+            <div className="text-center mb-6 text-white">
+              <div className="text-4xl font-extrabold mb-2">349€</div>
+              <div className="text-white/80 text-sm">HT / mois</div>
+              <div className="text-xl font-bold mt-4">Plan PME</div>
+              <div className="text-sm text-white/90">2 Marchés / Mois</div>
+            </div>
+            <ul className="space-y-3 mb-8 text-sm text-white">
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>🔎 Veille marchés incluse</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>🎯 GO/NO-GO illimité</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>🤖 Assistant IA Marchés & BPU</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>🧠 2 mémoires Market Light / mois</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>📊 Espace client complet</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>🚀 Priorité de génération vs SOLO</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">✓</span>
+                <span>📞 1 point de contact trimestriel</span>
+              </li>
+            </ul>
+            <div className="text-xs text-white/70 mb-4 space-y-1">
+              <div>⚙️ Market Pro : +99€/mois</div>
+              <div>💼 Booster Expert 4h : +590€/mémoire</div>
+            </div>
+            <Button
+              onClick={() => {
+                trackClick('home', 'cta', 'pricing_pme');
+                window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+              }}
+              variant="secondary"
+              className="w-full"
+            >
+              Commencer
+            </Button>
+          </div>
+
+          {/* PROJETEUR */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 border-2 border-gray-200 hover:border-[#F77F00] transition-all hover:shadow-2xl">
+            <div className="text-center mb-6">
+              <div className="text-4xl font-extrabold text-gray-900 mb-2">849€</div>
+              <div className="text-gray-500 text-sm">HT / mois</div>
+              <div className="text-xl font-bold mt-4">Plan PROJETEUR</div>
+              <div className="text-sm text-gray-600">5 Marchés / Mois</div>
+            </div>
+            <ul className="space-y-3 mb-8 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🔎 Veille marchés incluse</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🎯 GO/NO-GO illimité</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🤖 Assistant IA illimité</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🧠 5 mémoires Market Light / mois</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>📊 Historique détaillé</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>🚀 Priorité maximale</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>📆 1 point de suivi mensuel</span>
+              </li>
+            </ul>
+            <div className="text-xs text-gray-500 mb-4 space-y-1">
+              <div>⚙️ Market Pro : +99€/mois</div>
+              <div>🧠 Booster Senior 3j : +2490€/marché</div>
+            </div>
+            <Button
+              onClick={() => {
+                trackClick('home', 'cta', 'pricing_projeteur');
+                window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+              }}
+              variant="outline"
+              className="w-full"
+            >
+              Commencer
+            </Button>
+          </div>
+        </div>
+
+        <div className="text-center max-w-3xl mx-auto">
+          <div className="bg-blue-50 p-6 rounded-2xl">
+            <h3 className="font-bold text-gray-900 mb-3">💡 Pourquoi ça a du sens financièrement</h3>
+            <p className="text-sm text-gray-700 mb-3">
+              Sans nous : 10 à 20h par mémoire, décisions "au feeling", risques d'erreurs dans le BPU
+            </p>
+            <p className="text-sm text-gray-700">
+              <strong>Avec LeMarchéPublic.fr :</strong> la veille vous présente les bons marchés, le GO/NO-GO aide à décider rapidement, l'IA génère vos mémoires, l'assistant sécurise le BPU. <strong className="text-[#F77F00]">Un seul marché gagné peut amortir plusieurs mois d'abonnement.</strong>
+            </p>
+          </div>
+        </div>
       </Section>
 
       {/* FINAL CTA */}
