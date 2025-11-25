@@ -198,10 +198,8 @@ export const Assistant: React.FC = () => {
           analysis_result
         ),
         technical_memories (
-          sections (
-            title,
-            content
-          )
+          id,
+          title
         )
       `)
       .in('id', selectedMarkets);
@@ -245,12 +243,19 @@ export const Assistant: React.FC = () => {
         }
       }
 
-      // Mémoire technique
+      // Mémoire technique avec sections depuis memo_sections
       if (market.technical_memories && market.technical_memories.length > 0) {
         const memory = market.technical_memories[0];
-        if (memory.sections && memory.sections.length > 0) {
+
+        const { data: sections, error: sectionsError } = await supabase
+          .from('memo_sections')
+          .select('title, content')
+          .eq('memory_id', memory.id)
+          .order('order_index', { ascending: true });
+
+        if (!sectionsError && sections && sections.length > 0) {
           context += '\n### Sections du mémoire technique:\n';
-          for (const section of memory.sections) {
+          for (const section of sections) {
             context += `#### ${section.title}\n`;
             if (section.content) {
               context += `${section.content.substring(0, 500)}...\n\n`;
