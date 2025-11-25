@@ -50,7 +50,17 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const openrouterKey = Deno.env.get("OPENROUTER_API_KEY")!;
+    const openrouterKey = Deno.env.get("OPENROUTER_API_KEY");
+
+    console.log("[DEBUG] Environment variables check:");
+    console.log("- SUPABASE_URL:", supabaseUrl ? "✓ Set" : "✗ Missing");
+    console.log("- SUPABASE_ANON_KEY:", supabaseAnonKey ? "✓ Set" : "✗ Missing");
+    console.log("- SUPABASE_SERVICE_ROLE_KEY:", supabaseServiceKey ? "✓ Set" : "✗ Missing");
+    console.log("- OPENROUTER_API_KEY:", openrouterKey ? "✓ Set" : "✗ Missing");
+
+    if (!openrouterKey) {
+      throw new Error("OPENROUTER_API_KEY environment variable is not set");
+    }
 
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
@@ -128,6 +138,9 @@ Recommandations:
 
 Réponds UNIQUEMENT avec le JSON, sans texte additionnel.`;
 
+    console.log("[DEBUG] Calling OpenRouter API...");
+    console.log("[DEBUG] API Key first chars:", openrouterKey.substring(0, 10));
+
     const openrouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -149,8 +162,12 @@ Réponds UNIQUEMENT avec le JSON, sans texte additionnel.`;
       })
     });
 
+    console.log("[DEBUG] OpenRouter response status:", openrouterResponse.status);
+
     if (!openrouterResponse.ok) {
-      throw new Error(`OpenRouter API error: ${openrouterResponse.statusText}`);
+      const errorBody = await openrouterResponse.text();
+      console.error("[DEBUG] OpenRouter error body:", errorBody);
+      throw new Error(`OpenRouter API error: ${openrouterResponse.statusText} - ${errorBody}`);
     }
 
     const openrouterData = await openrouterResponse.json();
