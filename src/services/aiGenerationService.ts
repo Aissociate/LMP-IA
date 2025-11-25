@@ -48,12 +48,9 @@ export class AIGenerationService {
       useMarketPro = false
     } = params;
 
-    const modelName = useMarketPro ? 'Market Pro (Gemini 2.5 Pro)' : 'Market Light (Gemini 2.5 Flash Lite Preview)';
-    const contextSize = useMarketPro ? '1 024 000 tokens' : '1 024 000 tokens';
-
     this.logService.addLog(`🚀 Génération de la section: ${sectionTitle}`);
-    this.logService.addLog(`🤖 Modèle IA: ${modelName}`);
-    this.logService.addLog(`📊 Fenêtre de contexte: ${contextSize}`);
+    this.logService.addLog(`🤖 Modèle IA: Modèle sélectionné par l'admin`);
+    this.logService.addLog(`📊 Configuration: Utilisation du modèle configuré dans les paramètres`);
     this.logService.addLog(`🎛️ Contextes utilisés:`);
     this.logService.addLog(`   📋 Marché: ${useMarketContext && marketContext ? '✅ OUI' : '❌ NON'}`);
     this.logService.addLog(`   🧠 Base connaissance: ${useKnowledgeContext && knowledgeContext.length > 0 ? `✅ OUI (${knowledgeContext.length} docs)` : '❌ NON'}`);
@@ -127,8 +124,7 @@ Veuillez vérifier votre configuration IA ou réessayer plus tard.`;
     const sectionsToGenerate = sections.filter(section => !section.content);
     if (sectionsToGenerate.length === 0) return;
 
-    const modelInfo = params.useMarketPro ? 'Market Pro (Gemini 2.5 Pro)' : 'Market Light (Gemini 2.5 Flash Lite Preview)';
-    this.logService.addLog(`🔥 Génération EN PARALLÈLE de ${sectionsToGenerate.length} sections avec ${modelInfo}${params.globalPrompt ? ' et prompt global' : ''}`);
+    this.logService.addLog(`🔥 Génération EN PARALLÈLE de ${sectionsToGenerate.length} sections avec le modèle admin${params.globalPrompt ? ' et prompt global' : ''}`);
 
     // Générer toutes les sections EN PARALLÈLE
     const generationPromises = sectionsToGenerate.map(async (section, index) => {

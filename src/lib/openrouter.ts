@@ -148,10 +148,8 @@ class OpenRouterService {
     marketContext?: string,
     useMarketPro: boolean = false
   ): Promise<string> {
-    const model = useMarketPro
-      ? 'google/gemini-2.5-pro'
-      : 'google/gemini-2.5-flash-lite-preview-09-2025';
-
+    // Cette méthode utilise désormais l'edge function ai-generation
+    // qui respecte le modèle sélectionné par l'admin
     const systemPrompt = `Tu es un expert en rédaction de mémoires techniques pour les marchés publics.
     Tu dois rédiger du contenu professionnel, structuré et convaincant pour la section "${sectionTitle}".
 
@@ -164,12 +162,8 @@ class OpenRouterService {
 
     const userPrompt = `${marketContext ? `Contexte du marché: ${marketContext}\n\n` : ''}${prompt}`;
 
-    const memoryOptions = {
-      model,
-      maxTokens: 100000
-    };
-
-    return this.generateContent(userPrompt, systemPrompt, memoryOptions);
+    // Utilise le modèle admin par défaut (pas de paramètre model)
+    return this.generateContent(userPrompt, systemPrompt, { maxTokens: 100000 });
   }
 }
 

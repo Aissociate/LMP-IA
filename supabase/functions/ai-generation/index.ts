@@ -135,20 +135,8 @@ Deno.serve(async (req: Request) => {
       content: body.prompt
     });
 
-    // IMPORTANT: Forcer Gemini Flash Lite pour les documents économiques (BPU, Fiche de valeur)
-    // Détecter si c'est un appel pour BPU ou documents économiques via le systemPrompt
-    const isEconomicDocument = body.systemPrompt?.includes('BPU') ||
-                               body.systemPrompt?.includes('BTP') ||
-                               body.systemPrompt?.includes('JSON valide');
-
-    let selectedModel: string;
-    if (isEconomicDocument) {
-      // Toujours utiliser Gemini Flash Lite pour les documents économiques, même pour les admins
-      selectedModel = 'google/gemini-2.5-flash-lite-preview-09-2025';
-      console.log('[AI-Generation] Economic document detected - forcing Gemini Flash Lite');
-    } else {
-      selectedModel = body.model ?? settingsMap.selected_ai_model ?? 'openai/gpt-3.5-turbo';
-    }
+    // Utiliser le modèle sélectionné par l'admin ou celui passé en paramètre
+    const selectedModel = body.model ?? settingsMap.selected_ai_model ?? 'openai/gpt-3.5-turbo';
 
     // Model-specific max token limits on OpenRouter
     const modelMaxTokens: Record<string, number> = {
