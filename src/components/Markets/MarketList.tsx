@@ -24,7 +24,7 @@ const statusConfig = {
 
 export const MarketList: React.FC = () => {
   const { isDark } = useTheme();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { canCreateTechnicalMemory, incrementMemoryUsage, isFreemium, plan } = useSubscription();
   const [markets, setMarkets] = useState<Market[]>([]);
   const [favorites, setFavorites] = useState<BOAMPFavorite[]>([]);
@@ -258,7 +258,9 @@ export const MarketList: React.FC = () => {
               isDark={isDark}
               onEdit={() => setSelectedMarketForEdit(market)}
               onTechnicalMemory={() => {
-                if (isFreemium && isFreemium()) {
+                if (isAdmin) {
+                  setSelectedMarketForTechnicalMemory(market);
+                } else if (isFreemium && isFreemium()) {
                   setShowUpsellModal(true);
                 } else if (canCreateTechnicalMemory && canCreateTechnicalMemory()) {
                   setSelectedMarketForTechnicalMemory(market);
