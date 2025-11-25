@@ -162,7 +162,7 @@ export const LandingBTP: React.FC = () => {
         </div>
       </Section>
 
-      {/* Carousel Section */}
+      {/* Video Demo Section */}
       <Section className="py-16 bg-white max-w-7xl">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -172,7 +172,20 @@ export const LandingBTP: React.FC = () => {
               Une solution puissante pour gagner plus de marchés BTP à La Réunion (974)
             </p>
           </div>
-          <Carousel />
+          <div className="rounded-2xl overflow-hidden shadow-2xl">
+            <video
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-auto"
+              poster="/image.png"
+            >
+              <source src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6926384f76cd823d57d4746d.mp4" type="video/mp4" />
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
+          </div>
         </Section>
 
 

@@ -217,7 +217,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* CAROUSEL SECTION */}
+      {/* VIDEO DEMO SECTION */}
       <Section className="py-16 bg-white">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
@@ -227,7 +227,20 @@ export default function Home() {
             Une solution intuitive et puissante pour gagner plus de marchés
           </p>
         </div>
-        <Carousel />
+        <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl">
+          <video
+            controls
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-auto"
+            poster="/image.png"
+          >
+            <source src="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6926384f76cd823d57d4746d.mp4" type="video/mp4" />
+            Votre navigateur ne supporte pas la lecture de vidéos.
+          </video>
+        </div>
       </Section>
 
       {/* EMOTIONAL STATS */}
