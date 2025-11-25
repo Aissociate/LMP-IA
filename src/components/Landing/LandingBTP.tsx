@@ -104,6 +104,10 @@ export const LandingBTP: React.FC = () => {
 
       <Section className="py-16 sm:py-24">
         <div className="text-center">
+          <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <span className="text-xl">🎁</span>
+            1 mémoire IA offert pour commencer
+          </div>
           <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl animate-in fade-in slide-in-from-bottom-4 duration-700 mb-6">
             Remportez plus de marchés BTP à La Réunion
           </h1>
@@ -116,7 +120,7 @@ export const LandingBTP: React.FC = () => {
               className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90 text-lg px-8 py-4"
               onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
             >
-              🚀 Obtenir ma démo personnalisée
+              🎁 Obtenir mon mémoire IA offert
               <ArrowRight className="w-5 h-5" />
             </Button>
             <Button
@@ -143,15 +147,15 @@ export const LandingBTP: React.FC = () => {
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-gray-600">Installation en 5 minutes</span>
+                <span className="text-gray-600">Sans carte bancaire</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-gray-600">Support expert inclus</span>
+                <span className="text-gray-600">Sans engagement</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-gray-600">Conforme marchés publics</span>
+                <span className="text-gray-600">Résultat en 48h</span>
               </div>
             </div>
           </div>

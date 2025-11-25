@@ -105,6 +105,10 @@ export const LandingPME: React.FC = () => {
       <Section id="hero" className="py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              <span className="text-xl">🎁</span>
+              1 mémoire IA offert pour commencer
+            </div>
             <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl animate-in fade-in slide-in-from-bottom-4 duration-700">
               L'IA stratégique qui fait gagner les appels d'offres de votre PME.
             </h1>
@@ -116,7 +120,7 @@ export const LandingPME: React.FC = () => {
                 className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
                 onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
               >
-                💰 Doubler mon taux de réussite
+                🎁 Obtenir mon mémoire IA offert
               </Button>
               <Button
                 className="border border-gray-300 bg-white text-gray-900 hover:bg-gray-50"
@@ -125,7 +129,7 @@ export const LandingPME: React.FC = () => {
                 Découvrir la méthode
               </Button>
             </div>
-            <p className="mt-5 text-sm text-gray-500">Entretien stratégique 30 min • Réponse sous 4h • ROI mesurable dès J+30</p>
+            <p className="mt-5 text-sm text-gray-500">Sans CB • Sans engagement • Résultat en 48h</p>
           </div>
           <Carousel />
         </div>
