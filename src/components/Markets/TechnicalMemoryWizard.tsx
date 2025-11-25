@@ -59,26 +59,6 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
 - Le périmètre fonctionnel attendu`
   },
   {
-    id: 'perimetre_reponse',
-    title: '3. Périmètre de la réponse',
-    icon: FileText,
-    defaultPrompt: `Précise le périmètre de notre réponse :
-- Description détaillée du/des lot(s)
-- Prestations incluses, exclues et optionnelles
-- Frontières d'interface avec les autres lots
-- Répartition des responsabilités`
-  },
-  {
-    id: 'conformite_normes',
-    title: '4. Conformité & références normatives',
-    icon: Shield,
-    defaultPrompt: `Présente notre conformité aux exigences :
-- Références CCTP/CCAP/CCAG applicables
-- Normes et guides techniques respectés
-- Matrice de conformité détaillée
-- Dérogations ou variantes proposées`
-  },
-  {
     id: 'organisation_gouvernance',
     title: '5. Organisation & gouvernance',
     icon: Building,
@@ -169,16 +149,6 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
 - Plans de contingence`
   },
   {
-    id: 'coordination_inter_lots',
-    title: '14. Coordination inter-lots',
-    icon: RefreshCw,
-    defaultPrompt: `Décris la coordination multi-lots :
-- Pilotage transverse et chef de file
-- Interfaces clés entre lots
-- Mutualisation des moyens
-- Processus d'arbitrage`
-  },
-  {
     id: 'gestion_documentaire',
     title: '15. Gestion documentaire',
     icon: FolderOpen,
@@ -187,26 +157,6 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
 - Livrables par phase
 - DOE numérique
 - Archivage et traçabilité`
-  },
-  {
-    id: 'essais_reception',
-    title: '16. Essais & réception',
-    icon: CheckCircle,
-    defaultPrompt: `Détaille les essais et réception :
-- Protocoles d'essais
-- Procédures OPR
-- Formation des exploitants
-- Mise au point saisonnière`
-  },
-  {
-    id: 'garantie_sav',
-    title: '17. Garantie & SAV',
-    icon: Settings,
-    defaultPrompt: `Présente nos engagements post-livraison :
-- Garanties légales et contractuelles
-- Organisation du SAV
-- Plan de maintenance initiale
-- Support technique`
   },
   {
     id: 'engagements_kpi',
