@@ -119,14 +119,14 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
 - Suivi des indicateurs sécurité`
   },
   {
-    id: 'environnement_rse',
-    title: '9. Environnement & RSE',
+    id: 'environnement_rse_risques',
+    title: '9. Environnement, RSE & Risques',
     icon: Leaf,
-    defaultPrompt: `Détaille notre engagement environnemental :
-- Gestion des déchets et nuisances
-- Maîtrise de l'impact carbone
-- Protection des sols et biodiversité
-- Clauses sociales et insertion`
+    defaultPrompt: `Présente notre approche environnementale et gestion des risques :
+- Gestion des déchets et impact carbone
+- Protection de la biodiversité et clauses sociales
+- Analyse des risques et mesures préventives
+- Opportunités d'optimisation`
   },
   {
     id: 'innovation_performance',
@@ -139,18 +139,8 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
 - Optimisations de performance`
   },
   {
-    id: 'risques_opportunites',
-    title: '11. Risques & opportunités',
-    icon: AlertTriangle,
-    defaultPrompt: `Analyse les risques et opportunités :
-- Méthode d'identification et cotation
-- Registre des risques et parades
-- Opportunités d'optimisation
-- Plans de contingence`
-  },
-  {
     id: 'gestion_documentaire',
-    title: '12. Gestion documentaire',
+    title: '11. Gestion documentaire',
     icon: FolderOpen,
     defaultPrompt: `Présente notre gestion documentaire :
 - Système GED et workflow
@@ -160,7 +150,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'engagements_kpi',
-    title: '13. Engagements & KPI',
+    title: '12. Engagements & KPI',
     icon: BarChart3,
     defaultPrompt: `Définit nos engagements chiffrés :
 - KPI de délais et productivité
@@ -170,7 +160,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'variantes_optimisations',
-    title: '14. Variantes & optimisations',
+    title: '13. Variantes & optimisations',
     icon: Euro,
     defaultPrompt: `Propose des variantes et optimisations :
 - Description des variantes
@@ -180,7 +170,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'annexes',
-    title: '15. Annexes',
+    title: '14. Annexes',
     icon: FolderOpen,
     defaultPrompt: `Compile les annexes techniques :
 - CV et habilitations de l'équipe
