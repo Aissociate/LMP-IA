@@ -129,18 +129,8 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
 - Opportunités d'optimisation`
   },
   {
-    id: 'innovation_performance',
-    title: '10. Innovation & performance',
-    icon: Zap,
-    defaultPrompt: `Présente nos innovations :
-- Choix techniques innovants
-- Méthodes d'industrialisation
-- Solutions digitales
-- Optimisations de performance`
-  },
-  {
     id: 'gestion_documentaire',
-    title: '11. Gestion documentaire',
+    title: '10. Gestion documentaire',
     icon: FolderOpen,
     defaultPrompt: `Présente notre gestion documentaire :
 - Système GED et workflow
@@ -150,7 +140,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'engagements_kpi',
-    title: '12. Engagements & KPI',
+    title: '11. Engagements & KPI',
     icon: BarChart3,
     defaultPrompt: `Définit nos engagements chiffrés :
 - KPI de délais et productivité
@@ -160,7 +150,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'variantes_optimisations',
-    title: '13. Variantes & optimisations',
+    title: '12. Variantes & optimisations',
     icon: Euro,
     defaultPrompt: `Propose des variantes et optimisations :
 - Description des variantes
@@ -170,7 +160,7 @@ const defaultSections: Omit<Section, 'content' | 'isEditing' | 'isGenerating'>[]
   },
   {
     id: 'annexes',
-    title: '14. Annexes',
+    title: '13. Annexes',
     icon: FolderOpen,
     defaultPrompt: `Compile les annexes techniques :
 - CV et habilitations de l'équipe
