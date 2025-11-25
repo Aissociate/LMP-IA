@@ -174,9 +174,46 @@ export default function Home() {
             </Button>
           </div>
 
-          <p className="text-sm text-gray-500">
-            ⚡ Sans carte bancaire • 🎯 Résultats en 48h • 💼 Sans engagement
-          </p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 items-center">
+            <div className="flex items-center gap-2">
+              <span className="text-green-500 text-lg">✓</span>
+              <span>Sans carte bancaire</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-500 text-lg">✓</span>
+              <span>Sans engagement</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-500 text-lg">✓</span>
+              <span>Résultats en 48h</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-500 text-lg">✓</span>
+              <span>Résiliable à tout moment</span>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* TRUST INDICATORS */}
+      <Section className="py-12 bg-white border-y border-gray-200">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div className="text-3xl font-bold text-[#F77F00] mb-2">500+</div>
+            <div className="text-sm text-gray-600">Entreprises utilisatrices</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-[#F77F00] mb-2">2000+</div>
+            <div className="text-sm text-gray-600">Mémoires générés</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-[#F77F00] mb-2">+30%</div>
+            <div className="text-sm text-gray-600">Taux de réussite moyen</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-[#F77F00] mb-2">4.8/5</div>
+            <div className="text-sm text-gray-600">Note utilisateurs</div>
+          </div>
         </div>
       </Section>
 
@@ -688,7 +725,7 @@ export default function Home() {
               "J'ai remporté 3 marchés en 2 mois. Avant, je passais des semaines sur les dossiers. Maintenant, c'est réglé en quelques heures."
             </p>
             <p className="font-semibold text-gray-900">Marc D.</p>
-            <p className="text-sm text-gray-500">Électricien, 8 salariés</p>
+            <p className="text-sm text-gray-500">Électricien, 8 salariés - La Réunion</p>
           </div>
 
           <div className="bg-white p-8 rounded-2xl shadow-lg">
@@ -701,7 +738,7 @@ export default function Home() {
               "Le ROI est incroyable. On a multiplié par 2 notre CA sur les marchés publics en 6 mois. Et on a enfin du temps pour nos équipes."
             </p>
             <p className="font-semibold text-gray-900">Sophie L.</p>
-            <p className="text-sm text-gray-500">Dirigeante PME BTP, 45 salariés</p>
+            <p className="text-sm text-gray-500">Dirigeante PME BTP, 45 salariés - Mayotte</p>
           </div>
 
           <div className="bg-white p-8 rounded-2xl shadow-lg">
@@ -714,7 +751,17 @@ export default function Home() {
               "Franchement, je ne pensais pas que c'était possible. Fini les nuits blanches à remplir des formulaires. Je recommande à tous mes confrères."
             </p>
             <p className="font-semibold text-gray-900">Jean-Pierre M.</p>
-            <p className="text-sm text-gray-500">Maçon indépendant</p>
+            <p className="text-sm text-gray-500">Maçon indépendant - La Réunion</p>
+          </div>
+        </div>
+
+        <div className="mt-12 text-center">
+          <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 px-6 py-3 rounded-xl border border-green-200">
+            <span className="text-2xl">🏆</span>
+            <div className="text-left">
+              <div className="font-bold">Plus de 150 marchés remportés</div>
+              <div className="text-sm">par nos utilisateurs en 2024</div>
+            </div>
           </div>
         </div>
       </Section>
@@ -904,7 +951,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="text-center max-w-3xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="bg-blue-50 p-6 rounded-2xl">
             <h3 className="font-bold text-gray-900 mb-3">💡 Pourquoi ça a du sens financièrement</h3>
             <p className="text-sm text-gray-700 mb-3">
@@ -913,6 +960,30 @@ export default function Home() {
             <p className="text-sm text-gray-700">
               <strong>Avec LeMarchéPublic.fr :</strong> la veille vous présente les bons marchés, le GO/NO-GO aide à décider rapidement, l'IA génère vos mémoires, l'assistant sécurise le BPU. <strong className="text-[#F77F00]">Un seul marché gagné peut amortir plusieurs mois d'abonnement.</strong>
             </p>
+          </div>
+        </div>
+
+        {/* REASSURANCE BADGES */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          <div className="bg-white p-6 rounded-xl shadow-md text-center border border-gray-100">
+            <div className="text-3xl mb-3">🔒</div>
+            <div className="font-bold text-gray-900 mb-2">Données sécurisées</div>
+            <div className="text-sm text-gray-600">Hébergement français conforme RGPD</div>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-md text-center border border-gray-100">
+            <div className="text-3xl mb-3">✓</div>
+            <div className="font-bold text-gray-900 mb-2">Sans engagement</div>
+            <div className="text-sm text-gray-600">Résiliable à tout moment en 1 clic</div>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-md text-center border border-gray-100">
+            <div className="text-3xl mb-3">💳</div>
+            <div className="font-bold text-gray-900 mb-2">Essai gratuit</div>
+            <div className="text-sm text-gray-600">1 mémoire offert sans CB</div>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-md text-center border border-gray-100">
+            <div className="text-3xl mb-3">🎓</div>
+            <div className="font-bold text-gray-900 mb-2">Formation incluse</div>
+            <div className="text-sm text-gray-600">Vidéos et support pour démarrer</div>
           </div>
         </div>
       </Section>
@@ -940,7 +1011,7 @@ export default function Home() {
             </Button>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center text-sm text-white/90">
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-white/90 mb-8">
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5" />
               <span>Réponse sous 2h</span>
@@ -953,6 +1024,70 @@ export default function Home() {
               <TrendingUp className="w-5 h-5" />
               <span>+30% de taux de réussite</span>
             </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto text-sm">
+            <div className="bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg">
+              <div className="font-semibold">✓ Sans engagement</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg">
+              <div className="font-semibold">✓ Sans carte bancaire</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg">
+              <div className="font-semibold">✓ Résiliable en 1 clic</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg">
+              <div className="font-semibold">✓ Support inclus</div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* FAQ */}
+      <Section className="py-20 bg-gray-50">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
+            Questions fréquentes
+          </h2>
+          <p className="text-xl text-gray-600">
+            Tout ce que vous devez savoir avant de vous lancer
+          </p>
+        </div>
+
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="font-bold text-lg text-gray-900 mb-3">💳 Dois-je fournir ma carte bancaire pour l'essai gratuit ?</h3>
+            <p className="text-gray-700">Non, absolument pas. Vous pouvez tester gratuitement avec 1 mémoire offert sans aucune carte bancaire. Vous ne payez que si vous décidez de continuer.</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="font-bold text-lg text-gray-900 mb-3">🔄 Puis-je résilier à tout moment ?</h3>
+            <p className="text-gray-700">Oui, tous nos plans sont sans engagement. Vous pouvez résilier en 1 clic depuis votre espace client, à tout moment. Aucune justification n'est demandée.</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="font-bold text-lg text-gray-900 mb-3">🔒 Mes données sont-elles sécurisées ?</h3>
+            <p className="text-gray-700">Oui, vos données sont hébergées en France sur des serveurs conformes RGPD. Nous ne partageons jamais vos informations avec des tiers. Vous restez propriétaire de tous vos documents et mémoires.</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="font-bold text-lg text-gray-900 mb-3">⏱️ Combien de temps pour générer un mémoire ?</h3>
+            <p className="text-gray-700">La génération prend entre 5 et 15 minutes selon la complexité du marché. Vous recevez une notification quand c'est prêt. Vous pouvez ensuite personnaliser le mémoire à votre guise.</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="font-bold text-lg text-gray-900 mb-3">🎓 Y a-t-il une formation pour débuter ?</h3>
+            <p className="text-gray-700">Oui, nous fournissons des vidéos de formation complètes pour maîtriser l'outil rapidement. De plus, notre support est disponible pour répondre à toutes vos questions.</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="font-bold text-lg text-gray-900 mb-3">💰 Que se passe-t-il si je n'utilise pas tous mes mémoires du mois ?</h3>
+            <p className="text-gray-700">Les mémoires non utilisés ne sont pas reportés au mois suivant. Si vous avez besoin de plus de mémoires ponctuellement, vous pouvez en acheter à l'unité (299€ HT/mémoire supplémentaire).</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="font-bold text-lg text-gray-900 mb-3">🏆 Puis-je vraiment gagner plus de marchés ?</h3>
+            <p className="text-gray-700">Nos utilisateurs constatent en moyenne +30% de taux de réussite. Pourquoi ? Parce qu'ils répondent à plus d'appels d'offres (grâce au gain de temps), avec des mémoires mieux structurés et plus alignés sur les critères de notation.</p>
           </div>
         </div>
       </Section>
