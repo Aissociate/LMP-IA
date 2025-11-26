@@ -17,7 +17,7 @@ import { LandingPME } from './components/Landing/LandingPME';
 import { LandingBTP } from './components/Landing/LandingBTP';
 import { LandingArtisans } from './components/Landing/LandingArtisans';
 import { LandingLead } from './components/Landing/LandingLead';
-import { CGV } from './components/Landing';
+import { CGV, ThankYou } from './components/Landing';
 import Home from './components/Landing/Home';
 import { BugReportButton } from './components/Common/BugReportButton';
 
@@ -32,7 +32,7 @@ function AppContent() {
   const location = useLocation();
 
   // Routes publiques (landing pages)
-  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/mmp', '/cgv'];
+  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/mmp', '/cgv', '/merci'];
   const isPublicRoute = publicRoutes.includes(location.pathname);
 
   if (loading && !isPublicRoute) {
@@ -84,6 +84,7 @@ function AppContent() {
       <Route path="/landing/artisans" element={<LandingArtisans />} />
       <Route path="/lead" element={<LandingLead />} />
       <Route path="/cgv" element={<CGV />} />
+      <Route path="/merci" element={<ThankYou />} />
       <Route path="/mmp" element={
         <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900/20' : 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200'} flex items-center justify-center p-4 transition-colors duration-200`}>
           {authMode === 'login' ? (

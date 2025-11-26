@@ -47,6 +47,14 @@
     <priority>0.5</priority>
   </url>
 
+  <!-- Page de remerciement -->
+  <url>
+    <loc>https://lemarchepublic.fr/merci</loc>
+    <lastmod>2025-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
   <!-- Page de connexion -->
   <url>
     <loc>https://lemarchepublic.fr/mmp</loc>
