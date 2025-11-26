@@ -1,4 +1,8 @@
 import { supabase } from './supabase';
+import { FacebookPixelEvents } from './facebookPixel';
+
+// Re-export Facebook Pixel Events for easy access
+export { FacebookPixelEvents };
 
 // Generate a unique visitor ID (stored in localStorage)
 const getVisitorId = (): string => {
@@ -40,6 +44,7 @@ export const trackPageVisit = async (page: string) => {
     const referrer = document.referrer || 'direct';
     const userAgent = navigator.userAgent;
 
+    // Track in Supabase
     const { data, error } = await supabase
       .from('page_visits')
       .insert({
@@ -55,6 +60,9 @@ export const trackPageVisit = async (page: string) => {
       return null;
     }
 
+    // Track in Facebook Pixel
+    FacebookPixelEvents.ViewContent(page, getPageCategory(page));
+
     // Store the visit ID to track time
     sessionStorage.setItem(`mpp_visit_${page}`, data.id);
     sessionStorage.setItem(`mpp_entry_${page}`, Date.now().toString());
@@ -64,6 +72,16 @@ export const trackPageVisit = async (page: string) => {
     console.error('Error in trackPageVisit:', error);
     return null;
   }
+};
+
+// Get page category for Facebook tracking
+const getPageCategory = (page: string): string => {
+  if (page.includes('pme')) return 'Landing - PME';
+  if (page.includes('btp')) return 'Landing - BTP';
+  if (page.includes('artisans')) return 'Landing - Artisans';
+  if (page.includes('lead')) return 'Landing - Lead';
+  if (page === '/') return 'Home';
+  return 'Other';
 };
 
 // Update page visit with exit time
@@ -81,6 +99,7 @@ export const trackClick = async (page: string, clickType: string, clickTarget: s
   try {
     const userAgent = navigator.userAgent;
 
+    // Track in Supabase
     await supabase
       .from('page_clicks')
       .insert({
@@ -89,6 +108,17 @@ export const trackClick = async (page: string, clickType: string, clickTarget: s
         element_text: clickTarget,
         user_agent: userAgent
       });
+
+    // Track specific actions in Facebook Pixel
+    if (clickType === 'cta' || clickType === 'signup') {
+      FacebookPixelEvents.Lead({ content_name: clickTarget });
+    } else if (clickType === 'demo' || clickTarget.toLowerCase().includes('demo')) {
+      FacebookPixelEvents.RequestDemo(page);
+    } else if (clickType === 'pricing' || clickTarget.toLowerCase().includes('tarif')) {
+      FacebookPixelEvents.ViewPricing();
+    } else if (clickType === 'contact') {
+      FacebookPixelEvents.Contact('button');
+    }
   } catch (error) {
     console.error('Error in trackClick:', error);
   }
