@@ -231,7 +231,7 @@ export default function Home() {
           <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
             <div className="aspect-video">
               <iframe
-                src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2FLeMarch%C3%A9Public%2Fvideos%2F1234567890%2F&show_text=false&width=560&t=0"
+                src="https://www.facebook.com/plugins/video.php?height=304&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1347758950405127%2F&show_text=false&width=560&t=0"
                 className="w-full h-full"
                 style={{ border: 'none', overflow: 'hidden' }}
                 scrolling="no"
@@ -241,9 +241,6 @@ export default function Home() {
               />
             </div>
           </div>
-          <p className="text-center text-sm text-gray-500 mt-4">
-            Remplacez l'URL dans le code par votre URL de vidéo Facebook
-          </p>
         </div>
       </Section>
 
