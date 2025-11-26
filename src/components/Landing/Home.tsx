@@ -221,32 +221,29 @@ export default function Home() {
       <Section className="py-16 bg-white">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
-            Découvrez l'interface
+            Découvrez l'interface en vidéo
           </h2>
           <p className="text-lg text-gray-600">
             Une solution intuitive et puissante pour gagner plus de marchés
           </p>
         </div>
         <div className="max-w-5xl mx-auto">
-          <a
-            href="https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6926384f76cd823d57d4746d.mp4"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative block rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
-          >
-            <img
-              src="/caroussel 6.png"
-              alt="Miniature vidéo démo"
-              className="w-full aspect-video object-cover"
-            />
-            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-              <div className="w-20 h-20 bg-[#F77F00] group-hover:bg-[#E06F00] rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-2xl">
-                <svg className="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
+            <div className="aspect-video">
+              <iframe
+                src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2FLeMarch%C3%A9Public%2Fvideos%2F1234567890%2F&show_text=false&width=560&t=0"
+                className="w-full h-full"
+                style={{ border: 'none', overflow: 'hidden' }}
+                scrolling="no"
+                frameBorder="0"
+                allowFullScreen={true}
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+              />
             </div>
-          </a>
+          </div>
+          <p className="text-center text-sm text-gray-500 mt-4">
+            Remplacez l'URL dans le code par votre URL de vidéo Facebook
+          </p>
         </div>
       </Section>
 
