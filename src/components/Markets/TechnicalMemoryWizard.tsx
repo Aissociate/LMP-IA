@@ -182,6 +182,11 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
   const [idealFormat, setIdealFormat] = useState<string>('');
   const [loadingIdealFormat, setLoadingIdealFormat] = useState(false);
 
+  // Subscription state
+  const [subscriptionInfo, setSubscriptionInfo] = useState<any>(null);
+  const [loadingSubscription, setLoadingSubscription] = useState(true);
+  const [canCreateMemory, setCanCreateMemory] = useState(false);
+
   // Contextes
   const [marketContext, setMarketContext] = useState<any>(null);
   const [knowledgeContext, setKnowledgeContext] = useState<any[]>([]);
@@ -208,6 +213,7 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
   React.useEffect(() => {
     if (isOpen) {
       if (user && user.id) {
+        checkSubscription();
         loadContexts();
         loadExistingSections();
         // Charger le prompt global depuis localStorage
@@ -233,6 +239,7 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
         // Réessayer après un court délai si l'utilisateur n'est pas encore chargé
         const timer = setTimeout(() => {
           if (user && user.id) {
+            checkSubscription();
             loadContexts();
             loadExistingSections();
           }
@@ -286,6 +293,65 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
       logService.addLog(`❌ Erreur lors du chargement des sections: ${(error as Error).message}`);
     } finally {
       setSectionsLoading(false);
+    }
+  };
+
+  const checkSubscription = async () => {
+    setLoadingSubscription(true);
+    try {
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('is_admin')
+        .eq('user_id', user!.id)
+        .single();
+
+      if (profile?.is_admin) {
+        setCanCreateMemory(true);
+        setSubscriptionInfo({ type: 'admin' });
+        setLoadingSubscription(false);
+        return;
+      }
+
+      const { data: subscription } = await supabase
+        .from('user_subscriptions')
+        .select(`
+          *,
+          plan:subscription_plans(*)
+        `)
+        .eq('user_id', user!.id)
+        .eq('status', 'active')
+        .single();
+
+      if (!subscription) {
+        setCanCreateMemory(false);
+        setSubscriptionInfo({ type: 'none' });
+        setLoadingSubscription(false);
+        return;
+      }
+
+      const { data: memoriesThisMonth } = await supabase
+        .from('memo_sections')
+        .select('market_id')
+        .eq('user_id', user!.id)
+        .gte('created_at', subscription.current_period_start)
+        .lt('created_at', subscription.current_period_end);
+
+      const uniqueMarkets = new Set(memoriesThisMonth?.map(m => m.market_id) || []).size;
+      const limit = subscription.plan.monthly_memories_limit;
+
+      setCanCreateMemory(uniqueMarkets < limit);
+      setSubscriptionInfo({
+        type: 'subscription',
+        planName: subscription.plan.name,
+        used: uniqueMarkets,
+        limit: limit,
+        remaining: limit - uniqueMarkets
+      });
+    } catch (error) {
+      console.error('Error checking subscription:', error);
+      setCanCreateMemory(false);
+    } finally {
+      setLoadingSubscription(false);
     }
   };
 
@@ -766,6 +832,34 @@ Consignes:
           </div>
           </div>
 
+          {/* Bandeau d'abonnement */}
+          {!loadingSubscription && !canCreateMemory && subscriptionInfo && (
+            <div className={`mt-2 px-3 py-2 rounded-lg border ${isDark ? 'bg-red-900/20 border-red-700' : 'bg-red-50 border-red-200'} flex items-center gap-2`}>
+              <Lock className="w-4 h-4 text-red-600" />
+              <div className="flex-1">
+                {subscriptionInfo.type === 'none' ? (
+                  <span className={`text-sm ${isDark ? 'text-red-300' : 'text-red-700'}`}>
+                    ⚠️ <strong>Aucun abonnement actif.</strong> Contactez un administrateur pour créer des mémoires techniques.
+                  </span>
+                ) : subscriptionInfo.type === 'subscription' ? (
+                  <span className={`text-sm ${isDark ? 'text-red-300' : 'text-red-700'}`}>
+                    ⚠️ <strong>Limite mensuelle atteinte :</strong> {subscriptionInfo.used}/{subscriptionInfo.limit} mémoires utilisés.
+                    Votre plan <strong>{subscriptionInfo.planName}</strong> ne permet plus de créer de nouveaux mémoires ce mois-ci.
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          )}
+
+          {!loadingSubscription && canCreateMemory && subscriptionInfo?.type === 'subscription' && (
+            <div className={`mt-2 px-3 py-2 rounded-lg border ${isDark ? 'bg-green-900/20 border-green-700' : 'bg-green-50 border-green-200'} flex items-center gap-2`}>
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              <span className={`text-xs ${isDark ? 'text-green-300' : 'text-green-700'}`}>
+                Plan <strong>{subscriptionInfo.planName}</strong> : {subscriptionInfo.remaining} mémoire(s) restant(s) ce mois
+              </span>
+            </div>
+          )}
+
           {/* Format idéal - Bandeau informatif */}
           {loadingIdealFormat && (
             <div className={`mt-2 px-3 py-2 rounded-lg border ${isDark ? 'bg-blue-900/20 border-blue-700' : 'bg-blue-50 border-blue-200'} flex items-center gap-2`}>
@@ -929,13 +1023,13 @@ Consignes:
                 {emptySections.length > 0 && (
                   <button
                     onClick={handleGenerateAll}
-                    disabled={generatingAll || isBlocked}
+                    disabled={generatingAll || isBlocked || !canCreateMemory}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all disabled:opacity-50 shadow-sm ${
-                      isBlocked
+                      isBlocked || !canCreateMemory
                         ? 'bg-gray-400 text-white'
                         : 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white'
                     }`}
-                    title={`Générer toutes les sections vides (${emptySections.length})`}
+                    title={!canCreateMemory ? 'Abonnement requis pour générer' : `Générer toutes les sections vides (${emptySections.length})`}
                   >
                     {isBlocked ? (
                       <>
@@ -978,12 +1072,13 @@ Consignes:
 
                 <button
                   onClick={() => handleGenerateSection(activeSection)}
-                  disabled={currentSection?.isGenerating || !customPrompt.trim() || isBlocked}
+                  disabled={currentSection?.isGenerating || !customPrompt.trim() || isBlocked || !canCreateMemory}
                   className={`flex items-center gap-2 px-5 py-2 rounded-lg font-medium transition-all disabled:opacity-50 shadow-sm ${
-                    isBlocked
+                    isBlocked || !canCreateMemory
                       ? 'bg-gray-400 text-white'
                       : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white'
                   }`}
+                  title={!canCreateMemory ? 'Abonnement requis pour générer' : ''}
                 >
                   {isBlocked ? (
                     <>
