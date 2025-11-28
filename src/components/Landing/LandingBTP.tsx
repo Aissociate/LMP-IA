@@ -102,67 +102,215 @@ export const LandingBTP: React.FC = () => {
         </div>
       </header>
 
-      <Section className="py-16 sm:py-24">
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-            <span className="text-xl">🎁</span>
-            1 mémoire IA offert pour commencer
-          </div>
-          <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl animate-in fade-in slide-in-from-bottom-4 duration-700 mb-6">
-            Remportez plus de marchés BTP à La Réunion
-          </h1>
-          <p className="mx-auto mt-4 max-w-3xl text-gray-600 text-xl mb-8">
-            CINOR, TCO, CIREST, Région Réunion, communes 974 : L'IA qui génère vos mémoires techniques gagnants
+      {/* URGENCE BANNER */}
+      <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 py-4 animate-pulse">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-white font-black text-base md:text-lg">
+            🔥 OFFRE RÉSERVÉE AUX NOUVEAUX UTILISATEURS BTP • Accès prioritaire 🔥
           </p>
+        </div>
+      </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button
-              className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90 text-lg px-8 py-4"
-              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
-            >
-              🎁 Obtenir mon mémoire IA offert
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-            <Button
-              className="border-2 border-gray-300 bg-white text-gray-900 hover:bg-gray-50 text-lg px-8 py-4"
-              onClick={() => navigate('/login')}
-            >
-              Accéder à mon compte
-            </Button>
-          </div>
-
-          {/* Social Proof */}
-          <div className="mt-12">
-            <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-4">
-              <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 border-2 border-white"
-                  />
-                ))}
+      {/* HERO SECTION - FULL WIDTH */}
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-red-500 text-white px-6 py-3 rounded-full text-sm font-bold mb-8 shadow-lg animate-pulse">
+                <span className="text-2xl">🚧</span>
+                Accès prioritaire entreprises BTP
               </div>
-              <span>Plus de 50 entreprises BTP de La Réunion nous font confiance</span>
+
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-8">
+                Vous perdez des marchés BTP <span className="text-red-600">à cause d'un dossier</span>…
+              </h1>
+
+              <p className="text-2xl md:text-3xl font-semibold text-gray-300 mb-8">
+                Et pas à cause de <span className="text-[#F77F00] font-bold">vos prix</span>.
+              </p>
+
+              <div className="bg-blue-600 border-l-8 border-blue-400 p-6 rounded-lg mb-8 shadow-xl">
+                <p className="text-xl font-bold">
+                  Plus de <span className="text-3xl text-[#F77F00]">2000 mémoires</span> générés via LMP<br/>
+                  avec une <span className="text-green-400">nette augmentation du score final</span><br/>
+                  grâce à l'analyse automatique du DCE.
+                </p>
+              </div>
+
+              <Button
+                className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all w-full lg:w-auto"
+                onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              >
+                👉 Je génère mon 1er mémoire maintenant
+                <ArrowRight className="w-6 h-6" />
+              </Button>
+
+              <p className="mt-4 text-sm text-gray-400">Sans CB • Sans engagement • Résultat en 48h</p>
             </div>
-            <div className="flex flex-wrap justify-center gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-gray-600">Sans carte bancaire</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-gray-600">Sans engagement</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-gray-600">Résultat en 48h</span>
+
+            <div className="relative">
+              <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-[#F77F00]">
+                <iframe
+                  src="https://www.facebook.com/plugins/video.php?height=304&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1347758950405127%2F&show_text=false&width=560&t=0"
+                  className="w-full h-full"
+                  style={{ border: 'none', overflow: 'hidden' }}
+                  scrolling="no"
+                  frameBorder="0"
+                  allowFullScreen={true}
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                />
               </div>
             </div>
           </div>
         </div>
-      </Section>
+      </div>
 
-      {/* Video Demo Section */}
+      {/* BIG DOMINO - FULL WIDTH */}
+      <div className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-8 leading-tight">
+              Dans le BTP, le gagnant n'est pas <span className="text-red-600">le moins cher</span>.
+            </h2>
+            <p className="text-3xl md:text-4xl font-bold text-gray-700">
+              C'est celui qui coche le plus de <span className="text-[#F77F00]">critères de notation</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* STORY SECTION - FULL WIDTH */}
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-white p-10 md:p-16 rounded-3xl shadow-2xl border-l-8 border-[#F77F00]">
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 leading-relaxed">
+                Nos clients BTP nous disent tous la même chose :
+              </p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 italic mb-6">
+                « Ils faisaient de <span className="text-green-600">super chantiers</span>…<br/>
+                mais des <span className="text-red-600">dossiers moyens</span>. »
+              </p>
+              <p className="text-3xl md:text-4xl font-black text-[#F77F00]">
+                LMP a inversé l'équation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SECRET - FULL WIDTH */}
+      <div className="bg-gradient-to-br from-[#F77F00] via-orange-500 to-[#F77F00] text-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-5xl mx-auto text-center">
+            <div className="inline-block bg-white text-[#F77F00] px-8 py-4 rounded-full text-2xl font-black mb-8 shadow-xl">
+              🚧 IMPACT IMMÉDIAT
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-black mb-6">
+              Notre IA lit vos pièces, détecte les incohérences (BPU compris)
+            </h2>
+            <p className="text-3xl md:text-4xl font-bold mb-12">
+              et génère un mémoire calibré pour gagner.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">❌</div>
+                <p className="text-2xl font-bold">Repère les oublis</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">⚠️</div>
+                <p className="text-2xl font-bold">Détecte les erreurs</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">🔍</div>
+                <p className="text-2xl font-bold">Identifie les points faibles</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">🛡️</div>
+                <p className="text-2xl font-bold">Prévient les non-conformités</p>
+              </div>
+            </div>
+
+            <div className="bg-white text-gray-900 p-8 rounded-2xl shadow-2xl">
+              <p className="text-2xl font-bold">
+                Analyse DCE + BPU • Cohérence garantie • Export Word/PDF
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* OFFER STACK - FULL WIDTH */}
+      <div className="bg-gradient-to-br from-green-600 via-green-500 to-green-600 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-block bg-white text-green-600 px-8 py-4 rounded-full text-2xl font-black mb-6 shadow-xl">
+                🎁 AVEC VOTRE ACCÈS
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-4">
+                Tout ce dont vous avez besoin :
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">✅</span>
+                  <span className="text-2xl font-bold">1 mémoire offert</span>
+                </div>
+                <p className="text-lg text-green-100">Testez sans engagement</p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">📊</span>
+                  <span className="text-2xl font-bold">Analyse DCE + BPU</span>
+                </div>
+                <p className="text-lg text-green-100">Détection des incohérences</p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">🎯</span>
+                  <span className="text-2xl font-bold">Score GO/NO-GO IA</span>
+                </div>
+                <p className="text-lg text-green-100">Sachez si vous devez candidater</p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">🎓</span>
+                  <span className="text-2xl font-bold">Support + formations</span>
+                </div>
+                <p className="text-lg text-green-100">Accompagnement complet inclus</p>
+              </div>
+            </div>
+
+            <div className="bg-white/20 backdrop-blur-sm p-6 rounded-2xl border-2 border-white mb-8">
+              <p className="text-2xl font-bold text-center">
+                📥 Export Word/PDF • ⚡ Résultat en 48h • 🔒 Sans CB
+              </p>
+            </div>
+
+            <div className="text-center">
+              <Button
+                className="bg-white text-green-600 hover:bg-gray-100 text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all mb-4"
+                onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              >
+                👉 Je génère mon 1er mémoire maintenant
+                <ArrowRight className="w-6 h-6" />
+              </Button>
+              <p className="text-xl font-bold animate-pulse bg-red-600 py-3 px-6 rounded-full inline-block">
+                🔥 Accès prioritaire aux nouvelles entreprises BTP
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Section className="py-16 bg-white max-w-7xl">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
