@@ -97,31 +97,58 @@ export const LandingArtisans: React.FC = () => {
       <Section id="hero" className="py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              <span className="text-xl">🎁</span>
-              1 mémoire IA offert pour commencer
+            <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              <span className="text-xl">🔥</span>
+              Offre limitée — accessible aujourd'hui seulement
             </div>
             <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-              Gagnez vos appels d'offres artisans à La Réunion sans la paperasse
+              Vous travaillez trop pour perdre des marchés publics que vous pourriez gagner en 10 minutes
             </h1>
-            <p className="mt-6 text-lg text-gray-600 md:text-xl">
-              Le Marché Public.fr, l'IA pensée pour les artisans réunionnais : lit les dossiers CINOR, TCO, CIREST et communes 974, remplit les formulaires et rédige les mémoires à votre place. Vous gagnez du temps, du calme, et plus de marchés.
-            </p>
-            <div className="mt-10 flex flex-col items-center lg:items-start gap-3 sm:flex-row">
+            <div className="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+              <p className="text-sm font-semibold text-blue-900">
+                Plus de 500 entreprises, 2000 mémoires générés et +30 % de réussite constaté
+              </p>
+            </div>
+            <div className="mt-8 p-6 bg-gray-50 rounded-xl border-2 border-gray-200">
+              <p className="text-xl font-bold text-gray-900 mb-4">
+                Ce n'est pas les marchés publics qui sont compliqués.<br/>
+                C'est la manière dont on vous apprend à y répondre.
+              </p>
+              <p className="text-gray-700 italic mb-4">
+                "Des dizaines d'artisans nous ont dit : 'J'ai arrêté les marchés, trop prise de tête.'<br/>
+                Après LMP ? Ils déposent 3 fois plus de dossiers… sans sacrifier leurs soirées."
+              </p>
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                <p className="text-lg font-semibold text-[#F77F00] mb-2">🔥 Le Secret</p>
+                <p className="text-gray-900 font-medium mb-2">Une IA qui lit le DCE ET rédige votre mémoire complet.</p>
+                <div className="space-y-1 text-sm text-gray-700">
+                  <p>→ Vous n'interprétez rien</p>
+                  <p>→ Vous ne rédigez rien</p>
+                  <p>→ Vous cliquez</p>
+                  <p>→ Ça sort</p>
+                </div>
+                <p className="mt-2 text-sm font-semibold text-gray-900">GO/NO-GO inclus + export instantané.</p>
+              </div>
+            </div>
+            <div className="mt-8 p-6 bg-green-50 rounded-xl border-2 border-green-200">
+              <p className="text-lg font-bold text-green-900 mb-3">🎁 Aujourd'hui, vous obtenez :</p>
+              <ul className="space-y-2 text-sm text-green-800">
+                <li className="flex items-center gap-2"><span className="text-green-600">✔</span> 1 mémoire gratuit (sans CB)</li>
+                <li className="flex items-center gap-2"><span className="text-green-600">✔</span> Score GO/NO-GO</li>
+                <li className="flex items-center gap-2"><span className="text-green-600">✔</span> Analyse DCE/BPU</li>
+                <li className="flex items-center gap-2"><span className="text-green-600">✔</span> Support + Formations</li>
+              </ul>
+            </div>
+            <div className="mt-8 flex flex-col items-center lg:items-start gap-3">
               <Button
-                className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
+                className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90 text-lg px-8 py-4 shadow-lg"
                 onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
               >
-                🎁 Obtenir mon mémoire IA offert
-              </Button>
-              <Button
-                className="border border-gray-300 bg-white text-gray-900 hover:bg-gray-50"
-                onClick={() => document.getElementById('process')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Voir comment ça marche
+                👉 Je veux mon 1er mémoire offert
+                <ArrowRight className="w-5 h-5" />
               </Button>
             </div>
-            <p className="mt-5 text-sm text-gray-500">Sans CB • Sans engagement • Résultat en 48h</p>
+            <p className="mt-5 text-sm text-red-600 font-semibold animate-pulse">⏳ Offre limitée — accessible aujourd'hui seulement</p>
           </div>
           <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
             <div className="aspect-video">
