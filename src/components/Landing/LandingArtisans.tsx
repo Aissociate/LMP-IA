@@ -94,10 +94,10 @@ export const LandingArtisans: React.FC = () => {
       </header>
 
       {/* URGENCE BANNER */}
-      <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 py-3 animate-pulse">
+      <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 py-4 animate-pulse">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-white font-bold text-sm md:text-base">
-            🔥 OFFRE DE LANCEMENT : -50% sur votre abonnement jusqu'au 31 décembre 2024 🔥
+          <p className="text-white font-black text-base md:text-lg">
+            🎁 OFFRE DE LANCEMENT : 1 Réponse à un Marché OFFERTE • Limitée aux 5 premiers artisans 🎁
           </p>
         </div>
       </div>
@@ -107,9 +107,9 @@ export const LandingArtisans: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 bg-red-500 text-white px-6 py-3 rounded-full text-sm font-bold mb-8 shadow-lg">
-                <span className="text-2xl">🔥</span>
-                Offre limitée — Plus que 48h
+              <div className="inline-flex items-center gap-2 bg-red-500 text-white px-6 py-3 rounded-full text-sm font-bold mb-8 shadow-lg animate-pulse">
+                <span className="text-2xl">🎁</span>
+                Plus que 5 places disponibles
               </div>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-8">
@@ -128,15 +128,28 @@ export const LandingArtisans: React.FC = () => {
                 </p>
               </div>
 
+              <div className="bg-gradient-to-r from-green-600 to-green-500 p-6 rounded-2xl mb-6 shadow-2xl border-2 border-green-400">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-4xl">🎁</span>
+                  <p className="text-2xl font-black text-white">OFFRE DE LANCEMENT</p>
+                </div>
+                <p className="text-xl font-bold text-white mb-2">
+                  1 Réponse à un Marché Complète OFFERTE
+                </p>
+                <p className="text-green-100 text-lg">
+                  (Valeur : 199€ HT) • Limitée aux 5 premiers artisans
+                </p>
+              </div>
+
               <Button
                 className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all w-full lg:w-auto"
                 onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
               >
-                👉 Je veux mon 1er mémoire offert
+                🎁 Je réserve ma place maintenant
                 <ArrowRight className="w-6 h-6" />
               </Button>
 
-              <p className="mt-4 text-sm text-gray-400">Sans CB • Sans engagement • Résultat en 48h</p>
+              <p className="mt-4 text-sm text-gray-400">Sans CB • Sans engagement • Plus que 5 places</p>
             </div>
 
             <div className="relative">
@@ -235,23 +248,34 @@ export const LandingArtisans: React.FC = () => {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <div className="inline-block bg-white text-green-600 px-8 py-4 rounded-full text-2xl font-black mb-6 shadow-xl">
-                🎁 OFFRE DE LANCEMENT
+                🎁 OFFRE DE LANCEMENT EXCEPTIONNELLE
               </div>
-              <h2 className="text-4xl md:text-5xl font-black mb-4">
-                Aujourd'hui, vous obtenez :
+              <h2 className="text-4xl md:text-5xl font-black mb-6">
+                Vous êtes parmi les 5 premiers artisans ?
               </h2>
-              <p className="text-2xl font-bold text-green-100">
-                -50% sur tous les abonnements jusqu'au 31/12/2024
+              <div className="bg-white/20 backdrop-blur-sm p-8 rounded-3xl border-4 border-white mb-8">
+                <p className="text-3xl md:text-4xl font-black mb-4">
+                  1 RÉPONSE À UN MARCHÉ COMPLÈTE
+                </p>
+                <p className="text-2xl font-bold mb-2">
+                  100% OFFERTE
+                </p>
+                <p className="text-xl text-green-100">
+                  (Valeur réelle : 199€ HT)
+                </p>
+              </div>
+              <p className="text-xl font-bold text-white mb-2">
+                + Tout ce qui est inclus normalement :
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="text-4xl">✅</span>
-                  <span className="text-2xl font-bold">1 mémoire gratuit</span>
+                  <span className="text-4xl">🎯</span>
+                  <span className="text-2xl font-bold">Mémoire technique complet</span>
                 </div>
-                <p className="text-lg text-green-100">Sans carte bancaire</p>
+                <p className="text-lg text-green-100">Rédigé par l'IA selon le DCE</p>
               </div>
 
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
@@ -264,7 +288,7 @@ export const LandingArtisans: React.FC = () => {
 
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="text-4xl">✅</span>
+                  <span className="text-4xl">📊</span>
                   <span className="text-2xl font-bold">Analyse DCE/BPU</span>
                 </div>
                 <p className="text-lg text-green-100">L'IA décode tout pour vous</p>
@@ -272,23 +296,29 @@ export const LandingArtisans: React.FC = () => {
 
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="text-4xl">✅</span>
+                  <span className="text-4xl">🎓</span>
                   <span className="text-2xl font-bold">Support + Formations</span>
                 </div>
                 <p className="text-lg text-green-100">On vous accompagne de A à Z</p>
               </div>
             </div>
 
+            <div className="bg-white/20 backdrop-blur-sm p-6 rounded-2xl border-2 border-white mb-8">
+              <p className="text-2xl font-bold text-center">
+                📥 Export instantané Word/PDF • ⚡ Livraison en 48h • 🔒 Sans CB
+              </p>
+            </div>
+
             <div className="text-center">
               <Button
-                className="bg-white text-green-600 hover:bg-gray-100 text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all"
+                className="bg-white text-green-600 hover:bg-gray-100 text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all mb-4"
                 onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
               >
-                👉 Je profite de l'offre maintenant
+                🎁 Je réserve ma réponse OFFERTE maintenant
                 <ArrowRight className="w-6 h-6" />
               </Button>
-              <p className="mt-6 text-xl font-bold animate-pulse">
-                ⏳ Plus que 48h pour profiter de -50%
+              <p className="text-xl font-bold animate-pulse bg-red-600 py-3 px-6 rounded-full inline-block">
+                🔥 ATTENTION : Plus que 5 places disponibles
               </p>
             </div>
           </div>
