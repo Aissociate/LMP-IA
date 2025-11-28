@@ -101,70 +101,210 @@ export const LandingPME: React.FC = () => {
         </div>
       </header>
 
-      {/* HERO SECTION */}
-      <Section id="hero" className="py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              <span className="text-xl">🎁</span>
-              1 mémoire IA offert pour commencer
-            </div>
-            <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-              L'IA stratégique qui fait gagner les marchés publics de votre PME à La Réunion
-            </h1>
-            <p className="mt-6 text-lg text-gray-600 md:text-xl">
-              Le Marché Public.fr équipe les dirigeants de PME réunionnaises d'une IA capable d'analyser les appels d'offres CINOR, TCO, CIREST et Région 974, rédiger et optimiser chaque réponse pour gagner plus souvent, plus vite.
-            </p>
-            <div className="mt-10 flex flex-col items-center lg:items-start gap-3 sm:flex-row">
+      {/* URGENCE BANNER */}
+      <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 py-4 animate-pulse">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-white font-black text-base md:text-lg">
+            🎁 OFFRE LIMITÉE : 1 Mémoire Technique Offert • Places limitées 🎁
+          </p>
+        </div>
+      </div>
+
+      {/* HERO SECTION - FULL WIDTH */}
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-red-500 text-white px-6 py-3 rounded-full text-sm font-bold mb-8 shadow-lg animate-pulse">
+                <span className="text-2xl">🔥</span>
+                Places limitées pour l'accompagnement trimestriel
+              </div>
+
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-8">
+                Vous répondez aux marchés publics… <span className="text-[#F77F00]">mais vos concurrents gagnent</span> ?
+              </h1>
+
+              <p className="text-2xl md:text-3xl font-semibold text-gray-300 mb-8">
+                Voilà pourquoi.
+              </p>
+
+              <div className="bg-blue-600 border-l-8 border-blue-400 p-6 rounded-lg mb-8 shadow-xl">
+                <p className="text-xl font-bold">
+                  Les PME utilisant LMP constatent en moyenne<br/>
+                  <span className="text-3xl text-[#F77F00]">+30% de réussite</span><br/>
+                  grâce à un système structuré et automatisé.
+                </p>
+              </div>
+
               <Button
-                className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
+                className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all w-full lg:w-auto"
                 onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
               >
-                🎁 Obtenir mon mémoire IA offert
+                👉 Je teste gratuitement
+                <ArrowRight className="w-6 h-6" />
               </Button>
-              <Button
-                className="border border-gray-300 bg-white text-gray-900 hover:bg-gray-50"
-                onClick={() => document.getElementById('solution')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Découvrir la méthode
-              </Button>
-            </div>
-            <p className="mt-5 text-sm text-gray-500">Sans CB • Sans engagement • Résultat en 48h</p>
-          </div>
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
-            <div className="aspect-video">
-              <iframe
-                src="https://www.facebook.com/plugins/video.php?height=304&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1347758950405127%2F&show_text=false&width=560&t=0"
-                className="w-full h-full"
-                style={{ border: 'none', overflow: 'hidden' }}
-                scrolling="no"
-                frameBorder="0"
-                allowFullScreen={true}
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-              />
-            </div>
-          </div>
-        </div>
-      </Section>
 
-      {/* PROBLEME */}
-      <Section id="problem" className="py-20 bg-gray-900 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl">Votre PME réunionnaise perd des marchés CINOR, TCO, CIREST… sans comprendre pourquoi ?</h2>
-          <p className="mt-6 text-gray-300 text-lg">
-            Vous avez la compétence, les références réunionnaises et les équipes. Mais vos concurrents, souvent des groupes métropolitains, ont un service achats, des experts marchés publics et du temps. Vous, non. Le Marché Public.fr rééquilibre la balance dans le 974.
-          </p>
-          <p className="mt-4 text-[#F77F00] font-medium">Transformez vos réponses marchés 974 en avantage concurrentiel durable.</p>
-          <div className="mt-8">
-            <Button
-              className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
-              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
-            >
-              Voir la solution <ArrowRight className="w-4 h-4" />
-            </Button>
+              <p className="mt-4 text-sm text-gray-400">Sans CB • Sans engagement • Résultat en 48h</p>
+            </div>
+
+            <div className="relative">
+              <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-[#F77F00]">
+                <iframe
+                  src="https://www.facebook.com/plugins/video.php?height=304&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1347758950405127%2F&show_text=false&width=560&t=0"
+                  className="w-full h-full"
+                  style={{ border: 'none', overflow: 'hidden' }}
+                  scrolling="no"
+                  frameBorder="0"
+                  allowFullScreen={true}
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </Section>
+      </div>
+
+      {/* BIG DOMINO - FULL WIDTH */}
+      <div className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-8 leading-tight">
+              La plupart des PME n'échouent pas par <span className="text-red-600">manque de qualité</span>…
+            </h2>
+            <p className="text-3xl md:text-4xl font-bold text-gray-700">
+              Mais par <span className="text-[#F77F00]">absence de méthode</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* STORY SECTION - FULL WIDTH */}
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-white p-10 md:p-16 rounded-3xl shadow-2xl border-l-8 border-[#F77F00]">
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 leading-relaxed">
+                Nos utilisateurs sont passés d'un taux de réussite <span className="text-red-600">imprévisible</span>
+              </p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 leading-relaxed">
+                À un système <span className="text-green-600">clair</span> :<br/>
+                <span className="text-[#F77F00]">Quels marchés viser, comment optimiser, comment gagner.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SECRET - FULL WIDTH */}
+      <div className="bg-gradient-to-br from-[#F77F00] via-orange-500 to-[#F77F00] text-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-5xl mx-auto text-center">
+            <div className="inline-block bg-white text-[#F77F00] px-8 py-4 rounded-full text-2xl font-black mb-8 shadow-xl">
+              🔥 LE SECRET
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-black mb-6">
+              LMP n'est pas une IA qui écrit.
+            </h2>
+            <p className="text-3xl md:text-4xl font-bold mb-12">
+              C'est un copilote qui analyse les critères de notation<br/>et optimise chaque section.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">🎯</div>
+                <p className="text-2xl font-bold mb-3">Market Sentinel</p>
+                <p className="text-lg text-white/90">Score GO/NO-GO intelligent</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">🧠</div>
+                <p className="text-2xl font-bold mb-3">Market Light/Pro</p>
+                <p className="text-lg text-white/90">Mémoire IA avancé optimisé</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">⚡</div>
+                <p className="text-2xl font-bold mb-3">Assistant IA</p>
+                <p className="text-lg text-white/90">Analyse des pièces en 1 clic</p>
+              </div>
+            </div>
+
+            <div className="bg-white text-gray-900 p-8 rounded-2xl shadow-2xl">
+              <p className="text-2xl font-bold">
+                Export Word/PDF • Analyse DCE/BPU • Formations incluses
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* OFFER STACK - FULL WIDTH */}
+      <div className="bg-gradient-to-br from-green-600 via-green-500 to-green-600 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-block bg-white text-green-600 px-8 py-4 rounded-full text-2xl font-black mb-6 shadow-xl">
+                🎁 OFFRE PME
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-4">
+                Aujourd'hui, vous obtenez :
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">✅</span>
+                  <span className="text-2xl font-bold">1 mémoire offert</span>
+                </div>
+                <p className="text-lg text-green-100">Testez sans engagement</p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">📊</span>
+                  <span className="text-2xl font-bold">Analyse DCE complète</span>
+                </div>
+                <p className="text-lg text-green-100">Critères de notation décodés</p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">🎯</span>
+                  <span className="text-2xl font-bold">Score GO/NO-GO illimité</span>
+                </div>
+                <p className="text-lg text-green-100">Plan PME uniquement</p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">👥</span>
+                  <span className="text-2xl font-bold">Espace équipe</span>
+                </div>
+                <p className="text-lg text-green-100">Formations + collaboration</p>
+              </div>
+            </div>
+
+            <div className="bg-white/20 backdrop-blur-sm p-6 rounded-2xl border-2 border-white mb-8">
+              <p className="text-2xl font-bold text-center">
+                📥 Export Word/PDF • ⚡ Point de contact trimestriel • 🔒 Sans CB
+              </p>
+            </div>
+
+            <div className="text-center">
+              <Button
+                className="bg-white text-green-600 hover:bg-gray-100 text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all mb-4"
+                onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              >
+                👉 Je teste gratuitement
+                <ArrowRight className="w-6 h-6" />
+              </Button>
+              <p className="text-xl font-bold animate-pulse bg-red-600 py-3 px-6 rounded-full inline-block">
+                ⏳ Places limitées pour l'accompagnement trimestriel
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* SOLUTION */}
       <Section id="solution" className="py-20">
