@@ -93,78 +93,207 @@ export const LandingArtisans: React.FC = () => {
         </div>
       </header>
 
-      {/* HERO SECTION */}
-      <Section id="hero" className="py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              <span className="text-xl">🔥</span>
-              Offre limitée — accessible aujourd'hui seulement
-            </div>
-            <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-              Vous travaillez trop pour perdre des marchés publics que vous pourriez gagner en 10 minutes
-            </h1>
-            <div className="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-              <p className="text-sm font-semibold text-blue-900">
-                Plus de 500 entreprises, 2000 mémoires générés et +30 % de réussite constaté
-              </p>
-            </div>
-            <div className="mt-8 p-6 bg-gray-50 rounded-xl border-2 border-gray-200">
-              <p className="text-xl font-bold text-gray-900 mb-4">
-                Ce n'est pas les marchés publics qui sont compliqués.<br/>
-                C'est la manière dont on vous apprend à y répondre.
-              </p>
-              <p className="text-gray-700 italic mb-4">
-                "Des dizaines d'artisans nous ont dit : 'J'ai arrêté les marchés, trop prise de tête.'<br/>
-                Après LMP ? Ils déposent 3 fois plus de dossiers… sans sacrifier leurs soirées."
-              </p>
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <p className="text-lg font-semibold text-[#F77F00] mb-2">🔥 Le Secret</p>
-                <p className="text-gray-900 font-medium mb-2">Une IA qui lit le DCE ET rédige votre mémoire complet.</p>
-                <div className="space-y-1 text-sm text-gray-700">
-                  <p>→ Vous n'interprétez rien</p>
-                  <p>→ Vous ne rédigez rien</p>
-                  <p>→ Vous cliquez</p>
-                  <p>→ Ça sort</p>
-                </div>
-                <p className="mt-2 text-sm font-semibold text-gray-900">GO/NO-GO inclus + export instantané.</p>
+      {/* URGENCE BANNER */}
+      <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 py-3 animate-pulse">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-white font-bold text-sm md:text-base">
+            🔥 OFFRE DE LANCEMENT : -50% sur votre abonnement jusqu'au 31 décembre 2024 🔥
+          </p>
+        </div>
+      </div>
+
+      {/* HERO SECTION - FULL WIDTH */}
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-red-500 text-white px-6 py-3 rounded-full text-sm font-bold mb-8 shadow-lg">
+                <span className="text-2xl">🔥</span>
+                Offre limitée — Plus que 48h
               </div>
-            </div>
-            <div className="mt-8 p-6 bg-green-50 rounded-xl border-2 border-green-200">
-              <p className="text-lg font-bold text-green-900 mb-3">🎁 Aujourd'hui, vous obtenez :</p>
-              <ul className="space-y-2 text-sm text-green-800">
-                <li className="flex items-center gap-2"><span className="text-green-600">✔</span> 1 mémoire gratuit (sans CB)</li>
-                <li className="flex items-center gap-2"><span className="text-green-600">✔</span> Score GO/NO-GO</li>
-                <li className="flex items-center gap-2"><span className="text-green-600">✔</span> Analyse DCE/BPU</li>
-                <li className="flex items-center gap-2"><span className="text-green-600">✔</span> Support + Formations</li>
-              </ul>
-            </div>
-            <div className="mt-8 flex flex-col items-center lg:items-start gap-3">
+
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-8">
+                Vous travaillez <span className="text-[#F77F00]">trop</span> pour perdre des marchés publics
+              </h1>
+
+              <p className="text-xl md:text-2xl font-semibold text-gray-300 mb-8">
+                Que vous pourriez gagner en <span className="text-[#F77F00] font-bold">10 minutes</span>
+              </p>
+
+              <div className="bg-blue-600 border-l-8 border-blue-400 p-6 rounded-lg mb-8 shadow-xl">
+                <p className="text-xl font-bold">
+                  ✓ Plus de 500 entreprises<br/>
+                  ✓ 2000 mémoires générés<br/>
+                  ✓ +30% de réussite constaté
+                </p>
+              </div>
+
               <Button
-                className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90 text-lg px-8 py-4 shadow-lg"
+                className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all w-full lg:w-auto"
                 onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
               >
                 👉 Je veux mon 1er mémoire offert
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-6 h-6" />
               </Button>
+
+              <p className="mt-4 text-sm text-gray-400">Sans CB • Sans engagement • Résultat en 48h</p>
             </div>
-            <p className="mt-5 text-sm text-red-600 font-semibold animate-pulse">⏳ Offre limitée — accessible aujourd'hui seulement</p>
-          </div>
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
-            <div className="aspect-video">
-              <iframe
-                src="https://www.facebook.com/plugins/video.php?height=304&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1347758950405127%2F&show_text=false&width=560&t=0"
-                className="w-full h-full"
-                style={{ border: 'none', overflow: 'hidden' }}
-                scrolling="no"
-                frameBorder="0"
-                allowFullScreen={true}
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-              />
+
+            <div className="relative">
+              <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-[#F77F00]">
+                <iframe
+                  src="https://www.facebook.com/plugins/video.php?height=304&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1347758950405127%2F&show_text=false&width=560&t=0"
+                  className="w-full h-full"
+                  style={{ border: 'none', overflow: 'hidden' }}
+                  scrolling="no"
+                  frameBorder="0"
+                  allowFullScreen={true}
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </Section>
+      </div>
+
+      {/* BIG DOMINO - FULL WIDTH */}
+      <div className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-8 leading-tight">
+              Ce n'est pas les marchés publics qui sont <span className="text-[#F77F00]">compliqués</span>
+            </h2>
+            <p className="text-3xl md:text-4xl font-bold text-gray-700">
+              C'est la manière dont on vous apprend à y répondre.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* STORY SECTION - FULL WIDTH */}
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-white p-10 md:p-16 rounded-3xl shadow-2xl border-l-8 border-[#F77F00]">
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 italic mb-6 leading-relaxed">
+                "Des dizaines d'artisans nous ont dit :<br/>
+                <span className="text-red-600">'J'ai arrêté les marchés, trop prise de tête.'</span>
+              </p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 leading-relaxed">
+                Après LMP ?<br/>
+                <span className="text-green-600">Ils déposent 3 fois plus de dossiers…</span><br/>
+                <span className="text-[#F77F00]">sans sacrifier leurs soirées.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SECRET - FULL WIDTH */}
+      <div className="bg-gradient-to-br from-[#F77F00] via-orange-500 to-[#F77F00] text-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-5xl mx-auto text-center">
+            <div className="inline-block bg-white text-[#F77F00] px-8 py-4 rounded-full text-2xl font-black mb-8 shadow-xl">
+              🔥 LE SECRET
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-black mb-12">
+              Une IA qui lit le DCE ET rédige votre mémoire complet
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">🚫</div>
+                <p className="text-2xl font-bold">Vous n'interprétez rien</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">✍️</div>
+                <p className="text-2xl font-bold">Vous ne rédigez rien</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">👆</div>
+                <p className="text-2xl font-bold">Vous cliquez</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="text-6xl mb-4">🎉</div>
+                <p className="text-2xl font-bold">Ça sort</p>
+              </div>
+            </div>
+
+            <div className="bg-white text-gray-900 p-8 rounded-2xl shadow-2xl">
+              <p className="text-2xl font-bold">
+                GO/NO-GO inclus + Export instantané Word/PDF
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* OFFER STACK - FULL WIDTH */}
+      <div className="bg-gradient-to-br from-green-600 via-green-500 to-green-600 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-block bg-white text-green-600 px-8 py-4 rounded-full text-2xl font-black mb-6 shadow-xl">
+                🎁 OFFRE DE LANCEMENT
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-4">
+                Aujourd'hui, vous obtenez :
+              </h2>
+              <p className="text-2xl font-bold text-green-100">
+                -50% sur tous les abonnements jusqu'au 31/12/2024
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">✅</span>
+                  <span className="text-2xl font-bold">1 mémoire gratuit</span>
+                </div>
+                <p className="text-lg text-green-100">Sans carte bancaire</p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">✅</span>
+                  <span className="text-2xl font-bold">Score GO/NO-GO</span>
+                </div>
+                <p className="text-lg text-green-100">Sachez si vous devez candidater</p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">✅</span>
+                  <span className="text-2xl font-bold">Analyse DCE/BPU</span>
+                </div>
+                <p className="text-lg text-green-100">L'IA décode tout pour vous</p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border-2 border-white/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl">✅</span>
+                  <span className="text-2xl font-bold">Support + Formations</span>
+                </div>
+                <p className="text-lg text-green-100">On vous accompagne de A à Z</p>
+              </div>
+            </div>
+
+            <div className="text-center">
+              <Button
+                className="bg-white text-green-600 hover:bg-gray-100 text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all"
+                onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              >
+                👉 Je profite de l'offre maintenant
+                <ArrowRight className="w-6 h-6" />
+              </Button>
+              <p className="mt-6 text-xl font-bold animate-pulse">
+                ⏳ Plus que 48h pour profiter de -50%
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* PROBLEME */}
       <Section id="problem" className="py-20 bg-gray-900 text-white">
