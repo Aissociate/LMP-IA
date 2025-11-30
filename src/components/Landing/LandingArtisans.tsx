@@ -84,7 +84,7 @@ export const LandingArtisans: React.FC = () => {
             <img src="/logo1.png" alt="Le Marché Public.fr" className="h-[120px] w-auto" />
           </div>
           <Button
-            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] focus:ring-[#F77F00]"
           >
             💰 Gagner plus de marchés
@@ -143,7 +143,7 @@ export const LandingArtisans: React.FC = () => {
 
               <Button
                 className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all w-full lg:w-auto"
-                onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+                onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
               >
                 🎁 Je réserve ma place maintenant
                 <ArrowRight className="w-6 h-6" />
@@ -312,7 +312,7 @@ export const LandingArtisans: React.FC = () => {
             <div className="text-center">
               <Button
                 className="bg-white text-green-600 hover:bg-gray-100 text-2xl px-12 py-6 shadow-2xl transform hover:scale-105 transition-all mb-4"
-                onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+                onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
               >
                 🎁 Je réserve ma réponse OFFERTE maintenant
                 <ArrowRight className="w-6 h-6" />
@@ -336,7 +336,7 @@ export const LandingArtisans: React.FC = () => {
           <div className="mt-8">
             <Button
               className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
-              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
             >
               Voir la solution <ArrowRight className="w-4 h-4" />
             </Button>
@@ -369,7 +369,7 @@ export const LandingArtisans: React.FC = () => {
         <div className="mt-12 text-center">
           <Button
             className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
-            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
           >
             ⚡ Augmenter mon CA maintenant <ArrowRight className="w-4 h-4" />
           </Button>
@@ -396,7 +396,7 @@ export const LandingArtisans: React.FC = () => {
         <div className="mt-12 text-center">
           <Button
             className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
-            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
           >
             💼 Je réserve ma démo <ArrowRight className="w-4 h-4" />
           </Button>
@@ -413,7 +413,7 @@ export const LandingArtisans: React.FC = () => {
           <div className="mt-8">
             <Button
               className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
-              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
             >
               En savoir plus <ArrowRight className="w-4 h-4" />
             </Button>
@@ -645,7 +645,7 @@ export const LandingArtisans: React.FC = () => {
               <div>💼 Booster Expert 4h : +590€/mémoire</div>
             </div>
             <button
-              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
               className="w-full inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-semibold shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 border border-gray-300 bg-white text-gray-900 hover:bg-gray-50"
             >
               Commencer
@@ -698,7 +698,7 @@ export const LandingArtisans: React.FC = () => {
               <div>💼 Booster Expert 4h : +590€/mémoire</div>
             </div>
             <button
-              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
               className="w-full inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-semibold shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-white text-[#F77F00] border-2 border-[#F77F00] hover:bg-[#F77F00] hover:text-white"
             >
               Commencer
@@ -748,7 +748,7 @@ export const LandingArtisans: React.FC = () => {
               <div>🧠 Booster Senior 3j : +2490€/marché</div>
             </div>
             <button
-              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+              onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
               className="w-full inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-semibold shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 border border-gray-300 bg-white text-gray-900 hover:bg-gray-50"
             >
               Commencer
@@ -802,13 +802,13 @@ export const LandingArtisans: React.FC = () => {
         <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
           <Button
             className="bg-[#F77F00] text-white hover:bg-[#F77F00]/90"
-            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
           >
             ⚡ Décrocher mon prochain marché
           </Button>
           <Button
             className="border border-gray-300 bg-white text-gray-900 hover:bg-gray-50"
-            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
           >
             Demander un devis
           </Button>
@@ -825,7 +825,7 @@ export const LandingArtisans: React.FC = () => {
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:justify-center">
           <Button
             className="bg-white text-[#F77F00] hover:bg-white/90"
-            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe'}
+            onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
           >
             🚀 Voir ma démo maintenant
           </Button>
