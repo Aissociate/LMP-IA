@@ -714,6 +714,9 @@ Consignes:
     }
   };
 
+  const getFreeSectionsRemaining = () => 999;
+  const getAvailableCredits = () => 999;
+
   const currentSection = sectionService.getSectionById(sections, activeSection);
   const enabledSections = sections.filter(s => s.isEnabled !== false);
   const completedSections = sectionService.getCompletedSections(enabledSections);
