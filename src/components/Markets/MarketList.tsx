@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Calendar, Building, Euro, Clock, CheckCircle, XCircle, TrendingUp, FileText, Brain, BookOpen, Trophy, Archive, X, CreditCard as Edit3, Star, Download } from 'lucide-react';
+import { Plus, Calendar, Building, Euro, Clock, CheckCircle, XCircle, TrendingUp, FileText, Brain, BookOpen, Trophy, Archive, X, CreditCard as Edit3, Star, Download, AlertTriangle } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Market } from '../../types';
 import { BOAMPFavorite } from '../../types/boamp';

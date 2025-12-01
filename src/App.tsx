@@ -59,7 +59,7 @@ function AppContent() {
       case 'surveillance-marches':
         return <MarketSentinel />;
       case 'marche':
-        return <MarketListDebug />;
+        return <MarketList />;
       case 'assistant':
         return <Assistant />;
       case 'parametres':
