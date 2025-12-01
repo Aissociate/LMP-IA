@@ -40,22 +40,19 @@ export const useAuth = () => {
 
   const checkAdminStatus = async (userId: string) => {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('user_profiles')
-        .select('full_name, company')
+        .select('is_admin')
         .eq('user_id', userId)
-        .limit(1);
+        .maybeSingle();
 
-      if (data && data.length > 0) {
-        const profile = data[0];
-        const isUserAdmin = 
-          profile.company?.toLowerCase().includes('admin') ||
-          profile.full_name?.toLowerCase().includes('admin') ||
-          profile.company?.toLowerCase().includes('administrateur');
-        setIsAdmin(isUserAdmin);
-      } else {
+      if (error) {
+        console.error('Error checking admin status:', error);
         setIsAdmin(false);
+        return;
       }
+
+      setIsAdmin(data?.is_admin === true);
     } catch (error) {
       console.error('Error checking admin status:', error);
       setIsAdmin(false);

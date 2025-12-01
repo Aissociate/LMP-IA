@@ -26,6 +26,7 @@ export const MarketList: React.FC = () => {
   const [markets, setMarkets] = useState<Market[]>([]);
   const [favorites, setFavorites] = useState<BOAMPFavorite[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedMarketForAnalysis, setSelectedMarketForAnalysis] = useState<Market | null>(null);
   const [selectedMarketForTechnicalMemory, setSelectedMarketForTechnicalMemory] = useState<Market | null>(null);
@@ -50,10 +51,18 @@ export const MarketList: React.FC = () => {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setMarkets(data || []);
-    } catch (error) {
+      if (error) {
+        console.error('Error fetching markets:', error);
+        setError(`Erreur lors du chargement des marchés: ${error.message}`);
+        setMarkets([]);
+      } else {
+        setMarkets(data || []);
+        setError(null);
+      }
+    } catch (error: any) {
       console.error('Error fetching markets:', error);
+      setError(`Erreur: ${error?.message || 'Erreur inconnue'}`);
+      setMarkets([]);
     } finally {
       setLoading(false);
     }
@@ -170,6 +179,36 @@ export const MarketList: React.FC = () => {
           {[...Array(3)].map((_, i) => (
             <div key={i} className={`h-32 ${isDark ? 'bg-gray-700' : 'bg-gray-200'} rounded-xl`}></div>
           ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={`p-8 min-h-screen transition-colors duration-200 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+        <div className="flex items-center gap-4 mb-8">
+          <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-3 rounded-xl shadow-lg">
+            <FileText className="w-8 h-8 text-white" />
+          </div>
+          <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Marchés</h1>
+        </div>
+        <div className={`${isDark ? 'bg-red-900/20 border-red-800' : 'bg-red-50 border-red-200'} border rounded-xl p-6`}>
+          <div className="flex items-center gap-3 mb-2">
+            <AlertTriangle className="w-6 h-6 text-red-600" />
+            <h3 className={`font-semibold ${isDark ? 'text-red-400' : 'text-red-900'}`}>Erreur</h3>
+          </div>
+          <p className={`${isDark ? 'text-red-300' : 'text-red-700'} mb-4`}>{error}</p>
+          <button
+            onClick={() => {
+              setError(null);
+              setLoading(true);
+              fetchMarkets();
+            }}
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+          >
+            Réessayer
+          </button>
         </div>
       </div>
     );
