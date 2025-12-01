@@ -402,7 +402,7 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
       const response = await aiGenerationService.generateSectionContent({
         sectionId: 'ideal_format_analysis',
         sectionTitle: 'Analyse du format de réponse idéal',
-        useMarketPro: hasMarketPro ? hasMarketPro() : false,
+        useMarketPro: false,
         prompt: `Analyse le contexte du marché et réponds de manière concise et directe à cette question:
 
 Quel est le format de réponse idéale pour ce marché ?
