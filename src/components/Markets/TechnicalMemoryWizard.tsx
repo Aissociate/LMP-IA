@@ -181,6 +181,8 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
   const [showImageLibrary, setShowImageLibrary] = useState(false);
   const [idealFormat, setIdealFormat] = useState<string>('');
   const [loadingIdealFormat, setLoadingIdealFormat] = useState(false);
+  const [showDisclaimerModal, setShowDisclaimerModal] = useState(false);
+  const [pendingExportType, setPendingExportType] = useState<'word' | 'pdf' | null>(null);
 
   // Subscription state
   const [subscriptionInfo, setSubscriptionInfo] = useState<any>(null);
@@ -669,8 +671,15 @@ Consignes:
       return;
     }
 
+    // Afficher le disclaimer avant l'export
+    setPendingExportType('word');
+    setShowDisclaimerModal(true);
+  };
+
+  const executeExportWord = async () => {
     setExportingWord(true);
     try {
+      const sectionsWithContent = sectionService.getCompletedSections(sections);
       await documentGenerationService.generateWordDocument({
         marketTitle,
         marketReference: marketContext?.reference,
@@ -693,8 +702,15 @@ Consignes:
       return;
     }
 
+    // Afficher le disclaimer avant l'export
+    setPendingExportType('pdf');
+    setShowDisclaimerModal(true);
+  };
+
+  const executeExportPDF = async () => {
     setExportingPDF(true);
     try {
+      const sectionsWithContent = sectionService.getCompletedSections(sections);
       await pdfGenerationService.generatePDF({
         marketTitle,
         marketReference: marketContext?.reference,
@@ -712,6 +728,23 @@ Consignes:
     } finally {
       setExportingPDF(false);
     }
+  };
+
+  const handleAcceptDisclaimer = async () => {
+    setShowDisclaimerModal(false);
+
+    if (pendingExportType === 'word') {
+      await executeExportWord();
+    } else if (pendingExportType === 'pdf') {
+      await executeExportPDF();
+    }
+
+    setPendingExportType(null);
+  };
+
+  const handleCancelDisclaimer = () => {
+    setShowDisclaimerModal(false);
+    setPendingExportType(null);
   };
 
   const getFreeSectionsRemaining = () => 999;
@@ -1444,6 +1477,101 @@ Consignes:
                 >
                   <Save className="w-4 h-4" />
                   Enregistrer la sélection
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal de disclaimer pour export */}
+        {showDisclaimerModal && (
+          <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] p-4">
+            <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-2xl max-w-2xl w-full border-2 overflow-hidden`}>
+              {/* Header */}
+              <div className={`px-6 py-4 border-b ${isDark ? 'border-gray-700 bg-gray-750' : 'border-gray-200 bg-gray-50'}`}>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0">
+                    <AlertTriangle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                  </div>
+                  <div>
+                    <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      Décharge de responsabilité
+                    </h3>
+                    <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      Veuillez lire attentivement avant de télécharger
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="px-6 py-6 max-h-[60vh] overflow-y-auto">
+                <div className={`space-y-4 text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <div className={`p-4 rounded-lg ${isDark ? 'bg-orange-900/20 border border-orange-800/30' : 'bg-orange-50 border border-orange-200'}`}>
+                    <p className="font-semibold mb-2 flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                      Important
+                    </p>
+                    <p>
+                      Le contenu généré par l'intelligence artificielle est fourni à titre informatif et comme base de travail.
+                      Il nécessite une relecture attentive et des modifications de votre part.
+                    </p>
+                  </div>
+
+                  <div className="space-y-3">
+                    <p className="font-semibold">Avant d'envoyer ce document, vous devez :</p>
+                    <ul className="space-y-2 ml-4">
+                      <li className="flex items-start gap-2">
+                        <span className={`mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0 ${isDark ? 'bg-blue-400' : 'bg-blue-600'}`}></span>
+                        <span>Relire intégralement le contenu pour vérifier sa pertinence et son exactitude</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className={`mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0 ${isDark ? 'bg-blue-400' : 'bg-blue-600'}`}></span>
+                        <span>Vérifier que toutes les informations correspondent à votre contexte spécifique</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className={`mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0 ${isDark ? 'bg-blue-400' : 'bg-blue-600'}`}></span>
+                        <span>Adapter et personnaliser le contenu selon vos besoins</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className={`mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0 ${isDark ? 'bg-blue-400' : 'bg-blue-600'}`}></span>
+                        <span>Corriger toute erreur ou incohérence</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className={`mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0 ${isDark ? 'bg-blue-400' : 'bg-blue-600'}`}></span>
+                        <span>Faire valider le document par une personne compétente</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className={`p-4 rounded-lg ${isDark ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
+                    <p className="text-xs leading-relaxed">
+                      <strong>Limitation de responsabilité :</strong> MonMarchéPublic.fr et ses services ne peuvent être tenus responsables
+                      de l'utilisation des documents générés. L'utilisateur est seul responsable du contenu final soumis aux autorités adjudicatrices.
+                      L'IA peut produire des erreurs, des informations obsolètes ou inappropriées. Une validation humaine est indispensable.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className={`px-6 py-4 border-t ${isDark ? 'border-gray-700 bg-gray-750' : 'border-gray-200 bg-gray-50'} flex justify-end gap-3`}>
+                <button
+                  onClick={handleCancelDisclaimer}
+                  className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    isDark
+                      ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
+                      : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                  }`}
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={handleAcceptDisclaimer}
+                  className="px-5 py-2.5 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white transition-colors flex items-center gap-2"
+                >
+                  <CheckCircle className="w-4 h-4" />
+                  J'accepte les conditions
                 </button>
               </div>
             </div>
