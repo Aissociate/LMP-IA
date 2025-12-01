@@ -7,6 +7,7 @@ import { SignupForm } from './components/Auth/SignupForm';
 import { Sidebar } from './components/Layout/Sidebar';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { MarketList } from './components/Markets/MarketList';
+import { MarketListDebug } from './components/Markets/MarketListDebug';
 import { MarketSearch } from './components/MarketSearch/MarketSearch';
 import { MarketSentinel } from './components/MarketSearch/MarketSentinel';
 import { Settings } from './components/Settings/Settings';
@@ -58,7 +59,7 @@ function AppContent() {
       case 'surveillance-marches':
         return <MarketSentinel />;
       case 'marche':
-        return <MarketList />;
+        return <MarketListDebug />;
       case 'assistant':
         return <Assistant />;
       case 'parametres':
