@@ -265,7 +265,7 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
     try {
       const { data: existingSections, error } = await supabase
         .from('memo_sections')
-        .select('section_id, section_title, content, generated_at')
+        .select('id, title, content, created_at')
         .eq('market_id', marketId);
 
       if (error) {
@@ -278,7 +278,7 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
         
         // Mettre à jour les sections avec le contenu sauvegardé
         setSections(prev => prev.map(section => {
-          const existingSection = existingSections.find(es => es.section_id === section.id);
+          const existingSection = existingSections.find(es => es.title === section.title);
           if (existingSection) {
             logService.addLog(`   📄 Section "${section.title}" restaurée (${Math.round(existingSection.content.length / 1000)}k chars)`);
             return {
@@ -583,11 +583,47 @@ Consignes:
     try {
       logService.addLog('💾 Début de la sauvegarde du mémoire technique...');
 
+      // Créer ou récupérer le mémoire technique
+      logService.addLog('🔍 Vérification du mémoire technique...');
+      let memoryId: string;
+
+      const { data: existingMemory } = await supabase
+        .from('technical_memories')
+        .select('id')
+        .eq('market_id', marketId)
+        .eq('user_id', user!.id)
+        .maybeSingle();
+
+      if (existingMemory) {
+        memoryId = existingMemory.id;
+        logService.addLog('✓ Mémoire technique existant trouvé');
+      } else {
+        logService.addLog('📝 Création du mémoire technique...');
+        const { data: newMemory, error: memoryError } = await supabase
+          .from('technical_memories')
+          .insert({
+            market_id: marketId,
+            user_id: user!.id,
+            title: marketTitle,
+            status: 'draft'
+          })
+          .select('id')
+          .single();
+
+        if (memoryError) {
+          logService.addLog(`❌ Erreur création mémoire: ${memoryError.message}`);
+          throw memoryError;
+        }
+
+        memoryId = newMemory.id;
+        logService.addLog('✅ Mémoire technique créé');
+      }
+
       // Vérifier les sections existantes
       logService.addLog('🔍 Vérification des sections existantes...');
       const { data: existingSections, error: checkError } = await supabase
         .from('memo_sections')
-        .select('section_id')
+        .select('id, title')
         .eq('market_id', marketId);
 
       if (checkError) {
@@ -598,20 +634,22 @@ Consignes:
       logService.addLog(`✓ ${existingSections?.length || 0} sections trouvées en base`);
 
       // Identifier les sections à insérer ou mettre à jour
-      const existingSectionIds = new Set(existingSections?.map(s => s.section_id) || []);
-      const sectionsToInsert = sectionsWithContent.filter(s => !existingSectionIds.has(s.id));
-      const sectionsToUpdate = sectionsWithContent.filter(s => existingSectionIds.has(s.id));
+      const existingSectionTitles = new Set(existingSections?.map(s => s.title) || []);
+      const sectionsToInsert = sectionsWithContent.filter(s => !existingSectionTitles.has(s.title));
+      const sectionsToUpdate = sectionsWithContent.filter(s => existingSectionTitles.has(s.title));
 
       // Insérer les nouvelles sections
       if (sectionsToInsert.length > 0) {
         logService.addLog(`📝 Insertion de ${sectionsToInsert.length} nouvelles sections...`);
 
-        const insertData = sectionsToInsert.map(section => ({
+        const insertData = sectionsToInsert.map((section, index) => ({
+          memory_id: memoryId,
           market_id: marketId,
-          section_id: section.id,
-          section_title: section.title,
+          user_id: user!.id,
+          title: section.title,
           content: section.content,
-          generated_at: new Date().toISOString()
+          order_index: index,
+          is_generated: true
         }));
 
         const { error: insertError } = await supabase
@@ -634,12 +672,11 @@ Consignes:
           const { error: updateError } = await supabase
             .from('memo_sections')
             .update({
-              section_title: section.title,
               content: section.content,
               updated_at: new Date().toISOString()
             })
             .eq('market_id', marketId)
-            .eq('section_id', section.id);
+            .eq('title', section.title);
 
           if (updateError) {
             logService.addLog(`❌ Erreur mise à jour section ${section.title}: ${updateError.message}`);
