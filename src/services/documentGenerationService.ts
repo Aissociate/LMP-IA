@@ -153,6 +153,19 @@ export class DocumentGenerationService {
         })
       );
 
+      // Ajouter le sommaire
+      console.log('[DocGen] Génération du sommaire...');
+      const tableOfContents = this.createTableOfContents(sectionsWithContent);
+      documentChildren.push(...tableOfContents);
+
+      // Saut de page après le sommaire
+      documentChildren.push(
+        new Paragraph({
+          children: [new TextRun({ text: "" })],
+          pageBreakBefore: true,
+        })
+      );
+
       // Préparer les sections du document DOCX avec en-têtes et pieds de page
       const docSections = [];
 
@@ -312,6 +325,75 @@ export class DocumentGenerationService {
       console.error('[DocGen] ❌ Erreur génération Word:', error);
       throw new Error(`Erreur lors de la génération du document: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
+  }
+
+  private createTableOfContents(sections: any[]): Paragraph[] {
+    const paragraphs: Paragraph[] = [];
+
+    // Titre du sommaire
+    paragraphs.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: "Sommaire",
+            bold: true,
+            size: 48,
+            font: "Calibri",
+            color: "1e40af",
+          }),
+        ],
+        spacing: { before: 480, after: 360 },
+        alignment: AlignmentType.CENTER,
+      })
+    );
+
+    // Ligne de séparation
+    paragraphs.push(
+      new Paragraph({
+        children: [new TextRun({ text: "" })],
+        spacing: { after: 240 },
+        border: {
+          bottom: {
+            color: "1e40af",
+            space: 1,
+            size: 12,
+            style: BorderStyle.SINGLE,
+          },
+        },
+      })
+    );
+
+    // Entrées du sommaire
+    sections.forEach((section, index) => {
+      const cleanTitle = section.title.replace(/^\d+\.\s*/, '');
+      const numberedTitle = `${index + 1}. ${cleanTitle}`;
+
+      paragraphs.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: "• ",
+              size: 24,
+              font: "Calibri",
+              color: "1e40af",
+              bold: true,
+            }),
+            new TextRun({
+              text: numberedTitle,
+              size: 24,
+              font: "Calibri",
+              color: "374151",
+            }),
+          ],
+          spacing: { before: 120, after: 120 },
+          indent: {
+            left: 480,
+          },
+        })
+      );
+    });
+
+    return paragraphs;
   }
 
   private removeLeadingTitle(content: string, sectionTitle: string): string {
