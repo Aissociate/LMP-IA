@@ -61,7 +61,15 @@ export const SubscriptionManager: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [plansRes, subscriptionsRes, usersRes] = await Promise.all([
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
+      if (!token) {
+        console.error('No session token available');
+        return;
+      }
+
+      const [plansRes, subscriptionsRes] = await Promise.all([
         supabase.from('subscription_plans').select('*').order('price_monthly'),
         supabase
           .from('user_subscriptions')
@@ -70,7 +78,6 @@ export const SubscriptionManager: React.FC = () => {
             plan:subscription_plans(name, monthly_memories_limit)
           `)
           .order('created_at', { ascending: false }),
-        supabase.from('user_profiles').select('user_id, full_name'),
       ]);
 
       if (plansRes.data) setPlans(plansRes.data);
@@ -78,36 +85,55 @@ export const SubscriptionManager: React.FC = () => {
       if (subscriptionsRes.data) {
         const subsWithDetails = await Promise.all(
           subscriptionsRes.data.map(async (sub: any) => {
-            const { data: userData } = await supabase.auth.admin.getUserById(sub.user_id);
-            return {
-              ...sub,
-              user_email: userData?.user?.email || 'N/A',
-              user_name: userData?.user?.user_metadata?.full_name || '',
-              plan_name: sub.plan?.name,
-              plan_limit: sub.plan?.monthly_memories_limit,
-            };
+            try {
+              const response = await fetch(
+                `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-users?action=get&userId=${sub.user_id}`,
+                {
+                  headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                  },
+                }
+              );
+              const { user } = await response.json();
+              return {
+                ...sub,
+                user_email: user?.email || 'N/A',
+                user_name: user?.user_metadata?.full_name || '',
+                plan_name: sub.plan?.name,
+                plan_limit: sub.plan?.monthly_memories_limit,
+              };
+            } catch (error) {
+              console.error('Error fetching user details:', error);
+              return {
+                ...sub,
+                user_email: 'N/A',
+                user_name: '',
+                plan_name: sub.plan?.name,
+                plan_limit: sub.plan?.monthly_memories_limit,
+              };
+            }
           })
         );
         setSubscriptions(subsWithDetails);
       }
 
-      const { data: authUsers } = await supabase.auth.admin.listUsers();
-      if (authUsers?.users) {
-        const usersWithProfiles = await Promise.all(
-          authUsers.users.map(async (user) => {
-            const { data: profile } = await supabase
-              .from('user_profiles')
-              .select('full_name')
-              .eq('user_id', user.id)
-              .maybeSingle();
-            return {
-              id: user.id,
-              email: user.email || '',
-              user_profiles: profile ? [profile] : [],
-            };
-          })
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-users?action=list`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
         );
-        setUsers(usersWithProfiles);
+        const { users: fetchedUsers } = await response.json();
+        if (fetchedUsers) {
+          setUsers(fetchedUsers);
+        }
+      } catch (error) {
+        console.error('Error loading users:', error);
       }
     } catch (error) {
       console.error('Error loading data:', error);
