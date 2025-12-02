@@ -21,6 +21,7 @@ import {
   NumberFormat
 } from 'docx';
 import { saveAs } from 'file-saver';
+import { marked } from 'marked';
 import { Section } from '../types/technicalMemory';
 import { supabase } from '../lib/supabase';
 
@@ -170,27 +171,27 @@ export class DocumentGenerationService {
         children: documentChildren,
       });
 
-      // Ajouter les sections de contenu avec numérotation automatique
+      // Ajouter les sections de contenu avec numérotation automatique (commence à 1)
       for (let i = 0; i < sectionsWithContent.length; i++) {
         const section = sectionsWithContent[i];
         console.log(`[DocGen] Traitement section: ${section.title}`);
 
-        // Renuméroter la section (enlever l'ancienne numérotation et ajouter la nouvelle)
+        // Renuméroter la section (enlever l'ancienne numérotation et ajouter la nouvelle, commence à 1)
         const cleanTitle = section.title.replace(/^\d+\.\s*/, '');
-        const numberedTitle = `${i}. ${cleanTitle}`;
+        const numberedTitle = `${i + 1}. ${cleanTitle}`;
 
-        // Titre de la section
+        // Titre de la section avec style professionnel amélioré
         const sectionTitle = new Paragraph({
           children: [
             new TextRun({
               text: numberedTitle,
               bold: true,
-              size: 32,
+              size: 40,
               font: "Calibri",
               color: "1e40af",
             }),
           ],
-          spacing: { before: 400, after: 300 },
+          spacing: { before: 480, after: 360 },
           shading: {
             fill: "e3f2fd",
             type: ShadingType.CLEAR,
@@ -199,12 +200,12 @@ export class DocumentGenerationService {
             left: {
               color: "1e40af",
               space: 1,
-              size: 24,
+              size: 30,
               style: BorderStyle.SINGLE,
             },
           },
           indent: {
-            left: 200,
+            left: 240,
           },
         });
 
@@ -313,230 +314,382 @@ export class DocumentGenerationService {
 
   private async processTextContent(content: string): Promise<Array<Paragraph | Table>> {
     const elements: Array<Paragraph | Table> = [];
-    const lines = content.split('\n');
 
-    let i = 0;
-    while (i < lines.length) {
-      const line = lines[i].trim();
+    // Parser Markdown avec marked
+    const tokens = marked.lexer(content);
 
-      if (!line) {
-        i++;
-        continue;
+    for (const token of tokens) {
+      try {
+        const docElements = await this.convertTokenToDocx(token);
+        elements.push(...docElements);
+      } catch (error) {
+        console.error('[DocGen] Erreur conversion token:', error, token);
       }
-
-      // Détecter les images
-      const imageMatch = line.match(/!\[([^\]]*)\]\(asset:([^)]+)\)/);
-      if (imageMatch) {
-        const [, alt, assetId] = imageMatch;
-        const imageElement = await this.createImageParagraph(assetId, alt);
-        if (imageElement) {
-          elements.push(imageElement);
-        }
-        i++;
-        continue;
-      }
-
-      // Détecter les tableaux
-      if (line.includes('|') && (line.match(/\|/g) || []).length >= 2) {
-        const tableLines: string[] = [];
-        while (i < lines.length) {
-          const tableLine = lines[i].trim();
-          if (tableLine.includes('|') && (tableLine.match(/\|/g) || []).length >= 2) {
-            if (!tableLine.match(/^[\|\s\-:]+$/)) {
-              tableLines.push(tableLine);
-            }
-            i++;
-          } else {
-            break;
-          }
-        }
-
-        if (tableLines.length > 0) {
-          const table = this.createTable(tableLines);
-          if (table) {
-            elements.push(table);
-          }
-        }
-        continue;
-      }
-
-      // Titres avec espacement amélioré
-      if (line.startsWith('####')) {
-        elements.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: line.replace(/^####\s*/, ''),
-                bold: true,
-                size: 22,
-                font: "Calibri",
-                color: "4b5563",
-              }),
-            ],
-            heading: HeadingLevel.HEADING_4,
-            spacing: { before: 280, after: 140 },
-            keepNext: true,
-          })
-        );
-      } else if (line.startsWith('###')) {
-        elements.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: line.replace(/^###\s*/, ''),
-                bold: true,
-                size: 24,
-                font: "Calibri",
-                color: "374151",
-              }),
-            ],
-            heading: HeadingLevel.HEADING_3,
-            spacing: { before: 320, after: 160 },
-            keepNext: true,
-          })
-        );
-      } else if (line.startsWith('##')) {
-        elements.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: line.replace(/^##\s*/, ''),
-                bold: true,
-                size: 28,
-                font: "Calibri",
-                color: "1e40af",
-              }),
-            ],
-            heading: HeadingLevel.HEADING_2,
-            spacing: { before: 360, after: 200 },
-            keepNext: true,
-          })
-        );
-      } else if (line.startsWith('#')) {
-        elements.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: line.replace(/^#\s*/, ''),
-                bold: true,
-                size: 32,
-                font: "Calibri",
-                color: "1e40af",
-              }),
-            ],
-            heading: HeadingLevel.HEADING_1,
-            spacing: { before: 400, after: 240 },
-            keepNext: true,
-          })
-        );
-      } else if (line.startsWith('-') || line.startsWith('•')) {
-        const textRuns = this.parseInlineFormatting(line.replace(/^[-•]\s*/, ''));
-        elements.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: '• ',
-                size: 22,
-                font: "Calibri",
-                color: "1e40af",
-              }),
-              ...textRuns,
-            ],
-            indent: { left: 360 },
-            spacing: { after: 160, line: 360 },
-          })
-        );
-      } else if (line.match(/^\d+\./)) {
-        const textRuns = this.parseInlineFormatting(line.replace(/^\d+\.\s*/, ''));
-        const numberMatch = line.match(/^(\d+)\./);
-        const number = numberMatch ? numberMatch[1] : '1';
-        elements.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: `${number}. `,
-                size: 22,
-                font: "Calibri",
-                color: "1e40af",
-              }),
-              ...textRuns,
-            ],
-            indent: { left: 360 },
-            spacing: { after: 160, line: 360 },
-          })
-        );
-      } else {
-        const textRuns = this.parseInlineFormatting(line);
-        elements.push(
-          new Paragraph({
-            children: textRuns,
-            spacing: { after: 200, line: 360 },
-            alignment: AlignmentType.JUSTIFIED,
-          })
-        );
-      }
-
-      i++;
     }
 
     return elements;
   }
 
-  private parseInlineFormatting(text: string): TextRun[] {
-    const textRuns: TextRun[] = [];
-    const boldRegex = /\*\*(.*?)\*\*/g;
-    const italicRegex = /\*(.*?)\*/g;
+  private async convertTokenToDocx(token: marked.Token): Promise<Array<Paragraph | Table>> {
+    const elements: Array<Paragraph | Table> = [];
 
-    let lastIndex = 0;
-    let match;
+    switch (token.type) {
+      case 'heading':
+        elements.push(this.createHeading(token));
+        break;
 
-    const combinedRegex = /\*\*(.+?)\*\*|\*(.+?)\*/g;
+      case 'paragraph':
+        elements.push(await this.createParagraphFromToken(token));
+        break;
 
-    while ((match = combinedRegex.exec(text)) !== null) {
-      if (match.index > lastIndex) {
-        textRuns.push(new TextRun({
-          text: text.substring(lastIndex, match.index),
+      case 'list':
+        elements.push(...this.createList(token));
+        break;
+
+      case 'table':
+        const table = await this.createTableFromToken(token);
+        if (table) elements.push(table);
+        break;
+
+      case 'code':
+        elements.push(this.createCodeBlock(token));
+        break;
+
+      case 'blockquote':
+        elements.push(this.createBlockquote(token));
+        break;
+
+      case 'hr':
+        elements.push(this.createHorizontalRule());
+        break;
+
+      case 'space':
+        break;
+
+      default:
+        console.warn('[DocGen] Type de token non géré:', token.type);
+    }
+
+    return elements;
+  }
+
+  private createHeading(token: marked.Tokens.Heading): Paragraph {
+    const sizes = [32, 28, 24, 22];
+    const colors = ["1e40af", "1e40af", "374151", "4b5563"];
+    const spacingBefore = [400, 360, 320, 280];
+    const spacingAfter = [240, 200, 160, 140];
+
+    const level = Math.min(token.depth, 4) - 1;
+
+    return new Paragraph({
+      children: this.parseInlineTokens(token.tokens || []),
+      heading: [HeadingLevel.HEADING_1, HeadingLevel.HEADING_2, HeadingLevel.HEADING_3, HeadingLevel.HEADING_4][level],
+      spacing: { before: spacingBefore[level], after: spacingAfter[level] },
+      keepNext: true,
+    });
+  }
+
+  private async createParagraphFromToken(token: marked.Tokens.Paragraph): Promise<Paragraph> {
+    // Vérifier si le paragraphe contient une image asset
+    const text = token.text || '';
+    const imageMatch = text.match(/!\[([^\]]*)\]\(asset:([^)]+)\)/);
+
+    if (imageMatch) {
+      const [, alt, assetId] = imageMatch;
+      const imagePara = await this.createImageParagraph(assetId, alt);
+      if (imagePara) return imagePara;
+    }
+
+    return new Paragraph({
+      children: this.parseInlineTokens(token.tokens || []),
+      spacing: { after: 240, line: 360 },
+      alignment: AlignmentType.JUSTIFIED,
+    });
+  }
+
+  private createList(token: marked.Tokens.List): Paragraph[] {
+    const paragraphs: Paragraph[] = [];
+
+    token.items.forEach((item, index) => {
+      const bullet = token.ordered ? `${index + 1}. ` : '• ';
+
+      paragraphs.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: bullet,
+              size: 22,
+              font: "Calibri",
+              color: "1e40af",
+            }),
+            ...this.parseInlineTokens(item.tokens || []),
+          ],
+          indent: { left: 360 },
+          spacing: { after: 160, line: 360 },
+        })
+      );
+    });
+
+    return paragraphs;
+  }
+
+  private createCodeBlock(token: marked.Tokens.Code): Paragraph {
+    return new Paragraph({
+      children: [
+        new TextRun({
+          text: token.text,
+          font: "Courier New",
+          size: 20,
+        }),
+      ],
+      shading: {
+        fill: "f3f4f6",
+        type: ShadingType.CLEAR,
+      },
+      border: {
+        top: { style: BorderStyle.SINGLE, size: 6, color: "d1d5db" },
+        bottom: { style: BorderStyle.SINGLE, size: 6, color: "d1d5db" },
+        left: { style: BorderStyle.SINGLE, size: 6, color: "d1d5db" },
+        right: { style: BorderStyle.SINGLE, size: 6, color: "d1d5db" },
+      },
+      spacing: { before: 200, after: 200 },
+    });
+  }
+
+  private createBlockquote(token: marked.Tokens.Blockquote): Paragraph {
+    const textContent = this.extractTextFromTokens(token.tokens || []);
+
+    return new Paragraph({
+      children: [
+        new TextRun({
+          text: textContent,
+          italics: true,
+          size: 22,
+          font: "Calibri",
+          color: "374151",
+        }),
+      ],
+      shading: {
+        fill: "f0f9ff",
+        type: ShadingType.CLEAR,
+      },
+      border: {
+        left: {
+          color: "3b82f6",
+          space: 1,
+          size: 24,
+          style: BorderStyle.SINGLE,
+        },
+      },
+      indent: { left: 200 },
+      spacing: { before: 200, after: 200 },
+    });
+  }
+
+  private createHorizontalRule(): Paragraph {
+    return new Paragraph({
+      border: {
+        bottom: {
+          color: "d1d5db",
+          space: 1,
+          size: 12,
+          style: BorderStyle.SINGLE,
+        },
+      },
+      spacing: { before: 350, after: 350 },
+    });
+  }
+
+  private extractTextFromTokens(tokens: marked.Token[]): string {
+    let text = '';
+    for (const token of tokens) {
+      if ('text' in token) {
+        text += token.text + ' ';
+      }
+    }
+    return text.trim();
+  }
+
+  private parseInlineTokens(tokens: marked.Token[]): TextRun[] {
+    const runs: TextRun[] = [];
+
+    for (const token of tokens) {
+      if (token.type === 'text') {
+        runs.push(new TextRun({
+          text: token.text,
           size: 22,
           font: "Calibri",
         }));
-      }
-
-      if (match[1]) {
-        textRuns.push(new TextRun({
-          text: match[1],
+      } else if (token.type === 'strong') {
+        const innerTokens = 'tokens' in token ? token.tokens : [];
+        const text = this.extractTextFromTokens(innerTokens as marked.Token[]);
+        runs.push(new TextRun({
+          text: text,
           bold: true,
           size: 22,
           font: "Calibri",
         }));
-      } else if (match[2]) {
-        textRuns.push(new TextRun({
-          text: match[2],
+      } else if (token.type === 'em') {
+        const innerTokens = 'tokens' in token ? token.tokens : [];
+        const text = this.extractTextFromTokens(innerTokens as marked.Token[]);
+        runs.push(new TextRun({
+          text: text,
           italics: true,
           size: 22,
           font: "Calibri",
         }));
+      } else if (token.type === 'codespan') {
+        runs.push(new TextRun({
+          text: token.text,
+          font: "Courier New",
+          size: 20,
+          shading: {
+            fill: "f3f4f6",
+            type: ShadingType.CLEAR,
+          },
+        }));
+      } else if (token.type === 'link') {
+        const innerTokens = 'tokens' in token ? token.tokens : [];
+        const text = this.extractTextFromTokens(innerTokens as marked.Token[]);
+        runs.push(new TextRun({
+          text: text,
+          color: "2563eb",
+          underline: {},
+          size: 22,
+          font: "Calibri",
+        }));
+      } else if (token.type === 'br') {
+        runs.push(new TextRun({
+          text: '',
+          break: 1,
+        }));
       }
-
-      lastIndex = combinedRegex.lastIndex;
     }
 
-    if (lastIndex < text.length) {
-      textRuns.push(new TextRun({
-        text: text.substring(lastIndex),
+    if (runs.length === 0) {
+      runs.push(new TextRun({
+        text: '',
         size: 22,
         font: "Calibri",
       }));
     }
 
-    if (textRuns.length === 0) {
-      textRuns.push(new TextRun({
-        text: text,
-        size: 22,
-        font: "Calibri",
-      }));
+    return runs;
+  }
+
+  private async createTableFromToken(token: marked.Tokens.Table): Promise<Table | null> {
+    const rows: TableRow[] = [];
+
+    // En-tête
+    if (token.header && token.header.length > 0) {
+      const headerCells = token.header.map(cell => {
+        const cellText = this.extractTextFromTokens(cell.tokens);
+        return new TableCell({
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: cellText,
+                  bold: true,
+                  size: 22,
+                  font: "Calibri",
+                  color: "ffffff",
+                }),
+              ],
+              alignment: AlignmentType.LEFT,
+            }),
+          ],
+          shading: {
+            fill: "1e40af",
+            type: ShadingType.CLEAR,
+          },
+          borders: {
+            top: { style: BorderStyle.SINGLE, size: 6, color: "1e40af" },
+            bottom: { style: BorderStyle.SINGLE, size: 6, color: "1e40af" },
+            left: { style: BorderStyle.SINGLE, size: 6, color: "1e40af" },
+            right: { style: BorderStyle.SINGLE, size: 6, color: "1e40af" },
+          },
+          margins: {
+            top: 150,
+            bottom: 150,
+            left: 200,
+            right: 200,
+          },
+          verticalAlign: VerticalAlign.CENTER,
+        });
+      });
+
+      rows.push(
+        new TableRow({
+          children: headerCells,
+          height: { value: 500, rule: 'atLeast' },
+          cantSplit: true,
+        })
+      );
     }
 
-    return textRuns;
+    // Lignes de données
+    token.rows.forEach((row, rowIndex) => {
+      const rowCells = row.map(cell => {
+        const cellText = this.extractTextFromTokens(cell.tokens);
+        const isEvenRow = rowIndex % 2 === 0;
+
+        return new TableCell({
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: cellText,
+                  size: 20,
+                  font: "Calibri",
+                  color: "374151",
+                }),
+              ],
+              alignment: AlignmentType.LEFT,
+            }),
+          ],
+          shading: {
+            fill: isEvenRow ? "ffffff" : "f9fafb",
+            type: ShadingType.CLEAR,
+          },
+          borders: {
+            top: { style: BorderStyle.SINGLE, size: 6, color: "e5e7eb" },
+            bottom: { style: BorderStyle.SINGLE, size: 6, color: "e5e7eb" },
+            left: { style: BorderStyle.SINGLE, size: 6, color: "e5e7eb" },
+            right: { style: BorderStyle.SINGLE, size: 6, color: "e5e7eb" },
+          },
+          margins: {
+            top: 140,
+            bottom: 140,
+            left: 200,
+            right: 200,
+          },
+          verticalAlign: VerticalAlign.CENTER,
+        });
+      });
+
+      rows.push(
+        new TableRow({
+          children: rowCells,
+          height: { value: 400, rule: 'atLeast' },
+          cantSplit: true,
+        })
+      );
+    });
+
+    if (rows.length === 0) return null;
+
+    return new Table({
+      rows,
+      width: {
+        size: 100,
+        type: WidthType.PERCENTAGE,
+      },
+      margins: {
+        top: 300,
+        bottom: 300,
+      },
+    });
   }
 
   private async createImageParagraph(assetId: string, alt: string): Promise<Paragraph | null> {
@@ -545,7 +698,7 @@ export class DocumentGenerationService {
         .from('report_assets')
         .select('file_url, name')
         .eq('id', assetId)
-        .single();
+        .maybeSingle();
 
       if (error || !asset) {
         console.warn(`[DocGen] Asset introuvable: ${assetId}`);
@@ -564,7 +717,14 @@ export class DocumentGenerationService {
       }
 
       console.log(`[DocGen] Téléchargement image: ${asset.file_url}`);
-      const response = await fetch(asset.file_url);
+
+      // Ajouter timeout de 5 secondes pour le téléchargement
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      const response = await fetch(asset.file_url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+
       if (!response.ok) {
         console.warn(`[DocGen] Échec téléchargement: ${asset.file_url}`);
         return null;
@@ -587,12 +747,13 @@ export class DocumentGenerationService {
 
       console.log(`[DocGen] Image chargée (${imageType}): ${uint8Array.length} bytes`);
 
-      // Créer l'ImageRun avec des dimensions raisonnables (largeur max 6 pouces)
+      // Créer l'ImageRun avec dimensions optimisées (largeur max 6 pouces = 576 pixels)
+      // Hauteur max 4.5 pouces = 432 pixels, en conservant le ratio
       const imageRun = new ImageRun({
         data: uint8Array,
         transformation: {
-          width: 500,
-          height: 375,
+          width: 576,
+          height: 432,
         },
         type: imageType,
       });
@@ -600,7 +761,7 @@ export class DocumentGenerationService {
       return new Paragraph({
         children: [imageRun],
         alignment: AlignmentType.CENTER,
-        spacing: { before: 200, after: 200 },
+        spacing: { before: 240, after: 240 },
       });
     } catch (error) {
       console.error('[DocGen] Erreur chargement image:', error);
@@ -618,276 +779,5 @@ export class DocumentGenerationService {
       });
     }
   }
-
-  private cleanCellText(text: string): string {
-    let cleaned = text;
-
-    // Nettoyer toutes les balises HTML
-    cleaned = cleaned.replace(/<br\s*\/?>/gi, ' ');
-    cleaned = cleaned.replace(/<\/p>/gi, ' ');
-    cleaned = cleaned.replace(/<\/div>/gi, ' ');
-    cleaned = cleaned.replace(/<[^>]+>/g, '');
-
-    // Nettoyer tous les marqueurs Markdown
-    cleaned = cleaned.replace(/^#+\s*/gm, ''); // Titres
-    cleaned = cleaned.replace(/\*\*\*(.+?)\*\*\*/g, '$1'); // Gras + Italique
-    cleaned = cleaned.replace(/\*\*(.+?)\*\*/g, '$1'); // Gras
-    cleaned = cleaned.replace(/\*(.+?)\*/g, '$1'); // Italique
-    cleaned = cleaned.replace(/_(.+?)_/g, '$1'); // Italique underscore
-    cleaned = cleaned.replace(/`([^`]+)`/g, '$1'); // Code inline
-    cleaned = cleaned.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1'); // Liens
-
-    // Nettoyer les entités HTML
-    cleaned = cleaned.replace(/&nbsp;/g, ' ');
-    cleaned = cleaned.replace(/&amp;/g, '&');
-    cleaned = cleaned.replace(/&lt;/g, '<');
-    cleaned = cleaned.replace(/&gt;/g, '>');
-    cleaned = cleaned.replace(/&quot;/g, '"');
-    cleaned = cleaned.replace(/&#39;/g, "'");
-    cleaned = cleaned.replace(/&#x27;/g, "'");
-
-    // Nettoyer les espaces multiples
-    cleaned = cleaned.replace(/\s+/g, ' ').trim();
-
-    return cleaned;
-  }
-
-  private createTableCellContent(cellText: string, isHeader: boolean): Paragraph[] {
-    const baseSize = isHeader ? 22 : 20;
-    const baseColor = isHeader ? "1a56db" : "000000";
-
-    console.log(`[DocGen] Cellule AVANT nettoyage: "${cellText.substring(0, 100)}"`);
-
-    // Nettoyer complètement le texte
-    const cleanedText = this.cleanCellText(cellText);
-
-    console.log(`[DocGen] Cellule APRÈS nettoyage: "${cleanedText.substring(0, 100)}"`);
-
-    // Si le texte est vide
-    if (!cleanedText || cleanedText.trim() === '') {
-      return [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: '',
-              size: baseSize,
-              font: "Calibri",
-            }),
-          ],
-        }),
-      ];
-    }
-
-    // Créer un paragraphe simple avec le texte nettoyé
-    return [
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: cleanedText,
-            bold: isHeader,
-            size: baseSize,
-            font: "Calibri",
-            color: baseColor,
-          }),
-        ],
-        alignment: AlignmentType.LEFT,
-        spacing: { after: 100 },
-      }),
-    ];
-  }
-
-  private parseInlineFormattingForTable(text: string, isHeader: boolean): TextRun[] {
-    const textRuns: TextRun[] = [];
-    const baseSize = isHeader ? 22 : 20;
-    const baseColor = isHeader ? "1a56db" : "000000";
-
-    // Nettoyer les marqueurs Markdown en trop (### ** etc au début)
-    let cleanedText = text.replace(/^#+\s*/g, '');
-
-    // Pour les en-têtes, nettoyer le markdown et tout mettre en gras
-    if (isHeader) {
-      cleanedText = cleanedText.replace(/\*\*(.+?)\*\*/g, '$1');
-      cleanedText = cleanedText.replace(/\*(.+?)\*/g, '$1');
-      cleanedText = cleanedText.replace(/`([^`]+)`/g, '$1');
-
-      return [
-        new TextRun({
-          text: cleanedText,
-          bold: true,
-          size: baseSize,
-          font: "Calibri",
-          color: baseColor,
-        }),
-      ];
-    }
-
-    // Pour les cellules normales, parser le formatage Markdown
-    // Traiter d'abord le gras (**texte**) puis l'italique (*texte*)
-    const segments: Array<{text: string, bold?: boolean, italic?: boolean}> = [];
-    let currentIndex = 0;
-
-    // Regex pour détecter **gras** et *italique*
-    const boldRegex = /\*\*([^*]+?)\*\*/g;
-    const italicRegex = /\*([^*]+?)\*/g;
-
-    // D'abord, remplacer temporairement les gras pour éviter les conflits
-    const boldMatches: Array<{index: number, length: number, text: string}> = [];
-    let boldMatch;
-
-    while ((boldMatch = boldRegex.exec(cleanedText)) !== null) {
-      boldMatches.push({
-        index: boldMatch.index,
-        length: boldMatch[0].length,
-        text: boldMatch[1]
-      });
-    }
-
-    // Construire les segments
-    let processedText = cleanedText;
-    const allSegments: Array<{start: number, end: number, text: string, bold: boolean, italic: boolean}> = [];
-
-    // Marquer les segments en gras
-    boldMatches.forEach(match => {
-      allSegments.push({
-        start: match.index,
-        end: match.index + match.length,
-        text: match.text,
-        bold: true,
-        italic: false
-      });
-    });
-
-    // Si pas de formatage, retourner texte simple
-    if (allSegments.length === 0) {
-      // Vérifier italique seul
-      const italicMatch = italicRegex.exec(cleanedText);
-      if (!italicMatch) {
-        return [
-          new TextRun({
-            text: cleanedText,
-            size: baseSize,
-            font: "Calibri",
-            color: baseColor,
-          }),
-        ];
-      }
-    }
-
-    // Construire les TextRuns en parcourant le texte
-    let lastPos = 0;
-
-    // Trier par position
-    allSegments.sort((a, b) => a.start - b.start);
-
-    allSegments.forEach(segment => {
-      // Ajouter texte avant
-      if (segment.start > lastPos) {
-        const beforeText = cleanedText.substring(lastPos, segment.start);
-        if (beforeText) {
-          textRuns.push(new TextRun({
-            text: beforeText,
-            size: baseSize,
-            font: "Calibri",
-            color: baseColor,
-          }));
-        }
-      }
-
-      // Ajouter segment formaté
-      textRuns.push(new TextRun({
-        text: segment.text,
-        bold: segment.bold,
-        italics: segment.italic,
-        size: baseSize,
-        font: "Calibri",
-        color: baseColor,
-      }));
-
-      lastPos = segment.end;
-    });
-
-    // Ajouter texte après
-    if (lastPos < cleanedText.length) {
-      const afterText = cleanedText.substring(lastPos);
-      if (afterText) {
-        textRuns.push(new TextRun({
-          text: afterText,
-          size: baseSize,
-          font: "Calibri",
-          color: baseColor,
-        }));
-      }
-    }
-
-    // Si aucun TextRun créé, retourner texte brut
-    if (textRuns.length === 0) {
-      textRuns.push(new TextRun({
-        text: cleanedText,
-        size: baseSize,
-        font: "Calibri",
-        color: baseColor,
-      }));
-    }
-
-    return textRuns;
-  }
-
-  private createTable(tableLines: string[]): Table | null {
-    if (tableLines.length === 0) return null;
-
-    const rows: TableRow[] = [];
-
-    tableLines.forEach((line, rowIndex) => {
-      const cells = line.replace(/^\||\|$/g, '').split('|').map(cell => cell.trim());
-
-      if (cells.length === 0 || !cells.some(cell => cell)) return;
-
-      const isHeader = rowIndex === 0;
-
-      const tableCells = cells.map(cellText => {
-        const cellParagraphs = this.createTableCellContent(cellText, isHeader);
-
-        return new TableCell({
-          children: cellParagraphs,
-          shading: {
-            fill: isHeader ? "1E40AF" : (rowIndex % 2 === 1 ? "f9fafb" : "ffffff"),
-            type: ShadingType.CLEAR,
-          },
-          borders: {
-            top: { style: BorderStyle.SINGLE, size: 6, color: "d1d5db" },
-            bottom: { style: BorderStyle.SINGLE, size: 6, color: "d1d5db" },
-            left: { style: BorderStyle.SINGLE, size: 6, color: "d1d5db" },
-            right: { style: BorderStyle.SINGLE, size: 6, color: "d1d5db" },
-          },
-          margins: {
-            top: 120,
-            bottom: 120,
-            left: 180,
-            right: 180,
-          },
-          verticalAlign: VerticalAlign.CENTER,
-        });
-      });
-
-      rows.push(
-        new TableRow({
-          children: tableCells,
-          height: { value: isHeader ? 450 : 400, rule: 'atLeast' },
-          cantSplit: true,
-        })
-      );
-    });
-
-    return new Table({
-      rows,
-      width: {
-        size: 100,
-        type: WidthType.PERCENTAGE,
-      },
-      margins: {
-        top: 300,
-        bottom: 300,
-      },
-    });
-  }
 }
+
