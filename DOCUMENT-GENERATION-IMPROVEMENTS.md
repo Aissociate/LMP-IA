@@ -1,12 +1,31 @@
 # Améliorations de la Génération de Documents Word
 
 ## Date: 2 Décembre 2025
+## Version: 2.0 (avec correctifs entités HTML et Markdown)
 
 ## Résumé des Changements
 
 Le service de génération de documents Word a été complètement refactoré pour produire des documents professionnels de haute qualité, sans artefacts de code et avec une mise en forme cohérente.
 
+**✨ NOUVEAU (v2.0):** Décodage automatique des entités HTML et nettoyage du contenu mixte HTML/Markdown pour un rendu parfait.
+
 ## Changements Majeurs
+
+### 0. **Décodage des Entités HTML et Nettoyage** ⭐ NOUVEAU
+- **Décodage de 25+ entités HTML** : `&#39;` → `'`, `&nbsp;` → ` `, `&euro;` → `€`, etc.
+- **Entités numériques** : `&#233;` (décimal) et `&#x27;` (hexadécimal) → caractères corrects
+- **Nettoyage HTML vers Markdown** : `<strong>` → `**`, `<em>` → `*`, `<br>` → saut de ligne
+- **Application sur tout le contenu** : Texte, tableaux, listes, titres
+- **Résultat** : Plus aucun `&#39;`, `**texte**` ou autre artefact visible dans le document Word final
+
+#### Entités HTML Supportées
+- Guillemets et apostrophes: `&quot;`, `&#39;`, `&#x27;`, `&apos;`
+- Caractères spéciaux: `&amp;`, `&lt;`, `&gt;`, `&nbsp;`
+- Symboles mathématiques: `&plusmn;` (±), `&times;` (×), `&divide;` (÷), `&deg;` (°)
+- Symboles typographiques: `&ndash;` (–), `&mdash;` (—), `&laquo;` («), `&raquo;` (»), `&hellip;` (…)
+- Symboles monétaires/légaux: `&euro;` (€), `&copy;` (©), `&reg;` (®)
+
+## Changements Majeurs (v1.0)
 
 ### 1. **Intégration de marked.js**
 - Utilisation d'un parser Markdown robuste et éprouvé

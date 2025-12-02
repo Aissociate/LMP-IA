@@ -315,8 +315,31 @@ export class DocumentGenerationService {
   private async processTextContent(content: string): Promise<Array<Paragraph | Table>> {
     const elements: Array<Paragraph | Table> = [];
 
+    // Nettoyer le contenu avant parsing
+    let cleanContent = content;
+
+    // Décoder les entités HTML dans tout le contenu
+    cleanContent = this.decodeHTMLEntities(cleanContent);
+
+    // Nettoyer les balises HTML restantes (sauf les sauts de ligne)
+    cleanContent = cleanContent.replace(/<br\s*\/?>/gi, '\n');
+    cleanContent = cleanContent.replace(/<\/p>/gi, '\n\n');
+    cleanContent = cleanContent.replace(/<p>/gi, '');
+    cleanContent = cleanContent.replace(/<div>/gi, '');
+    cleanContent = cleanContent.replace(/<\/div>/gi, '\n');
+    cleanContent = cleanContent.replace(/<strong>/gi, '**');
+    cleanContent = cleanContent.replace(/<\/strong>/gi, '**');
+    cleanContent = cleanContent.replace(/<b>/gi, '**');
+    cleanContent = cleanContent.replace(/<\/b>/gi, '**');
+    cleanContent = cleanContent.replace(/<em>/gi, '*');
+    cleanContent = cleanContent.replace(/<\/em>/gi, '*');
+    cleanContent = cleanContent.replace(/<i>/gi, '*');
+    cleanContent = cleanContent.replace(/<\/i>/gi, '*');
+
+    console.log('[DocGen] Contenu nettoyé (100 premiers caractères):', cleanContent.substring(0, 100));
+
     // Parser Markdown avec marked
-    const tokens = marked.lexer(content);
+    const tokens = marked.lexer(cleanContent);
 
     for (const token of tokens) {
       try {
@@ -500,6 +523,49 @@ export class DocumentGenerationService {
     });
   }
 
+  private decodeHTMLEntities(text: string): string {
+    // Décoder les entités HTML communes
+    const entities: Record<string, string> = {
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#39;': "'",
+      '&#x27;': "'",
+      '&apos;': "'",
+      '&nbsp;': ' ',
+      '&euro;': '€',
+      '&copy;': '©',
+      '&reg;': '®',
+      '&deg;': '°',
+      '&plusmn;': '±',
+      '&times;': '×',
+      '&divide;': '÷',
+      '&ndash;': '–',
+      '&mdash;': '—',
+      '&laquo;': '«',
+      '&raquo;': '»',
+      '&hellip;': '…',
+    };
+
+    let decoded = text;
+
+    // Remplacer les entités nommées
+    for (const [entity, char] of Object.entries(entities)) {
+      decoded = decoded.replace(new RegExp(entity, 'g'), char);
+    }
+
+    // Décoder les entités numériques (&#123; ou &#x1A;)
+    decoded = decoded.replace(/&#(\d+);/g, (match, dec) => {
+      return String.fromCharCode(parseInt(dec, 10));
+    });
+    decoded = decoded.replace(/&#x([0-9A-Fa-f]+);/g, (match, hex) => {
+      return String.fromCharCode(parseInt(hex, 16));
+    });
+
+    return decoded;
+  }
+
   private extractTextFromTokens(tokens: marked.Token[]): string {
     let text = '';
     for (const token of tokens) {
@@ -507,7 +573,8 @@ export class DocumentGenerationService {
         text += token.text + ' ';
       }
     }
-    return text.trim();
+    // Décoder les entités HTML
+    return this.decodeHTMLEntities(text.trim());
   }
 
   private parseInlineTokens(tokens: marked.Token[]): TextRun[] {
@@ -516,7 +583,7 @@ export class DocumentGenerationService {
     for (const token of tokens) {
       if (token.type === 'text') {
         runs.push(new TextRun({
-          text: token.text,
+          text: this.decodeHTMLEntities(token.text),
           size: 22,
           font: "Calibri",
         }));
@@ -540,7 +607,7 @@ export class DocumentGenerationService {
         }));
       } else if (token.type === 'codespan') {
         runs.push(new TextRun({
-          text: token.text,
+          text: this.decodeHTMLEntities(token.text),
           font: "Courier New",
           size: 20,
           shading: {
