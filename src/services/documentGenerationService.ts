@@ -209,7 +209,9 @@ export class DocumentGenerationService {
           },
         });
 
-        const paragraphs = await this.processTextContent(section.content);
+        // Nettoyer le contenu pour enlever le titre dupliqué
+        const cleanedContent = this.removeLeadingTitle(section.content, cleanTitle);
+        const paragraphs = await this.processTextContent(cleanedContent);
         const sectionChildren = [sectionTitle, ...paragraphs];
 
         // Créer en-tête et pied de page
@@ -310,6 +312,72 @@ export class DocumentGenerationService {
       console.error('[DocGen] ❌ Erreur génération Word:', error);
       throw new Error(`Erreur lors de la génération du document: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
+  }
+
+  private removeLeadingTitle(content: string, sectionTitle: string): string {
+    // Enlever le titre s'il est en début de contenu
+    const lines = content.split('\n');
+    let cleanedLines = [...lines];
+
+    // Normaliser le titre de la section pour comparaison (sans numéro, sans ponctuation)
+    const normalizedSectionTitle = sectionTitle
+      .toLowerCase()
+      .replace(/^\d+\.\s*/, '')
+      .replace(/[^\w\s]/g, '')
+      .trim();
+
+    console.log('[DocGen] Recherche titre dupliqué, titre normalisé:', normalizedSectionTitle);
+
+    // Chercher dans les 5 premières lignes
+    for (let i = 0; i < Math.min(5, cleanedLines.length); i++) {
+      const line = cleanedLines[i].trim();
+
+      if (!line) continue;
+
+      // Extraire le texte sans les marqueurs Markdown
+      const textOnly = line
+        .replace(/^#+\s*/, '')           // Enlever # ## ### etc.
+        .replace(/^\d+\.\s*/, '')        // Enlever numérotation
+        .replace(/\*\*/g, '')            // Enlever **
+        .replace(/\*/g, '')              // Enlever *
+        .toLowerCase()
+        .replace(/[^\w\s]/g, '')
+        .trim();
+
+      console.log(`[DocGen] Ligne ${i}: "${line}" -> normalisé: "${textOnly}"`);
+
+      // Si le texte correspond au titre de la section, le supprimer
+      const similarity = this.calculateSimilarity(textOnly, normalizedSectionTitle);
+      console.log(`[DocGen] Similarité: ${similarity}`);
+
+      if (similarity > 0.8) {
+        console.log(`[DocGen] ✅ Suppression du titre dupliqué ligne ${i}: "${line}"`);
+        cleanedLines[i] = '';
+        break; // Ne supprimer que le premier titre trouvé
+      }
+    }
+
+    return cleanedLines.join('\n').replace(/^\n+/, ''); // Enlever les lignes vides au début
+  }
+
+  private calculateSimilarity(str1: string, str2: string): number {
+    // Calcul de similarité simple: ratio de mots en commun
+    if (str1 === str2) return 1.0;
+    if (!str1 || !str2) return 0.0;
+
+    const words1 = str1.split(/\s+/).filter(w => w.length > 2);
+    const words2 = str2.split(/\s+/).filter(w => w.length > 2);
+
+    if (words1.length === 0 || words2.length === 0) return 0.0;
+
+    let commonWords = 0;
+    for (const word of words1) {
+      if (words2.some(w => w.includes(word) || word.includes(w))) {
+        commonWords++;
+      }
+    }
+
+    return commonWords / Math.max(words1.length, words2.length);
   }
 
   private async processTextContent(content: string): Promise<Array<Paragraph | Table>> {
