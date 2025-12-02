@@ -523,6 +523,144 @@ export class DocumentGenerationService {
     });
   }
 
+  private parseTextWithManualMarkdown(text: string): TextRun[] {
+    const runs: TextRun[] = [];
+    let remaining = text;
+    let position = 0;
+
+    // Regex pour détecter les patterns Markdown
+    const patterns = [
+      { regex: /\*\*\*(.+?)\*\*\*/g, bold: true, italics: true }, // ***text***
+      { regex: /\*\*(.+?)\*\*/g, bold: true, italics: false },     // **text**
+      { regex: /\*(.+?)\*/g, bold: false, italics: true },         // *text*
+      { regex: /`(.+?)`/g, code: true },                           // `code`
+    ];
+
+    // Trouver toutes les correspondances
+    const matches: Array<{ start: number; end: number; text: string; style: any }> = [];
+
+    // Détecter gras-italique d'abord (pour éviter les conflits)
+    let match;
+    const boldItalicRegex = /\*\*\*(.+?)\*\*\*/g;
+    while ((match = boldItalicRegex.exec(text)) !== null) {
+      matches.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        text: match[1],
+        style: { bold: true, italics: true },
+      });
+    }
+
+    // Détecter gras
+    const boldRegex = /\*\*(.+?)\*\*/g;
+    while ((match = boldRegex.exec(text)) !== null) {
+      // Vérifier qu'il ne chevauche pas un gras-italique
+      const overlaps = matches.some(m => match.index >= m.start && match.index < m.end);
+      if (!overlaps) {
+        matches.push({
+          start: match.index,
+          end: match.index + match[0].length,
+          text: match[1],
+          style: { bold: true },
+        });
+      }
+    }
+
+    // Détecter italique
+    const italicRegex = /\*(.+?)\*/g;
+    while ((match = italicRegex.exec(text)) !== null) {
+      // Vérifier qu'il ne chevauche pas déjà un match
+      const overlaps = matches.some(m => match.index >= m.start && match.index < m.end);
+      if (!overlaps) {
+        matches.push({
+          start: match.index,
+          end: match.index + match[0].length,
+          text: match[1],
+          style: { italics: true },
+        });
+      }
+    }
+
+    // Détecter code inline
+    const codeRegex = /`(.+?)`/g;
+    while ((match = codeRegex.exec(text)) !== null) {
+      const overlaps = matches.some(m => match.index >= m.start && match.index < m.end);
+      if (!overlaps) {
+        matches.push({
+          start: match.index,
+          end: match.index + match[0].length,
+          text: match[1],
+          style: { code: true },
+        });
+      }
+    }
+
+    // Trier par position
+    matches.sort((a, b) => a.start - b.start);
+
+    // Construire les TextRuns
+    let currentPos = 0;
+    for (const match of matches) {
+      // Ajouter le texte avant le match
+      if (match.start > currentPos) {
+        const normalText = text.substring(currentPos, match.start);
+        if (normalText) {
+          runs.push(new TextRun({
+            text: normalText,
+            size: 22,
+            font: "Calibri",
+          }));
+        }
+      }
+
+      // Ajouter le texte formaté
+      if (match.style.code) {
+        runs.push(new TextRun({
+          text: match.text,
+          font: "Courier New",
+          size: 20,
+          shading: {
+            fill: "f3f4f6",
+            type: ShadingType.CLEAR,
+          },
+        }));
+      } else {
+        runs.push(new TextRun({
+          text: match.text,
+          bold: match.style.bold || false,
+          italics: match.style.italics || false,
+          size: 22,
+          font: "Calibri",
+        }));
+      }
+
+      currentPos = match.end;
+    }
+
+    // Ajouter le texte restant
+    if (currentPos < text.length) {
+      const remainingText = text.substring(currentPos);
+      if (remainingText) {
+        runs.push(new TextRun({
+          text: remainingText,
+          size: 22,
+          font: "Calibri",
+        }));
+      }
+    }
+
+    // Si aucun match trouvé, retourner le texte normal
+    if (runs.length === 0) {
+      runs.push(new TextRun({
+        text: text,
+        size: 22,
+        font: "Calibri",
+      }));
+    }
+
+    return runs;
+  }
+
   private decodeHTMLEntities(text: string): string {
     // Décoder les entités HTML communes
     const entities: Record<string, string> = {
@@ -582,11 +720,19 @@ export class DocumentGenerationService {
 
     for (const token of tokens) {
       if (token.type === 'text') {
-        runs.push(new TextRun({
-          text: this.decodeHTMLEntities(token.text),
-          size: 22,
-          font: "Calibri",
-        }));
+        // Décoder le texte
+        let text = this.decodeHTMLEntities(token.text);
+
+        // Si marked n'a pas parsé le Markdown, le faire manuellement
+        if (text.includes('**') || text.includes('*')) {
+          runs.push(...this.parseTextWithManualMarkdown(text));
+        } else {
+          runs.push(new TextRun({
+            text: text,
+            size: 22,
+            font: "Calibri",
+          }));
+        }
       } else if (token.type === 'strong') {
         const innerTokens = 'tokens' in token ? token.tokens : [];
         const text = this.extractTextFromTokens(innerTokens as marked.Token[]);
