@@ -240,10 +240,6 @@ export class DocumentGenerationService {
                 bottom: convertInchesToTwip(1),
                 left: convertInchesToTwip(1),
               },
-              pageNumbers: {
-                start: i === 0 ? 1 : undefined,
-                formatType: NumberFormat.DECIMAL,
-              },
             },
           },
           headers: {
@@ -367,12 +363,10 @@ export class DocumentGenerationService {
       })
     );
 
-    // Entrées du sommaire avec numéros de page
+    // Entrées du sommaire
     sections.forEach((section, index) => {
       const cleanTitle = section.title.replace(/^\d+\.\s*/, '');
       const numberedTitle = `${index + 1}. ${cleanTitle}`;
-      // Page commence à 3 (après couverture page 1 et sommaire page 2)
-      const pageNumber = index + 3;
 
       paragraphs.push(
         new Paragraph({
@@ -389,19 +383,6 @@ export class DocumentGenerationService {
               size: 24,
               font: "Calibri",
               color: "374151",
-            }),
-            new TextRun({
-              text: " ".repeat(5) + "....................................." + " ".repeat(3),
-              size: 24,
-              font: "Calibri",
-              color: "d1d5db",
-            }),
-            new TextRun({
-              text: pageNumber.toString(),
-              size: 24,
-              font: "Calibri",
-              color: "374151",
-              bold: true,
             }),
           ],
           spacing: { before: 120, after: 120 },
