@@ -11,7 +11,8 @@ import {
   Crown,
   Timer,
   Bell,
-  MessageSquare
+  MessageSquare,
+  Lock
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
@@ -26,6 +27,7 @@ const menuItems = [
   { id: 'recherche-marches', label: 'Recherche de marchés', icon: Search },
   { id: 'surveillance-marches', label: 'Market Sentinel™', icon: Shield },
   { id: 'marche', label: 'Marchés', icon: FileText },
+  { id: 'coffre-fort', label: 'Coffre-Fort', icon: Lock },
   { id: 'assistant', label: 'Assistant IA', icon: MessageSquare },
   { id: 'parametres', label: 'Paramètres', icon: Settings },
   { id: 'labo', label: 'Labo', icon: Beaker },

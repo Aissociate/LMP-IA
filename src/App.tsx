@@ -14,6 +14,7 @@ import { Settings } from './components/Settings/Settings';
 import { Admin } from './components/Admin/Admin';
 import { Labo } from './components/Labo/Labo';
 import { Assistant } from './components/Assistant/Assistant';
+import { SecureVault } from './components/SecureVault/SecureVault';
 import { LandingPME } from './components/Landing/LandingPME';
 import { LandingBTP } from './components/Landing/LandingBTP';
 import { LandingArtisans } from './components/Landing/LandingArtisans';
@@ -23,7 +24,7 @@ import Home from './components/Landing/Home';
 import { BugReportButton } from './components/Common/BugReportButton';
 
 type AuthMode = 'login' | 'signup';
-type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'assistant' | 'parametres' | 'admin' | 'labo';
+type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'coffre-fort' | 'assistant' | 'parametres' | 'admin' | 'labo';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -60,6 +61,8 @@ function AppContent() {
         return <MarketSentinel />;
       case 'marche':
         return <MarketList />;
+      case 'coffre-fort':
+        return <SecureVault />;
       case 'assistant':
         return <Assistant />;
       case 'parametres':
