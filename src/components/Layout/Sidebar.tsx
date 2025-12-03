@@ -27,8 +27,8 @@ const menuItems = [
   { id: 'recherche-marches', label: 'Recherche de marchés', icon: Search },
   { id: 'surveillance-marches', label: 'Market Sentinel™', icon: Shield },
   { id: 'marche', label: 'Marchés', icon: FileText },
-  { id: 'coffre-fort', label: 'Coffre-Fort', icon: Lock },
   { id: 'assistant', label: 'Assistant IA', icon: MessageSquare },
+  { id: 'coffre-fort', label: 'Coffre-Fort', icon: Lock },
   { id: 'parametres', label: 'Paramètres', icon: Settings },
   { id: 'labo', label: 'Labo', icon: Beaker },
 ];
