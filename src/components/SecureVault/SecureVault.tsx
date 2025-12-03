@@ -89,6 +89,7 @@ export function SecureVault() {
   const [editingNotes, setEditingNotes] = useState<string | null>(null);
   const [notes, setNotes] = useState<string>('');
   const [expirationDate, setExpirationDate] = useState<string>('');
+  const fileInputRefs = React.useRef<{[key: string]: HTMLInputElement | null}>({});
 
   useEffect(() => {
     if (user) {
@@ -409,6 +410,7 @@ export function SecureVault() {
                     <input
                       type="file"
                       accept=".pdf,.jpg,.jpeg,.png,.webp"
+                      ref={(el) => fileInputRefs.current[`replace-${docType.key}`] = el}
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
@@ -419,25 +421,21 @@ export function SecureVault() {
                             handleFileUpload(docType.key, file);
                           }
                         }
+                        e.target.value = '';
                       }}
                       disabled={uploading === docType.key}
                       className="hidden"
-                      id={`upload-replace-${docType.key}`}
                     />
-                    <label
-                      htmlFor={`upload-replace-${docType.key}`}
-                      className="block"
+                    <Button
+                      onClick={() => fileInputRefs.current[`replace-${docType.key}`]?.click()}
+                      variant="secondary"
+                      size="sm"
+                      className="w-full"
+                      disabled={uploading === docType.key}
                     >
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="w-full"
-                        disabled={uploading === docType.key}
-                      >
-                        <Upload className="w-4 h-4 mr-1" />
-                        {uploading === docType.key ? 'Upload en cours...' : 'Remplacer'}
-                      </Button>
-                    </label>
+                      <Upload className="w-4 h-4 mr-1" />
+                      {uploading === docType.key ? 'Upload en cours...' : 'Remplacer'}
+                    </Button>
                   </div>
                 </div>
               ) : (
@@ -445,6 +443,7 @@ export function SecureVault() {
                   <input
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png,.webp"
+                    ref={(el) => fileInputRefs.current[`upload-${docType.key}`] = el}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
@@ -455,24 +454,20 @@ export function SecureVault() {
                           handleFileUpload(docType.key, file);
                         }
                       }
+                      e.target.value = '';
                     }}
                     disabled={uploading === docType.key}
                     className="hidden"
-                    id={`upload-${docType.key}`}
                   />
-                  <label
-                    htmlFor={`upload-${docType.key}`}
-                    className="block"
+                  <Button
+                    onClick={() => fileInputRefs.current[`upload-${docType.key}`]?.click()}
+                    variant="primary"
+                    className="w-full"
+                    disabled={uploading === docType.key}
                   >
-                    <Button
-                      variant="primary"
-                      className="w-full"
-                      disabled={uploading === docType.key}
-                    >
-                      <Upload className="w-4 h-4 mr-2" />
-                      {uploading === docType.key ? 'Upload en cours...' : 'Uploader le document'}
-                    </Button>
-                  </label>
+                    <Upload className="w-4 h-4 mr-2" />
+                    {uploading === docType.key ? 'Upload en cours...' : 'Uploader le document'}
+                  </Button>
 
                   <p className="text-xs text-gray-500 mt-2 text-center">
                     Formats acceptés: PDF, JPG, PNG (max 10 MB)
