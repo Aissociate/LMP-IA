@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building, Calendar, Euro, CreditCard as Edit3, BookOpen, Brain, Trophy, Archive, X, Clock, XCircle, CheckCircle, TrendingUp, Calculator, ExternalLink } from 'lucide-react';
+import { Building, Calendar, Euro, CreditCard as Edit3, BookOpen, Brain, Trophy, Archive, X, Clock, XCircle, CheckCircle, TrendingUp, Calculator, ExternalLink, FileText } from 'lucide-react';
 import { Market } from '../../types';
 
 interface MarketListCompactProps {
@@ -8,6 +8,7 @@ interface MarketListCompactProps {
   onEdit: () => void;
   onTechnicalMemory: () => void;
   onEconomicDocs: () => void;
+  onDC1: () => void;
   onAnalysis: () => void;
   onWin?: () => void;
   onArchive?: () => void;
@@ -20,6 +21,7 @@ export const MarketListCompact: React.FC<MarketListCompactProps> = ({
   onEdit,
   onTechnicalMemory,
   onEconomicDocs,
+  onDC1,
   onAnalysis,
   onWin,
   onArchive,
@@ -236,6 +238,15 @@ export const MarketListCompact: React.FC<MarketListCompactProps> = ({
             >
               <Calculator className="w-3.5 h-3.5" />
               <span>Éco</span>
+            </button>
+
+            <button
+              onClick={onDC1}
+              className="px-2.5 py-1.5 rounded-md text-xs font-medium transition-all duration-200 flex items-center gap-1.5 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white shadow-sm"
+              title="Déclaration de Candidature (DC1)"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>DC1</span>
             </button>
 
             {onArchive && (

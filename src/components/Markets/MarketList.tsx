@@ -8,6 +8,7 @@ import { DocumentAnalysisModal } from './DocumentAnalysisModal';
 import { TechnicalMemoryWizard } from './TechnicalMemoryWizard';
 import { EconomicDocumentsWizard } from './EconomicDocumentsWizard';
 import { EditMarketModal } from './EditMarketModal';
+import DC1Wizard from './DC1Wizard';
 import { MarketListCompact } from './MarketListCompact';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
@@ -31,6 +32,7 @@ export const MarketList: React.FC = () => {
   const [selectedMarketForAnalysis, setSelectedMarketForAnalysis] = useState<Market | null>(null);
   const [selectedMarketForTechnicalMemory, setSelectedMarketForTechnicalMemory] = useState<Market | null>(null);
   const [selectedMarketForEconomicDocs, setSelectedMarketForEconomicDocs] = useState<Market | null>(null);
+  const [selectedMarketForDC1, setSelectedMarketForDC1] = useState<Market | null>(null);
   const [selectedMarketForEdit, setSelectedMarketForEdit] = useState<Market | null>(null);
   const [activeTab, setActiveTab] = useState<'markets' | 'favorites'>('markets');
 
@@ -300,6 +302,7 @@ export const MarketList: React.FC = () => {
                 }
               }}
               onEconomicDocs={() => setSelectedMarketForEconomicDocs(market)}
+              onDC1={() => setSelectedMarketForDC1(market)}
               onAnalysis={() => setSelectedMarketForAnalysis(market)}
               onWin={market.status === 'en_cours' ? () => handleUpdateMarketStatus(market.id, 'gagne') : undefined}
               onArchive={() => handleArchiveMarket(market.id)}
@@ -424,6 +427,14 @@ export const MarketList: React.FC = () => {
           onClose={() => setSelectedMarketForEconomicDocs(null)}
           marketId={selectedMarketForEconomicDocs.id}
           marketTitle={selectedMarketForEconomicDocs.title}
+        />
+      )}
+
+      {selectedMarketForDC1 && (
+        <DC1Wizard
+          marketId={selectedMarketForDC1.id}
+          marketTitle={selectedMarketForDC1.title}
+          onClose={() => setSelectedMarketForDC1(null)}
         />
       )}
 
