@@ -1,40 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-  <!-- Page d'accueil -->
+  <!-- Page d'accueil principale -->
   <url>
     <loc>https://lemarchepublic.fr/</loc>
-    <lastmod>2025-11-26</lastmod>
+    <lastmod>2025-12-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://lemarchepublic.fr/logo1.png</image:loc>
+      <image:title>LeMarchéPublic.fr - Plateforme IA pour Marchés Publics</image:title>
+    </image:image>
   </url>
 
-  <!-- Landing Pages -->
+  <!-- Page d'accueil alternative -->
+  <url>
+    <loc>https://lemarchepublic.fr/home</loc>
+    <lastmod>2025-12-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Landing Pages Métiers -->
   <url>
     <loc>https://lemarchepublic.fr/pme</loc>
-    <lastmod>2025-11-26</lastmod>
+    <lastmod>2025-12-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://lemarchepublic.fr/logo1.png</image:loc>
+      <image:title>Solution IA pour PME - Marchés Publics Réunion</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://lemarchepublic.fr/landing/pme</loc>
+    <lastmod>2025-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://lemarchepublic.fr/btp</loc>
-    <lastmod>2025-11-26</lastmod>
+    <lastmod>2025-12-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://lemarchepublic.fr/logo1.png</image:loc>
+      <image:title>Solution IA pour BTP - Marchés Publics Réunion</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://lemarchepublic.fr/landing/btp</loc>
+    <lastmod>2025-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://lemarchepublic.fr/artisans</loc>
-    <lastmod>2025-11-26</lastmod>
+    <lastmod>2025-12-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://lemarchepublic.fr/logo1.png</image:loc>
+      <image:title>Solution IA pour Artisans - Marchés Publics Réunion</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://lemarchepublic.fr/landing/artisans</loc>
+    <lastmod>2025-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
+  <!-- Page de génération de leads -->
   <url>
     <loc>https://lemarchepublic.fr/lead</loc>
-    <lastmod>2025-11-26</lastmod>
+    <lastmod>2025-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -42,7 +89,7 @@
   <!-- Pages légales -->
   <url>
     <loc>https://lemarchepublic.fr/cgv</loc>
-    <lastmod>2025-11-26</lastmod>
+    <lastmod>2025-12-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -50,7 +97,7 @@
   <!-- Page de remerciement -->
   <url>
     <loc>https://lemarchepublic.fr/merci</loc>
-    <lastmod>2025-11-26</lastmod>
+    <lastmod>2025-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -58,9 +105,9 @@
   <!-- Page de connexion -->
   <url>
     <loc>https://lemarchepublic.fr/mmp</loc>
-    <lastmod>2025-11-26</lastmod>
+    <lastmod>2025-12-09</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.75</priority>
   </url>
 
 </urlset>
