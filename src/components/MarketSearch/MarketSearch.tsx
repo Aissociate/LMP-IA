@@ -199,7 +199,7 @@ export const MarketSearch: React.FC = () => {
         addLog('info', `Filtres actifs:\n${activeFilters.map(f => `  • ${f}`).join('\n')}`);
       }
 
-      const result = await boampService.searchMarkets(searchParams);
+      const result = await boampService.searchMarketsWithManual(searchParams);
 
       addLog('success', `${result.total} résultat(s) trouvé(s) - ${result.markets.length} marché(s) dans cette page`);
 

@@ -1,4 +1,5 @@
 import { BOAMPSearchParams, BOAMPMarket, BOAMPSearchResult } from '../types/boamp';
+import { supabase } from '../lib/supabase';
 
 class BOAMPService {
   private getEdgeFunctionUrl(): string {
@@ -258,6 +259,129 @@ class BOAMPService {
     } catch (error) {
       console.error('[BOAMP Service] Error getting market by reference:', error);
       return null;
+    }
+  }
+
+  async searchManualMarkets(params: BOAMPSearchParams): Promise<BOAMPMarket[]> {
+    try {
+      let query = supabase
+        .from('manual_markets')
+        .select('*')
+        .eq('status', 'published');
+
+      if (params.keywords) {
+        const keywords = params.keywords.toLowerCase();
+        query = query.or(`title.ilike.%${keywords}%,client.ilike.%${keywords}%,description.ilike.%${keywords}%`);
+      }
+
+      if (params.location && params.location.length > 0) {
+        const locationFilters = params.location.map(loc => `location.ilike.%${loc}%`).join(',');
+        query = query.or(locationFilters);
+      }
+
+      if (params.serviceTypes && params.serviceTypes.length > 0) {
+        query = query.in('service_type', params.serviceTypes);
+      }
+
+      if (params.publicBuyer) {
+        query = query.ilike('client', `%${params.publicBuyer}%`);
+      }
+
+      if (params.deadlineFrom) {
+        query = query.gte('deadline', params.deadlineFrom);
+      }
+
+      if (params.deadlineTo) {
+        query = query.lte('deadline', params.deadlineTo);
+      }
+
+      if (params.amountMin !== undefined) {
+        query = query.gte('amount', params.amountMin);
+      }
+
+      if (params.amountMax !== undefined) {
+        query = query.lte('amount', params.amountMax);
+      }
+
+      const sortField = params.sortBy === 'deadline' ? 'deadline' :
+                       params.sortBy === 'amount' ? 'amount' : 'publication_date';
+      const ascending = params.sortOrder === 'asc';
+      query = query.order(sortField, { ascending, nullsFirst: false });
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error('[BOAMP Service] Error searching manual markets:', error);
+        return [];
+      }
+
+      return (data || []).map(record => ({
+        id: `manual-${record.id}`,
+        reference: record.reference || `MAN-${record.id.substring(0, 8)}`,
+        title: record.title,
+        client: record.client,
+        description: record.description || '',
+        deadline: record.deadline || '',
+        amount: record.amount ? parseFloat(record.amount) : undefined,
+        location: record.location || 'Non specifie',
+        publicationDate: record.publication_date || '',
+        procedureType: record.procedure_type || 'Non specifie',
+        serviceType: record.service_type || 'Non specifie',
+        cpvCode: record.cpv_code,
+        url: record.url || '',
+        dceUrl: record.dce_url,
+        rawData: { ...record, source: 'manual', isManualMarket: true }
+      }));
+    } catch (error) {
+      console.error('[BOAMP Service] Error in searchManualMarkets:', error);
+      return [];
+    }
+  }
+
+  async searchMarketsWithManual(params: BOAMPSearchParams): Promise<BOAMPSearchResult> {
+    try {
+      const [boampResult, manualMarkets] = await Promise.all([
+        this.searchMarkets(params),
+        this.searchManualMarkets(params)
+      ]);
+
+      const allMarkets = [...manualMarkets, ...boampResult.markets];
+
+      const sortField = params.sortBy || 'publication_date';
+      const sortOrder = params.sortOrder || 'desc';
+
+      allMarkets.sort((a, b) => {
+        let valueA: any, valueB: any;
+
+        if (sortField === 'deadline') {
+          valueA = a.deadline ? new Date(a.deadline).getTime() : 0;
+          valueB = b.deadline ? new Date(b.deadline).getTime() : 0;
+        } else if (sortField === 'amount') {
+          valueA = a.amount || 0;
+          valueB = b.amount || 0;
+        } else {
+          valueA = a.publicationDate ? new Date(a.publicationDate).getTime() : 0;
+          valueB = b.publicationDate ? new Date(b.publicationDate).getTime() : 0;
+        }
+
+        if (sortOrder === 'asc') {
+          return valueA - valueB;
+        }
+        return valueB - valueA;
+      });
+
+      const total = boampResult.total + manualMarkets.length;
+      const limit = params.limit || 20;
+
+      return {
+        markets: allMarkets,
+        total,
+        page: params.page || 1,
+        totalPages: Math.ceil(total / limit)
+      };
+    } catch (error) {
+      console.error('[BOAMP Service] Error in searchMarketsWithManual:', error);
+      throw error;
     }
   }
 

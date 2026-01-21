@@ -11,7 +11,8 @@ import {
   Clock,
   Users,
   Shield,
-  Sparkles
+  Sparkles,
+  Database
 } from 'lucide-react';
 import { BOAMPMarket } from '../../types/boamp';
 import { marketSentinelService } from '../../services/marketSentinelService';
@@ -96,6 +97,7 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
   };
 
   const daysRemaining = getDaysRemaining(market.deadline);
+  const isManualMarket = market.rawData?.isManualMarket === true || market.id.startsWith('manual-');
 
   return (
     <div
@@ -206,7 +208,17 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            {isManualMarket && (
+              <span
+                className={`px-2 py-0.5 rounded text-xs font-medium flex items-center gap-1 ${
+                  isDark ? 'bg-teal-900/30 text-teal-400' : 'bg-teal-100 text-teal-700'
+                }`}
+              >
+                <Database className="w-3 h-3" />
+                BDD Locale
+              </span>
+            )}
             <span
               className={`px-2 py-0.5 rounded text-xs font-medium ${
                 isDark ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-100 text-blue-700'
@@ -226,7 +238,7 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
             <span
               className={`text-xs ${isDark ? 'text-gray-600' : 'text-gray-400'} ml-auto`}
             >
-              Réf: {market.reference}
+              Ref: {market.reference}
             </span>
           </div>
         </div>
