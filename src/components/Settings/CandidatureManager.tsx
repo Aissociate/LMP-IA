@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
-import { Users, Mail, Phone, Calendar, CheckCircle, XCircle, Clock, Eye, EyeOff } from 'lucide-react';
+import { Users, Mail, Phone, Calendar, CheckCircle, XCircle, Clock, Eye, EyeOff, FileText, MessageSquare, Briefcase, Target, DollarSign, ThumbsUp } from 'lucide-react';
 
 interface Candidature {
   id: string;
@@ -247,115 +247,206 @@ export const CandidatureManager: React.FC = () => {
         </div>
 
         {/* Détails */}
-        {selectedCandidature && (
-          <Card className="p-6 max-h-[600px] overflow-y-auto">
-            <div className="space-y-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">
+        {selectedCandidature ? (
+          <div className="space-y-4">
+            {/* En-tête avec actions de qualification */}
+            <Card className="p-6 bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
                     {selectedCandidature.prenom} {selectedCandidature.nom}
                   </h3>
-                  <div className="flex items-center gap-2 text-gray-600 mt-1">
-                    <Mail className="w-4 h-4" />
-                    {selectedCandidature.email}
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-600 mt-1">
-                    <Phone className="w-4 h-4" />
-                    {selectedCandidature.telephone}
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-gray-700">
+                      <Mail className="w-4 h-4 text-[#F77F00]" />
+                      <a href={`mailto:${selectedCandidature.email}`} className="hover:text-[#F77F00] hover:underline">
+                        {selectedCandidature.email}
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-700">
+                      <Phone className="w-4 h-4 text-[#F77F00]" />
+                      <a href={`tel:${selectedCandidature.telephone}`} className="hover:text-[#F77F00] hover:underline">
+                        {selectedCandidature.telephone}
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <Calendar className="w-4 h-4" />
+                      Candidature reçue le {new Date(selectedCandidature.created_at).toLocaleDateString('fr-FR', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
                   </div>
                 </div>
                 {getStatutBadge(selectedCandidature.statut)}
               </div>
 
-              <div className="flex gap-2 flex-wrap">
-                <Button
-                  onClick={() => updateStatut(selectedCandidature.id, 'en_cours')}
-                  variant="outline"
-                  className="text-sm"
-                  disabled={selectedCandidature.statut === 'en_cours'}
-                >
-                  <Clock className="w-4 h-4" />
-                  En cours
-                </Button>
-                <Button
-                  onClick={() => updateStatut(selectedCandidature.id, 'accepte')}
-                  variant="outline"
-                  className="text-sm text-green-700 border-green-300"
-                  disabled={selectedCandidature.statut === 'accepte'}
-                >
-                  <CheckCircle className="w-4 h-4" />
-                  Accepter
-                </Button>
-                <Button
-                  onClick={() => updateStatut(selectedCandidature.id, 'refuse')}
-                  variant="outline"
-                  className="text-sm text-red-700 border-red-300"
-                  disabled={selectedCandidature.statut === 'refuse'}
-                >
-                  <XCircle className="w-4 h-4" />
-                  Refuser
-                </Button>
+              <div className="border-t pt-4">
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">Qualifier cette candidature :</h4>
+                <div className="grid grid-cols-3 gap-2">
+                  <Button
+                    onClick={() => updateStatut(selectedCandidature.id, 'en_cours')}
+                    className={`${
+                      selectedCandidature.statut === 'en_cours'
+                        ? 'bg-yellow-500 text-white border-yellow-600'
+                        : 'bg-yellow-50 text-yellow-700 border-yellow-300 hover:bg-yellow-100'
+                    } border-2`}
+                    disabled={selectedCandidature.statut === 'en_cours'}
+                  >
+                    <Clock className="w-4 h-4" />
+                    En cours
+                  </Button>
+                  <Button
+                    onClick={() => updateStatut(selectedCandidature.id, 'accepte')}
+                    className={`${
+                      selectedCandidature.statut === 'accepte'
+                        ? 'bg-green-500 text-white border-green-600'
+                        : 'bg-green-50 text-green-700 border-green-300 hover:bg-green-100'
+                    } border-2`}
+                    disabled={selectedCandidature.statut === 'accepte'}
+                  >
+                    <CheckCircle className="w-4 h-4" />
+                    Accepter
+                  </Button>
+                  <Button
+                    onClick={() => updateStatut(selectedCandidature.id, 'refuse')}
+                    className={`${
+                      selectedCandidature.statut === 'refuse'
+                        ? 'bg-red-500 text-white border-red-600'
+                        : 'bg-red-50 text-red-700 border-red-300 hover:bg-red-100'
+                    } border-2`}
+                    disabled={selectedCandidature.statut === 'refuse'}
+                  >
+                    <XCircle className="w-4 h-4" />
+                    Refuser
+                  </Button>
+                </div>
               </div>
+            </Card>
 
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Expériences similaires</h4>
-                <p className="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 p-3 rounded-lg">
-                  {selectedCandidature.experiences_similaires}
-                </p>
-              </div>
-
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Méthode pour éviter les erreurs</h4>
-                <p className="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 p-3 rounded-lg">
-                  {selectedCandidature.methode_eviter_erreurs}
-                </p>
-              </div>
-
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Disponibilité quotidienne</h4>
-                <p className="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 p-3 rounded-lg">
-                  {selectedCandidature.disponibilite_quotidienne}
-                </p>
-              </div>
-
-              {selectedCandidature.motivations && (
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Motivations</h4>
-                  <p className="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 p-3 rounded-lg">
-                    {selectedCandidature.motivations}
+            {/* Détails de la candidature */}
+            <Card className="p-6 max-h-[500px] overflow-y-auto">
+              <div className="space-y-6">
+                {/* Expériences */}
+                <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Briefcase className="w-5 h-5 text-blue-700" />
+                    <h4 className="font-bold text-blue-900">Expériences similaires</h4>
+                  </div>
+                  <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                    {selectedCandidature.experiences_similaires}
                   </p>
                 </div>
-              )}
 
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Accord paiement / tarif</h4>
-                <p className={`text-sm font-semibold ${selectedCandidature.accord_paiement_tarif ? 'text-green-600' : 'text-red-600'}`}>
-                  {selectedCandidature.accord_paiement_tarif ? '✓ Accepté' : '✗ Non accepté'}
-                </p>
-              </div>
+                {/* Méthode de travail */}
+                <div className="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Target className="w-5 h-5 text-purple-700" />
+                    <h4 className="font-bold text-purple-900">Méthode pour éviter les erreurs</h4>
+                  </div>
+                  <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                    {selectedCandidature.methode_eviter_erreurs}
+                  </p>
+                </div>
 
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Notes administrateur</h4>
-                <textarea
-                  value={notesAdmin}
-                  onChange={(e) => setNotesAdmin(e.target.value)}
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F77F00] focus:border-transparent"
-                  placeholder="Ajoutez des notes sur cette candidature..."
-                />
-                <Button
-                  onClick={() => updateNotes(selectedCandidature.id)}
-                  className="mt-2 bg-[#F77F00] text-white hover:bg-[#E06F00]"
-                >
-                  Enregistrer les notes
-                </Button>
-              </div>
+                {/* Disponibilité */}
+                <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Calendar className="w-5 h-5 text-green-700" />
+                    <h4 className="font-bold text-green-900">Disponibilité quotidienne</h4>
+                  </div>
+                  <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                    {selectedCandidature.disponibilite_quotidienne}
+                  </p>
+                </div>
 
-              <div className="text-xs text-gray-500 pt-4 border-t">
-                <div>Reçu le : {new Date(selectedCandidature.created_at).toLocaleString('fr-FR')}</div>
-                <div>Modifié le : {new Date(selectedCandidature.updated_at).toLocaleString('fr-FR')}</div>
+                {/* Motivations */}
+                {selectedCandidature.motivations && (
+                  <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                    <div className="flex items-center gap-2 mb-3">
+                      <MessageSquare className="w-5 h-5 text-orange-700" />
+                      <h4 className="font-bold text-orange-900">Motivations</h4>
+                    </div>
+                    <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                      {selectedCandidature.motivations}
+                    </p>
+                  </div>
+                )}
+
+                {/* Accord paiement */}
+                <div className={`p-4 rounded-lg border-l-4 ${
+                  selectedCandidature.accord_paiement_tarif
+                    ? 'bg-green-50 border-green-500'
+                    : 'bg-red-50 border-red-500'
+                }`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <DollarSign className={`w-5 h-5 ${selectedCandidature.accord_paiement_tarif ? 'text-green-700' : 'text-red-700'}`} />
+                    <h4 className={`font-bold ${selectedCandidature.accord_paiement_tarif ? 'text-green-900' : 'text-red-900'}`}>
+                      Accord paiement / tarif
+                    </h4>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {selectedCandidature.accord_paiement_tarif ? (
+                      <>
+                        <ThumbsUp className="w-5 h-5 text-green-600" />
+                        <span className="font-semibold text-green-700">
+                          A accepté les conditions (1€/h via Taptap)
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle className="w-5 h-5 text-red-600" />
+                        <span className="font-semibold text-red-700">
+                          N'a pas accepté les conditions
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Notes administrateur */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-300">
+                  <div className="flex items-center gap-2 mb-3">
+                    <FileText className="w-5 h-5 text-gray-700" />
+                    <h4 className="font-bold text-gray-900">Notes administrateur</h4>
+                  </div>
+                  <textarea
+                    value={notesAdmin}
+                    onChange={(e) => setNotesAdmin(e.target.value)}
+                    rows={4}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F77F00] focus:border-transparent mb-2"
+                    placeholder="Ajoutez vos notes sur ce candidat (impressions, points forts, points d'attention...)..."
+                  />
+                  <Button
+                    onClick={() => updateNotes(selectedCandidature.id)}
+                    className="bg-[#F77F00] text-white hover:bg-[#E06F00] w-full"
+                  >
+                    <FileText className="w-4 h-4" />
+                    Enregistrer les notes
+                  </Button>
+                </div>
+
+                {/* Métadonnées */}
+                <div className="text-xs text-gray-500 pt-4 border-t bg-gray-50 -mx-6 -mb-6 px-6 py-4">
+                  <div className="flex justify-between">
+                    <span>Reçu le : {new Date(selectedCandidature.created_at).toLocaleString('fr-FR')}</span>
+                    <span>Modifié le : {new Date(selectedCandidature.updated_at).toLocaleString('fr-FR')}</span>
+                  </div>
+                  <div className="mt-1 text-gray-400">ID: {selectedCandidature.id}</div>
+                </div>
               </div>
-            </div>
+            </Card>
+          </div>
+        ) : (
+          <Card className="p-12 text-center">
+            <Eye className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 text-lg font-medium">Sélectionnez une candidature</p>
+            <p className="text-gray-400 text-sm mt-2">
+              Cliquez sur une candidature dans la liste pour voir les détails
+            </p>
           </Card>
         )}
       </div>
