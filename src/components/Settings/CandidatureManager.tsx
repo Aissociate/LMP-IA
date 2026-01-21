@@ -27,22 +27,72 @@ export const CandidatureManager: React.FC = () => {
   const [selectedCandidature, setSelectedCandidature] = useState<Candidature | null>(null);
   const [filterStatut, setFilterStatut] = useState<string>('all');
   const [notesAdmin, setNotesAdmin] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
-    loadCandidatures();
+    checkAdminStatus();
   }, []);
+
+  const checkAdminStatus = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        setError('Vous devez être connecté pour accéder à cette page');
+        setLoading(false);
+        return;
+      }
+
+      const { data: profile, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('is_admin')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (profileError) {
+        console.error('Error checking admin status:', profileError);
+        setError('Erreur lors de la vérification des permissions');
+        setLoading(false);
+        return;
+      }
+
+      if (!profile?.is_admin) {
+        setError('Accès réservé aux administrateurs');
+        setLoading(false);
+        return;
+      }
+
+      setIsAdmin(true);
+      loadCandidatures();
+    } catch (err) {
+      console.error('Error:', err);
+      setError('Erreur lors de la vérification des permissions');
+      setLoading(false);
+    }
+  };
 
   const loadCandidatures = async () => {
     try {
+      setError(null);
       const { data, error } = await supabase
         .from('candidatures')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
       setCandidatures(data || []);
-    } catch (error) {
+
+      if (data && data.length === 0) {
+        setError('Aucune candidature pour le moment');
+      }
+    } catch (error: any) {
       console.error('Error loading candidatures:', error);
+      setError(`Erreur lors du chargement: ${error.message || 'Erreur inconnue'}`);
     } finally {
       setLoading(false);
     }
@@ -126,6 +176,33 @@ export const CandidatureManager: React.FC = () => {
     );
   }
 
+  if (error && !isAdmin) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <Users className="w-8 h-8 text-[#F77F00]" />
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Candidatures Recrutement</h2>
+            <p className="text-sm text-gray-600">Gestion des candidatures assistant administratif</p>
+          </div>
+        </div>
+        <Card className="p-8 bg-red-50 border-2 border-red-200">
+          <div className="flex items-center gap-4">
+            <XCircle className="w-12 h-12 text-red-600 flex-shrink-0" />
+            <div>
+              <h3 className="text-lg font-bold text-red-900 mb-2">Accès refusé</h3>
+              <p className="text-red-700 mb-4">{error}</p>
+              <p className="text-sm text-red-600">
+                Seuls les administrateurs peuvent accéder à la gestion des candidatures.
+                Si vous pensez que c'est une erreur, contactez un administrateur système.
+              </p>
+            </div>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -137,6 +214,15 @@ export const CandidatureManager: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {error && candidatures.length === 0 && (
+        <Card className="p-6 bg-yellow-50 border-2 border-yellow-200">
+          <div className="flex items-center gap-3">
+            <Clock className="w-6 h-6 text-yellow-600" />
+            <p className="text-yellow-800 font-medium">{error}</p>
+          </div>
+        </Card>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
