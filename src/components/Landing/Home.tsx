@@ -116,41 +116,41 @@ export default function Home() {
         <div className="text-center">
           <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <Sparkles className="w-4 h-4" />
-            Votre copilote IA pour gagner du temps ET des marchés publics
+            Essai gratuit 7 jours - Sans carte bancaire
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <span className="bg-gradient-to-r from-gray-900 via-[#F77F00] to-gray-900 bg-clip-text text-transparent">
-              Ne partez plus jamais de zéro
+              Surveillez TOUS les marchés publics
             </span>
             <br />
-            <span className="text-gray-900">sur vos mémoires techniques</span>
+            <span className="text-gray-900">de La Réunion avec votre assistant IA</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            LeMarchéPublic.fr combine veille intelligente, score GO/NO-GO, génération automatique de mémoires et assistant IA pour vos marchés et BPU.
+            Veille exhaustive BOAMP 974, alertes intelligentes (mail/SMS/WhatsApp), analyse juridique, génération automatique de mémoires techniques et BPU. Votre coffre-fort numérique sécurisé inclus.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12 text-left">
             <div className="bg-white p-4 rounded-xl shadow-md">
-              <div className="text-2xl mb-2">🔍</div>
-              <div className="text-sm font-semibold text-gray-900">Veille marchés</div>
-              <div className="text-xs text-gray-600">Les marchés viennent à vous</div>
+              <div className="text-2xl mb-2">📡</div>
+              <div className="text-sm font-semibold text-gray-900">Veille 24/7</div>
+              <div className="text-xs text-gray-600">BOAMP nationale + Réunion 974</div>
             </div>
             <div className="bg-white p-4 rounded-xl shadow-md">
-              <div className="text-2xl mb-2">🎯</div>
-              <div className="text-sm font-semibold text-gray-900">Score GO/NO-GO</div>
-              <div className="text-xs text-gray-600">Décidez vite et bien</div>
+              <div className="text-2xl mb-2">📱</div>
+              <div className="text-sm font-semibold text-gray-900">Alertes multi-canal</div>
+              <div className="text-xs text-gray-600">Mail, SMS, WhatsApp</div>
             </div>
             <div className="bg-white p-4 rounded-xl shadow-md">
-              <div className="text-2xl mb-2">🧠</div>
-              <div className="text-sm font-semibold text-gray-900">Mémoires IA</div>
-              <div className="text-xs text-gray-600">Générés en quelques clics</div>
+              <div className="text-2xl mb-2">⚖️</div>
+              <div className="text-sm font-semibold text-gray-900">Analyse juridique</div>
+              <div className="text-xs text-gray-600">Conformité garantie</div>
             </div>
             <div className="bg-white p-4 rounded-xl shadow-md">
-              <div className="text-2xl mb-2">🤖</div>
-              <div className="text-sm font-semibold text-gray-900">Assistant IA</div>
-              <div className="text-xs text-gray-600">Interrogez DCE & BPU</div>
+              <div className="text-2xl mb-2">🔐</div>
+              <div className="text-sm font-semibold text-gray-900">Coffre-fort</div>
+              <div className="text-xs text-gray-600">Documents sécurisés</div>
             </div>
           </div>
 
@@ -163,33 +163,33 @@ export default function Home() {
               variant="primary"
               className="text-lg px-8 py-4"
             >
-              🎁 Tester gratuitement - 1 mémoire offert
+              🚀 Commencer mon essai gratuit 7 jours
             </Button>
             <Button
               onClick={() => document.getElementById('fonctionnalites')?.scrollIntoView({ behavior: 'smooth' })}
               variant="outline"
               className="text-lg px-8 py-4"
             >
-              Voir les fonctionnalités
+              Découvrir l'assistant IA
             </Button>
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 items-center">
             <div className="flex items-center gap-2">
               <span className="text-green-500 text-lg">✓</span>
+              <span>7 jours d'accès complet gratuit</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-500 text-lg">✓</span>
               <span>Sans carte bancaire</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-green-500 text-lg">✓</span>
-              <span>Sans engagement</span>
+              <span>Accès à toutes les fonctionnalités</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-green-500 text-lg">✓</span>
-              <span>Résultats en 48h</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500 text-lg">✓</span>
-              <span>Résiliable à tout moment</span>
+              <span>Annulez quand vous voulez</span>
             </div>
           </div>
         </div>
