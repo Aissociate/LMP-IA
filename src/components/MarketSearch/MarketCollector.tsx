@@ -123,15 +123,12 @@ export const MarketCollector: React.FC = () => {
     client: '',
     description: '',
     deadline: '',
-    amount: '',
     location: '',
     publication_date: new Date().toISOString().split('T')[0],
     procedure_type: '',
     service_type: '',
-    cpv_code: '',
     url: '',
     dce_url: '',
-    source: 'Saisie manuelle',
     operator_notes: ''
   };
 
@@ -206,15 +203,12 @@ export const MarketCollector: React.FC = () => {
         client: formData.client.trim(),
         description: formData.description.trim() || null,
         deadline: formData.deadline || null,
-        amount: formData.amount ? parseFloat(formData.amount) : null,
         location: formData.location.trim() || null,
         publication_date: formData.publication_date || new Date().toISOString(),
         procedure_type: formData.procedure_type || null,
         service_type: formData.service_type || null,
-        cpv_code: formData.cpv_code.trim() || null,
         url: formData.url.trim() || null,
         dce_url: formData.dce_url.trim() || null,
-        source: formData.source.trim() || 'Saisie manuelle',
         operator_notes: formData.operator_notes.trim() || null,
         created_by: operatorName,
         status: publish ? 'published' : 'draft'
@@ -263,15 +257,12 @@ export const MarketCollector: React.FC = () => {
       client: market.client,
       description: market.description || '',
       deadline: market.deadline ? market.deadline.split('T')[0] : '',
-      amount: market.amount?.toString() || '',
       location: market.location || '',
       publication_date: market.publication_date ? market.publication_date.split('T')[0] : '',
       procedure_type: market.procedure_type || '',
       service_type: market.service_type || '',
-      cpv_code: market.cpv_code || '',
       url: market.url || '',
       dce_url: market.dce_url || '',
-      source: market.source || 'Saisie manuelle',
       operator_notes: market.operator_notes || ''
     });
     setShowForm(true);
@@ -686,32 +677,6 @@ export const MarketCollector: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Montant estime (EUR)
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.amount}
-                    onChange={(e) => setFormData(prev => ({ ...prev, amount: e.target.value }))}
-                    placeholder="Ex: 150000"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Code CPV
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.cpv_code}
-                    onChange={(e) => setFormData(prev => ({ ...prev, cpv_code: e.target.value }))}
-                    placeholder="Ex: 45000000"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Lien web de l'annonce
                   </label>
                   <input
@@ -732,19 +697,6 @@ export const MarketCollector: React.FC = () => {
                     value={formData.dce_url}
                     onChange={(e) => setFormData(prev => ({ ...prev, dce_url: e.target.value }))}
                     placeholder="https://..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Source de l'information
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.source}
-                    onChange={(e) => setFormData(prev => ({ ...prev, source: e.target.value }))}
-                    placeholder="Ex: Site web mairie, Journal officiel..."
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                   />
                 </div>
