@@ -124,7 +124,7 @@ export default function Home() {
               Surveillez TOUS les marchés publics
             </span>
             <br />
-            <span className="text-gray-900">de La Réunion avec votre assistant IA</span>
+            <span className="text-gray-900">de La Réunion avec votre assistant numérique</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -170,7 +170,7 @@ export default function Home() {
               variant="outline"
               className="text-lg px-8 py-4"
             >
-              Découvrir l'assistant IA
+              Découvrir l'assistant numérique
             </Button>
           </div>
 
@@ -269,10 +269,10 @@ export default function Home() {
       <Section id="fonctionnalites" className="py-20 bg-white">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Un système complet pour vos marchés publics
+            Votre assistant numérique complet pour les marchés publics
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            4 outils puissants qui travaillent ensemble pour vous faire gagner du temps et des marchés
+            8 fonctionnalités professionnelles qui automatisent tout le processus, de la veille à la génération des documents
           </p>
         </div>
 
@@ -281,47 +281,103 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                <span className="text-xl">🔍</span>
+                <span className="text-xl">📡</span>
                 Inclus dans tous les plans
               </div>
-              <h3 className="text-3xl font-bold mb-4">1. Veille marchés intégrée</h3>
+              <h3 className="text-3xl font-bold mb-4">1. Surveillance 24/7 exhaustive</h3>
               <p className="text-lg text-gray-600 mb-6">
-                Vous ne cherchez plus les marchés : ils viennent à vous.
+                Ne ratez plus jamais une opportunité : BOAMP national + 100% des marchés Réunion 974.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
-                  <span className="text-gray-700">Paramétrage par secteur, zone géographique et type de marché</span>
+                  <span className="text-gray-700"><strong>BOAMP nationale</strong> + focus exhaustif La Réunion</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
-                  <span className="text-gray-700">Liste de marchés détectés directement dans votre espace</span>
+                  <span className="text-gray-700"><strong>CINOR, TCO, CIREST, CIVIS, CASUD, Région</strong>, toutes communes 974</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
-                  <span className="text-gray-700">Actualisation continue en temps réel</span>
+                  <span className="text-gray-700">Actualisation en temps réel, <strong>24h/24, 7j/7</strong></span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Paramétrage fin par secteur, montant, type</span>
                 </li>
               </ul>
             </div>
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl">
               <div className="bg-white p-6 rounded-xl shadow-lg">
-                <div className="text-4xl mb-4 text-center">🔍</div>
-                <div className="text-center text-gray-700 font-semibold">Veille automatique</div>
+                <div className="text-4xl mb-4 text-center">📡</div>
+                <div className="text-center text-gray-700 font-semibold">Surveillance en cours</div>
                 <div className="mt-4 space-y-2 text-sm text-gray-600">
                   <div className="flex justify-between">
-                    <span>Marchés détectés</span>
-                    <span className="font-bold text-green-600">24 nouveaux</span>
+                    <span>Marchés détectés aujourd'hui</span>
+                    <span className="font-bold text-green-600">12 nouveaux</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Zone</span>
+                    <span>Zone prioritaire</span>
                     <span className="font-bold">Réunion (974)</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Secteur</span>
-                    <span className="font-bold">BTP / Travaux</span>
+                    <span>Veille active</span>
+                    <span className="font-bold text-green-600">● LIVE</span>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Alertes Multi-Canal */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1 bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="text-4xl mb-4 text-center">📱</div>
+                <div className="text-center text-gray-700 font-semibold mb-4">Nouveau marché détecté !</div>
+                <div className="space-y-2 text-xs text-gray-600">
+                  <div className="bg-blue-50 p-2 rounded flex items-center gap-2">
+                    <span>📧</span>
+                    <span>Email envoyé</span>
+                  </div>
+                  <div className="bg-blue-50 p-2 rounded flex items-center gap-2">
+                    <span>📱</span>
+                    <span>SMS envoyé</span>
+                  </div>
+                  <div className="bg-blue-50 p-2 rounded flex items-center gap-2">
+                    <span>💬</span>
+                    <span>WhatsApp envoyé</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">📱</span>
+                Inclus dans tous les plans
+              </div>
+              <h3 className="text-3xl font-bold mb-4">2. Alertes instantanées multi-canal</h3>
+              <p className="text-lg text-gray-600 mb-6">
+                Soyez informé immédiatement par Email, SMS ou WhatsApp dès qu'un marché correspond à vos critères.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Email professionnel</strong> avec résumé détaillé</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>SMS instantané</strong> pour les marchés prioritaires</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>WhatsApp Business</strong> avec lien direct</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Personnalisation complète des alertes</span>
+                </li>
+              </ul>
             </div>
           </div>
 
@@ -354,14 +410,14 @@ export default function Home() {
                 <span className="text-xl">🎯</span>
                 Inclus pour tous
               </div>
-              <h3 className="text-3xl font-bold mb-4">2. Score GO / NO-GO avec Market Sentinel</h3>
+              <h3 className="text-3xl font-bold mb-4">3. Analyse intelligente du marché</h3>
               <p className="text-lg text-gray-600 mb-6">
-                Décidez vite avant d'y passer des heures.
+                En 30 secondes, sachez si vous devez répondre ou passer votre chemin.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
-                  <span className="text-gray-700"><strong>Score de pertinence</strong> de 0 à 100 pour chaque marché</span>
+                  <span className="text-gray-700"><strong>Score de pertinence</strong> automatique de 0 à 100</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
@@ -369,22 +425,134 @@ export default function Home() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
-                  <span className="text-gray-700"><strong>Analyse IA</strong> expliquant pourquoi répondre ou pas</span>
+                  <span className="text-gray-700"><strong>Analyse complète</strong> expliquant pourquoi répondre ou pas</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Estimation du niveau de concurrence</span>
                 </li>
               </ul>
             </div>
           </div>
 
-          {/* Mémoires IA */}
+          {/* Analyse des pièces */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1 bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="text-sm font-semibold text-gray-700 mb-4">📄 Analyse DCE</div>
+                <div className="space-y-2 text-xs text-gray-600">
+                  <div className="bg-gray-50 p-2 rounded">✓ Méthodologie : 40% du score</div>
+                  <div className="bg-gray-50 p-2 rounded">✓ Moyens techniques : 30%</div>
+                  <div className="bg-gray-50 p-2 rounded">✓ Prix : 30%</div>
+                  <div className="bg-yellow-50 p-2 rounded border border-yellow-200">⚠️ Clause pénalités page 47</div>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">📄</span>
+                Inclus dans tous les plans
+              </div>
+              <h3 className="text-3xl font-bold mb-4">4. Analyse des pièces et stratégie</h3>
+              <p className="text-lg text-gray-600 mb-6">
+                Votre assistant lit le DCE de 200 pages et vous dit l'essentiel en 2 minutes.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Extraction des critères</strong> de notation et pondération</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Identification des points</strong> de vigilance</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Détection des incohérences</strong> dans le DCE/BPU</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Stratégie optimale pour maximiser votre score</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Vérifications juridiques */}
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                <span className="text-xl">🧠</span>
+              <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">⚖️</span>
+                Inclus dans tous les plans
+              </div>
+              <h3 className="text-3xl font-bold mb-4">5. Vérifications juridiques automatiques</h3>
+              <p className="text-lg text-gray-600 mb-6">
+                Conformité garantie avec le droit des marchés publics et le Code de la commande publique.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Conformité Code commande publique</strong> française</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Détection des clauses</strong> illégales ou ambiguës</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Alerte obligations légales</strong> spécifiques</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Conseil sur les recours possibles</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-red-50 to-red-100 p-8 rounded-2xl">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="text-4xl mb-4 text-center">⚖️</div>
+                <div className="text-center text-gray-700 font-semibold mb-4">Analyse juridique</div>
+                <div className="space-y-2 text-xs">
+                  <div className="bg-green-50 p-2 rounded border border-green-200">
+                    ✅ Conformité générale OK
+                  </div>
+                  <div className="bg-yellow-50 p-2 rounded border border-yellow-200">
+                    ⚠️ Délai court : 21 jours (légal mais serré)
+                  </div>
+                  <div className="bg-green-50 p-2 rounded border border-green-200">
+                    ✅ Critères de notation conformes
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Génération Mémoires */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1 bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="text-sm font-semibold text-gray-700 mb-4">Mémoire technique généré</div>
+                <div className="space-y-2 text-xs text-gray-600">
+                  <div className="bg-gray-50 p-2 rounded">1. Présentation entreprise ✓</div>
+                  <div className="bg-gray-50 p-2 rounded">2. Moyens humains ✓</div>
+                  <div className="bg-gray-50 p-2 rounded">3. Moyens matériels ✓</div>
+                  <div className="bg-gray-50 p-2 rounded">4. Méthodologie ✓</div>
+                  <div className="bg-gray-50 p-2 rounded">5. Démarche QSE ✓</div>
+                  <div className="bg-gray-50 p-2 rounded">6. Planning prévisionnel ✓</div>
+                </div>
+                <div className="mt-4 text-center">
+                  <span className="text-green-600 font-semibold text-sm">✓ Prêt en 15 minutes</span>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">📝</span>
                 Market Light & Market Pro
               </div>
-              <h3 className="text-3xl font-bold mb-4">3. Génération de mémoires techniques</h3>
+              <h3 className="text-3xl font-bold mb-4">6. Génération automatique mémoires techniques</h3>
               <p className="text-lg text-gray-600 mb-6">
-                L'IA qui vous évite la page blanche et structure votre réponse.
+                De la page blanche à un mémoire complet en 15 minutes. Économisez 10 à 20h de travail.
               </p>
               <div className="space-y-4 mb-6">
                 <div className="bg-blue-50 p-4 rounded-xl">
@@ -425,44 +593,109 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Assistant IA */}
+          {/* Génération BPU */}
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1 bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">💰</span>
+                Inclus dans tous les plans
+              </div>
+              <h3 className="text-3xl font-bold mb-4">7. Génération automatique du BPU</h3>
+              <p className="text-lg text-gray-600 mb-6">
+                Le BPU calculé et vérifié automatiquement. Fini les erreurs qui coûtent des milliers d'euros.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Génération automatique</strong> à partir du DCE</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Calcul selon vos coûts</strong> et marges habituels</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Détection d'incohérences</strong> (quantités, unités)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Export Excel compatible plateformes de dématérialisation</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-8 rounded-2xl">
               <div className="bg-white p-6 rounded-xl shadow-lg">
-                <div className="text-sm font-semibold text-gray-700 mb-4">💬 Assistant IA</div>
-                <div className="space-y-3 text-xs">
-                  <div className="bg-gray-100 p-3 rounded-lg">
-                    <div className="font-semibold text-gray-900 mb-1">Vous :</div>
-                    <div className="text-gray-600">"Quels sont les critères les plus pondérés ?"</div>
+                <div className="text-4xl mb-4 text-center">💰</div>
+                <div className="text-center text-gray-700 font-semibold mb-4">BPU généré</div>
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between bg-gray-50 p-2 rounded">
+                    <span>Lignes traitées</span>
+                    <span className="font-bold">234/234</span>
                   </div>
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <div className="font-semibold text-blue-900 mb-1">IA :</div>
-                    <div className="text-gray-700">"Les critères principaux sont : méthodologie (40%), moyens techniques (30%), prix (30%)"</div>
+                  <div className="flex justify-between bg-green-50 p-2 rounded">
+                    <span>Vérifications</span>
+                    <span className="font-bold text-green-600">✓ OK</span>
+                  </div>
+                  <div className="flex justify-between bg-yellow-50 p-2 rounded border border-yellow-200">
+                    <span>Alertes</span>
+                    <span className="font-bold text-yellow-600">⚠️ 2 points</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Coffre-fort */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1 bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="text-4xl mb-4 text-center">🔐</div>
+                <div className="text-center text-gray-700 font-semibold mb-4">Mes documents</div>
+                <div className="space-y-2 text-xs text-gray-600">
+                  <div className="bg-gray-50 p-2 rounded flex justify-between">
+                    <span>📄 Kbis</span>
+                    <span className="text-green-600">✓</span>
+                  </div>
+                  <div className="bg-gray-50 p-2 rounded flex justify-between">
+                    <span>📄 Assurance RCD</span>
+                    <span className="text-yellow-600">⚠️ Expire 30j</span>
+                  </div>
+                  <div className="bg-gray-50 p-2 rounded flex justify-between">
+                    <span>📄 Attestations fiscales</span>
+                    <span className="text-green-600">✓</span>
+                  </div>
+                  <div className="bg-gray-50 p-2 rounded flex justify-between">
+                    <span>📄 Certifications ISO</span>
+                    <span className="text-green-600">✓</span>
                   </div>
                 </div>
               </div>
             </div>
             <div className="order-1 md:order-2">
-              <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                <span className="text-xl">🤖</span>
+              <div className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">🔐</span>
                 Inclus dans tous les plans
               </div>
-              <h3 className="text-3xl font-bold mb-4">4. Assistant IA Marchés & BPU</h3>
+              <h3 className="text-3xl font-bold mb-4">8. Coffre-fort numérique sécurisé</h3>
               <p className="text-lg text-gray-600 mb-6">
-                Posez vos questions comme à un collaborateur expert.
+                Tous vos documents administratifs centralisés, sécurisés et réutilisables automatiquement.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
-                  <span className="text-gray-700">Interrogez le DCE, les pièces du marché, la grille de notation</span>
+                  <span className="text-gray-700"><strong>Stockage chiffré</strong> Kbis, attestations, certifications...</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
-                  <span className="text-gray-700">Analysez les lignes du BPU, détectez les incohérences</span>
+                  <span className="text-gray-700"><strong>Accès instantané</strong> depuis n'importe où</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
-                  <span className="text-gray-700">Gagnez du temps sur la compréhension et la vérification</span>
+                  <span className="text-gray-700"><strong>Alertes d'expiration</strong> 30 jours avant</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Insertion automatique dans vos dossiers</span>
                 </li>
               </ul>
             </div>
