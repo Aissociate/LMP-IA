@@ -29,6 +29,9 @@ export const CandidatureManager: React.FC = () => {
   const [notesAdmin, setNotesAdmin] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [updatingStatut, setUpdatingStatut] = useState(false);
+  const [updatingNotes, setUpdatingNotes] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     checkAdminStatus();
@@ -99,38 +102,66 @@ export const CandidatureManager: React.FC = () => {
   };
 
   const updateStatut = async (id: string, newStatut: Candidature['statut']) => {
+    setUpdatingStatut(true);
+    setError(null);
+    setSuccessMessage(null);
+
     try {
-      const { error } = await supabase
+      const { error: updateError } = await supabase
         .from('candidatures')
         .update({ statut: newStatut })
         .eq('id', id);
 
-      if (error) throw error;
+      if (updateError) {
+        console.error('Supabase update error:', updateError);
+        setError(`Erreur lors de la mise à jour du statut: ${updateError.message}`);
+        return;
+      }
+
+      setSuccessMessage('Statut mis à jour avec succès');
+      setTimeout(() => setSuccessMessage(null), 3000);
 
       await loadCandidatures();
       if (selectedCandidature?.id === id) {
         setSelectedCandidature({ ...selectedCandidature, statut: newStatut });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating statut:', error);
+      setError(`Erreur: ${error.message || 'Erreur inconnue'}`);
+    } finally {
+      setUpdatingStatut(false);
     }
   };
 
   const updateNotes = async (id: string) => {
+    setUpdatingNotes(true);
+    setError(null);
+    setSuccessMessage(null);
+
     try {
-      const { error } = await supabase
+      const { error: updateError } = await supabase
         .from('candidatures')
         .update({ notes_admin: notesAdmin })
         .eq('id', id);
 
-      if (error) throw error;
+      if (updateError) {
+        console.error('Supabase update error:', updateError);
+        setError(`Erreur lors de l'enregistrement des notes: ${updateError.message}`);
+        return;
+      }
+
+      setSuccessMessage('Notes enregistrées avec succès');
+      setTimeout(() => setSuccessMessage(null), 3000);
 
       await loadCandidatures();
       if (selectedCandidature?.id === id) {
         setSelectedCandidature({ ...selectedCandidature, notes_admin: notesAdmin });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating notes:', error);
+      setError(`Erreur: ${error.message || 'Erreur inconnue'}`);
+    } finally {
+      setUpdatingNotes(false);
     }
   };
 
@@ -214,6 +245,25 @@ export const CandidatureManager: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Messages d'erreur et de succès */}
+      {error && candidatures.length > 0 && (
+        <Card className="p-4 bg-red-50 border-2 border-red-200">
+          <div className="flex items-center gap-3">
+            <XCircle className="w-5 h-5 text-red-600" />
+            <p className="text-red-800 font-medium">{error}</p>
+          </div>
+        </Card>
+      )}
+
+      {successMessage && (
+        <Card className="p-4 bg-green-50 border-2 border-green-200">
+          <div className="flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <p className="text-green-800 font-medium">{successMessage}</p>
+          </div>
+        </Card>
+      )}
 
       {error && candidatures.length === 0 && (
         <Card className="p-6 bg-yellow-50 border-2 border-yellow-200">
@@ -380,9 +430,13 @@ export const CandidatureManager: React.FC = () => {
                         ? 'bg-yellow-500 text-white border-yellow-600'
                         : 'bg-yellow-50 text-yellow-700 border-yellow-300 hover:bg-yellow-100'
                     } border-2`}
-                    disabled={selectedCandidature.statut === 'en_cours'}
+                    disabled={selectedCandidature.statut === 'en_cours' || updatingStatut}
                   >
-                    <Clock className="w-4 h-4" />
+                    {updatingStatut ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
+                    ) : (
+                      <Clock className="w-4 h-4" />
+                    )}
                     En cours
                   </Button>
                   <Button
@@ -392,9 +446,13 @@ export const CandidatureManager: React.FC = () => {
                         ? 'bg-green-500 text-white border-green-600'
                         : 'bg-green-50 text-green-700 border-green-300 hover:bg-green-100'
                     } border-2`}
-                    disabled={selectedCandidature.statut === 'accepte'}
+                    disabled={selectedCandidature.statut === 'accepte' || updatingStatut}
                   >
-                    <CheckCircle className="w-4 h-4" />
+                    {updatingStatut ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
+                    ) : (
+                      <CheckCircle className="w-4 h-4" />
+                    )}
                     Accepter
                   </Button>
                   <Button
@@ -404,9 +462,13 @@ export const CandidatureManager: React.FC = () => {
                         ? 'bg-red-500 text-white border-red-600'
                         : 'bg-red-50 text-red-700 border-red-300 hover:bg-red-100'
                     } border-2`}
-                    disabled={selectedCandidature.statut === 'refuse'}
+                    disabled={selectedCandidature.statut === 'refuse' || updatingStatut}
                   >
-                    <XCircle className="w-4 h-4" />
+                    {updatingStatut ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
+                    ) : (
+                      <XCircle className="w-4 h-4" />
+                    )}
                     Refuser
                   </Button>
                 </div>
@@ -509,9 +571,19 @@ export const CandidatureManager: React.FC = () => {
                   <Button
                     onClick={() => updateNotes(selectedCandidature.id)}
                     className="bg-[#F77F00] text-white hover:bg-[#E06F00] w-full"
+                    disabled={updatingNotes}
                   >
-                    <FileText className="w-4 h-4" />
-                    Enregistrer les notes
+                    {updatingNotes ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                        Enregistrement...
+                      </>
+                    ) : (
+                      <>
+                        <FileText className="w-4 h-4" />
+                        Enregistrer les notes
+                      </>
+                    )}
                   </Button>
                 </div>
 
