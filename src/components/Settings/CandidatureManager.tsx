@@ -102,6 +102,7 @@ export const CandidatureManager: React.FC = () => {
   };
 
   const updateStatut = async (id: string, newStatut: Candidature['statut']) => {
+    console.log('updateStatut called', { id, newStatut, currentStatut: selectedCandidature?.statut });
     setUpdatingStatut(true);
     setError(null);
     setSuccessMessage(null);
@@ -423,9 +424,13 @@ export const CandidatureManager: React.FC = () => {
               <div className="border-t pt-4">
                 <h4 className="text-sm font-semibold text-gray-700 mb-3">Qualifier cette candidature :</h4>
                 <div className="grid grid-cols-3 gap-2">
-                  <Button
-                    onClick={() => updateStatut(selectedCandidature.id, 'en_cours')}
-                    className={`${
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log('Button En cours clicked');
+                      updateStatut(selectedCandidature.id, 'en_cours');
+                    }}
+                    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                       selectedCandidature.statut === 'en_cours'
                         ? 'bg-yellow-500 text-white border-yellow-600'
                         : 'bg-yellow-50 text-yellow-700 border-yellow-300 hover:bg-yellow-100'
@@ -438,10 +443,14 @@ export const CandidatureManager: React.FC = () => {
                       <Clock className="w-4 h-4" />
                     )}
                     En cours
-                  </Button>
-                  <Button
-                    onClick={() => updateStatut(selectedCandidature.id, 'accepte')}
-                    className={`${
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log('Button Accepter clicked');
+                      updateStatut(selectedCandidature.id, 'accepte');
+                    }}
+                    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                       selectedCandidature.statut === 'accepte'
                         ? 'bg-green-500 text-white border-green-600'
                         : 'bg-green-50 text-green-700 border-green-300 hover:bg-green-100'
@@ -454,10 +463,14 @@ export const CandidatureManager: React.FC = () => {
                       <CheckCircle className="w-4 h-4" />
                     )}
                     Accepter
-                  </Button>
-                  <Button
-                    onClick={() => updateStatut(selectedCandidature.id, 'refuse')}
-                    className={`${
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log('Button Refuser clicked');
+                      updateStatut(selectedCandidature.id, 'refuse');
+                    }}
+                    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                       selectedCandidature.statut === 'refuse'
                         ? 'bg-red-500 text-white border-red-600'
                         : 'bg-red-50 text-red-700 border-red-300 hover:bg-red-100'
@@ -470,7 +483,7 @@ export const CandidatureManager: React.FC = () => {
                       <XCircle className="w-4 h-4" />
                     )}
                     Refuser
-                  </Button>
+                  </button>
                 </div>
               </div>
             </Card>
@@ -568,9 +581,13 @@ export const CandidatureManager: React.FC = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F77F00] focus:border-transparent mb-2"
                     placeholder="Ajoutez vos notes sur ce candidat (impressions, points forts, points d'attention...)..."
                   />
-                  <Button
-                    onClick={() => updateNotes(selectedCandidature.id)}
-                    className="bg-[#F77F00] text-white hover:bg-[#E06F00] w-full"
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log('Button Enregistrer notes clicked');
+                      updateNotes(selectedCandidature.id);
+                    }}
+                    className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium bg-[#F77F00] text-white hover:bg-[#E06F00] w-full transition-colors"
                     disabled={updatingNotes}
                   >
                     {updatingNotes ? (
@@ -584,7 +601,7 @@ export const CandidatureManager: React.FC = () => {
                         Enregistrer les notes
                       </>
                     )}
-                  </Button>
+                  </button>
                 </div>
 
                 {/* Métadonnées */}
