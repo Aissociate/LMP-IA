@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { MarketHeader } from './MarketHeader';
 import { MarketDetails } from './MarketDetails';
 import { FreeTrialModal } from './FreeTrialModal';
 import { SEOHead } from '../SEO/SEOHead';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2, AlertCircle, Building2, Phone, Mail } from 'lucide-react';
 
 interface Market {
   id: string;
@@ -110,20 +109,68 @@ export function PublicMarketPage() {
       />
 
       <div className="min-h-screen bg-gray-50">
-        <MarketHeader onCTAClick={() => setShowModal(true)} />
+        {/* Top Bar */}
+        <div className="bg-[#2c3e50] text-white py-2 px-4">
+          <div className="max-w-7xl mx-auto flex items-center justify-between text-sm">
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-2">
+                <Phone className="w-4 h-4" />
+                <span>0262 90 00 00</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Mail className="w-4 h-4" />
+                <span>contact@marches-reunion.fr</span>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <button className="hover:text-orange-400 transition-colors">Aide</button>
+              <button onClick={() => setShowModal(true)} className="hover:text-orange-400 transition-colors">Connexion</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Header with Logo and Nav */}
+        <div className="bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <a href="/marchepublics/974" className="flex items-center space-x-2">
+                <div className="bg-blue-600 text-white p-2 rounded-lg">
+                  <Building2 className="w-6 h-6" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-gray-900">Marchés Publics</h1>
+                  <p className="text-sm text-blue-600">Île de la Réunion</p>
+                </div>
+              </a>
+              <nav className="hidden md:flex items-center space-x-6">
+                <a href="/marchepublics/974" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Accueil</a>
+                <a href="/marchepublics/974" className="text-blue-600 font-semibold">Marchés</a>
+                <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Annonceurs</a>
+                <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Statistiques</a>
+              </nav>
+              <button
+                onClick={() => setShowModal(true)}
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Essai gratuit
+              </button>
+            </div>
+          </div>
+        </div>
+
         <MarketDetails market={market} />
 
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-8 text-center text-white shadow-lg">
+            <h2 className="text-3xl font-bold mb-3">
               Ne manquez plus aucune opportunité
             </h2>
-            <p className="text-gray-700 mb-6">
+            <p className="text-blue-100 mb-6 text-lg">
               Recevez automatiquement les nouveaux marchés qui correspondent à votre activité
             </p>
             <button
               onClick={() => setShowModal(true)}
-              className="bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors shadow-lg"
+              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-lg"
             >
               Essayez gratuitement pendant 7 jours
             </button>
