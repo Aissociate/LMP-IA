@@ -74,7 +74,7 @@ export function PublicMarketPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-orange-600 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Chargement du marché...</p>
         </div>
       </div>
@@ -92,7 +92,7 @@ export function PublicMarketPage() {
           </p>
           <button
             onClick={() => navigate('/marchepublics/974')}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition-colors"
           >
             Voir tous les marchés
           </button>
@@ -114,7 +114,7 @@ export function PublicMarketPage() {
         <MarketDetails market={market} />
 
         <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+          <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
               Ne manquez plus aucune opportunité
             </h2>
@@ -123,7 +123,7 @@ export function PublicMarketPage() {
             </p>
             <button
               onClick={() => setShowModal(true)}
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg"
+              className="bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors shadow-lg"
             >
               Essayez gratuitement pendant 7 jours
             </button>

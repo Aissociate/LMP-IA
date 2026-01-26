@@ -127,7 +127,7 @@ export function MarketSyncMonitor() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
+        <RefreshCw className="w-8 h-8 text-orange-600 animate-spin" />
       </div>
     );
   }
@@ -141,7 +141,7 @@ export function MarketSyncMonitor() {
         <button
           onClick={handleForceSync}
           disabled={syncing}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:bg-gray-400 transition-colors"
         >
           <RefreshCw className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} />
           {syncing ? 'Synchronisation...' : 'Forcer la synchronisation'}
@@ -167,7 +167,7 @@ export function MarketSyncMonitor() {
               <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Total</p>
               <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{stats.total}</p>
             </div>
-            <TrendingUp className="w-8 h-8 text-blue-600" />
+            <TrendingUp className="w-8 h-8 text-orange-600" />
           </div>
         </div>
 
@@ -310,7 +310,7 @@ export function MarketSyncMonitor() {
                     href={`/marchepublics/974/${market.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-700"
+                    className="text-orange-600 hover:text-orange-700"
                   >
                     <ExternalLink className="w-5 h-5" />
                   </a>

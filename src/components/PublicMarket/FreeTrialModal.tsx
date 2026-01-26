@@ -101,7 +101,7 @@ export function FreeTrialModal({ isOpen, onClose }: FreeTrialModalProps) {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="votre@email.com"
             />
           </div>
@@ -115,7 +115,7 @@ export function FreeTrialModal({ isOpen, onClose }: FreeTrialModalProps) {
               required
               value={formData.fullName}
               onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Jean Dupont"
             />
           </div>
@@ -129,7 +129,7 @@ export function FreeTrialModal({ isOpen, onClose }: FreeTrialModalProps) {
               required
               value={formData.company}
               onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Nom de votre entreprise"
             />
           </div>
@@ -143,7 +143,7 @@ export function FreeTrialModal({ isOpen, onClose }: FreeTrialModalProps) {
               required
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="06 12 34 56 78"
             />
           </div>
@@ -151,7 +151,7 @@ export function FreeTrialModal({ isOpen, onClose }: FreeTrialModalProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+            className="w-full bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors disabled:bg-gray-400"
           >
             {loading ? 'Création de votre compte...' : 'Démarrer mon essai gratuit'}
           </button>
