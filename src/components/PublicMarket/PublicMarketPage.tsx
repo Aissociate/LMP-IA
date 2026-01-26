@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { MarketDetails } from './MarketDetails';
 import { FreeTrialModal } from './FreeTrialModal';
 import { SEOHead } from '../SEO/SEOHead';
-import { Loader2, AlertCircle, Building2, Phone, Mail } from 'lucide-react';
+import { Loader2, AlertCircle } from 'lucide-react';
 
 interface Market {
   id: string;
@@ -73,7 +73,7 @@ export function PublicMarketPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-orange-600 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Chargement du marché...</p>
         </div>
       </div>
@@ -91,7 +91,7 @@ export function PublicMarketPage() {
           </p>
           <button
             onClick={() => navigate('/marchepublics/974')}
-            className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition-colors"
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Voir tous les marchés
           </button>
@@ -109,48 +109,16 @@ export function PublicMarketPage() {
       />
 
       <div className="min-h-screen bg-gray-50">
-        {/* Top Bar */}
-        <div className="bg-[#2c3e50] text-white py-2 px-4">
-          <div className="max-w-7xl mx-auto flex items-center justify-between text-sm">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <Phone className="w-4 h-4" />
-                <span>0262 90 00 00</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Mail className="w-4 h-4" />
-                <span>contact@marches-reunion.fr</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button className="hover:text-orange-400 transition-colors">Aide</button>
-              <button onClick={() => setShowModal(true)} className="hover:text-orange-400 transition-colors">Connexion</button>
-            </div>
-          </div>
-        </div>
-
-        {/* Header with Logo and Nav */}
-        <div className="bg-white border-b border-gray-200">
+        {/* Header */}
+        <div className="bg-white border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
-              <a href="/marchepublics/974" className="flex items-center space-x-2">
-                <div className="bg-blue-600 text-white p-2 rounded-lg">
-                  <Building2 className="w-6 h-6" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-gray-900">Marchés Publics</h1>
-                  <p className="text-sm text-blue-600">Île de la Réunion</p>
-                </div>
-              </a>
-              <nav className="hidden md:flex items-center space-x-6">
-                <a href="/marchepublics/974" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Accueil</a>
-                <a href="/marchepublics/974" className="text-blue-600 font-semibold">Marchés</a>
-                <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Annonceurs</a>
-                <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Statistiques</a>
-              </nav>
+              <Link to="/marchepublics/974" className="flex items-center space-x-3">
+                <img src="/logo1.png" alt="Logo" className="h-10" />
+              </Link>
               <button
                 onClick={() => setShowModal(true)}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Essai gratuit
               </button>
