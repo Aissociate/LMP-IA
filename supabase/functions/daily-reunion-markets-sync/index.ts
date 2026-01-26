@@ -10,25 +10,20 @@ const corsHeaders = {
 const BOAMP_API_BASE = 'https://www.boamp.fr/api/explore/v2.1/catalog/datasets/boamp/records';
 
 interface BOAMPRecord {
-  record_id: string;
-  record_timestamp: string;
-  fields: {
-    idweb?: string;
-    objet?: string;
-    lieuexecution?: string;
-    intitule?: string;
-    typeannonce?: string;
-    categorie?: string;
-    datelimitereponse?: string;
-    dateparution?: string;
-    montant?: number;
-    codedept?: string;
-    codecpv?: string;
-    procedure?: string;
-    urlpublication?: string;
-    urldce?: string;
-    [key: string]: any;
-  };
+  idweb?: string;
+  objet?: string;
+  nomacheteur?: string;
+  datelimitereponse?: string;
+  dateparution?: string;
+  montant?: number;
+  code_departement?: string | string[];
+  descripteur_code?: string | string[];
+  procedure_libelle?: string;
+  type_procedure?: string;
+  typeannonce?: string;
+  nature_categorise_libelle?: string;
+  url_avis?: string;
+  [key: string]: any;
 }
 
 Deno.serve(async (req: Request) => {
@@ -55,7 +50,7 @@ Deno.serve(async (req: Request) => {
     const today = new Date().toISOString().split('T')[0];
 
     const boampUrl = new URL(BOAMP_API_BASE);
-    boampUrl.searchParams.append('where', `codedept="974" AND datelimitereponse >= date'${today}'`);
+    boampUrl.searchParams.append('where', `code_departement="974" AND datelimitereponse >= date'${today}'`);
     boampUrl.searchParams.append('order_by', 'dateparution DESC');
     boampUrl.searchParams.append('limit', '100');
     boampUrl.searchParams.append('offset', '0');
@@ -82,8 +77,7 @@ Deno.serve(async (req: Request) => {
 
     for (const record of records) {
       try {
-        const fields = record.fields;
-        const reference = fields.idweb || record.record_id;
+        const reference = record.idweb || `boamp-${Date.now()}-${Math.random()}`;
 
         const { data: existing } = await supabase
           .from('public_markets')
@@ -94,21 +88,21 @@ Deno.serve(async (req: Request) => {
         const marketData = {
           source: 'boamp',
           reference,
-          title: fields.objet || fields.intitule || 'Sans titre',
-          client: fields.intitule || 'Non spécifié',
-          description: fields.objet || '',
-          deadline: fields.datelimitereponse || null,
-          amount: fields.montant || null,
-          location: fields.lieuexecution || 'La Réunion',
-          publication_date: fields.dateparution || new Date().toISOString(),
-          procedure_type: fields.procedure || fields.typeannonce || null,
-          service_type: fields.categorie || null,
-          cpv_code: fields.codecpv || null,
-          url: fields.urlpublication || null,
-          dce_url: fields.urldce || null,
+          title: record.objet || 'Sans titre',
+          client: record.nomacheteur || 'Non spécifié',
+          description: record.objet || '',
+          deadline: record.datelimitereponse || null,
+          amount: record.montant || null,
+          location: 'La Réunion',
+          publication_date: record.dateparution || new Date().toISOString(),
+          procedure_type: record.procedure_libelle || record.type_procedure || null,
+          service_type: record.nature_categorise_libelle || null,
+          cpv_code: Array.isArray(record.descripteur_code) ? record.descripteur_code.join(', ') : record.descripteur_code || null,
+          url: record.url_avis || null,
+          dce_url: null,
           department: '974',
           is_public: true,
-          raw_data: fields,
+          raw_data: record,
         };
 
         if (existing) {
