@@ -3,7 +3,7 @@ import { supabase } from '../../lib/supabase';
 import { FreeTrialModal } from './FreeTrialModal';
 import { SEOHead } from '../SEO/SEOHead';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, Building2, Euro, ChevronLeft, ChevronRight, Loader2, Search, Package, Wrench, Settings, Grid3x3, List, SlidersHorizontal, Phone, Mail } from 'lucide-react';
+import { Calendar, MapPin, Building2, ChevronLeft, ChevronRight, Loader2, Search, Package, Wrench, Settings, Grid3x3, List, SlidersHorizontal } from 'lucide-react';
 
 interface Market {
   id: string;
@@ -139,18 +139,6 @@ export function ReunionMarketsDirectory() {
     return { label: 'Ouvert', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
   };
 
-  const activeMarkets = markets.filter(m => {
-    const days = getDaysRemaining(m.deadline);
-    return days && days > 0;
-  });
-
-  const newMarketsThisWeek = markets.filter(m => {
-    const pubDate = new Date(m.publication_date);
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
-    return pubDate >= weekAgo;
-  }).length;
-
   return (
     <>
       <SEOHead
@@ -160,67 +148,35 @@ export function ReunionMarketsDirectory() {
       />
 
       <div className="min-h-screen bg-gray-50">
-        {/* Top Bar */}
-        <div className="bg-[#2c3e50] text-white py-2 px-4">
-          <div className="max-w-7xl mx-auto flex items-center justify-between text-sm">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <Phone className="w-4 h-4" />
-                <span>0262 90 00 00</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Mail className="w-4 h-4" />
-                <span>contact@marches-reunion.fr</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button className="hover:text-orange-400 transition-colors">Aide</button>
-              <button onClick={() => setShowModal(true)} className="hover:text-orange-400 transition-colors">Connexion</button>
-            </div>
-          </div>
-        </div>
-
-        {/* Header with Logo and Nav */}
-        <div className="bg-white border-b border-gray-200">
+        {/* Header */}
+        <div className="bg-white border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <div className="bg-blue-600 text-white p-2 rounded-lg">
-                  <Building2 className="w-6 h-6" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-gray-900">Marchés Publics</h1>
-                  <p className="text-sm text-blue-600">Île de la Réunion</p>
-                </div>
-              </div>
-              <nav className="hidden md:flex items-center space-x-6">
-                <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Accueil</a>
-                <a href="#" className="text-blue-600 font-semibold">Marchés</a>
-                <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Annonceurs</a>
-                <a href="#" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Statistiques</a>
-              </nav>
-              <div className="relative">
-                <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                  <span className="text-orange-600 font-semibold text-sm">!</span>
-                </div>
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
-              </div>
+              <Link to="/" className="flex items-center space-x-3">
+                <img src="/logo1.png" alt="Logo" className="h-10" />
+              </Link>
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Essai gratuit
+              </button>
             </div>
           </div>
         </div>
 
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-16 px-4">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12 px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Trouvez vos marchés publics
+            <h1 className="text-3xl md:text-4xl font-bold mb-3">
+              Marchés Publics - La Réunion (974)
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
+            <p className="text-lg text-blue-100 mb-6">
               Accédez aux opportunités de marchés publics à la Réunion
             </p>
 
             {/* Search Bar */}
-            <div className="bg-white rounded-lg shadow-xl p-2 flex items-center max-w-3xl mx-auto mb-12">
+            <div className="bg-white rounded-lg shadow-xl p-2 flex items-center max-w-3xl mx-auto">
               <Search className="w-5 h-5 text-gray-400 ml-3" />
               <input
                 type="text"
@@ -235,22 +191,6 @@ export function ReunionMarketsDirectory() {
               <button className="bg-blue-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors">
                 Rechercher
               </button>
-            </div>
-
-            {/* Stats */}
-            <div className="grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">{activeMarkets.length}</div>
-                <div className="text-blue-100">Marchés actifs</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">{newMarketsThisWeek}</div>
-                <div className="text-blue-100">Nouveaux cette semaine</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">850+</div>
-                <div className="text-blue-100">Entreprises inscrites</div>
-              </div>
             </div>
           </div>
         </div>
