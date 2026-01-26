@@ -24,6 +24,8 @@ import Home from './components/Landing/Home';
 import { Recrutement } from './components/Landing/Recrutement';
 import { MarketCollector } from './components/MarketSearch/MarketCollector';
 import { BugReportButton } from './components/Common/BugReportButton';
+import { PublicMarketPage } from './components/PublicMarket/PublicMarketPage';
+import { ReunionMarketsDirectory } from './components/PublicMarket/ReunionMarketsDirectory';
 
 type AuthMode = 'login' | 'signup';
 type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'coffre-fort' | 'assistant' | 'parametres' | 'admin' | 'labo';
@@ -36,7 +38,7 @@ function AppContent() {
   const location = useLocation();
 
   const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/mmp', '/cgv', '/merci', '/recrutement', '/collecte'];
-  const isPublicRoute = publicRoutes.includes(location.pathname);
+  const isPublicRoute = publicRoutes.includes(location.pathname) || location.pathname.startsWith('/marchepublics/974');
 
   if (loading && !isPublicRoute) {
     return (
@@ -92,6 +94,8 @@ function AppContent() {
       <Route path="/merci" element={<ThankYou />} />
       <Route path="/recrutement" element={<Recrutement />} />
       <Route path="/collecte" element={<MarketCollector />} />
+      <Route path="/marchepublics/974" element={<ReunionMarketsDirectory />} />
+      <Route path="/marchepublics/974/:slug" element={<PublicMarketPage />} />
       <Route path="/mmp" element={
         <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900/20' : 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200'} flex items-center justify-center p-4 transition-colors duration-200`}>
           {authMode === 'login' ? (

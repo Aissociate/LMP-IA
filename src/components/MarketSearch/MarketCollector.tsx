@@ -30,6 +30,7 @@ const COLLECTOR_PASSWORD = 'lemarchepublic974#';
 
 interface ManualMarket {
   id: string;
+  source: string;
   reference: string;
   title: string;
   client: string;
@@ -43,13 +44,14 @@ interface ManualMarket {
   cpv_code: string | null;
   url: string | null;
   dce_url: string | null;
-  source: string;
-  status: 'draft' | 'published' | 'archived';
-  operator_notes: string | null;
-  created_by: string;
+  department: string;
+  slug: string | null;
+  is_public: boolean;
+  seo_title: string | null;
+  seo_description: string | null;
+  raw_data: any;
   created_at: string;
   updated_at: string;
-  is_verified: boolean;
 }
 
 interface DonneurOrdre {
@@ -161,8 +163,9 @@ export const MarketCollector: React.FC = () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('manual_markets')
+        .from('public_markets')
         .select('*')
+        .eq('source', 'manual')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -198,7 +201,11 @@ export const MarketCollector: React.FC = () => {
     setError(null);
 
     try {
+      const reference = editingMarket?.reference || `MANUAL-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
       const marketData = {
+        source: 'manual',
+        reference,
         title: formData.title.trim(),
         client: formData.client.trim(),
         description: formData.description.trim() || null,
@@ -209,14 +216,17 @@ export const MarketCollector: React.FC = () => {
         service_type: formData.service_type || null,
         url: formData.url.trim() || null,
         dce_url: formData.dce_url.trim() || null,
-        operator_notes: formData.operator_notes.trim() || null,
-        created_by: operatorName,
-        status: publish ? 'published' : 'draft'
+        department: '974',
+        is_public: publish,
+        raw_data: {
+          operator: operatorName,
+          notes: formData.operator_notes.trim() || null,
+        }
       };
 
       if (editingMarket) {
         const { error } = await supabase
-          .from('manual_markets')
+          .from('public_markets')
           .update(marketData)
           .eq('id', editingMarket.id);
 
@@ -224,7 +234,7 @@ export const MarketCollector: React.FC = () => {
         setSuccess(`Marche "${formData.title}" mis a jour avec succes`);
       } else {
         const { error } = await supabase
-          .from('manual_markets')
+          .from('public_markets')
           .insert([marketData]);
 
         if (error) throw error;
@@ -273,7 +283,7 @@ export const MarketCollector: React.FC = () => {
 
     try {
       const { error } = await supabase
-        .from('manual_markets')
+        .from('public_markets')
         .delete()
         .eq('id', market.id);
 
@@ -288,8 +298,8 @@ export const MarketCollector: React.FC = () => {
   const handlePublish = async (market: ManualMarket) => {
     try {
       const { error } = await supabase
-        .from('manual_markets')
-        .update({ status: 'published' })
+        .from('public_markets')
+        .update({ is_public: true })
         .eq('id', market.id);
 
       if (error) throw error;
@@ -303,8 +313,8 @@ export const MarketCollector: React.FC = () => {
   const handleArchive = async (market: ManualMarket) => {
     try {
       const { error } = await supabase
-        .from('manual_markets')
-        .update({ status: 'archived' })
+        .from('public_markets')
+        .update({ is_public: false })
         .eq('id', market.id);
 
       if (error) throw error;
@@ -316,7 +326,10 @@ export const MarketCollector: React.FC = () => {
   };
 
   const filteredMarkets = markets.filter(m => {
-    const matchesStatus = filterStatus === 'all' || m.status === filterStatus;
+    const matchesStatus = filterStatus === 'all' ||
+      (filterStatus === 'published' && m.is_public) ||
+      (filterStatus === 'draft' && !m.is_public) ||
+      (filterStatus === 'archived' && !m.is_public);
     const matchesSearch = !searchQuery ||
       m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       m.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -326,8 +339,8 @@ export const MarketCollector: React.FC = () => {
 
   const stats = {
     total: markets.length,
-    draft: markets.filter(m => m.status === 'draft').length,
-    published: markets.filter(m => m.status === 'published').length,
+    draft: markets.filter(m => !m.is_public).length,
+    published: markets.filter(m => m.is_public).length,
     today: markets.filter(m => {
       const today = new Date().toISOString().split('T')[0];
       return m.created_at.split('T')[0] === today;
