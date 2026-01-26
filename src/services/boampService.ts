@@ -77,19 +77,19 @@ class BOAMPService {
     const filters: string[] = [];
 
     if (params.deadlineFrom) {
-      filters.push(`datelimitereponse >= "${params.deadlineFrom}"`);
+      filters.push(`datelimitereponse >= date'${params.deadlineFrom}'`);
     }
 
     if (params.deadlineTo) {
-      filters.push(`datelimitereponse <= "${params.deadlineTo}"`);
+      filters.push(`datelimitereponse <= date'${params.deadlineTo}'`);
     }
 
     if (params.publicationDateFrom) {
-      filters.push(`dateparution >= "${params.publicationDateFrom}"`);
+      filters.push(`dateparution >= date'${params.publicationDateFrom}'`);
     }
 
     if (params.publicationDateTo) {
-      filters.push(`dateparution <= "${params.publicationDateTo}"`);
+      filters.push(`dateparution <= date'${params.publicationDateTo}'`);
     }
 
     if (params.amountMin !== undefined) {
