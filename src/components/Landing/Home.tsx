@@ -1185,183 +1185,267 @@ export default function Home() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
             <span className="text-xl">🎁</span>
-            1 mémoire technique offert pour commencer
+            7 jours d'essai gratuit - Sans carte bancaire
           </div>
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Nos abonnements
+            Tarifs Simples, Fonctionnalités Illimitées
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
-            Tous nos plans incluent <strong>veille 974, analyse GO/NO-GO, génération de mémoires et référencement collectivités</strong>
+            <strong>Accès illimité</strong> à la veille 974, l'analyse GO/NO-GO, l'assistant IA, le référencement collectivités et bien plus
           </p>
           <p className="text-lg text-gray-500">
-            Choisissez le nombre de mémoires techniques générés automatiquement dont vous avez besoin par mois
+            Seul le nombre de <strong>mémoires techniques générées automatiquement</strong> varie selon votre plan
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
-          {/* SOLO */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 border-2 border-gray-200 hover:border-[#F77F00] transition-all hover:shadow-2xl">
-            <div className="text-center mb-6">
-              <div className="text-4xl font-extrabold text-gray-900 mb-2">199€</div>
-              <div className="text-gray-500 text-sm">HT / mois</div>
-              <div className="text-xl font-bold mt-4">Plan SOLO</div>
-              <div className="text-sm text-gray-600">1 Marché / Mois</div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-7xl mx-auto mb-16">
+          {/* ESSAI GRATUIT */}
+          <div className="bg-white rounded-3xl shadow-lg p-6 border-2 border-purple-200 hover:border-purple-400 transition-all hover:shadow-xl">
+            <div className="text-center mb-4">
+              <div className="inline-block bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold mb-3">
+                DÉCOUVERTE
+              </div>
+              <div className="text-4xl font-extrabold text-gray-900 mb-1">0€</div>
+              <div className="text-gray-500 text-xs mb-3">7 jours d'essai</div>
+              <div className="text-lg font-bold">Plan ESSAI</div>
             </div>
-            <ul className="space-y-3 mb-8 text-sm">
+            <ul className="space-y-2 mb-6 text-xs">
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🔎 Veille marchés 974 incluse</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>🔎 <strong>Veille marchés 974 illimitée</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🎯 Analyse GO/NO-GO illimitée</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>🎯 <strong>Analyse GO/NO-GO illimitée</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🤖 Assistant numérique Marchés & BPU</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>🤖 <strong>Assistant IA illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🧠 1 mémoire technique généré automatiquement / mois</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>🏛️ <strong>Référencement collectivités illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🏛️ Référencement collectivités 974</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>📂 <strong>Coffre-fort numérique illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>📂 Coffre-fort numérique</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>📨 <strong>Export Word / PDF illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>📨 Export Word / PDF</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>🔍 <strong>Recherche BOAMP illimitée</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-500 mt-0.5 flex-shrink-0">✗</span>
+                <span className="text-gray-500">🧠 Mémoires techniques non disponibles</span>
               </li>
             </ul>
             <Button
               onClick={() => {
-                trackClick('home', 'cta', 'pricing_solo_trial');
+                trackClick('home', 'cta', 'pricing_trial');
                 window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
               }}
               variant="outline"
-              className="w-full"
+              className="w-full text-sm py-2"
             >
-              Essai gratuit 7 jours
+              Démarrer l'essai gratuit
             </Button>
           </div>
 
-          {/* PME - RECOMMANDÉ */}
-          <div className="bg-gradient-to-br from-[#F77F00] to-[#E06F00] rounded-3xl shadow-2xl p-8 border-2 border-[#F77F00] transform scale-105 relative">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white text-[#F77F00] px-4 py-1 rounded-full text-sm font-bold shadow-lg">
-              ⭐ Recommandé
+          {/* BRONZE */}
+          <div className="bg-white rounded-3xl shadow-lg p-6 border-2 border-orange-200 hover:border-orange-400 transition-all hover:shadow-xl">
+            <div className="text-center mb-4">
+              <div className="inline-block bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-bold mb-3">
+                ARTISAN
+              </div>
+              <div className="text-4xl font-extrabold text-gray-900 mb-1">39€</div>
+              <div className="text-gray-500 text-xs mb-3">HT / mois</div>
+              <div className="text-lg font-bold">Plan BRONZE</div>
             </div>
-            <div className="text-center mb-6 text-white">
-              <div className="text-4xl font-extrabold mb-2">349€</div>
-              <div className="text-white/80 text-sm">HT / mois</div>
-              <div className="text-xl font-bold mt-4">Plan PME</div>
-              <div className="text-sm text-white/90">2 Marchés / Mois</div>
-            </div>
-            <ul className="space-y-3 mb-8 text-sm text-white">
+            <ul className="space-y-2 mb-6 text-xs">
               <li className="flex items-start gap-2">
-                <span className="mt-0.5">✓</span>
-                <span>🔎 Veille marchés 974 complète</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>🔎 <strong>Veille marchés 974 illimitée</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-0.5">✓</span>
-                <span>🎯 Analyse GO/NO-GO illimitée</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>🎯 <strong>Analyse GO/NO-GO illimitée</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-0.5">✓</span>
-                <span>🤖 Assistant numérique illimité</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>🤖 <strong>Assistant IA illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-0.5">✓</span>
-                <span>🧠 2 mémoires techniques générés automatiquement / mois</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>🏛️ <strong>Référencement collectivités illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-0.5">✓</span>
-                <span>🏛️ Référencement premium collectivités</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>📂 <strong>Coffre-fort numérique illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-0.5">✓</span>
-                <span>🚀 Priorité de génération</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>📨 <strong>Export Word / PDF illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-0.5">✓</span>
-                <span>📞 1 point de contact trimestriel</span>
+                <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>🔍 <strong>Recherche BOAMP illimitée</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-orange-500 mt-0.5 flex-shrink-0">★</span>
+                <span className="font-bold text-orange-600">🧠 3 mémoires techniques IA / mois</span>
               </li>
             </ul>
             <Button
               onClick={() => {
-                trackClick('home', 'cta', 'pricing_pme_trial');
+                trackClick('home', 'cta', 'pricing_bronze');
+                window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+              }}
+              variant="outline"
+              className="w-full text-sm py-2"
+            >
+              Choisir BRONZE
+            </Button>
+          </div>
+
+          {/* ARGENT - RECOMMANDÉ */}
+          <div className="bg-gradient-to-br from-gray-500 to-gray-700 rounded-3xl shadow-2xl p-6 border-2 border-gray-500 transform md:scale-105 relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-gray-700 px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+              ⭐ RECOMMANDÉ
+            </div>
+            <div className="text-center mb-4 text-white">
+              <div className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-xs font-bold mb-3">
+                PME / TPE
+              </div>
+              <div className="text-4xl font-extrabold mb-1">79€</div>
+              <div className="text-white/80 text-xs mb-3">HT / mois</div>
+              <div className="text-lg font-bold">Plan ARGENT</div>
+            </div>
+            <ul className="space-y-2 mb-6 text-xs text-white">
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>🔎 <strong>Veille marchés 974 illimitée</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>🎯 <strong>Analyse GO/NO-GO illimitée</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>🤖 <strong>Assistant IA illimité</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>🏛️ <strong>Référencement collectivités illimité</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>📂 <strong>Coffre-fort numérique illimité</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>📨 <strong>Export Word / PDF illimité</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>🔍 <strong>Recherche BOAMP illimitée</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5 flex-shrink-0">★</span>
+                <span className="font-bold">🧠 10 mémoires techniques IA / mois</span>
+              </li>
+            </ul>
+            <Button
+              onClick={() => {
+                trackClick('home', 'cta', 'pricing_argent');
                 window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
               }}
               variant="secondary"
-              className="w-full"
+              className="w-full text-sm py-2"
             >
-              Essai gratuit 7 jours
+              Choisir ARGENT
             </Button>
           </div>
 
-          {/* PROJETEUR */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 border-2 border-gray-200 hover:border-[#F77F00] transition-all hover:shadow-2xl">
-            <div className="text-center mb-6">
-              <div className="text-4xl font-extrabold text-gray-900 mb-2">849€</div>
-              <div className="text-gray-500 text-sm">HT / mois</div>
-              <div className="text-xl font-bold mt-4">Plan PROJETEUR</div>
-              <div className="text-sm text-gray-600">5 Marchés / Mois</div>
+          {/* OR */}
+          <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-3xl shadow-xl p-6 border-2 border-yellow-500 hover:shadow-2xl transition-all">
+            <div className="text-center mb-4">
+              <div className="inline-block bg-yellow-900 text-yellow-100 px-3 py-1 rounded-full text-xs font-bold mb-3">
+                PROJETEUR
+              </div>
+              <div className="text-4xl font-extrabold text-gray-900 mb-1">149€</div>
+              <div className="text-gray-700 text-xs mb-3">HT / mois</div>
+              <div className="text-lg font-bold text-gray-900">Plan OR</div>
             </div>
-            <ul className="space-y-3 mb-8 text-sm">
+            <ul className="space-y-2 mb-6 text-xs text-gray-900">
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🔎 Veille marchés 974 exhaustive</span>
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>🔎 <strong>Veille marchés 974 illimitée</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🎯 Analyse GO/NO-GO illimitée</span>
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>🎯 <strong>Analyse GO/NO-GO illimitée</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🤖 Assistant numérique illimité</span>
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>🤖 <strong>Assistant IA illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🧠 5 mémoires techniques générés automatiquement / mois</span>
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>🏛️ <strong>Référencement collectivités illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🏛️ Référencement prioritaire collectivités</span>
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>📂 <strong>Coffre-fort numérique illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>🚀 Priorité maximale de génération</span>
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>📨 <strong>Export Word / PDF illimité</strong></span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>📆 1 point de suivi mensuel</span>
+                <span className="mt-0.5 flex-shrink-0">✓</span>
+                <span>🔍 <strong>Recherche BOAMP illimitée</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-yellow-700 mt-0.5 flex-shrink-0">★</span>
+                <span className="font-bold text-yellow-900">🧠 25 mémoires techniques IA / mois</span>
               </li>
             </ul>
             <Button
               onClick={() => {
-                trackClick('home', 'cta', 'pricing_projeteur_trial');
+                trackClick('home', 'cta', 'pricing_or');
                 window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
               }}
               variant="outline"
-              className="w-full"
+              className="w-full text-sm py-2 bg-white hover:bg-gray-50"
             >
-              Essai gratuit 7 jours
+              Choisir OR
             </Button>
           </div>
         </div>
 
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="bg-blue-50 p-6 rounded-2xl">
-            <h3 className="font-bold text-gray-900 mb-3">💡 ROI : Un seul marché gagné amortit des mois d'abonnement</h3>
+        <div className="text-center max-w-4xl mx-auto mb-12">
+          <div className="bg-gradient-to-br from-blue-50 to-orange-50 p-8 rounded-2xl border-2 border-orange-200">
+            <h3 className="font-bold text-gray-900 mb-4 text-xl">💡 Pourquoi un tarif si accessible ?</h3>
             <p className="text-sm text-gray-700 mb-3">
-              <strong>Sans nous :</strong> 10 à 20h par mémoire, décisions "au feeling", opportunités ratées à La Réunion, risques d'erreurs dans le BPU
+              <strong>Accès illimité à toutes les fonctionnalités :</strong> veille 974, analyse GO/NO-GO, assistant IA, recherche BOAMP, référencement collectivités, coffre-fort, exports... <strong className="text-[#F77F00]">Sans limite d'utilisation !</strong>
             </p>
-            <p className="text-sm text-gray-700">
-              <strong>Avec LeMarchéPublic.fr :</strong> veille 974 exhaustive, analyse GO/NO-GO instantanée, mémoires générés en 15 min, référencement auprès des collectivités locales, BPU sécurisé par votre assistant numérique. <strong className="text-[#F77F00]">Multipliez vos réponses et votre taux de réussite dans le 974.</strong>
+            <p className="text-sm text-gray-700 mb-4">
+              <strong>Seul le nombre de mémoires techniques varie</strong> selon votre plan. Vous ne payez que pour la génération automatique de vos mémoires, tout le reste est illimité.
             </p>
+            <div className="bg-white p-4 rounded-xl border border-orange-300">
+              <p className="text-sm text-gray-900 font-semibold mb-2">🚀 ROI immédiat</p>
+              <p className="text-sm text-gray-700">
+                <strong>Avant :</strong> 10-20h par mémoire, opportunités ratées, erreurs BPU<br/>
+                <strong>Maintenant :</strong> 15 minutes par mémoire, aucune opportunité ratée 974, BPU sécurisé
+              </p>
+              <p className="text-xs text-[#F77F00] mt-3 font-bold">
+                Un seul marché gagné rembourse des mois d'abonnement
+              </p>
+            </div>
           </div>
         </div>
 
@@ -1379,8 +1463,8 @@ export default function Home() {
           </div>
           <div className="bg-white p-6 rounded-xl shadow-md text-center border border-gray-100">
             <div className="text-3xl mb-3">💳</div>
-            <div className="font-bold text-gray-900 mb-2">Essai gratuit</div>
-            <div className="text-sm text-gray-600">1 mémoire offert sans CB</div>
+            <div className="font-bold text-gray-900 mb-2">7 jours gratuits</div>
+            <div className="text-sm text-gray-600">Essai complet sans CB</div>
           </div>
           <div className="bg-white p-6 rounded-xl shadow-md text-center border border-gray-100">
             <div className="text-3xl mb-3">🎓</div>
