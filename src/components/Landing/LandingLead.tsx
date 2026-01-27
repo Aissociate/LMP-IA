@@ -579,7 +579,7 @@ export const LandingLead: React.FC = () => {
                   </div>
                   <div className="bg-white/10 rounded-xl p-4 border border-white/20">
                     <p className="text-orange-400 font-bold mb-2">Plan PROJETEUR</p>
-                    <p className="text-3xl font-black mb-1">849€</p>
+                    <p className="text-3xl font-black mb-1">649€</p>
                     <p className="text-sm text-gray-300">5 marchés / mois</p>
                   </div>
                 </div>
@@ -706,7 +706,7 @@ export const LandingLead: React.FC = () => {
                 <div className="inline-block px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-bold mb-4">
                   PROJETEUR
                 </div>
-                <p className="text-5xl font-black mb-2 text-gray-900">849€</p>
+                <p className="text-5xl font-black mb-2 text-gray-900">649€</p>
                 <p className="text-gray-600 font-medium">HT / mois</p>
                 <p className="text-sm text-gray-500 mt-2">5 Marchés / Mois</p>
               </div>

@@ -1258,10 +1258,7 @@ export default function Home() {
           {/* BRONZE */}
           <div className="bg-white rounded-3xl shadow-lg p-6 border-2 border-orange-200 hover:border-orange-400 transition-all hover:shadow-xl">
             <div className="text-center mb-4">
-              <div className="inline-block bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-bold mb-3">
-                ARTISAN
-              </div>
-              <div className="text-4xl font-extrabold text-gray-900 mb-1">39€</div>
+              <div className="text-4xl font-extrabold text-gray-900 mb-1">199€</div>
               <div className="text-gray-500 text-xs mb-3">HT / mois</div>
               <div className="text-lg font-bold">Plan BRONZE</div>
             </div>
@@ -1296,7 +1293,7 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-orange-500 mt-0.5 flex-shrink-0">★</span>
-                <span className="font-bold text-orange-600">🧠 3 mémoires techniques IA / mois</span>
+                <span className="font-bold text-orange-600">🧠 1 mémoire technique IA / mois</span>
               </li>
             </ul>
             <Button
@@ -1317,10 +1314,7 @@ export default function Home() {
               ⭐ RECOMMANDÉ
             </div>
             <div className="text-center mb-4 text-white">
-              <div className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-xs font-bold mb-3">
-                PME / TPE
-              </div>
-              <div className="text-4xl font-extrabold mb-1">79€</div>
+              <div className="text-4xl font-extrabold mb-1">349€</div>
               <div className="text-white/80 text-xs mb-3">HT / mois</div>
               <div className="text-lg font-bold">Plan ARGENT</div>
             </div>
@@ -1355,7 +1349,7 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-0.5 flex-shrink-0">★</span>
-                <span className="font-bold">🧠 10 mémoires techniques IA / mois</span>
+                <span className="font-bold">🧠 2 mémoires techniques IA / mois</span>
               </li>
             </ul>
             <Button
@@ -1373,10 +1367,7 @@ export default function Home() {
           {/* OR */}
           <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-3xl shadow-xl p-6 border-2 border-yellow-500 hover:shadow-2xl transition-all">
             <div className="text-center mb-4">
-              <div className="inline-block bg-yellow-900 text-yellow-100 px-3 py-1 rounded-full text-xs font-bold mb-3">
-                PROJETEUR
-              </div>
-              <div className="text-4xl font-extrabold text-gray-900 mb-1">149€</div>
+              <div className="text-4xl font-extrabold text-gray-900 mb-1">649€</div>
               <div className="text-gray-700 text-xs mb-3">HT / mois</div>
               <div className="text-lg font-bold text-gray-900">Plan OR</div>
             </div>
@@ -1411,7 +1402,7 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-yellow-700 mt-0.5 flex-shrink-0">★</span>
-                <span className="font-bold text-yellow-900">🧠 25 mémoires techniques IA / mois</span>
+                <span className="font-bold text-yellow-900">🧠 5 mémoires techniques IA / mois</span>
               </li>
             </ul>
             <Button
