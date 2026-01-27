@@ -154,12 +154,13 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onSuccess, onC
           .from('market_alert_detections')
           .select('id')
           .eq('user_id', user?.id)
+          .eq('alert_id', alertId)
           .eq('market_reference', market.reference)
           .maybeSingle();
 
         if (existingDetection) continue;
 
-        await supabase.from('market_alert_detections').insert({
+        const { error: insertError } = await supabase.from('market_alert_detections').insert({
           user_id: user?.id,
           alert_id: alertId,
           market_reference: market.reference,
@@ -173,6 +174,10 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onSuccess, onC
           market_service_type: market.service_type,
           detected_at: new Date().toISOString(),
         });
+
+        if (insertError) {
+          console.error('Error inserting detection:', insertError);
+        }
       }
 
       if (matchedMarkets.length > 0) {
@@ -233,13 +238,13 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onSuccess, onC
       setLoadingMessage('Recherche des marchés correspondants...');
       const matchedCount = await runInitialCheck(newAlert.id, searchParams);
 
+      onSuccess();
+
       if (matchedCount && matchedCount > 0) {
         alert(`Alerte créée avec succès !\n\n✓ ${matchedCount} marché(s) détecté(s)\n\nConsultez l'onglet "Détections" pour voir les résultats.`);
       } else {
         alert('Alerte créée avec succès ! Aucun marché correspondant trouvé pour le moment.\n\nLes vérifications automatiques auront lieu 2 fois par jour (8h et 18h).');
       }
-
-      onSuccess();
 
       setFormData({
         name: '',

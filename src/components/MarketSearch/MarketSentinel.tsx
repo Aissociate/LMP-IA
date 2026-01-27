@@ -78,7 +78,7 @@ export const MarketSentinel: React.FC = () => {
     if (user && activeTab === 'detections') {
       loadDetections();
     }
-  }, [user, activeTab, filterCategory, filterAlert, filterStatus]);
+  }, [user, activeTab, filterAlert, filterStatus]);
 
   const loadAll = async () => {
     setLoading(true);
@@ -144,17 +144,11 @@ export const MarketSentinel: React.FC = () => {
         searchAlerts.map(alert => [alert.id, alert.name])
       );
 
-      let enrichedDetections: DetectionWithScore[] = (detectionsData || []).map(detection => ({
+      const enrichedDetections: DetectionWithScore[] = (detectionsData || []).map(detection => ({
         ...detection,
         score: scoresMap.get(detection.market_reference),
         alert_name: alertsMap.get(detection.alert_id)
       }));
-
-      if (filterCategory !== 'all') {
-        enrichedDetections = enrichedDetections.filter(d =>
-          d.score && d.score.score_category === filterCategory
-        );
-      }
 
       setDetections(enrichedDetections);
     } catch (error) {
@@ -454,6 +448,7 @@ export const MarketSentinel: React.FC = () => {
           onSuccess={async () => {
             setShowCreateAlertForm(false);
             await loadAlerts();
+            await new Promise(resolve => setTimeout(resolve, 500));
             await loadDetections();
             await loadStats();
           }}
@@ -468,7 +463,7 @@ export const MarketSentinel: React.FC = () => {
             Aucune alerte configurée
           </h3>
           <p className={`mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            Créez une alerte pour être notifié automatiquement des nouveaux marchés avec scoring IA
+            Créez une alerte pour être notifié automatiquement des nouveaux marchés correspondants
           </p>
         </div>
       ) : (
@@ -660,47 +655,6 @@ export const MarketSentinel: React.FC = () => {
             <option key={alert.id} value={alert.id}>{alert.name}</option>
           ))}
         </select>
-
-        <button
-          onClick={() => setFilterCategory('all')}
-          className={`px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg ${
-            filterCategory === 'all'
-              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white scale-105'
-              : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-          }`}
-        >
-          Tous
-        </button>
-        <button
-          onClick={() => setFilterCategory('go')}
-          className={`px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg ${
-            filterCategory === 'go'
-              ? 'bg-gradient-to-r from-green-600 to-green-700 text-white scale-105'
-              : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-          }`}
-        >
-          GO
-        </button>
-        <button
-          onClick={() => setFilterCategory('conditional')}
-          className={`px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg ${
-            filterCategory === 'conditional'
-              ? 'bg-gradient-to-r from-orange-600 to-orange-700 text-white scale-105'
-              : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-          }`}
-        >
-          CONDITIONAL
-        </button>
-        <button
-          onClick={() => setFilterCategory('no_go')}
-          className={`px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg ${
-            filterCategory === 'no_go'
-              ? 'bg-gradient-to-r from-red-600 to-red-700 text-white scale-105'
-              : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-          }`}
-        >
-          NO-GO
-        </button>
 
         <div className="ml-auto flex gap-2">
           <button
