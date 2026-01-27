@@ -108,6 +108,18 @@ function generateTestDigestEmailHTML(
   `.trim();
 }
 
+function validateEmailFrom(emailFrom: string): string {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const namedEmailRegex = /^[^<>]+<[^\s@]+@[^\s@]+\.[^\s@]+>$/;
+
+  if (emailRegex.test(emailFrom) || namedEmailRegex.test(emailFrom)) {
+    return emailFrom;
+  }
+
+  console.warn('Invalid EMAIL_FROM format detected:', emailFrom);
+  return 'Le Marche Public <onboarding@resend.dev>';
+}
+
 async function sendEmail(
   to: string,
   subject: string,
@@ -119,7 +131,11 @@ async function sendEmail(
       return { success: false, error: 'RESEND_API_KEY not configured' };
     }
 
-    const emailFrom = Deno.env.get('EMAIL_FROM') || 'Le Marché Public <onboarding@resend.dev>';
+    const rawEmailFrom = Deno.env.get('EMAIL_FROM') || 'Le Marche Public <onboarding@resend.dev>';
+    console.log('Raw EMAIL_FROM value:', rawEmailFrom);
+
+    const emailFrom = validateEmailFrom(rawEmailFrom);
+    console.log('Validated EMAIL_FROM:', emailFrom);
 
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
