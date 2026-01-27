@@ -309,14 +309,58 @@ export const MarketSentinel: React.FC = () => {
 
   const handleToggleFavorite = async (detectionId: string, currentState: boolean) => {
     try {
-      await supabase
-        .from('market_alert_detections')
-        .update({ is_favorited: !currentState })
-        .eq('id', detectionId);
+      if (currentState) {
+        await supabase
+          .from('market_alert_detections')
+          .update({ is_favorited: false })
+          .eq('id', detectionId);
+        alert('Marché retiré des favoris');
+      } else {
+        const detection = detections.find(d => d.id === detectionId);
+        if (!detection) return;
+
+        const { data: existingMarket } = await supabase
+          .from('markets')
+          .select('id')
+          .eq('reference', detection.market_reference)
+          .eq('user_id', user?.id)
+          .maybeSingle();
+
+        if (existingMarket) {
+          alert('Ce marché existe déjà dans "Mes Marchés"');
+          return;
+        }
+
+        const deadline = detection.market_deadline
+          ? new Date(detection.market_deadline).toISOString().split('T')[0]
+          : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+        const { error: marketError } = await supabase.from('markets').insert({
+          title: detection.market_title || 'Marché sans titre',
+          reference: detection.market_reference || `REF-${Date.now()}`,
+          client: detection.market_client || 'Client non spécifié',
+          deadline: deadline,
+          budget: detection.market_amount || 0,
+          description: detection.market_description || '',
+          status: 'en_cours',
+          user_id: user?.id,
+          global_memory_prompt: ''
+        });
+
+        if (marketError) throw marketError;
+
+        await supabase
+          .from('market_alert_detections')
+          .update({ is_favorited: true })
+          .eq('id', detectionId);
+
+        alert('✓ Marché ajouté à "Mes Marchés" avec succès !');
+      }
 
       loadDetections();
     } catch (error) {
       console.error('Error toggling favorite:', error);
+      alert('Erreur lors de l\'ajout du marché');
     }
   };
 

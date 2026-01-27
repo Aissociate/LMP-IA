@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Calendar, Building, Euro, Clock, CheckCircle, XCircle, TrendingUp, FileText, Brain, BookOpen, Trophy, Archive, X, CreditCard as Edit3, Star, Download, AlertTriangle } from 'lucide-react';
+import { Plus, Calendar, Building, Euro, Clock, CheckCircle, XCircle, TrendingUp, FileText, Brain, BookOpen, Trophy, Archive, CreditCard as Edit3, AlertTriangle } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Market } from '../../types';
-import { BOAMPFavorite } from '../../types/boamp';
 import { CreateMarketModal } from './CreateMarketModal';
 import { DocumentAnalysisModal } from './DocumentAnalysisModal';
 import { TechnicalMemoryWizard } from './TechnicalMemoryWizard';
@@ -12,7 +11,6 @@ import DC1Wizard from './DC1Wizard';
 import { MarketListCompact } from './MarketListCompact';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
-import { favoritesService } from '../../services/favoritesService';
 
 const statusConfig = {
   en_cours: { label: 'En cours', icon: Clock, color: 'text-yellow-600 bg-yellow-50' },
@@ -25,7 +23,6 @@ export const MarketList: React.FC = () => {
   const { isDark } = useTheme();
   const { user, isAdmin } = useAuth();
   const [markets, setMarkets] = useState<Market[]>([]);
-  const [favorites, setFavorites] = useState<BOAMPFavorite[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -34,12 +31,10 @@ export const MarketList: React.FC = () => {
   const [selectedMarketForEconomicDocs, setSelectedMarketForEconomicDocs] = useState<Market | null>(null);
   const [selectedMarketForDC1, setSelectedMarketForDC1] = useState<Market | null>(null);
   const [selectedMarketForEdit, setSelectedMarketForEdit] = useState<Market | null>(null);
-  const [activeTab, setActiveTab] = useState<'markets' | 'favorites'>('markets');
 
   useEffect(() => {
     if (user) {
       fetchMarkets();
-      fetchFavorites();
     }
   }, [user]);
 
@@ -67,35 +62,6 @@ export const MarketList: React.FC = () => {
       setMarkets([]);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchFavorites = async () => {
-    if (!user) return;
-    const data = await favoritesService.getFavorites(user.id);
-    setFavorites(data);
-  };
-
-  const handleImportFavorite = async (favorite: BOAMPFavorite) => {
-    const result = await favoritesService.importFavoriteToMarket(favorite);
-
-    if (result.success) {
-      alert('Marché importé avec succès');
-      fetchMarkets();
-      fetchFavorites();
-    } else {
-      alert(result.error || 'Erreur lors de l\'import');
-    }
-  };
-
-  const handleRemoveFavorite = async (favoriteId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir retirer ce marché de vos favoris ?')) return;
-
-    const success = await favoritesService.removeFavorite(favoriteId);
-    if (success) {
-      fetchFavorites();
-    } else {
-      alert('Erreur lors de la suppression');
     }
   };
 
@@ -158,18 +124,6 @@ export const MarketList: React.FC = () => {
       console.error('Error deleting market:', error);
       alert('Erreur lors de la suppression');
     }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'EUR',
-      minimumFractionDigits: 0
-    }).format(amount);
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('fr-FR');
   };
 
   if (loading) {
@@ -240,36 +194,18 @@ export const MarketList: React.FC = () => {
       </div>
 
       <div className="flex gap-6 mb-6">
-        <button
-          onClick={() => setActiveTab('markets')}
-          className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
-            activeTab === 'markets'
-              ? 'border-orange-600 text-orange-600'
-              : isDark ? 'border-transparent text-gray-400 hover:text-gray-300' : 'border-transparent text-gray-600 hover:text-gray-900'
-          }`}
-        >
+        <div className="text-sm font-medium pb-2 border-b-2 border-orange-600 text-orange-600">
           Mes marchés ({markets.length})
-        </button>
-        <button
-          onClick={() => setActiveTab('favorites')}
-          className={`text-sm font-medium pb-2 border-b-2 transition-colors flex items-center gap-2 ${
-            activeTab === 'favorites'
-              ? 'border-orange-600 text-orange-600'
-              : isDark ? 'border-transparent text-gray-400 hover:text-gray-300' : 'border-transparent text-gray-600 hover:text-gray-900'
-          }`}
-        >
-          <Star className="w-4 h-4" />
-          Favoris BOAMP ({favorites.length})
-        </button>
+        </div>
       </div>
 
-      {activeTab === 'markets' && markets.length === 0 ? (
+      {markets.length === 0 ? (
         <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-sm border p-12 text-center transition-colors duration-200`}>
           <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-100'} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4`}>
             <FileText className={`w-10 h-10 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
           </div>
           <h3 className={`text-lg font-medium ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>Aucun marché</h3>
-          <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} mb-6`}>Commencez par créer votre premier marché ou importer depuis vos favoris BOAMP</p>
+          <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} mb-6`}>Commencez par créer votre premier marché ou ajoutez-en depuis vos détections d'alertes</p>
           <button
             onClick={() => setIsCreateModalOpen(true)}
             className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium px-6 py-3 rounded-lg inline-flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
@@ -278,15 +214,7 @@ export const MarketList: React.FC = () => {
             Créer un marché
           </button>
         </div>
-      ) : activeTab === 'favorites' && favorites.length === 0 ? (
-        <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-sm border p-12 text-center transition-colors duration-200`}>
-          <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-100'} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4`}>
-            <Star className={`w-10 h-10 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
-          </div>
-          <h3 className={`text-lg font-medium ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>Aucun favori</h3>
-          <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Ajoutez des marchés à vos favoris depuis la section Recherche de marchés</p>
-        </div>
-      ) : activeTab === 'markets' ? (
+      ) : (
         <div className="space-y-3">
           {markets.map((market) => (
             <MarketListCompact
@@ -308,91 +236,6 @@ export const MarketList: React.FC = () => {
               onArchive={() => handleArchiveMarket(market.id)}
               onDelete={() => handleCancelMarket(market.id)}
             />
-          ))}
-        </div>
-      ) : (
-        <div className="grid gap-6">
-          {favorites.map((favorite) => (
-            <div
-              key={favorite.id}
-              className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-sm border p-6 hover:shadow-lg transition-all duration-200`}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Star className="w-4 h-4 text-orange-600 fill-current" />
-                    {favorite.is_imported_to_markets && (
-                      <span className={`text-xs px-2 py-1 rounded ${isDark ? 'bg-green-900/20 text-green-400' : 'bg-green-100 text-green-700'}`}>
-                        Déjà importé
-                      </span>
-                    )}
-                  </div>
-                  <h3 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
-                    {favorite.title}
-                  </h3>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'} mb-3`}>
-                    Référence: {favorite.boamp_reference}
-                  </p>
-                  {favorite.description && (
-                    <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'} mb-4`}>{favorite.description}</p>
-                  )}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div className="flex items-center gap-3">
-                  <Building className={`w-5 h-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
-                  <div>
-                    <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Client</p>
-                    <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{favorite.client || 'Non spécifié'}</p>
-                  </div>
-                </div>
-
-                {favorite.deadline && (
-                  <div className="flex items-center gap-3">
-                    <Calendar className={`w-5 h-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
-                    <div>
-                      <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Échéance</p>
-                      <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {formatDate(favorite.deadline)}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {favorite.amount && (
-                  <div className="flex items-center gap-3">
-                    <Euro className={`w-5 h-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
-                    <div>
-                      <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Montant</p>
-                      <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {formatCurrency(favorite.amount)}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className={`pt-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'} flex justify-end gap-3`}>
-                <button
-                  onClick={() => handleRemoveFavorite(favorite.id)}
-                  className={`${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'} text-gray-700 font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200`}
-                >
-                  <X className="w-4 h-4" />
-                  Retirer des favoris
-                </button>
-
-                {!favorite.is_imported_to_markets && (
-                  <button
-                    onClick={() => handleImportFavorite(favorite)}
-                    className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    <Download className="w-4 h-4" />
-                    Importer vers mes marchés
-                  </button>
-                )}
-              </div>
-            </div>
           ))}
         </div>
       )}
