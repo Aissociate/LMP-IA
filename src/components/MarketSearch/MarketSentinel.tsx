@@ -451,9 +451,12 @@ export const MarketSentinel: React.FC = () => {
 
       {showCreateAlertForm && (
         <CreateAlertForm
-          onSuccess={() => {
+          onSuccess={async () => {
             setShowCreateAlertForm(false);
-            loadAlerts();
+            await loadAlerts();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await loadDetections();
+            await loadStats();
           }}
           onCancel={() => setShowCreateAlertForm(false)}
         />
