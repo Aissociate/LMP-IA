@@ -93,9 +93,9 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`${isDark ? 'bg-gray-700' : 'bg-white'} rounded-lg p-6 border ${isDark ? 'border-gray-600' : 'border-gray-200'}`}>
-      <div className="flex items-center justify-between mb-4">
-        <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+    <form onSubmit={handleSubmit} className={`${isDark ? 'bg-gray-700' : 'bg-white'} rounded-lg p-4 border ${isDark ? 'border-gray-600' : 'border-gray-200'}`}>
+      <div className="flex items-center justify-between mb-3">
+        <h4 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
           Saisie d'un marché
         </h4>
         {justSaved && (
@@ -106,9 +106,9 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="md:col-span-2">
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             Titre du marché <span className="text-red-500">*</span>
           </label>
           <input
@@ -116,7 +116,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
             value={formData.title}
             onChange={(e) => handleChange('title', e.target.value)}
             required
-            className={`w-full px-3 py-2 rounded-lg border ${
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -126,14 +126,14 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
 
         <div>
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             Référence
           </label>
           <input
             type="text"
             value={formData.reference}
             onChange={(e) => handleChange('reference', e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border ${
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -143,7 +143,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
 
         <div>
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             Date limite
           </label>
           <input
@@ -159,7 +159,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
 
         <div>
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             Type de service
           </label>
           <select
@@ -180,7 +180,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
 
         <div>
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             Montant estimé (€)
           </label>
           <input
@@ -188,7 +188,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
             step="0.01"
             value={formData.amount}
             onChange={(e) => handleChange('amount', e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border ${
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -198,14 +198,14 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
 
         <div>
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             Localisation
           </label>
           <input
             type="text"
             value={formData.location}
             onChange={(e) => handleChange('location', e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border ${
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -215,14 +215,14 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
 
         <div>
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             Type de procédure
           </label>
           <input
             type="text"
             value={formData.procedure_type}
             onChange={(e) => handleChange('procedure_type', e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border ${
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -232,14 +232,14 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
 
         <div>
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             Code CPV
           </label>
           <input
             type="text"
             value={formData.cpv_code}
             onChange={(e) => handleChange('cpv_code', e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border ${
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -249,14 +249,14 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
 
         <div className="md:col-span-2">
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             URL de l'annonce
           </label>
           <input
             type="url"
             value={formData.url}
             onChange={(e) => handleChange('url', e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border ${
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -266,14 +266,14 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
 
         <div className="md:col-span-2">
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             URL du DCE
           </label>
           <input
             type="url"
             value={formData.dce_url}
             onChange={(e) => handleChange('dce_url', e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border ${
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -283,14 +283,14 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
 
         <div className="md:col-span-2">
-          <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
             Description
           </label>
           <textarea
             value={formData.description}
             onChange={(e) => handleChange('description', e.target.value)}
             rows={3}
-            className={`w-full px-3 py-2 rounded-lg border ${
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -300,11 +300,11 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </div>
       </div>
 
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-end mt-4">
         <button
           type="submit"
           disabled={saving || !formData.title.trim()}
-          className={`flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-medium transition-all shadow-lg ${
+          className={`flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg ${
             (saving || !formData.title.trim()) ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >

@@ -173,25 +173,25 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-      <div className={`${isDark ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-2xl w-full max-w-6xl my-8`}>
-        <div className={`p-6 border-b ${isDark ? 'border-gray-700' : 'border-gray-200'} flex items-center justify-between`}>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className={`${isDark ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col`}>
+        <div className={`p-4 border-b ${isDark ? 'border-gray-700' : 'border-gray-200'} flex items-center justify-between flex-shrink-0`}>
           <div className="flex-1">
-            <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+            <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-1`}>
               Session de saisie - {operatorEmail}
             </h2>
             {currentSession && (
-              <div className="flex items-center gap-6 text-sm">
+              <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600" />
                   <span className={isDark ? 'text-gray-300' : 'text-gray-600'}>
-                    {currentSession.completed_donneurs_ordre} / {currentSession.total_donneurs_ordre} donneurs d'ordre traités
+                    {currentSession.completed_donneurs_ordre} / {currentSession.total_donneurs_ordre} traités
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Save className="w-4 h-4 text-blue-600" />
                   <span className={isDark ? 'text-gray-300' : 'text-gray-600'}>
-                    {currentSession.total_markets_added} marchés ajoutés
+                    {currentSession.total_markets_added} marchés
                   </span>
                 </div>
               </div>
@@ -205,7 +205,7 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
           </button>
         </div>
 
-        <div className="p-6">
+        <div className="p-4 overflow-y-auto flex-1">
           {showDonneurSelection ? (
             <div>
               <h3 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-gray-900'} mb-4`}>
@@ -245,7 +245,7 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
             </div>
           ) : currentDonneurOrdre ? (
             <div>
-              <div className={`${isDark ? 'bg-gray-700' : 'bg-orange-50'} p-4 rounded-lg mb-6`}>
+              <div className={`${isDark ? 'bg-gray-700' : 'bg-orange-50'} p-3 rounded-lg mb-4`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <h3 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
@@ -289,15 +289,15 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
                   </div>
                 </div>
 
-                <div className="mt-4">
-                  <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
-                    Notes pour ce donneur d'ordre (optionnel)
+                <div className="mt-3">
+                  <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
+                    Notes (optionnel)
                   </label>
                   <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Observations, problèmes rencontrés, etc."
-                    className={`w-full px-3 py-2 rounded-lg border ${
+                    placeholder="Observations..."
+                    className={`w-full px-3 py-2 rounded-lg border text-sm ${
                       isDark
                         ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                         : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -313,7 +313,7 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
                 onMarketAdded={handleMarketAdded}
               />
 
-              <div className={`flex gap-3 justify-end mt-6 pt-6 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+              <div className={`flex gap-3 justify-end mt-4 pt-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
                 <button
                   onClick={handleSkipDonneurOrdre}
                   disabled={loading}
