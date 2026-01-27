@@ -220,6 +220,46 @@ const Sidebar = () => {
 };
 ```
 
+## Section Abonnement dans les Paramètres
+
+### Fonctionnalités
+
+Un nouvel onglet "Abonnement & Facturation" a été ajouté dans les Paramètres avec :
+
+1. **Affichage du statut de l'abonnement**
+   - Badge indiquant le statut actuel (Actif, Essai, Inactif, etc.)
+   - Copywriting adapté selon le statut de l'utilisateur
+   - Affichage du plan actuel avec son icône et couleur
+
+2. **Détails de l'abonnement**
+   - Plan actuel (TRIAL, BRONZE, ARGENT, OR)
+   - Prix mensuel
+   - Date de renouvellement
+   - Nombre de mémoires techniques utilisées/disponibles avec barre de progression
+
+3. **Messages contextuels selon le statut**
+   - **Admin** : Confirmation de l'accès illimité sans abonnement
+   - **Essai actif** : Nombre de jours restants + incitation à choisir un plan
+   - **Abonnement actif** : Confirmation et date de renouvellement
+   - **Paiement en attente** : Alerte pour mettre à jour le moyen de paiement
+   - **Annulation prévue** : Information sur la date d'annulation + option de réactivation
+   - **Aucun abonnement** : Incitation à souscrire
+
+4. **Gestion des factures**
+   - Liste de toutes les factures avec date, numéro et statut
+   - Téléchargement du PDF de chaque facture
+   - État vide avec message si aucune facture
+
+5. **Liste des fonctionnalités du plan**
+   - Affichage de toutes les fonctionnalités incluses dans le plan actuel
+
+### Table invoices
+
+Une nouvelle table `invoices` a été créée pour stocker les factures Stripe :
+- Champs : user_id, stripe_invoice_id, subscription_id, amount, currency, status, invoice_pdf, invoice_number, invoice_date, period_start, period_end
+- RLS activé : utilisateurs voient uniquement leurs factures, admins voient tout
+- Prête pour l'intégration avec les webhooks Stripe
+
 ## Notes importantes
 
 1. Les admins (is_admin = true dans user_profiles) ont toujours accès sans abonnement
@@ -227,11 +267,18 @@ const Sidebar = () => {
 3. Les compteurs de mémoires sont réinitialisés chaque mois via le webhook Stripe
 4. L'intégration Stripe est préparée mais pas encore active (liens des price_id à mettre à jour)
 5. Pour tester en local, vous pouvez manuellement créer des abonnements dans la table user_subscriptions
+6. La gestion des abonnements et factures est accessible via Paramètres > Abonnement & Facturation
 
-## Migration appliquée
+## Migrations appliquées
 
-La migration `update_subscription_plans_with_trial.sql` a été appliquée et contient :
-- Création des 4 plans (TRIAL, BRONZE, ARGENT, OR)
-- Ajout des champs trial_end_date et has_trial_used
-- Création des fonctions check_user_access() et start_trial()
-- Toutes les politiques RLS sont maintenues
+1. **update_subscription_plans_with_trial.sql**
+   - Création des 4 plans (TRIAL, BRONZE, ARGENT, OR)
+   - Ajout des champs trial_end_date et has_trial_used
+   - Création des fonctions check_user_access() et start_trial()
+   - Toutes les politiques RLS sont maintenues
+
+2. **create_invoices_table.sql**
+   - Création de la table invoices pour stocker les factures
+   - RLS et politiques d'accès configurées
+   - Indexes pour les performances
+   - Trigger pour mettre à jour updated_at automatiquement

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, BookOpen, Palette, Webhook, Bell, Mail, Building2 } from 'lucide-react';
+import { User, BookOpen, Palette, Webhook, Bell, Mail, Building2, CreditCard } from 'lucide-react';
 import { Image } from 'lucide-react';
 import { ProfileSettings } from './ProfileSettings';
 import { CompanyProfile } from './CompanyProfile';
@@ -9,12 +9,14 @@ import { WebhookSettings } from './WebhookSettings';
 import { ReportAssetManager } from './ReportAssetManager';
 import { NotificationSettings } from './NotificationSettings';
 import { EmailDigestHistory } from './EmailDigestHistory';
+import { SubscriptionManagement } from './SubscriptionManagement';
 import { useTheme } from '../../hooks/useTheme';
 
-type SettingsTab = 'profile' | 'company' | 'knowledge' | 'assets' | 'notifications' | 'email-history' | 'webhook' | 'theme';
+type SettingsTab = 'profile' | 'subscription' | 'company' | 'knowledge' | 'assets' | 'notifications' | 'email-history' | 'webhook' | 'theme';
 
 const tabs = [
   { id: 'profile' as const, label: 'Informations personnelles', icon: User },
+  { id: 'subscription' as const, label: 'Abonnement & Facturation', icon: CreditCard },
   { id: 'company' as const, label: 'Profil Entreprise & Référencement', icon: Building2 },
   { id: 'knowledge' as const, label: 'Base de connaissance', icon: BookOpen },
   { id: 'assets' as const, label: 'Mes images', icon: Image },
@@ -32,6 +34,8 @@ export const Settings: React.FC = () => {
     switch (activeTab) {
       case 'profile':
         return <ProfileSettings />;
+      case 'subscription':
+        return <SubscriptionManagement />;
       case 'company':
         return <CompanyProfile />;
       case 'knowledge':
