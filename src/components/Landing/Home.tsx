@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Target, ChevronLeft, ChevronRight, Mail } from 'lucide-react';
+import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Target, ChevronLeft, ChevronRight, Mail, Search, MapPin } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { initAnalytics, trackClick } from '../../lib/analytics';
 import { MarketModelComparison } from './MarketModelComparison';
@@ -121,14 +121,14 @@ export default function Home() {
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <span className="bg-gradient-to-r from-gray-900 via-[#F77F00] to-gray-900 bg-clip-text text-transparent">
-              Surveillez TOUS les marchés publics
+              Gagnez plus de marchés publics
             </span>
             <br />
-            <span className="text-gray-900">de La Réunion avec votre assistant numérique</span>
+            <span className="text-gray-900">à La Réunion 974 avec l'IA</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            Veille exhaustive BOAMP 974, alertes intelligentes (mail/SMS/WhatsApp), analyse juridique, génération automatique de mémoires techniques et BPU. Votre coffre-fort numérique sécurisé inclus.
+            Veille exhaustive 24/7 des marchés publics réunionnais, alertes instantanées, génération automatique de mémoires techniques et référencement auprès des collectivités locales.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12 text-left">
@@ -195,6 +195,65 @@ export default function Home() {
         </div>
       </Section>
 
+      {/* SEARCH MARKETS SECTION */}
+      <Section className="py-16 bg-gradient-to-br from-[#F77F00] to-[#E06F00]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+              Découvrez les marchés publics à La Réunion
+            </h2>
+            <p className="text-lg text-white/90">
+              Explorez dès maintenant les opportunités disponibles dans le 974
+            </p>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-2xl p-8">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-3 text-gray-700 mb-4">
+                <MapPin className="w-6 h-6 text-[#F77F00]" />
+                <span className="font-semibold text-lg">Marchés publics actifs à La Réunion</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                  <div className="font-bold text-blue-900 mb-1">CINOR, TCO, CIREST</div>
+                  <div className="text-sm text-blue-700">Intercommunalités du Nord et de l'Est</div>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                  <div className="font-bold text-blue-900 mb-1">CIVIS, CASUD</div>
+                  <div className="text-sm text-blue-700">Intercommunalités du Sud et de l'Ouest</div>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                  <div className="font-bold text-blue-900 mb-1">Région Réunion</div>
+                  <div className="text-sm text-blue-700">Marchés régionaux et départementaux</div>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                  <div className="font-bold text-blue-900 mb-1">24 Communes du 974</div>
+                  <div className="text-sm text-blue-700">Saint-Denis, Saint-Pierre, Le Port...</div>
+                </div>
+              </div>
+
+              <Button
+                onClick={() => {
+                  trackClick('home', 'navigation', 'search_markets_reunion');
+                  navigate('/marches-reunion');
+                }}
+                variant="primary"
+                className="w-full text-lg"
+              >
+                <Search className="w-5 h-5" />
+                Voir tous les marchés publics réunionnais
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+
+              <p className="text-sm text-gray-600 text-center mt-2">
+                Accès gratuit aux consultations en cours • Mise à jour quotidienne
+              </p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* TRUST INDICATORS */}
       <Section className="py-12 bg-white border-y border-gray-200">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -244,23 +303,68 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* EMOTIONAL STATS */}
+      {/* REUNION BENEFITS */}
       <Section className="py-16 bg-gradient-to-r from-[#F77F00] to-[#E06F00] text-white -mx-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
+            Pourquoi la veille locale réunionnaise change tout
+          </h2>
+          <p className="text-lg text-white/90 max-w-3xl mx-auto">
+            À La Réunion, les opportunités sont là mais difficiles à suivre. Notre solution surveille tous les acteurs publics locaux 24/7.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="text-5xl font-extrabold mb-2">73%</div>
-            <p className="text-white/90 text-lg">des PME renoncent aux marchés publics</p>
-            <p className="text-white/70 text-sm mt-2">Trop complexe, trop long, trop incertain</p>
+            <div className="text-5xl font-extrabold mb-2">100%</div>
+            <p className="text-white/90 text-lg">des marchés publics du 974 surveillés</p>
+            <p className="text-white/70 text-sm mt-2">CINOR, TCO, CIREST, CIVIS, CASUD, Région, 24 communes</p>
           </div>
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-900">
-            <div className="text-5xl font-extrabold mb-2">120h</div>
-            <p className="text-white/90 text-lg">perdues par an en moyenne</p>
-            <p className="text-white/70 text-sm mt-2">À remplir des formulaires et rédiger des mémoires</p>
+            <div className="text-5xl font-extrabold mb-2">24/7</div>
+            <p className="text-white/90 text-lg">Veille automatique en temps réel</p>
+            <p className="text-white/70 text-sm mt-2">Ne ratez plus aucune opportunité locale, soyez alerté en premier</p>
           </div>
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-1100">
-            <div className="text-5xl font-extrabold mb-2">48%</div>
-            <p className="text-white/90 text-lg">de marchés en plus possibles</p>
-            <p className="text-white/70 text-sm mt-2">Avec une vraie stratégie et les bons outils</p>
+            <div className="text-5xl font-extrabold mb-2">+48%</div>
+            <p className="text-white/90 text-lg">de marchés réunionnais en plus détectés</p>
+            <p className="text-white/70 text-sm mt-2">Grâce à notre couverture exhaustive des collectivités locales</p>
+          </div>
+        </div>
+
+        <div className="mt-12 max-w-4xl mx-auto">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+            <h3 className="font-bold text-xl mb-4 text-center">🏝️ Spécificités La Réunion</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">✓</span>
+                <div>
+                  <div className="font-semibold">Sources locales multiples</div>
+                  <div className="text-white/80">5 EPCI + 24 communes + Région + Département</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">✓</span>
+                <div>
+                  <div className="font-semibold">Délais adaptés au contexte insulaire</div>
+                  <div className="text-white/80">Alertes anticipées pour préparer vos dossiers</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">✓</span>
+                <div>
+                  <div className="font-semibold">Référencement collectivités locales</div>
+                  <div className="text-white/80">Visibilité auprès des acheteurs publics réunionnais</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">✓</span>
+                <div>
+                  <div className="font-semibold">Conformité réglementaire locale</div>
+                  <div className="text-white/80">Critères spécifiques DOM-TOM intégrés</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Section>
@@ -269,10 +373,10 @@ export default function Home() {
       <Section id="fonctionnalites" className="py-20 bg-white">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Votre assistant numérique complet pour les marchés publics
+            Votre assistant numérique complet pour les marchés publics réunionnais
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            8 fonctionnalités professionnelles qui automatisent tout le processus, de la veille à la génération des documents
+            9 fonctionnalités professionnelles qui automatisent tout le processus : de la veille locale 974 au référencement auprès des collectivités
           </p>
         </div>
 
@@ -548,48 +652,34 @@ export default function Home() {
             <div className="order-1 md:order-2">
               <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
                 <span className="text-xl">📝</span>
-                Market Light & Market Pro
+                Inclus dans tous les plans
               </div>
               <h3 className="text-3xl font-bold mb-4">6. Génération automatique mémoires techniques</h3>
               <p className="text-lg text-gray-600 mb-6">
-                De la page blanche à un mémoire complet en 15 minutes. Économisez 10 à 20h de travail.
+                De la page blanche à un mémoire complet en 15 minutes. Économisez 10 à 20h de travail par dossier.
               </p>
-              <div className="space-y-4 mb-6">
-                <div className="bg-blue-50 p-4 rounded-xl">
-                  <div className="font-bold text-blue-900 mb-2">🔹 Market Light (inclus)</div>
-                  <p className="text-sm text-gray-700">Brouillon structuré généré automatiquement à partir du DCE et de vos infos. Parfait pour gagner du temps.</p>
-                </div>
-                <div className="bg-purple-50 p-4 rounded-xl">
-                  <div className="font-bold text-purple-900 mb-2">🔸 Market Pro (+99€/mois)</div>
-                  <p className="text-sm text-gray-700">Version avancée avec argumentaire poussé, exploitation fine des critères de notation, style percutant orienté "score".</p>
-                </div>
-              </div>
-              <ul className="space-y-3 text-sm">
+              <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
-                  <span className="text-gray-700">Sections standard pré-remplies (présentation, moyens, méthodologie, QSE...)</span>
+                  <span className="text-gray-700"><strong>Génération intelligente</strong> à partir du DCE et vos infos</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 mt-1">✓</span>
-                  <span className="text-gray-700">Export Word / PDF en un clic</span>
+                  <span className="text-gray-700"><strong>Structure complète</strong> : présentation, moyens, méthodologie, QSE</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Argumentaire adapté</strong> aux critères de notation</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Export Word / PDF</strong> en un clic</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Personnalisation complète</strong> selon vos besoins</span>
                 </li>
               </ul>
-            </div>
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl">
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <div className="text-sm font-semibold text-gray-700 mb-4">Mémoire technique généré</div>
-                <div className="space-y-2 text-xs text-gray-600">
-                  <div className="bg-gray-50 p-2 rounded">1. Présentation entreprise ✓</div>
-                  <div className="bg-gray-50 p-2 rounded">2. Moyens humains ✓</div>
-                  <div className="bg-gray-50 p-2 rounded">3. Moyens matériels ✓</div>
-                  <div className="bg-gray-50 p-2 rounded">4. Méthodologie ✓</div>
-                  <div className="bg-gray-50 p-2 rounded">5. Démarche QSE ✓</div>
-                  <div className="bg-gray-50 p-2 rounded">6. Planning prévisionnel ✓</div>
-                </div>
-                <div className="mt-4 text-center">
-                  <span className="text-green-600 font-semibold text-sm">✓ Prêt à être personnalisé</span>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -698,6 +788,70 @@ export default function Home() {
                   <span className="text-gray-700">Insertion automatique dans vos dossiers</span>
                 </li>
               </ul>
+            </div>
+          </div>
+
+          {/* Référencement collectivités */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <span className="text-xl">🏛️</span>
+                Inclus dans tous les plans
+              </div>
+              <h3 className="text-3xl font-bold mb-4">9. Référencement auprès des collectivités</h3>
+              <p className="text-lg text-gray-600 mb-6">
+                Augmentez votre visibilité auprès des acheteurs publics réunionnais et recevez des consultations directes.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Profil entreprise visible</strong> par les collectivités du 974</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Catalogue compétences</strong> : domaines, certifications, références</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Notifications de sourcing</strong> quand une collectivité cherche votre profil</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700"><strong>Mise en avant automatique</strong> sur les marchés correspondants</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <span className="text-gray-700">Accès direct aux acheteurs publics locaux</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="text-4xl mb-4 text-center">🏛️</div>
+                <div className="text-center text-gray-700 font-semibold mb-4">Votre profil entreprise</div>
+                <div className="space-y-3 text-xs text-gray-700">
+                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                    <div className="font-semibold mb-1">Visible par :</div>
+                    <div className="text-gray-600">
+                      • CINOR, TCO, CIREST, CIVIS, CASUD<br/>
+                      • 24 communes du 974<br/>
+                      • Région et Département
+                    </div>
+                  </div>
+                  <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                    <div className="font-semibold mb-1">Vos avantages :</div>
+                    <div className="text-gray-600">
+                      ✓ Être trouvé par les collectivités<br/>
+                      ✓ Recevoir des consultations ciblées<br/>
+                      ✓ Augmenter votre notoriété locale
+                    </div>
+                  </div>
+                  <div className="bg-orange-50 p-3 rounded-lg border border-orange-200">
+                    <div className="font-semibold text-[#F77F00]">🎯 Sourcing actif</div>
+                    <div className="text-gray-600 mt-1">Les collectivités cherchent activement des prestataires qualifiés</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1024,10 +1178,10 @@ export default function Home() {
             Nos abonnements
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
-            Tous nos plans incluent <strong>veille marchés, GO/NO-GO et assistant IA</strong>
+            Tous nos plans incluent <strong>veille 974, analyse GO/NO-GO, génération de mémoires et référencement collectivités</strong>
           </p>
           <p className="text-lg text-gray-500">
-            Vous choisissez simplement combien de mémoires IA vous voulez par mois
+            Choisissez le nombre de mémoires techniques IA dont vous avez besoin par mois
           </p>
         </div>
 
@@ -1043,11 +1197,11 @@ export default function Home() {
             <ul className="space-y-3 mb-8 text-sm">
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🔎 Veille marchés incluse</span>
+                <span>🔎 Veille marchés 974 incluse</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🎯 Score GO/NO-GO</span>
+                <span>🎯 Analyse GO/NO-GO illimitée</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
@@ -1055,25 +1209,21 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🧠 1 mémoire Market Light / mois</span>
+                <span>🧠 1 mémoire technique IA / mois</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>📂 Espace client & historique</span>
+                <span>🏛️ Référencement collectivités 974</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🎓 Formations vidéo</span>
+                <span>📂 Coffre-fort numérique</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
                 <span>📨 Export Word / PDF</span>
               </li>
             </ul>
-            <div className="text-xs text-gray-500 mb-4 space-y-1">
-              <div>⚙️ Market Pro : +99€/mois</div>
-              <div>💼 Booster Expert 4h : +590€/mémoire</div>
-            </div>
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_solo');
@@ -1100,37 +1250,33 @@ export default function Home() {
             <ul className="space-y-3 mb-8 text-sm text-white">
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">✓</span>
-                <span>🔎 Veille marchés incluse</span>
+                <span>🔎 Veille marchés 974 complète</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">✓</span>
-                <span>🎯 GO/NO-GO illimité</span>
+                <span>🎯 Analyse GO/NO-GO illimitée</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">✓</span>
-                <span>🤖 Assistant IA Marchés & BPU</span>
+                <span>🤖 Assistant IA illimité</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">✓</span>
-                <span>🧠 2 mémoires Market Light / mois</span>
+                <span>🧠 2 mémoires techniques IA / mois</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">✓</span>
-                <span>📊 Espace client complet</span>
+                <span>🏛️ Référencement premium collectivités</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">✓</span>
-                <span>🚀 Priorité de génération vs SOLO</span>
+                <span>🚀 Priorité de génération</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">✓</span>
                 <span>📞 1 point de contact trimestriel</span>
               </li>
             </ul>
-            <div className="text-xs text-white/70 mb-4 space-y-1">
-              <div>⚙️ Market Pro : +99€/mois</div>
-              <div>💼 Booster Expert 4h : +590€/mémoire</div>
-            </div>
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_pme');
@@ -1154,11 +1300,11 @@ export default function Home() {
             <ul className="space-y-3 mb-8 text-sm">
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🔎 Veille marchés incluse</span>
+                <span>🔎 Veille marchés 974 exhaustive</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🎯 GO/NO-GO illimité</span>
+                <span>🎯 Analyse GO/NO-GO illimitée</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
@@ -1166,25 +1312,21 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🧠 5 mémoires Market Light / mois</span>
+                <span>🧠 5 mémoires techniques IA / mois</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>📊 Historique détaillé</span>
+                <span>🏛️ Référencement prioritaire collectivités</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🚀 Priorité maximale</span>
+                <span>🚀 Priorité maximale de génération</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
                 <span>📆 1 point de suivi mensuel</span>
               </li>
             </ul>
-            <div className="text-xs text-gray-500 mb-4 space-y-1">
-              <div>⚙️ Market Pro : +99€/mois</div>
-              <div>🧠 Booster Senior 3j : +2490€/marché</div>
-            </div>
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_projeteur');
@@ -1200,12 +1342,12 @@ export default function Home() {
 
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="bg-blue-50 p-6 rounded-2xl">
-            <h3 className="font-bold text-gray-900 mb-3">💡 Pourquoi ça a du sens financièrement</h3>
+            <h3 className="font-bold text-gray-900 mb-3">💡 ROI : Un seul marché gagné amortit des mois d'abonnement</h3>
             <p className="text-sm text-gray-700 mb-3">
-              Sans nous : 10 à 20h par mémoire, décisions "au feeling", risques d'erreurs dans le BPU
+              <strong>Sans nous :</strong> 10 à 20h par mémoire, décisions "au feeling", opportunités ratées à La Réunion, risques d'erreurs dans le BPU
             </p>
             <p className="text-sm text-gray-700">
-              <strong>Avec LeMarchéPublic.fr :</strong> la veille vous présente les bons marchés, le GO/NO-GO aide à décider rapidement, l'IA génère vos mémoires, l'assistant sécurise le BPU. <strong className="text-[#F77F00]">Un seul marché gagné peut amortir plusieurs mois d'abonnement.</strong>
+              <strong>Avec LeMarchéPublic.fr :</strong> veille 974 exhaustive, analyse GO/NO-GO instantanée, mémoires générés en 15 min, référencement auprès des collectivités locales, BPU sécurisé par l'IA. <strong className="text-[#F77F00]">Multipliez vos réponses et votre taux de réussite dans le 974.</strong>
             </p>
           </div>
         </div>
