@@ -23,7 +23,7 @@ function generateTestDigestEmailHTML(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email de test - LeMarchéPublic.re</title>
+  <title>Email de test - LeMarchéPublic.fr</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f3f4f6; padding: 20px 0;">
@@ -36,7 +36,7 @@ function generateTestDigestEmailHTML(
                 Email de test
               </h1>
               <p style="color: #e0e7ff; font-size: 14px; margin: 8px 0 0 0;">
-                LeMarchéPublic.re - ${today}
+                LeMarchéPublic.fr - ${today}
               </p>
             </td>
           </tr>
@@ -119,7 +119,7 @@ async function sendEmail(
       return { success: false, error: 'RESEND_API_KEY not configured' };
     }
 
-    const emailFrom = Deno.env.get('EMAIL_FROM') || 'LeMarchéPublic.re <onboarding@resend.dev>';
+    const emailFrom = Deno.env.get('EMAIL_FROM') || 'LeMarchéPublic.fr <onboarding@resend.dev>';
 
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -197,10 +197,10 @@ Deno.serve(async (req: Request) => {
     }
 
     const recipientEmail = prefs?.notification_email || user.email;
-    const baseUrl = 'https://lemarchepublic.re';
+    const baseUrl = 'https://lemarchepublic.fr';
 
     const htmlContent = generateTestDigestEmailHTML(recipientEmail, baseUrl);
-    const subject = 'Email de test - LeMarchéPublic.re';
+    const subject = 'Email de test - LeMarchéPublic.fr';
 
     const result = await sendEmail(recipientEmail, subject, htmlContent);
 

@@ -188,7 +188,7 @@ async function sendEmail(
       return false;
     }
 
-    const emailFrom = Deno.env.get('EMAIL_FROM') || 'LeMarchéPublic.re <onboarding@resend.dev>';
+    const emailFrom = Deno.env.get('EMAIL_FROM') || 'LeMarchéPublic.fr <onboarding@resend.dev>';
 
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -236,7 +236,7 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    const baseUrl = 'https://lemarchepublic.re';
+    const baseUrl = 'https://lemarchepublic.fr';
 
     const { data: pendingDigests, error: digestsError } = await supabase
       .from('email_digest_queue')
