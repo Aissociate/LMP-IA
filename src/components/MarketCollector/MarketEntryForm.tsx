@@ -35,7 +35,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
+    if (!formData.reference.trim() || !formData.deadline ||
         !formData.service_type || !formData.url.trim()) {
       alert('Tous les champs marqués d\'un * sont obligatoires');
       return;
@@ -110,13 +110,12 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="md:col-span-2">
           <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
-            Titre du marché <span className="text-red-500">*</span>
+            Titre du marché
           </label>
           <input
             type="text"
             value={formData.title}
             onChange={(e) => handleChange('title', e.target.value)}
-            required
             className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
@@ -308,10 +307,10 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
       <div className="flex justify-end mt-4">
         <button
           type="submit"
-          disabled={saving || !formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
+          disabled={saving || !formData.reference.trim() || !formData.deadline ||
                     !formData.service_type || !formData.url.trim()}
           className={`flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg ${
-            (saving || !formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
+            (saving || !formData.reference.trim() || !formData.deadline ||
              !formData.service_type || !formData.url.trim()) ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
