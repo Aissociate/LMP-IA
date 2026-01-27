@@ -195,8 +195,15 @@ export const MarketCollector: React.FC = () => {
   };
 
   const handleSubmit = async (publish: boolean = false) => {
-    if (!formData.title.trim() || !formData.client.trim()) {
-      setError('Le titre et le donneur d\'ordre sont obligatoires');
+    // For publishing, title and client are required
+    if (publish && (!formData.title.trim() || !formData.client.trim())) {
+      setError('Le titre et le donneur d\'ordre sont obligatoires pour publier');
+      return;
+    }
+
+    // For drafts, at least title OR client is required
+    if (!publish && !formData.title.trim() && !formData.client.trim()) {
+      setError('Au moins un titre ou un donneur d\'ordre est requis');
       return;
     }
 
@@ -209,8 +216,8 @@ export const MarketCollector: React.FC = () => {
       const marketData = {
         source: 'manual',
         reference,
-        title: formData.title.trim(),
-        client: formData.client.trim(),
+        title: formData.title.trim() || 'Marché sans titre',
+        client: formData.client.trim() || 'Donneur d\'ordre non spécifié',
         description: formData.description.trim() || null,
         deadline: formData.deadline || null,
         location: formData.location.trim() || null,
@@ -276,7 +283,7 @@ export const MarketCollector: React.FC = () => {
       service_type: market.service_type || '',
       url: market.url || '',
       dce_url: market.dce_url || '',
-      operator_notes: market.operator_notes || ''
+      operator_notes: market.raw_data?.notes || ''
     });
     setShowForm(true);
   };
@@ -593,10 +600,23 @@ export const MarketCollector: React.FC = () => {
             </div>
 
             <div className="p-6 space-y-6">
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <strong>Brouillon vs Publication :</strong>
+                    <ul className="mt-1 ml-4 list-disc space-y-1">
+                      <li>Pour un <strong>brouillon</strong> : remplissez au minimum le titre OU le donneur d'ordre</li>
+                      <li>Pour <strong>publier</strong> : le titre ET le donneur d'ordre sont obligatoires</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-6">
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Intitule du marche *
+                    Intitule du marche <span className="text-orange-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -609,7 +629,7 @@ export const MarketCollector: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Donneur d'ordre / Acheteur *
+                    Donneur d'ordre / Acheteur <span className="text-orange-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -832,8 +852,13 @@ export const MarketCollector: React.FC = () => {
                         {market.reference}
                       </td>
                       <td className="px-4 py-3">
-                        <div className="text-sm font-medium text-gray-900 max-w-xs truncate">
-                          {market.title}
+                        <div className="flex items-center gap-2">
+                          <div className="text-sm font-medium text-gray-900 max-w-xs truncate">
+                            {market.title}
+                          </div>
+                          {!market.is_public && (market.title === 'Marché sans titre' || market.client === 'Donneur d\'ordre non spécifié') && (
+                            <AlertTriangle className="w-4 h-4 text-yellow-500 flex-shrink-0" title="Brouillon incomplet" />
+                          )}
                         </div>
                         {market.url && (
                           <a
@@ -866,14 +891,11 @@ export const MarketCollector: React.FC = () => {
                       </td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          market.status === 'published'
+                          market.is_public
                             ? 'bg-green-100 text-green-800'
-                            : market.status === 'draft'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-gray-100 text-gray-800'
+                            : 'bg-yellow-100 text-yellow-800'
                         }`}>
-                          {market.status === 'published' ? 'Publie' :
-                           market.status === 'draft' ? 'Brouillon' : 'Archive'}
+                          {market.is_public ? 'Publie' : 'Brouillon'}
                         </span>
                       </td>
                       <td className="px-4 py-3">
@@ -885,7 +907,7 @@ export const MarketCollector: React.FC = () => {
                           >
                             <Edit3 className="w-4 h-4" />
                           </button>
-                          {market.status === 'draft' && (
+                          {!market.is_public && (
                             <button
                               onClick={() => handlePublish(market)}
                               className="p-1.5 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
@@ -894,11 +916,11 @@ export const MarketCollector: React.FC = () => {
                               <Send className="w-4 h-4" />
                             </button>
                           )}
-                          {market.status === 'published' && (
+                          {market.is_public && (
                             <button
                               onClick={() => handleArchive(market)}
                               className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                              title="Archiver"
+                              title="Depublier"
                             >
                               <Clock className="w-4 h-4" />
                             </button>
