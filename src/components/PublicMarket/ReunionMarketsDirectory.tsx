@@ -157,7 +157,7 @@ export function ReunionMarketsDirectory() {
               </Link>
               <button
                 onClick={() => setShowModal(true)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
               >
                 Essai gratuit
               </button>
@@ -166,12 +166,12 @@ export function ReunionMarketsDirectory() {
         </div>
 
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12 px-4">
+        <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white py-12 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-3">
               Marchés Publics - La Réunion (974)
             </h1>
-            <p className="text-lg text-blue-100 mb-6">
+            <p className="text-lg text-orange-100 mb-6">
               Accédez aux opportunités de marchés publics à la Réunion
             </p>
 
@@ -188,7 +188,7 @@ export function ReunionMarketsDirectory() {
                 }}
                 className="flex-1 px-4 py-3 text-gray-900 outline-none"
               />
-              <button className="bg-blue-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors">
+              <button className="bg-orange-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-orange-700 transition-colors">
                 Rechercher
               </button>
             </div>
@@ -210,7 +210,7 @@ export function ReunionMarketsDirectory() {
                   setSelectedStatus('all');
                   setCurrentPage(1);
                 }}
-                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                className="text-sm text-orange-600 hover:text-orange-700 font-medium"
               >
                 Masquer les filtres
               </button>
@@ -235,7 +235,7 @@ export function ReunionMarketsDirectory() {
                         setFilters({ ...filters, serviceType: 'Travaux' });
                         setCurrentPage(1);
                       }}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                      className="w-4 h-4 text-orange-600 focus:ring-orange-500"
                     />
                     <span className="text-gray-700">Travaux</span>
                   </label>
@@ -249,7 +249,7 @@ export function ReunionMarketsDirectory() {
                         setFilters({ ...filters, serviceType: 'Fournitures' });
                         setCurrentPage(1);
                       }}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                      className="w-4 h-4 text-orange-600 focus:ring-orange-500"
                     />
                     <span className="text-gray-700">Fournitures</span>
                   </label>
@@ -263,7 +263,7 @@ export function ReunionMarketsDirectory() {
                         setFilters({ ...filters, serviceType: 'Services' });
                         setCurrentPage(1);
                       }}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                      className="w-4 h-4 text-orange-600 focus:ring-orange-500"
                     />
                     <span className="text-gray-700">Services</span>
                   </label>
@@ -277,7 +277,7 @@ export function ReunionMarketsDirectory() {
                         setFilters({ ...filters, serviceType: '' });
                         setCurrentPage(1);
                       }}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                      className="w-4 h-4 text-orange-600 focus:ring-orange-500"
                     />
                     <span className="text-gray-700">Tous les types</span>
                   </label>
@@ -294,7 +294,7 @@ export function ReunionMarketsDirectory() {
                       name="marketStatus"
                       checked={selectedStatus === 'open'}
                       onChange={() => setSelectedStatus('open')}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                      className="w-4 h-4 text-orange-600 focus:ring-orange-500"
                     />
                     <span className="text-gray-700">Ouvert</span>
                   </label>
@@ -304,7 +304,7 @@ export function ReunionMarketsDirectory() {
                       name="marketStatus"
                       checked={selectedStatus === 'closing'}
                       onChange={() => setSelectedStatus('closing')}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                      className="w-4 h-4 text-orange-600 focus:ring-orange-500"
                     />
                     <span className="text-gray-700">En cours</span>
                   </label>
@@ -314,7 +314,7 @@ export function ReunionMarketsDirectory() {
                       name="marketStatus"
                       checked={selectedStatus === 'all'}
                       onChange={() => setSelectedStatus('all')}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                      className="w-4 h-4 text-orange-600 focus:ring-orange-500"
                     />
                     <span className="text-gray-700">Tous</span>
                   </label>
@@ -324,7 +324,7 @@ export function ReunionMarketsDirectory() {
               {/* Localisation */}
               <div>
                 <h4 className="font-semibold text-gray-900 mb-3">Localisation</h4>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
                   <option>Toutes les communes</option>
                   <option>Saint-Denis</option>
                   <option>Saint-Paul</option>
@@ -348,13 +348,13 @@ export function ReunionMarketsDirectory() {
               <span className="text-sm text-gray-600">Affichage :</span>
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
+                className={`p-2 rounded ${viewMode === 'grid' ? 'bg-orange-100 text-orange-600' : 'text-gray-400 hover:text-gray-600'}`}
               >
                 <Grid3x3 className="w-5 h-5" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
+                className={`p-2 rounded ${viewMode === 'list' ? 'bg-orange-100 text-orange-600' : 'text-gray-400 hover:text-gray-600'}`}
               >
                 <List className="w-5 h-5" />
               </button>
@@ -363,7 +363,7 @@ export function ReunionMarketsDirectory() {
 
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+              <Loader2 className="w-8 h-8 text-orange-600 animate-spin" />
             </div>
           ) : markets.length === 0 ? (
             <div className="bg-white rounded-lg shadow-sm p-12 text-center">
@@ -387,7 +387,7 @@ export function ReunionMarketsDirectory() {
                         <div className={`p-3 rounded-lg ${
                           market.service_type === 'Travaux' ? 'bg-orange-50 text-orange-600' :
                           market.service_type === 'Fournitures' ? 'bg-amber-50 text-amber-600' :
-                          'bg-blue-50 text-blue-600'
+                          'bg-orange-50 text-orange-600'
                         }`}>
                           {getServiceIcon(market.service_type)}
                         </div>
@@ -397,7 +397,7 @@ export function ReunionMarketsDirectory() {
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors line-clamp-2">
                         {market.title}
                       </h3>
 
@@ -417,7 +417,7 @@ export function ReunionMarketsDirectory() {
                       {market.amount && (
                         <div className="mb-4">
                           <span className="text-sm text-gray-500">Montant estimé</span>
-                          <p className="text-xl font-bold text-blue-600">
+                          <p className="text-xl font-bold text-orange-600">
                             {formatAmount(market.amount)}
                           </p>
                         </div>

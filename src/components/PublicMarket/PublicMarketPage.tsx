@@ -73,7 +73,7 @@ export function PublicMarketPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-orange-600 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Chargement du marché...</p>
         </div>
       </div>
@@ -91,7 +91,7 @@ export function PublicMarketPage() {
           </p>
           <button
             onClick={() => navigate('/marchepublics/974')}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition-colors"
           >
             Voir tous les marchés
           </button>
@@ -118,7 +118,7 @@ export function PublicMarketPage() {
               </Link>
               <button
                 onClick={() => setShowModal(true)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
               >
                 Essai gratuit
               </button>
@@ -129,16 +129,16 @@ export function PublicMarketPage() {
         <MarketDetails market={market} />
 
         <div className="max-w-5xl mx-auto px-4 py-8">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-8 text-center text-white shadow-lg">
+          <div className="bg-gradient-to-r from-orange-600 to-orange-700 rounded-xl p-8 text-center text-white shadow-lg">
             <h2 className="text-3xl font-bold mb-3">
               Ne manquez plus aucune opportunité
             </h2>
-            <p className="text-blue-100 mb-6 text-lg">
+            <p className="text-orange-100 mb-6 text-lg">
               Recevez automatiquement les nouveaux marchés qui correspondent à votre activité
             </p>
             <button
               onClick={() => setShowModal(true)}
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-lg"
+              className="bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-orange-50 transition-colors shadow-lg"
             >
               Essayez gratuitement pendant 7 jours
             </button>
