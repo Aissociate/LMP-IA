@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, BookOpen, Palette, Webhook, Users } from 'lucide-react';
+import { User, BookOpen, Palette, Webhook, Users, Bell, Mail } from 'lucide-react';
 import { Image } from 'lucide-react';
 import { ProfileSettings } from './ProfileSettings';
 import { KnowledgeBase } from './KnowledgeBase';
@@ -7,15 +7,19 @@ import { ThemeSettings } from './ThemeSettings';
 import { WebhookSettings } from './WebhookSettings';
 import { ReportAssetManager } from './ReportAssetManager';
 import { CandidatureManager } from './CandidatureManager';
+import { NotificationSettings } from './NotificationSettings';
+import { EmailDigestHistory } from './EmailDigestHistory';
 import { useTheme } from '../../hooks/useTheme';
 import { supabase } from '../../lib/supabase';
 
-type SettingsTab = 'profile' | 'knowledge' | 'assets' | 'webhook' | 'theme' | 'candidatures';
+type SettingsTab = 'profile' | 'knowledge' | 'assets' | 'notifications' | 'email-history' | 'webhook' | 'theme' | 'candidatures';
 
 const baseTabs = [
   { id: 'profile' as const, label: 'Informations personnelles', icon: User },
   { id: 'knowledge' as const, label: 'Base de connaissance', icon: BookOpen },
   { id: 'assets' as const, label: 'Mes images', icon: Image },
+  { id: 'notifications' as const, label: 'Notifications', icon: Bell },
+  { id: 'email-history' as const, label: 'Historique des emails', icon: Mail },
   { id: 'webhook' as const, label: 'Intégrations', icon: Webhook },
   { id: 'theme' as const, label: 'Apparence', icon: Palette },
 ];
@@ -60,6 +64,10 @@ export const Settings: React.FC = () => {
         return <KnowledgeBase />;
       case 'assets':
         return <ReportAssetManager />;
+      case 'notifications':
+        return <NotificationSettings />;
+      case 'email-history':
+        return <EmailDigestHistory />;
       case 'webhook':
         return <WebhookSettings />;
       case 'theme':
