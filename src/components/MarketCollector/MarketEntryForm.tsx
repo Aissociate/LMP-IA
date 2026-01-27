@@ -36,7 +36,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
     e.preventDefault();
 
     if (!formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
-        !formData.service_type || !formData.cpv_code.trim() || !formData.url.trim()) {
+        !formData.service_type || !formData.url.trim()) {
       alert('Tous les champs marqués d\'un * sont obligatoires');
       return;
     }
@@ -237,13 +237,12 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
 
         <div>
           <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
-            Code CPV <span className="text-red-500">*</span>
+            Code CPV
           </label>
           <input
             type="text"
             value={formData.cpv_code}
             onChange={(e) => handleChange('cpv_code', e.target.value)}
-            required
             className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
@@ -310,10 +309,10 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         <button
           type="submit"
           disabled={saving || !formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
-                    !formData.service_type || !formData.cpv_code.trim() || !formData.url.trim()}
+                    !formData.service_type || !formData.url.trim()}
           className={`flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg ${
             (saving || !formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
-             !formData.service_type || !formData.cpv_code.trim() || !formData.url.trim()) ? 'opacity-50 cursor-not-allowed' : ''
+             !formData.service_type || !formData.url.trim()) ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           {saving ? (
