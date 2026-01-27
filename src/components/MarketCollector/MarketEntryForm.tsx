@@ -35,8 +35,9 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.title.trim()) {
-      alert('Le titre est obligatoire');
+    if (!formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
+        !formData.service_type || !formData.cpv_code.trim() || !formData.url.trim()) {
+      alert('Tous les champs marqués d\'un * sont obligatoires');
       return;
     }
 
@@ -127,12 +128,13 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
 
         <div>
           <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
-            Référence
+            Référence <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.reference}
             onChange={(e) => handleChange('reference', e.target.value)}
+            required
             className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
@@ -144,13 +146,14 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
 
         <div>
           <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
-            Date limite
+            Date limite <span className="text-red-500">*</span>
           </label>
           <input
             type="datetime-local"
             value={formData.deadline}
             onChange={(e) => handleChange('deadline', e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border ${
+            required
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white'
                 : 'bg-white border-gray-300 text-gray-900'
@@ -160,12 +163,13 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
 
         <div>
           <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
-            Type de service
+            Type de service <span className="text-red-500">*</span>
           </label>
           <select
             value={formData.service_type}
             onChange={(e) => handleChange('service_type', e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border ${
+            required
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white'
                 : 'bg-white border-gray-300 text-gray-900'
@@ -233,12 +237,13 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
 
         <div>
           <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
-            Code CPV
+            Code CPV <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.cpv_code}
             onChange={(e) => handleChange('cpv_code', e.target.value)}
+            required
             className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
@@ -250,12 +255,13 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
 
         <div className="md:col-span-2">
           <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
-            URL de l'annonce
+            URL de l'annonce <span className="text-red-500">*</span>
           </label>
           <input
             type="url"
             value={formData.url}
             onChange={(e) => handleChange('url', e.target.value)}
+            required
             className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
@@ -303,9 +309,11 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
       <div className="flex justify-end mt-4">
         <button
           type="submit"
-          disabled={saving || !formData.title.trim()}
+          disabled={saving || !formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
+                    !formData.service_type || !formData.cpv_code.trim() || !formData.url.trim()}
           className={`flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg ${
-            (saving || !formData.title.trim()) ? 'opacity-50 cursor-not-allowed' : ''
+            (saving || !formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
+             !formData.service_type || !formData.cpv_code.trim() || !formData.url.trim()) ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           {saving ? (
