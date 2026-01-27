@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Brain, Settings as SettingsIcon, MessageSquare, BarChart3, Bug, Video, UserCheck, CreditCard, RefreshCw } from 'lucide-react';
+import { Shield, Brain, Settings as SettingsIcon, MessageSquare, BarChart3, Bug, Video, UserCheck, CreditCard, RefreshCw, Users } from 'lucide-react';
 import { AIModelSelector } from './AIModelSelector';
 import { AIParameters } from './AIParameters';
 import { PromptManager } from './PromptManager';
@@ -9,15 +9,17 @@ import { VideoUploader } from './VideoUploader';
 import { UserImpersonation } from './UserImpersonation';
 import { SubscriptionManager } from './SubscriptionManager';
 import { MarketSyncMonitor } from './MarketSyncMonitor';
+import { CandidatureManager } from '../Settings/CandidatureManager';
 import { useTheme } from '../../hooks/useTheme';
 
-type AdminTab = 'ai-models' | 'ai-parameters' | 'prompts' | 'subscriptions' | 'marketing' | 'bugs' | 'videos' | 'impersonation' | 'market-sync';
+type AdminTab = 'ai-models' | 'ai-parameters' | 'prompts' | 'subscriptions' | 'candidatures' | 'marketing' | 'bugs' | 'videos' | 'impersonation' | 'market-sync';
 
 const adminTabs = [
   { id: 'ai-models' as const, label: 'Modèles IA', icon: Brain },
   { id: 'ai-parameters' as const, label: 'Paramètres IA', icon: SettingsIcon },
   { id: 'prompts' as const, label: 'Gestion des prompts', icon: MessageSquare },
   { id: 'subscriptions' as const, label: 'Abonnements', icon: CreditCard },
+  { id: 'candidatures' as const, label: 'Candidatures', icon: Users },
   { id: 'market-sync' as const, label: 'Synchronisation Marchés 974', icon: RefreshCw },
   { id: 'marketing' as const, label: 'Analytics Marketing', icon: BarChart3 },
   { id: 'bugs' as const, label: 'Gestion des bugs', icon: Bug },
@@ -39,6 +41,8 @@ export const Admin: React.FC = () => {
         return <PromptManager />;
       case 'subscriptions':
         return <SubscriptionManager />;
+      case 'candidatures':
+        return <CandidatureManager />;
       case 'market-sync':
         return <MarketSyncMonitor />;
       case 'marketing':

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { User, BookOpen, Palette, Webhook, Users, Bell, Mail, Building2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { User, BookOpen, Palette, Webhook, Bell, Mail, Building2 } from 'lucide-react';
 import { Image } from 'lucide-react';
 import { ProfileSettings } from './ProfileSettings';
 import { CompanyProfile } from './CompanyProfile';
@@ -7,15 +7,13 @@ import { KnowledgeBase } from './KnowledgeBase';
 import { ThemeSettings } from './ThemeSettings';
 import { WebhookSettings } from './WebhookSettings';
 import { ReportAssetManager } from './ReportAssetManager';
-import { CandidatureManager } from './CandidatureManager';
 import { NotificationSettings } from './NotificationSettings';
 import { EmailDigestHistory } from './EmailDigestHistory';
 import { useTheme } from '../../hooks/useTheme';
-import { supabase } from '../../lib/supabase';
 
-type SettingsTab = 'profile' | 'company' | 'knowledge' | 'assets' | 'notifications' | 'email-history' | 'webhook' | 'theme' | 'candidatures';
+type SettingsTab = 'profile' | 'company' | 'knowledge' | 'assets' | 'notifications' | 'email-history' | 'webhook' | 'theme';
 
-const baseTabs = [
+const tabs = [
   { id: 'profile' as const, label: 'Informations personnelles', icon: User },
   { id: 'company' as const, label: 'Profil Entreprise & Référencement', icon: Building2 },
   { id: 'knowledge' as const, label: 'Base de connaissance', icon: BookOpen },
@@ -26,37 +24,9 @@ const baseTabs = [
   { id: 'theme' as const, label: 'Apparence', icon: Palette },
 ];
 
-const adminTab = { id: 'candidatures' as const, label: 'Candidatures', icon: Users };
-
 export const Settings: React.FC = () => {
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const { isDark } = useTheme();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [tabs, setTabs] = useState(baseTabs);
-
-  useEffect(() => {
-    checkAdminStatus();
-  }, []);
-
-  const checkAdminStatus = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data: profile } = await supabase
-        .from('user_profiles')
-        .select('is_admin')
-        .eq('user_id', user.id)
-        .single();
-
-      if (profile?.is_admin) {
-        setIsAdmin(true);
-        setTabs([...baseTabs, adminTab]);
-      }
-    } catch (error) {
-      console.error('Error checking admin status:', error);
-    }
-  };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -76,8 +46,6 @@ export const Settings: React.FC = () => {
         return <WebhookSettings />;
       case 'theme':
         return <ThemeSettings />;
-      case 'candidatures':
-        return isAdmin ? <CandidatureManager /> : <ProfileSettings />;
       default:
         return <ProfileSettings />;
     }
