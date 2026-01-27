@@ -22,9 +22,11 @@ import {
   ChevronDown,
   ChevronUp,
   AlertTriangle,
-  Database
+  Database,
+  Play
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { SessionWizard } from '../MarketCollector/SessionWizard';
 
 const COLLECTOR_PASSWORD = 'lemarchepublic974#';
 
@@ -119,6 +121,7 @@ export const MarketCollector: React.FC = () => {
   const [filterStatus, setFilterStatus] = useState<'all' | 'draft' | 'published'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showDonneursOrdre, setShowDonneursOrdre] = useState(false);
+  const [showSessionWizard, setShowSessionWizard] = useState(false);
 
   const emptyForm = {
     title: '',
@@ -520,6 +523,13 @@ export const MarketCollector: React.FC = () => {
               Donneurs d'ordre ({donneursOrdre.length})
             </button>
             <button
+              onClick={() => setShowSessionWizard(true)}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all shadow-lg hover:shadow-xl"
+            >
+              <Play className="w-5 h-5" />
+              Session de saisie
+            </button>
+            <button
               onClick={() => {
                 setEditingMarket(null);
                 setFormData(emptyForm);
@@ -910,6 +920,17 @@ export const MarketCollector: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {showSessionWizard && (
+        <SessionWizard
+          isOpen={showSessionWizard}
+          onClose={() => {
+            setShowSessionWizard(false);
+            loadMarkets();
+          }}
+          operatorEmail={operatorName}
+        />
+      )}
     </div>
   );
 };
