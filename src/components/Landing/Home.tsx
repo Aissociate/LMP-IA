@@ -119,7 +119,7 @@ export default function Home() {
             backgroundImage: 'url(https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6978a15c00336c6d64d341bb.jpg)'
           }}
         >
-          <div className="absolute inset-0 bg-white/85"></div>
+          <div className="absolute inset-0 bg-white/65"></div>
         </div>
         <div className="text-center relative z-10">
           <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
