@@ -1,5 +1,6 @@
 import { BOAMPSearchParams, BOAMPMarket, BOAMPSearchResult } from '../types/boamp';
 import { supabase } from '../lib/supabase';
+import { DeduplicationService } from './deduplicationService';
 
 class BOAMPService {
   private getEdgeFunctionUrl(): string {
@@ -340,12 +341,32 @@ class BOAMPService {
 
   async searchMarketsWithManual(params: BOAMPSearchParams): Promise<BOAMPSearchResult> {
     try {
-      const [boampResult, manualMarkets] = await Promise.all([
-        this.searchMarkets(params),
-        this.searchManualMarkets(params)
-      ]);
+      const boampResult = await this.searchMarkets(params);
 
-      const allMarkets = [...manualMarkets, ...boampResult.markets];
+      const deduplicationResult = await DeduplicationService.deduplicateMarkets(
+        boampResult.markets,
+        true
+      );
+
+      const convertedManualMarkets: BOAMPMarket[] = deduplicationResult.manualMarkets.map(record => ({
+        id: record.id,
+        reference: record.reference,
+        title: record.title,
+        client: record.client,
+        description: record.description || '',
+        deadline: record.deadline || '',
+        amount: record.amount ? parseFloat(record.amount) : undefined,
+        location: record.location || 'Non specifie',
+        publicationDate: record.publication_date || '',
+        procedureType: record.procedure_type || 'Non specifie',
+        serviceType: record.service_type || 'Non specifie',
+        cpvCode: record.cpv_code,
+        url: record.url || '',
+        dceUrl: record.dce_url,
+        rawData: { ...record, source: 'manual', isManualMarket: true }
+      }));
+
+      const allMarkets = [...deduplicationResult.boampMarkets, ...convertedManualMarkets];
 
       const sortField = params.sortBy || 'publication_date';
       const sortOrder = params.sortOrder || 'desc';
@@ -370,8 +391,10 @@ class BOAMPService {
         return valueB - valueA;
       });
 
-      const total = boampResult.total + manualMarkets.length;
+      const total = boampResult.total + convertedManualMarkets.length;
       const limit = params.limit || 20;
+
+      console.log(`[BOAMP Service] Déduplication: ${deduplicationResult.removedDuplicates} doublon(s) manuel(s) supprimé(s)`);
 
       return {
         markets: allMarkets,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Plus, Check } from 'lucide-react';
+import { Save, Plus, Check, AlertTriangle } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { supabase } from '../../lib/supabase';
 import { DonneurOrdre } from '../../services/sessionService';
@@ -31,6 +31,40 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
   });
   const [saving, setSaving] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [duplicates, setDuplicates] = useState<any[]>([]);
+  const [showDuplicateWarning, setShowDuplicateWarning] = useState(false);
+  const [ignoreDuplicates, setIgnoreDuplicates] = useState(false);
+
+  const checkForDuplicates = async () => {
+    if (!formData.reference.trim() && !formData.title.trim() && !formData.url.trim()) {
+      return [];
+    }
+
+    setChecking(true);
+    try {
+      const { data, error } = await supabase.rpc('check_all_market_duplicates', {
+        p_reference: formData.reference || null,
+        p_title: formData.title || 'Sans titre',
+        p_client: donneurOrdre.name,
+        p_deadline: formData.deadline || new Date().toISOString(),
+        p_url: formData.url || null,
+        p_exclude_id: null,
+      });
+
+      if (error) {
+        console.error('Error checking duplicates:', error);
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      console.error('Error checking duplicates:', error);
+      return [];
+    } finally {
+      setChecking(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,11 +75,25 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
       return;
     }
 
+    if (!ignoreDuplicates) {
+      const foundDuplicates = await checkForDuplicates();
+
+      if (foundDuplicates.length > 0) {
+        setDuplicates(foundDuplicates);
+        setShowDuplicateWarning(true);
+        return;
+      }
+    }
+
+    await saveMarket();
+  };
+
+  const saveMarket = async () => {
     setSaving(true);
     try {
       const { error } = await supabase.from('manual_markets').insert({
         reference: formData.reference || null,
-        title: formData.title,
+        title: formData.title || 'Sans titre',
         client: donneurOrdre.name,
         description: formData.description || null,
         deadline: formData.deadline || null,
@@ -80,6 +128,10 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 2000);
 
+      setIgnoreDuplicates(false);
+      setShowDuplicateWarning(false);
+      setDuplicates([]);
+
       onMarketAdded();
     } catch (error) {
       console.error('Error saving market:', error);
@@ -89,23 +141,103 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
     }
   };
 
+  const handleIgnoreDuplicatesAndSave = () => {
+    setIgnoreDuplicates(true);
+    setShowDuplicateWarning(false);
+    setTimeout(() => {
+      saveMarket();
+    }, 100);
+  };
+
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`${isDark ? 'bg-gray-700' : 'bg-white'} rounded-lg p-4 border ${isDark ? 'border-gray-600' : 'border-gray-200'}`}>
-      <div className="flex items-center justify-between mb-3">
-        <h4 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-          Saisie d'un marché
-        </h4>
-        {justSaved && (
-          <div className="flex items-center gap-2 text-green-600 animate-fade-in">
-            <Check className="w-5 h-5" />
-            <span className="text-sm font-medium">Enregistré !</span>
+    <>
+      {showDuplicateWarning && (
+        <div className={`${isDark ? 'bg-yellow-900 border-yellow-700' : 'bg-yellow-50 border-yellow-200'} border rounded-lg p-4 mb-4`}>
+          <div className="flex items-start gap-3">
+            <AlertTriangle className={`w-6 h-6 flex-shrink-0 ${isDark ? 'text-yellow-400' : 'text-yellow-600'}`} />
+            <div className="flex-1">
+              <h4 className={`text-sm font-semibold mb-2 ${isDark ? 'text-yellow-200' : 'text-yellow-900'}`}>
+                Doublons potentiels détectés
+              </h4>
+              <p className={`text-sm mb-3 ${isDark ? 'text-yellow-300' : 'text-yellow-800'}`}>
+                Les marchés suivants semblent similaires à celui que vous souhaitez ajouter :
+              </p>
+              <div className="space-y-2 mb-4">
+                {duplicates.slice(0, 3).map((dup, index) => (
+                  <div key={index} className={`${isDark ? 'bg-gray-800' : 'bg-white'} rounded p-3 text-sm`}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        {dup.title}
+                      </span>
+                      <span className={`text-xs px-2 py-1 rounded ${
+                        dup.source_type === 'boamp'
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-500 text-white'
+                      }`}>
+                        {dup.source_type === 'boamp' ? 'BOAMP (Auto)' : 'Manuel'}
+                      </span>
+                    </div>
+                    <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Réf: {dup.reference} | {dup.organisme}
+                    </div>
+                    <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Correspondance: {dup.match_type === 'exact_reference' ? 'Référence identique' :
+                                       dup.match_type === 'same_url' ? 'URL identique' :
+                                       dup.match_type === 'same_title_date' ? 'Titre et date identiques' : 'Similaire'}
+                      ({dup.match_score >= 1000 ? Math.floor(dup.match_score - 1000) : dup.match_score}%)
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDuplicateWarning(false);
+                    setDuplicates([]);
+                  }}
+                  className={`px-4 py-2 text-sm font-medium rounded-lg ${
+                    isDark
+                      ? 'bg-gray-700 text-white hover:bg-gray-600'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                  }`}
+                >
+                  Annuler
+                </button>
+                <button
+                  type="button"
+                  onClick={handleIgnoreDuplicatesAndSave}
+                  className="px-4 py-2 text-sm font-medium rounded-lg bg-orange-500 hover:bg-orange-600 text-white"
+                >
+                  Ajouter quand même
+                </button>
+              </div>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className={`${isDark ? 'bg-gray-700' : 'bg-white'} rounded-lg p-4 border ${isDark ? 'border-gray-600' : 'border-gray-200'}`}>
+        <div className="flex items-center justify-between mb-3">
+          <h4 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            Saisie d'un marché
+          </h4>
+          {justSaved && (
+            <div className="flex items-center gap-2 text-green-600 animate-fade-in">
+              <Check className="w-5 h-5" />
+              <span className="text-sm font-medium">Enregistré !</span>
+            </div>
+          )}
+          {checking && (
+            <div className="flex items-center gap-2 text-orange-600 animate-pulse">
+              <span className="text-sm font-medium">Vérification des doublons...</span>
+            </div>
+          )}
+        </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="md:col-span-2">
@@ -328,5 +460,6 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         </button>
       </div>
     </form>
+    </>
   );
 };
