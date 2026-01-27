@@ -19,6 +19,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
   const [formData, setFormData] = useState({
     reference: '',
     title: '',
+    client: donneurOrdre.name,
     description: '',
     deadline: '',
     amount: '',
@@ -46,7 +47,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
       const { data, error } = await supabase.rpc('check_all_market_duplicates', {
         p_reference: formData.reference || null,
         p_title: formData.title,
-        p_client: donneurOrdre.name,
+        p_client: formData.client,
         p_deadline: formData.deadline || new Date().toISOString(),
         p_url: formData.url || null,
         p_exclude_id: null,
@@ -94,7 +95,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
       const { error } = await supabase.from('manual_markets').insert({
         reference: formData.reference || null,
         title: formData.title,
-        client: donneurOrdre.name,
+        client: formData.client,
         description: formData.description || null,
         deadline: formData.deadline || null,
         amount: formData.amount ? parseFloat(formData.amount) : null,
@@ -114,6 +115,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
       setFormData({
         reference: '',
         title: '',
+        client: donneurOrdre.name,
         description: '',
         deadline: '',
         amount: '',
@@ -255,6 +257,23 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
             } focus:ring-2 focus:ring-orange-500 focus:border-transparent`}
             placeholder="Ex: Travaux de rénovation..."
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
+            Donneur d'ordre
+          </label>
+          <input
+            type="text"
+            value={formData.client}
+            onChange={(e) => handleChange('client', e.target.value)}
+            className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
+              isDark
+                ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
+                : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+            } focus:ring-2 focus:ring-orange-500 focus:border-transparent`}
+            placeholder="Ex: Mairie de..."
           />
         </div>
 
