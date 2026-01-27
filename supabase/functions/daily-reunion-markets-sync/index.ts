@@ -49,31 +49,57 @@ Deno.serve(async (req: Request) => {
 
     const today = new Date().toISOString().split('T')[0];
 
-    const boampUrl = new URL(BOAMP_API_BASE);
-    boampUrl.searchParams.append('where', `code_departement="974" AND datelimitereponse >= date'${today}'`);
-    boampUrl.searchParams.append('order_by', 'dateparution DESC');
-    boampUrl.searchParams.append('limit', '100');
-    boampUrl.searchParams.append('offset', '0');
+    // Fetch all markets with pagination
+    let allRecords: BOAMPRecord[] = [];
+    let offset = 0;
+    const limit = 100;
+    let hasMore = true;
 
-    console.log('[Reunion Sync] Fetching from BOAMP:', boampUrl.toString());
+    console.log('[Reunion Sync] Starting paginated fetch from BOAMP...');
 
-    const response = await fetch(boampUrl.toString(), {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'MonMarchePublic-Sync/1.0'
-      },
-    });
+    while (hasMore) {
+      const boampUrl = new URL(BOAMP_API_BASE);
+      boampUrl.searchParams.append('where', `code_departement="974" AND datelimitereponse >= date'${today}'`);
+      boampUrl.searchParams.append('order_by', 'dateparution DESC');
+      boampUrl.searchParams.append('limit', limit.toString());
+      boampUrl.searchParams.append('offset', offset.toString());
 
-    if (!response.ok) {
-      throw new Error(`BOAMP API error: ${response.status} ${response.statusText}`);
+      console.log(`[Reunion Sync] Fetching page at offset ${offset}:`, boampUrl.toString());
+
+      const response = await fetch(boampUrl.toString(), {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'MonMarchePublic-Sync/1.0'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`BOAMP API error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      const records: BOAMPRecord[] = data.results || [];
+
+      console.log(`[Reunion Sync] Fetched ${records.length} markets at offset ${offset}`);
+
+      if (records.length === 0) {
+        hasMore = false;
+      } else {
+        allRecords = allRecords.concat(records);
+        offset += limit;
+
+        // If we got fewer results than the limit, we've reached the end
+        if (records.length < limit) {
+          hasMore = false;
+        }
+      }
     }
 
-    const data = await response.json();
-    const records: BOAMPRecord[] = data.results || [];
+    marketsFound = allRecords.length;
+    console.log(`[Reunion Sync] Total found: ${marketsFound} active markets for La Réunion`);
 
-    marketsFound = records.length;
-    console.log(`[Reunion Sync] Found ${marketsFound} active markets for La Réunion`);
+    const records = allRecords;
 
     for (const record of records) {
       try {
