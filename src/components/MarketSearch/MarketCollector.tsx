@@ -498,8 +498,8 @@ export const MarketCollector: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -507,7 +507,7 @@ export const MarketCollector: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Rechercher..."
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-64 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full sm:w-64 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               />
             </div>
             <select
@@ -521,20 +521,20 @@ export const MarketCollector: React.FC = () => {
             </select>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <button
               onClick={() => setShowDonneursOrdre(!showDonneursOrdre)}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
             >
-              <Building className="w-5 h-5" />
-              Donneurs d'ordre ({donneursOrdre.length})
+              <Building className="w-5 h-5 flex-shrink-0" />
+              <span>Donneurs d'ordre ({donneursOrdre.length})</span>
             </button>
             <button
               onClick={() => setShowSessionWizard(true)}
-              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all shadow-lg hover:shadow-xl"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl whitespace-nowrap"
             >
-              <Play className="w-5 h-5" />
-              Session de saisie
+              <Play className="w-5 h-5 flex-shrink-0" />
+              <span>Session de saisie</span>
             </button>
             <button
               onClick={() => {
@@ -542,10 +542,10 @@ export const MarketCollector: React.FC = () => {
                 setFormData(emptyForm);
                 setShowForm(true);
               }}
-              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all shadow-lg hover:shadow-xl"
+              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl whitespace-nowrap"
             >
-              <Plus className="w-5 h-5" />
-              Nouveau marche
+              <Plus className="w-5 h-5 flex-shrink-0" />
+              <span>Nouveau marche</span>
             </button>
           </div>
         </div>
