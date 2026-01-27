@@ -173,42 +173,6 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onSuccess, onC
           market_service_type: market.service_type,
           detected_at: new Date().toISOString(),
         });
-
-        const { data: userContext } = await supabase
-          .from('user_profiles')
-          .select('company_name, activity_sectors, expertise_areas, geographical_zones')
-          .eq('user_id', user?.id)
-          .maybeSingle();
-
-        try {
-          await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/market-sentinel-analysis`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              market: {
-                id: market.id,
-                reference: market.reference,
-                title: market.title,
-                client: market.client,
-                description: market.description || '',
-                deadline: market.deadline,
-                amount: market.amount,
-                location: market.location,
-                publicationDate: market.publication_date,
-                procedureType: market.procedure_type || 'Non spécifié',
-                serviceType: market.service_type || 'Non spécifié',
-                url: market.url || '',
-              },
-              alert_id: alertId,
-              user_context: userContext || undefined,
-            }),
-          });
-        } catch (analysisError) {
-          console.error('Error analyzing market:', analysisError);
-        }
       }
 
       if (matchedMarkets.length > 0) {
@@ -266,13 +230,11 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onSuccess, onC
 
       if (error) throw error;
 
-      setLoadingMessage('Vérification initiale en cours...');
+      setLoadingMessage('Recherche des marchés correspondants...');
       const matchedCount = await runInitialCheck(newAlert.id, searchParams);
 
       if (matchedCount && matchedCount > 0) {
-        setLoadingMessage(`Analyse IA de ${matchedCount} marché(s) en cours...`);
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        alert(`Alerte créée avec succès !\n\n✓ ${matchedCount} marché(s) détecté(s)\n✓ Analyse IA en cours\n\nConsultez l'onglet "Détections" pour voir les résultats.`);
+        alert(`Alerte créée avec succès !\n\n✓ ${matchedCount} marché(s) détecté(s)\n\nConsultez l'onglet "Détections" pour voir les résultats.`);
       } else {
         alert('Alerte créée avec succès ! Aucun marché correspondant trouvé pour le moment.\n\nLes vérifications automatiques auront lieu 2 fois par jour (8h et 18h).');
       }

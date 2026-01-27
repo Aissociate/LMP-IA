@@ -454,7 +454,6 @@ export const MarketSentinel: React.FC = () => {
           onSuccess={async () => {
             setShowCreateAlertForm(false);
             await loadAlerts();
-            await new Promise(resolve => setTimeout(resolve, 1000));
             await loadDetections();
             await loadStats();
           }}
@@ -636,8 +635,7 @@ export const MarketSentinel: React.FC = () => {
               </p>
               <ul className={`space-y-1 ${isDark ? 'text-blue-200' : 'text-blue-800'}`}>
                 <li>• Les alertes sont vérifiées automatiquement 2 fois par jour (8h et 18h)</li>
-                <li>• Chaque nouveau marché est analysé automatiquement par IA avec un score Go/No-Go</li>
-                <li>• Vous recevez un email consolidé classé par priorité (GO, CONDITIONAL, NO-GO)</li>
+                <li>• Vous recevez un email avec les nouveaux marchés détectés</li>
                 <li>• Consultez tous les résultats dans l'onglet "Détections"</li>
               </ul>
             </div>
@@ -1018,7 +1016,7 @@ export const MarketSentinel: React.FC = () => {
                 Market Sentinel™
               </h2>
               <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Veille intelligente avec détection automatique et scoring IA Go/No-Go
+                Veille intelligente avec détection automatique de marchés
               </p>
             </div>
           </div>
