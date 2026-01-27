@@ -324,7 +324,7 @@ export const LandingLead: React.FC = () => {
             className="bg-gradient-to-r from-orange-600 to-red-600 text-white hover:from-orange-700 hover:to-red-700 shadow-2xl"
           >
             <Sparkles className="w-6 h-6" />
-            Je veux mon mémoire + BPU offerts
+            Je teste l'IA gratuitement sur un vrai marché
             <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
           </Button>
 
@@ -433,7 +433,7 @@ export const LandingLead: React.FC = () => {
               onClick={handleCTAClick}
               className="bg-gradient-to-r from-orange-600 to-red-600 text-white hover:from-orange-700 hover:to-red-700"
             >
-              Je veux tester l'IA sur mon prochain marché
+              Je demande mon mémoire technique gratuit
               <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
@@ -527,7 +527,7 @@ export const LandingLead: React.FC = () => {
               onClick={handleCTAClick}
               className="bg-gradient-to-r from-orange-600 to-red-600 text-white hover:from-orange-700 hover:to-red-700"
             >
-              Je demande mon mémoire + BPU IA offerts
+              J'obtiens mon mémoire + BPU offerts maintenant
               <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
@@ -873,7 +873,7 @@ export const LandingLead: React.FC = () => {
               className="bg-white text-orange-600 hover:bg-gray-100"
             >
               <Clock className="w-6 h-6" />
-              Je veux mon mémoire + BPU générés par IA (offerts)
+              Je lance mon test gratuit maintenant
               <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Card>

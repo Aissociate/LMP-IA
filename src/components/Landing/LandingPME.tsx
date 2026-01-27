@@ -99,7 +99,7 @@ export const LandingPME: React.FC = () => {
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
             className="bg-[#F77F00] text-white hover:bg-[#E06F00]"
           >
-            💼 Essai 7 jours gratuit
+            Activer mon assistant IA 7 jours
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
@@ -124,11 +124,11 @@ export const LandingPME: React.FC = () => {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-              Surveillez <span className="text-[#F77F00]">TOUS les marchés publics</span> de La Réunion avec votre assistant numérique
+              PME : votre <span className="text-[#F77F00]">assistant numérique</span> surveille, analyse et prépare vos dossiers
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-700 mb-8">
-              Vous avez les compétences. Il vous manque juste <span className="font-bold">la méthode et le temps</span>.
+              Vous avez les compétences. Il vous manque <span className="font-bold text-[#F77F00]">une méthode structurée et automatisée</span>.
             </p>
 
             <div className="bg-gradient-to-r from-orange-50 to-orange-100 border-l-4 border-[#F77F00] p-6 rounded-xl mb-8 shadow-lg">
@@ -143,7 +143,7 @@ export const LandingPME: React.FC = () => {
               className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-8 py-4"
               onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
             >
-              🚀 Commencer mon essai gratuit 7 jours
+              J'active mon assistant numérique 7 jours
               <ArrowRight className="w-5 h-5" />
             </Button>
 
@@ -269,13 +269,13 @@ export const LandingPME: React.FC = () => {
       <Section className="py-16 bg-white">
         <div className="text-center max-w-4xl mx-auto">
           <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">
-            Prêt à structurer votre méthode marchés publics ?
+            Prêt à automatiser votre veille et génération de dossiers ?
           </h3>
           <Button
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-10 py-5 mb-6"
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
           >
-            🚀 Commencer mon essai gratuit 7 jours
+            Je teste l'assistant complet 7 jours
             <ArrowRight className="w-5 h-5" />
           </Button>
           <p className="text-gray-600">Sans carte bancaire • Annulez quand vous voulez</p>

@@ -99,7 +99,7 @@ export const LandingBTP: React.FC = () => {
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
             className="bg-[#F77F00] text-white hover:bg-[#E06F00]"
           >
-            💰 Augmenter mon CA maintenant
+            Générer mon 1er dossier technique
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
@@ -124,11 +124,11 @@ export const LandingBTP: React.FC = () => {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-              Vous perdez des marchés BTP <span className="text-[#F77F00]">à cause d'un dossier</span>…
+              Entreprises BTP : votre <span className="text-[#F77F00]">dossier technique</span> vous fait perdre des points
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-700 mb-8">
-              Et pas à cause de <span className="font-bold text-[#F77F00]">vos prix</span>.
+              Pas vos prix. Pas votre savoir-faire. <span className="font-bold text-[#F77F00]">Votre dossier administratif.</span>
             </p>
 
             <div className="bg-gradient-to-r from-orange-50 to-orange-100 border-l-4 border-[#F77F00] p-6 rounded-xl mb-8 shadow-lg">
@@ -143,7 +143,7 @@ export const LandingBTP: React.FC = () => {
               className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-8 py-4"
               onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
             >
-              👉 Je génère mon 1er mémoire maintenant
+              Je veux un dossier qui coche tous les critères
               <ArrowRight className="w-5 h-5" />
             </Button>
 
@@ -323,13 +323,13 @@ export const LandingBTP: React.FC = () => {
       <Section className="py-12 bg-white border-t border-gray-200">
         <div className="text-center">
           <h3 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-6">
-            Prêt à générer des dossiers BTP gagnants ?
+            Prêt à gagner des points sur vos prochains marchés BTP ?
           </h3>
           <Button
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-10 py-5"
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
           >
-            👉 Je génère mon 1er mémoire
+            Je teste l'IA sur mon prochain DCE
             <ArrowRight className="w-5 h-5" />
           </Button>
         </div>

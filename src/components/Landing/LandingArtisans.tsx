@@ -99,7 +99,7 @@ export const LandingArtisans: React.FC = () => {
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
             className="bg-[#F77F00] text-white hover:bg-[#E06F00]"
           >
-            💰 Augmenter mon CA
+            Je veux gagner des marchés 974
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
@@ -124,11 +124,11 @@ export const LandingArtisans: React.FC = () => {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-              Vous travaillez <span className="text-[#F77F00]">trop</span> pour perdre des marchés publics
+              Artisans Réunion : arrêtez de <span className="text-[#F77F00]">perdre du temps</span> sur les dossiers
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-700 mb-8">
-              Que vous pourriez gagner en <span className="font-bold text-[#F77F00]">10 minutes</span>
+              Générez vos mémoires techniques CINOR, TCO, CIREST en <span className="font-bold text-[#F77F00]">15 minutes chrono</span>
             </p>
 
             <div className="bg-gradient-to-r from-orange-50 to-orange-100 border-l-4 border-[#F77F00] p-6 rounded-xl mb-8 shadow-lg">
@@ -156,7 +156,7 @@ export const LandingArtisans: React.FC = () => {
               className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-8 py-4"
               onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
             >
-              🎁 Je réserve ma place maintenant
+              J'obtiens mon mémoire gratuit maintenant
               <ArrowRight className="w-5 h-5" />
             </Button>
 
@@ -335,13 +335,13 @@ export const LandingArtisans: React.FC = () => {
       <Section className="py-12 bg-white border-t border-gray-200">
         <div className="text-center">
           <h3 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-6">
-            Prêt à gagner du temps et des marchés ?
+            Prêt à répondre aux marchés publics de La Réunion en 15 minutes ?
           </h3>
           <Button
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-10 py-5"
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
           >
-            🎁 Je réserve ma place
+            Je teste gratuitement sur mon prochain marché
             <ArrowRight className="w-5 h-5" />
           </Button>
         </div>
