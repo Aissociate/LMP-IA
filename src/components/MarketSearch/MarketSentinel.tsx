@@ -448,7 +448,7 @@ export const MarketSentinel: React.FC = () => {
           onSuccess={async () => {
             setShowCreateAlertForm(false);
             await loadAlerts();
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 1000));
             await loadDetections();
             await loadStats();
           }}
