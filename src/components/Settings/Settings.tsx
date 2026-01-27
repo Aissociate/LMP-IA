@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { User, BookOpen, Palette, Webhook, Users, Bell, Mail } from 'lucide-react';
+import { User, BookOpen, Palette, Webhook, Users, Bell, Mail, Building2 } from 'lucide-react';
 import { Image } from 'lucide-react';
 import { ProfileSettings } from './ProfileSettings';
+import { CompanyProfile } from './CompanyProfile';
 import { KnowledgeBase } from './KnowledgeBase';
 import { ThemeSettings } from './ThemeSettings';
 import { WebhookSettings } from './WebhookSettings';
@@ -12,10 +13,11 @@ import { EmailDigestHistory } from './EmailDigestHistory';
 import { useTheme } from '../../hooks/useTheme';
 import { supabase } from '../../lib/supabase';
 
-type SettingsTab = 'profile' | 'knowledge' | 'assets' | 'notifications' | 'email-history' | 'webhook' | 'theme' | 'candidatures';
+type SettingsTab = 'profile' | 'company' | 'knowledge' | 'assets' | 'notifications' | 'email-history' | 'webhook' | 'theme' | 'candidatures';
 
 const baseTabs = [
   { id: 'profile' as const, label: 'Informations personnelles', icon: User },
+  { id: 'company' as const, label: 'Profil Entreprise & Référencement', icon: Building2 },
   { id: 'knowledge' as const, label: 'Base de connaissance', icon: BookOpen },
   { id: 'assets' as const, label: 'Mes images', icon: Image },
   { id: 'notifications' as const, label: 'Notifications', icon: Bell },
@@ -60,6 +62,8 @@ export const Settings: React.FC = () => {
     switch (activeTab) {
       case 'profile':
         return <ProfileSettings />;
+      case 'company':
+        return <CompanyProfile />;
       case 'knowledge':
         return <KnowledgeBase />;
       case 'assets':
