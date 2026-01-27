@@ -100,12 +100,12 @@ export default function Home() {
           </div>
           <Button
             onClick={() => {
-              trackClick('home', 'cta', 'header_demo');
+              trackClick('home', 'cta', 'header_trial');
               window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
             }}
             variant="primary"
           >
-            💰 Augmenter mon CA
+            Essai gratuit 7 jours
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
@@ -157,20 +157,20 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1200">
             <Button
               onClick={() => {
-                trackClick('home', 'cta', 'hero_demo');
+                trackClick('home', 'cta', 'hero_trial');
                 window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
               }}
               variant="primary"
               className="text-lg px-8 py-4"
             >
-              🚀 Commencer mon essai gratuit 7 jours
+              Démarrer mes 7 jours gratuits
             </Button>
             <Button
               onClick={() => document.getElementById('fonctionnalites')?.scrollIntoView({ behavior: 'smooth' })}
               variant="outline"
               className="text-lg px-8 py-4"
             >
-              Découvrir l'assistant numérique
+              Découvrir les fonctionnalités
             </Button>
           </div>
 
@@ -1226,13 +1226,13 @@ export default function Home() {
             </ul>
             <Button
               onClick={() => {
-                trackClick('home', 'cta', 'pricing_solo');
+                trackClick('home', 'cta', 'pricing_solo_trial');
                 window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
               }}
               variant="outline"
               className="w-full"
             >
-              Commencer
+              Essai gratuit 7 jours
             </Button>
           </div>
 
@@ -1279,13 +1279,13 @@ export default function Home() {
             </ul>
             <Button
               onClick={() => {
-                trackClick('home', 'cta', 'pricing_pme');
+                trackClick('home', 'cta', 'pricing_pme_trial');
                 window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
               }}
               variant="secondary"
               className="w-full"
             >
-              Commencer
+              Essai gratuit 7 jours
             </Button>
           </div>
 
@@ -1329,13 +1329,13 @@ export default function Home() {
             </ul>
             <Button
               onClick={() => {
-                trackClick('home', 'cta', 'pricing_projeteur');
+                trackClick('home', 'cta', 'pricing_projeteur_trial');
                 window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
               }}
               variant="outline"
               className="w-full"
             >
-              Commencer
+              Essai gratuit 7 jours
             </Button>
           </div>
         </div>
@@ -1381,52 +1381,52 @@ export default function Home() {
       <Section className="py-20">
         <div className="bg-gradient-to-r from-[#F77F00] to-[#E06F00] rounded-3xl p-12 md:p-16 text-center text-white shadow-2xl">
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Prêt à transformer votre activité ?
+            Prêt à gagner plus de marchés publics à La Réunion ?
           </h2>
           <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto">
-            Plus de 500 entreprises ont déjà fait le choix de gagner plus de marchés et de reprendre le contrôle de leur développement.
+            Plus de 500 entreprises réunionnaises ont déjà fait le choix de multiplier leurs réponses et leur taux de réussite dans le 974.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <Button
               onClick={() => {
-                trackClick('home', 'cta', 'final_demo');
+                trackClick('home', 'cta', 'final_trial');
                 window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
               }}
               variant="secondary"
               className="text-lg px-8 py-4"
             >
-              🚀 Obtenir ma démo personnalisée
+              Démarrer mes 7 jours gratuits
             </Button>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-sm text-white/90 mb-8">
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5" />
-              <span>Réponse rapide</span>
+              <span>Accès immédiat</span>
             </div>
             <div className="flex items-center gap-2">
               <Target className="w-5 h-5" />
-              <span>Premiers résultats sous 48h</span>
+              <span>7 jours d'essai complet</span>
             </div>
             <div className="flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
-              <span>+30% de taux de réussite</span>
+              <span>Toutes les fonctionnalités incluses</span>
             </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto text-sm">
             <div className="bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg">
-              <div className="font-semibold">✓ Sans engagement</div>
+              <div className="font-semibold">✓ 7 jours gratuits</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg">
               <div className="font-semibold">✓ Sans carte bancaire</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg">
-              <div className="font-semibold">✓ Résiliable en 1 clic</div>
+              <div className="font-semibold">✓ Sans engagement</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg">
-              <div className="font-semibold">✓ Support inclus</div>
+              <div className="font-semibold">✓ Annulation en 1 clic</div>
             </div>
           </div>
         </div>
