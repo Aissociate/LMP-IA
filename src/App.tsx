@@ -4,6 +4,7 @@ import { useAuth } from './hooks/useAuth';
 import { useTheme } from './hooks/useTheme';
 import { LoginForm } from './components/Auth/LoginForm';
 import { SignupForm } from './components/Auth/SignupForm';
+import { SubscriptionGate } from './components/Auth/SubscriptionGate';
 import { Sidebar } from './components/Layout/Sidebar';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { MarketList } from './components/Markets/MarketList';
@@ -26,6 +27,7 @@ import { MarketCollector } from './components/MarketSearch/MarketCollector';
 import { BugReportButton } from './components/Common/BugReportButton';
 import { PublicMarketPage } from './components/PublicMarket/PublicMarketPage';
 import { ReunionMarketsDirectory } from './components/PublicMarket/ReunionMarketsDirectory';
+import { SubscriptionSelection } from './components/Subscription/SubscriptionSelection';
 
 type AuthMode = 'login' | 'signup';
 type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'coffre-fort' | 'assistant' | 'parametres' | 'admin' | 'labo';
@@ -37,7 +39,7 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const location = useLocation();
 
-  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/mmp', '/cgv', '/merci', '/recrutement', '/collecte'];
+  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/mmp', '/cgv', '/merci', '/recrutement', '/collecte', '/subscription'];
   const isPublicRoute = publicRoutes.includes(location.pathname) || location.pathname.startsWith('/marchepublics/974');
 
   if (loading && !isPublicRoute) {
@@ -94,6 +96,7 @@ function AppContent() {
       <Route path="/merci" element={<ThankYou />} />
       <Route path="/recrutement" element={<Recrutement />} />
       <Route path="/collecte" element={<MarketCollector />} />
+      <Route path="/subscription" element={<SubscriptionSelection />} />
       <Route path="/marchepublics/974" element={<ReunionMarketsDirectory />} />
       <Route path="/marchepublics/974/:slug" element={<PublicMarketPage />} />
       <Route path="/mmp" element={
@@ -115,13 +118,15 @@ function AppContent() {
             )}
           </div>
         ) : (
-          <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'} flex transition-colors duration-200`}>
-            <Sidebar activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as AppTab)} />
-            <main className="flex-1 ml-64">
-              {renderContent()}
-            </main>
-            <BugReportButton />
-          </div>
+          <SubscriptionGate>
+            <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'} flex transition-colors duration-200`}>
+              <Sidebar activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as AppTab)} />
+              <main className="flex-1 ml-64">
+                {renderContent()}
+              </main>
+              <BugReportButton />
+            </div>
+          </SubscriptionGate>
         )
       } />
     </Routes>
