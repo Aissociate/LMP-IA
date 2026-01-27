@@ -99,7 +99,7 @@ export const LandingPME: React.FC = () => {
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-xs md:text-base px-3 py-2 md:px-6 md:py-3"
           >
-            <span className="hidden md:inline">Activer mon assistant IA 7 jours</span>
+            <span className="hidden md:inline">Activer mon assistant numérique 7 jours</span>
             <span className="md:hidden">Essai 7j gratuit</span>
             <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
           </Button>

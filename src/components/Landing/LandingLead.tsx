@@ -260,10 +260,10 @@ export const LandingLead: React.FC = () => {
   };
 
   React.useEffect(() => {
-    document.title = "Mémoire Technique + BPU Offerts | Test Gratuit IA Marchés Publics | LeMarchéPublic.fr";
+    document.title = "Mémoire Technique + BPU Offerts | Test Gratuit Assistant Numérique Marchés Publics | LeMarchéPublic.fr";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Testez gratuitement notre IA spécialisée marchés publics : 1 mémoire technique + 1 BPU générés sur votre prochain marché. Sans CB. Sans engagement.');
+      metaDescription.setAttribute('content', 'Testez gratuitement notre assistant numérique spécialisé marchés publics : 1 mémoire technique + 1 BPU générés sur votre prochain marché. Sans CB. Sans engagement.');
     }
   }, []);
 
@@ -293,14 +293,14 @@ export const LandingLead: React.FC = () => {
             <span className="block bg-gradient-to-r from-orange-600 via-red-600 to-orange-700 bg-clip-text text-transparent">
               1 mémoire technique
             </span>
-            <span className="block text-gray-900 mt-2">+ BPU générés par IA</span>
+            <span className="block text-gray-900 mt-2">+ BPU générés automatiquement</span>
             <span className="block bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent text-5xl mt-4">
               (offert)
             </span>
           </h1>
           <p className="text-xl sm:text-2xl text-gray-700 mb-4 max-w-4xl mx-auto leading-relaxed font-medium">
-            Testez gratuitement l'IA de LeMarchéPublic.fr :<br />
-            elle lit votre DCE, génère un mémoire technique structuré, prépare votre BPU
+            Testez gratuitement l'assistant numérique de LeMarchéPublic.fr :<br />
+            il lit votre DCE, génère un mémoire technique structuré, prépare votre BPU
           </p>
           <p className="text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
             et vous donne un premier avis <span className="font-bold text-green-600">GO</span> / <span className="font-bold text-red-600">NO-GO</span> en moins de 48h.
@@ -324,7 +324,7 @@ export const LandingLead: React.FC = () => {
             className="bg-gradient-to-r from-orange-600 to-red-600 text-white hover:from-orange-700 hover:to-red-700 shadow-2xl"
           >
             <Sparkles className="w-6 h-6" />
-            Je teste l'IA gratuitement sur un vrai marché
+            Je teste l'assistant numérique gratuitement sur un vrai marché
             <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
           </Button>
 
@@ -373,10 +373,10 @@ export const LandingLead: React.FC = () => {
         <Section>
           <div className="text-center mb-16">
             <h2 className="text-5xl font-black mb-6 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-              L'IA qui génère votre mémoire,<br />prépare votre BPU et vous aide à décider
+              L'assistant numérique qui génère votre mémoire,<br />prépare votre BPU et vous aide à décider
             </h2>
             <p className="text-2xl text-gray-700 font-medium">
-              Avec l'IA de LeMarchéPublic.fr, vous testez sur un vrai marché :
+              Avec l'assistant numérique de LeMarchéPublic.fr, vous testez sur un vrai marché :
             </p>
           </div>
 
@@ -386,7 +386,7 @@ export const LandingLead: React.FC = () => {
                 <Zap className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-4 text-gray-900">LMP Light</h3>
-              <p className="text-gray-700 mb-6 leading-relaxed">Notre IA spécialisée marchés publics qui :</p>
+              <p className="text-gray-700 mb-6 leading-relaxed">Notre assistant numérique spécialisé marchés publics qui :</p>
               <ul className="space-y-3">
                 {["lit votre DCE", "génère un mémoire technique structuré", "prépare votre BPU cohérent"].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
@@ -412,7 +412,7 @@ export const LandingLead: React.FC = () => {
               <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6">
                 <MessageSquare className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-gray-900">Assistant IA</h3>
+              <h3 className="text-2xl font-bold mb-4 text-gray-900">Assistant numérique</h3>
               <p className="text-gray-700 mb-6 leading-relaxed">Posez vos questions en langage naturel :</p>
               <div className="space-y-2 text-sm italic text-gray-600">
                 <p>"Qu'attend l'acheteur sur la méthodologie ?"</p>
@@ -423,7 +423,7 @@ export const LandingLead: React.FC = () => {
 
           <div className="text-center">
             <div className="inline-block p-8 bg-gradient-to-r from-orange-600 to-red-600 rounded-3xl text-white mb-8">
-              <p className="text-3xl font-bold mb-2">L'IA fait le gros du travail.</p>
+              <p className="text-3xl font-bold mb-2">L'assistant numérique fait le gros du travail.</p>
               <p className="text-xl">Vous gardez la décision finale et les ajustements stratégiques.</p>
             </div>
           </div>
@@ -470,10 +470,10 @@ export const LandingLead: React.FC = () => {
 
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               {[
-                { icon: FileText, title: "Un mémoire technique IA (LMP Light)", desc: "Structure complète, sections clés rédigées, base de travail prête à être relue et adaptée.", color: "from-orange-500 to-red-600" },
-                { icon: BarChart3, title: "Un BPU préparé par IA", desc: "Pré-rempli là où c'est possible, structuré, cohérent et prêt à être affiné par vos équipes.", color: "from-green-500 to-emerald-600" },
+                { icon: FileText, title: "Un mémoire technique généré automatiquement (LMP Light)", desc: "Structure complète, sections clés rédigées, base de travail prête à être relue et adaptée.", color: "from-orange-500 to-red-600" },
+                { icon: BarChart3, title: "Un BPU préparé automatiquement", desc: "Pré-rempli là où c'est possible, structuré, cohérent et prêt à être affiné par vos équipes.", color: "from-green-500 to-emerald-600" },
                 { icon: Target, title: "Un mini avis GO / NO-GO", desc: "Un premier regard sur la pertinence du marché pour votre entreprise.", color: "from-purple-500 to-pink-600" },
-                { icon: MessageSquare, title: "Un accès découverte à l'assistant IA", desc: "Pour interroger le DCE et le BPU en langage naturel sur ce marché.", color: "from-blue-500 to-cyan-600" }
+                { icon: MessageSquare, title: "Un accès découverte à l'assistant numérique", desc: "Pour interroger le DCE et le BPU en langage naturel sur ce marché.", color: "from-blue-500 to-cyan-600" }
               ].map(({ icon: Icon, title, desc, color }, i) => (
                 <Card key={i} className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15">
                   <div className={`w-14 h-14 bg-gradient-to-br ${color} rounded-2xl flex items-center justify-center mb-6`}>
@@ -500,8 +500,8 @@ export const LandingLead: React.FC = () => {
           <div className="grid md:grid-cols-3 gap-12">
             {[
               { num: "1", title: "Vous remplissez le formulaire", items: ["Vos coordonnées", "Votre secteur", "Le DCE (+ BPU si disponible)"], color: "from-orange-500 to-red-600" },
-              { num: "2", title: "Notre IA travaille pour vous", items: ["Lecture du DCE", "Génération du mémoire", "Préparation du BPU", "Calcul GO / NO-GO"], color: "from-purple-500 to-pink-600" },
-              { num: "3", title: "Vous recevez votre pack", items: ["Mémoire IA (brouillon pro)", "BPU préparé", "Avis GO / NO-GO", "Accès assistant IA"], color: "from-green-500 to-emerald-600" }
+              { num: "2", title: "Notre assistant numérique travaille pour vous", items: ["Lecture du DCE", "Génération du mémoire", "Préparation du BPU", "Calcul GO / NO-GO"], color: "from-purple-500 to-pink-600" },
+              { num: "3", title: "Vous recevez votre pack", items: ["Mémoire généré automatiquement (brouillon pro)", "BPU préparé", "Avis GO / NO-GO", "Accès assistant numérique"], color: "from-green-500 to-emerald-600" }
             ].map(({ num, title, items, color }, i) => (
               <div key={i} className="text-center">
                 <div className={`w-20 h-20 bg-gradient-to-br ${color} text-white rounded-3xl flex items-center justify-center text-4xl font-black mx-auto mb-6 shadow-2xl transform hover:scale-110 transition-transform`}>
@@ -552,7 +552,7 @@ export const LandingLead: React.FC = () => {
 
               <div className="grid sm:grid-cols-3 gap-6">
                 {[
-                  "Vous testez l'IA sur un marché réel",
+                  "Vous testez l'assistant numérique sur un marché réel",
                   "Vous voyez le temps gagné sur le mémoire et le BPU",
                   "Vous jugez la qualité de la base de travail"
                 ].map((text, i) => (
@@ -583,7 +583,7 @@ export const LandingLead: React.FC = () => {
                     <p className="text-sm text-gray-300">5 marchés / mois</p>
                   </div>
                 </div>
-                <p className="text-center text-sm text-gray-300">Tous les plans incluent : Veille marchés • GO/NO-GO • Assistant IA • Espace client</p>
+                <p className="text-center text-sm text-gray-300">Tous les plans incluent : Veille marchés • GO/NO-GO • Assistant numérique • Espace client</p>
                 <div className="mt-6 pt-6 border-t border-white/20">
                   <p className="text-lg font-semibold mb-3 text-orange-400">Options à la carte :</p>
                   <ul className="space-y-2 text-sm">
@@ -620,11 +620,11 @@ export const LandingLead: React.FC = () => {
         <Section>
           <div className="text-center mb-16">
             <h2 className="text-5xl font-black mb-6 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-              Nos abonnements LeMarchéPublic IA
+              Nos abonnements LeMarchéPublic
             </h2>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Tous nos plans incluent veille marchés, GO / NO-GO et assistant IA Marchés.<br />
-              <span className="font-bold">Vous choisissez simplement combien de mémoires IA vous voulez par mois.</span>
+              Tous nos plans incluent veille marchés, GO / NO-GO et assistant numérique Marchés.<br />
+              <span className="font-bold">Vous choisissez simplement combien de mémoires générés automatiquement vous voulez par mois.</span>
             </p>
           </div>
 
@@ -643,8 +643,8 @@ export const LandingLead: React.FC = () => {
                 {[
                   "Veille marchés incluse",
                   "Score GO / NO-GO",
-                  "Assistant IA Marchés & BPU",
-                  "1 mémoire IA / mois",
+                  "Assistant numérique Marchés & BPU",
+                  "1 mémoire généré automatiquement / mois",
                   "Espace client & historique",
                   "Formations vidéo",
                   "Export Word / PDF"
@@ -657,7 +657,7 @@ export const LandingLead: React.FC = () => {
               </ul>
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <p className="text-xs font-semibold text-gray-600 mb-2">Options :</p>
-                <p className="text-xs text-gray-500">IA Premium +99€ • Expert 4h +590€ • Senior 3j +2490€</p>
+                <p className="text-xs text-gray-500">Mode Premium +99€ • Expert 4h +590€ • Senior 3j +2490€</p>
               </div>
             </Card>
 
@@ -680,8 +680,8 @@ export const LandingLead: React.FC = () => {
                 {[
                   "Veille marchés incluse",
                   "GO / NO-GO sur tous les marchés",
-                  "Assistant IA Marchés & BPU",
-                  "2 mémoires IA / mois",
+                  "Assistant numérique Marchés & BPU",
+                  "2 mémoires générés automatiquement / mois",
                   "Espace client & historique complet",
                   "Priorité de génération vs SOLO",
                   "1 point de contact trimestriel"
@@ -715,8 +715,8 @@ export const LandingLead: React.FC = () => {
                 {[
                   "Veille marchés incluse",
                   "GO / NO-GO sur tous les marchés",
-                  "Assistant IA illimité",
-                  "5 mémoires IA / mois",
+                  "Assistant numérique illimité",
+                  "5 mémoires générés automatiquement / mois",
                   "Espace client + historique détaillé",
                   "Priorité maximale",
                   "1 point de suivi mensuel"
@@ -788,7 +788,7 @@ export const LandingLead: React.FC = () => {
                   <ul className="space-y-3 text-left text-gray-300">
                     <li>• Veille automatique des bons marchés</li>
                     <li>• GO / NO-GO pour décider vite</li>
-                    <li>• Mémoires générés par IA</li>
+                    <li>• Mémoires générés automatiquement</li>
                     <li>• 1 marché gagné = plusieurs mois amortis</li>
                   </ul>
                 </div>
@@ -818,7 +818,7 @@ export const LandingLead: React.FC = () => {
                 {[
                   "Vous répondez (ou envisagez de répondre) aux marchés publics",
                   "Vous avez déjà perdu des heures sur un mémoire technique ou un BPU",
-                  "Vous voulez voir ce qu'une IA spécialisée peut faire avant d'engager un budget"
+                  "Vous voulez voir ce qu'un assistant numérique spécialisé peut faire avant d'engager un budget"
                 ].map((text, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
@@ -840,7 +840,7 @@ export const LandingLead: React.FC = () => {
               <ul className="space-y-4">
                 {[
                   "Vous ne traitez aucun appel d'offres",
-                  "Vous cherchez un consultant 3 jours gratuit : ici, vous recevez une base IA professionnelle, pas un accompagnement premium offert"
+                  "Vous cherchez un consultant 3 jours gratuit : ici, vous recevez une base professionnelle générée automatiquement, pas un accompagnement premium offert"
                 ].map((text, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <X className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
@@ -859,7 +859,7 @@ export const LandingLead: React.FC = () => {
               Ne passez pas 20 heures<br />sur votre prochain marché<br />avant d'avoir vu ça
             </h2>
             <p className="text-2xl mb-4 font-medium">
-              Laissez notre IA vous montrer ce qu'elle sait faire :
+              Laissez notre assistant numérique vous montrer ce qu'il sait faire :
             </p>
             <p className="text-3xl font-bold mb-8">
               1 mémoire technique + 1 BPU préparés sur un marché réel, offerts.

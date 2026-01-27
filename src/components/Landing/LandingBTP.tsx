@@ -83,7 +83,7 @@ export const LandingBTP: React.FC = () => {
     document.title = "Marchés Publics BTP Réunion 974 | Communes, CINOR, TCO, CIREST | Le Marché Public.fr";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Remportez les marchés publics BTP à La Réunion : CINOR, TCO, CIREST, Région, communes 974. IA pour mémoires techniques gagnants.');
+      metaDescription.setAttribute('content', 'Remportez les marchés publics BTP à La Réunion : CINOR, TCO, CIREST, Région, communes 974. Assistant numérique pour mémoires techniques gagnants.');
     }
   }, []);
 
@@ -207,7 +207,7 @@ export const LandingBTP: React.FC = () => {
           </div>
 
           <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
-            Notre IA lit vos pièces, détecte les incohérences (BPU compris)
+            Notre assistant numérique lit vos pièces, détecte les incohérences (BPU compris)
           </h2>
           <p className="text-2xl md:text-3xl font-bold mb-12">
             et génère un mémoire calibré pour gagner.
@@ -272,7 +272,7 @@ export const LandingBTP: React.FC = () => {
             <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl shadow-md border border-orange-200">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">🎯</span>
-                <span className="text-lg font-bold text-gray-900">Score GO/NO-GO IA</span>
+                <span className="text-lg font-bold text-gray-900">Score GO/NO-GO intelligent</span>
               </div>
               <p className="text-sm text-gray-600">Sachez si vous devez candidater</p>
             </div>
@@ -330,7 +330,7 @@ export const LandingBTP: React.FC = () => {
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-10 py-5"
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
           >
-            Je teste l'IA sur mon prochain DCE
+            Je teste l'assistant numérique sur mon prochain DCE
             <ArrowRight className="w-5 h-5" />
           </Button>
         </div>

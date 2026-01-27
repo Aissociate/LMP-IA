@@ -83,7 +83,7 @@ export const LandingArtisans: React.FC = () => {
     document.title = "Marchés Publics Artisans Réunion 974 | CINOR, TCO, CIREST | Le Marché Public.fr";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Gagnez les marchés publics artisans à La Réunion : CINOR, TCO, CIREST, communes 974. Mémoires IA générés en quelques clics.');
+      metaDescription.setAttribute('content', 'Gagnez les marchés publics artisans à La Réunion : CINOR, TCO, CIREST, communes 974. Mémoires générés automatiquement en quelques clics.');
     }
   }, []);
 
@@ -234,7 +234,7 @@ export const LandingArtisans: React.FC = () => {
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
               <div className="text-5xl mb-3">⚡</div>
-              <p className="text-xl font-bold mb-2">L'IA analyse</p>
+              <p className="text-xl font-bold mb-2">L'assistant analyse</p>
               <p className="text-sm text-white/90">DCE, BPU et critères</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
@@ -246,7 +246,7 @@ export const LandingArtisans: React.FC = () => {
 
           <div className="bg-white/20 backdrop-blur-sm p-6 rounded-xl border border-white/20">
             <p className="text-lg font-semibold">
-              + Veille automatique • + Score GO/NO-GO • + Assistant IA
+              + Veille automatique • + Score GO/NO-GO • + Assistant numérique
             </p>
           </div>
         </div>
@@ -284,7 +284,7 @@ export const LandingArtisans: React.FC = () => {
             <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl shadow-md border border-orange-200">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">🧠</span>
-                <span className="text-lg font-bold text-gray-900">Génération IA</span>
+                <span className="text-lg font-bold text-gray-900">Génération automatique</span>
               </div>
               <p className="text-sm text-gray-600">Mémoires en quelques clics</p>
             </div>
@@ -292,7 +292,7 @@ export const LandingArtisans: React.FC = () => {
             <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl shadow-md border border-orange-200">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">🤖</span>
-                <span className="text-lg font-bold text-gray-900">Assistant IA</span>
+                <span className="text-lg font-bold text-gray-900">Assistant numérique</span>
               </div>
               <p className="text-sm text-gray-600">Pose tes questions au DCE</p>
             </div>

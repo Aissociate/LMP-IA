@@ -137,7 +137,7 @@ export default function Home() {
               Gagnez plus de marchés publics
             </span>
             <br />
-            <span className="text-gray-900">à La Réunion 974 avec l'IA</span>
+            <span className="text-gray-900">à La Réunion 974 avec votre assistant numérique</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -958,7 +958,7 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>L'IA remplit les formulaires à votre place</span>
+                <span>L'assistant numérique remplit les formulaires à votre place</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
@@ -1030,7 +1030,7 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>Collaboration équipe + IA pour maximiser vos chances</span>
+                <span>Collaboration équipe + assistant numérique pour maximiser vos chances</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
@@ -1185,7 +1185,7 @@ export default function Home() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
             <span className="text-xl">🎁</span>
-            1 mémoire IA offert pour commencer
+            1 mémoire technique offert pour commencer
           </div>
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
             Nos abonnements
@@ -1194,7 +1194,7 @@ export default function Home() {
             Tous nos plans incluent <strong>veille 974, analyse GO/NO-GO, génération de mémoires et référencement collectivités</strong>
           </p>
           <p className="text-lg text-gray-500">
-            Choisissez le nombre de mémoires techniques IA dont vous avez besoin par mois
+            Choisissez le nombre de mémoires techniques générés automatiquement dont vous avez besoin par mois
           </p>
         </div>
 
@@ -1218,11 +1218,11 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🤖 Assistant IA Marchés & BPU</span>
+                <span>🤖 Assistant numérique Marchés & BPU</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🧠 1 mémoire technique IA / mois</span>
+                <span>🧠 1 mémoire technique généré automatiquement / mois</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
@@ -1271,11 +1271,11 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">✓</span>
-                <span>🤖 Assistant IA illimité</span>
+                <span>🤖 Assistant numérique illimité</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">✓</span>
-                <span>🧠 2 mémoires techniques IA / mois</span>
+                <span>🧠 2 mémoires techniques générés automatiquement / mois</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">✓</span>
@@ -1321,11 +1321,11 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🤖 Assistant IA illimité</span>
+                <span>🤖 Assistant numérique illimité</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
-                <span>🧠 5 mémoires techniques IA / mois</span>
+                <span>🧠 5 mémoires techniques générés automatiquement / mois</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
@@ -1360,7 +1360,7 @@ export default function Home() {
               <strong>Sans nous :</strong> 10 à 20h par mémoire, décisions "au feeling", opportunités ratées à La Réunion, risques d'erreurs dans le BPU
             </p>
             <p className="text-sm text-gray-700">
-              <strong>Avec LeMarchéPublic.fr :</strong> veille 974 exhaustive, analyse GO/NO-GO instantanée, mémoires générés en 15 min, référencement auprès des collectivités locales, BPU sécurisé par l'IA. <strong className="text-[#F77F00]">Multipliez vos réponses et votre taux de réussite dans le 974.</strong>
+              <strong>Avec LeMarchéPublic.fr :</strong> veille 974 exhaustive, analyse GO/NO-GO instantanée, mémoires générés en 15 min, référencement auprès des collectivités locales, BPU sécurisé par votre assistant numérique. <strong className="text-[#F77F00]">Multipliez vos réponses et votre taux de réussite dans le 974.</strong>
             </p>
           </div>
         </div>
