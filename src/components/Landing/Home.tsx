@@ -5,15 +5,18 @@ import { initAnalytics, trackClick } from '../../lib/analytics';
 import { MarketModelComparison } from './MarketModelComparison';
 
 const Button = ({ children, onClick, className = "", variant = "primary" }: { children: React.ReactNode; onClick: () => void; className?: string; variant?: "primary" | "secondary" | "outline" }) => {
-  const baseClasses = "inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105";
+  const baseClasses = "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105";
+  const defaultSize = "px-6 py-3";
   const variants = {
     primary: "bg-[#F77F00] text-white hover:bg-[#E06F00] shadow-lg hover:shadow-xl",
     secondary: "bg-white text-[#F77F00] border-2 border-[#F77F00] hover:bg-[#F77F00] hover:text-white shadow-md",
     outline: "bg-transparent text-gray-700 border-2 border-gray-300 hover:border-[#F77F00] hover:text-[#F77F00]"
   };
 
+  const sizeClasses = className.includes('px-') || className.includes('py-') ? '' : defaultSize;
+
   return (
-    <button onClick={onClick} className={`${baseClasses} ${variants[variant]} ${className}`}>
+    <button onClick={onClick} className={`${baseClasses} ${sizeClasses} ${variants[variant]} ${className}`}>
       {children}
     </button>
   );
@@ -94,9 +97,9 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-b from-white via-orange-50/30 to-white">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-[120px] w-auto" />
+        <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-2">
+          <div className="flex items-center flex-shrink-0">
+            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-16 md:h-24 lg:h-[120px] w-auto object-contain" />
           </div>
           <Button
             onClick={() => {
@@ -104,9 +107,11 @@ export default function Home() {
               window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
             }}
             variant="primary"
+            className="text-xs md:text-base px-3 py-2 md:px-6 md:py-3"
           >
-            Essai gratuit 7 jours
-            <ArrowRight className="w-4 h-4" />
+            <span className="hidden sm:inline">Essai gratuit 7 jours</span>
+            <span className="sm:hidden">Essai gratuit</span>
+            <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
           </Button>
         </div>
       </header>
