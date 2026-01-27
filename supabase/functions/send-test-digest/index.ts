@@ -119,7 +119,7 @@ async function sendEmail(
       return { success: false, error: 'RESEND_API_KEY not configured' };
     }
 
-    const emailFrom = Deno.env.get('EMAIL_FROM') || 'LeMarchéPublic.fr <onboarding@resend.dev>';
+    const emailFrom = Deno.env.get('EMAIL_FROM') || 'Le Marché Public <onboarding@resend.dev>';
 
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
