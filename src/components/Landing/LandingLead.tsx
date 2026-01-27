@@ -275,9 +275,9 @@ export const LandingLead: React.FC = () => {
 
       <nav className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-200/50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-20 items-center justify-center">
+          <div className="flex h-16 md:h-20 items-center justify-center">
             <div className="flex items-center gap-3 cursor-pointer transition-transform hover:scale-105" onClick={() => navigate("/")}>
-              <img src="/logo1.png" alt="Logo" className="h-12 w-auto" />
+              <img src="/logo1.png" alt="Logo" className="h-10 md:h-12 w-auto object-contain" />
             </div>
           </div>
         </div>

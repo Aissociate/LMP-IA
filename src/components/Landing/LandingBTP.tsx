@@ -91,16 +91,17 @@ export const LandingBTP: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-white via-orange-50/30 to-white">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-[120px] w-auto" />
+        <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-2">
+          <div className="flex items-center flex-shrink-0">
+            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-16 md:h-24 lg:h-[120px] w-auto object-contain" />
           </div>
           <Button
             onClick={() => window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0'}
-            className="bg-[#F77F00] text-white hover:bg-[#E06F00]"
+            className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-xs md:text-base px-3 py-2 md:px-6 md:py-3"
           >
-            Générer mon 1er dossier technique
-            <ArrowRight className="w-4 h-4" />
+            <span className="hidden md:inline">Générer mon 1er dossier technique</span>
+            <span className="md:hidden">Démarrer</span>
+            <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
           </Button>
         </div>
       </header>
