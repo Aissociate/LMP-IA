@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, TrendingUp, AlertTriangle, X, CheckCircle, ThumbsDown, Users, FileText, ExternalLink, Calendar, MapPin, Euro, Sparkles, BarChart3, Target, Clock, Trash2, Archive, Bell, Plus, Play, Pause, Mail, Tag, Edit2, Save, Search as SearchIcon, AlertCircle, Star, Building } from 'lucide-react';
+import { Shield, TrendingUp, AlertTriangle, X, CheckCircle, ThumbsDown, Users, FileText, ExternalLink, Calendar, MapPin, Euro, Sparkles, BarChart3, Target, Clock, Trash2, Archive, Bell, Plus, Play, Pause, Mail, Tag, Edit2, Save, Search as SearchIcon, AlertCircle, Star, Building, Brain } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
 import { MarketRelevanceScore, MarketSentinelStats, ScoreCategory, AIRecommendation } from '../../types/boamp';
 import { CreateAlertForm } from './CreateAlertForm';
+import { AIAnalysisModal } from './AIAnalysisModal';
 
 interface SearchAlert {
   id: string;
@@ -63,6 +64,8 @@ export const MarketSentinel: React.FC = () => {
   const [filterStatus, setFilterStatus] = useState<'all' | 'unread' | 'favorited'>('all');
   const [selectedDetection, setSelectedDetection] = useState<DetectionWithScore | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedDetectionForAnalysis, setSelectedDetectionForAnalysis] = useState<DetectionWithScore | null>(null);
+  const [showAIAnalysisModal, setShowAIAnalysisModal] = useState(false);
 
   // Statistiques
   const [stats, setStats] = useState<MarketSentinelStats | null>(null);
@@ -853,6 +856,17 @@ export const MarketSentinel: React.FC = () => {
                 <div className="flex gap-2">
                   <button
                     onClick={() => {
+                      setSelectedDetectionForAnalysis(detection);
+                      setShowAIAnalysisModal(true);
+                    }}
+                    className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-md hover:shadow-lg flex items-center gap-2 font-medium"
+                    title="Analyse IA GO/NO GO"
+                  >
+                    <Brain className="w-4 h-4" />
+                    Analyse IA
+                  </button>
+                  <button
+                    onClick={() => {
                       setSelectedDetection(detection);
                       setShowDetailModal(true);
                       if (!detection.is_read) {
@@ -1190,6 +1204,26 @@ export const MarketSentinel: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {showAIAnalysisModal && selectedDetectionForAnalysis && (
+        <AIAnalysisModal
+          isOpen={showAIAnalysisModal}
+          onClose={() => {
+            setShowAIAnalysisModal(false);
+            setSelectedDetectionForAnalysis(null);
+          }}
+          marketData={{
+            title: selectedDetectionForAnalysis.market_title || 'Marché sans titre',
+            reference: selectedDetectionForAnalysis.market_reference || '',
+            client: selectedDetectionForAnalysis.market_client,
+            description: selectedDetectionForAnalysis.market_description,
+            amount: selectedDetectionForAnalysis.market_amount,
+            location: selectedDetectionForAnalysis.market_location,
+            deadline: selectedDetectionForAnalysis.market_deadline,
+            service_type: selectedDetectionForAnalysis.market_service_type
+          }}
+        />
       )}
     </div>
   );
