@@ -3,6 +3,7 @@ import { X, Play, CheckCircle, Clock, ExternalLink, AlertCircle, Save, SkipForwa
 import { useTheme } from '../../hooks/useTheme';
 import { sessionService, DonneurOrdre, Session, SessionWithProgress } from '../../services/sessionService';
 import { MarketEntryForm } from './MarketEntryForm';
+import { SessionMarketsList } from './SessionMarketsList';
 
 interface SessionWizardProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
   const [marketsAddedThisDonneur, setMarketsAddedThisDonneur] = useState(0);
   const [showDonneurSelection, setShowDonneurSelection] = useState(false);
   const [notes, setNotes] = useState('');
+  const [refreshMarkets, setRefreshMarkets] = useState(0);
 
   useEffect(() => {
     if (isOpen && operatorEmail) {
@@ -57,9 +59,15 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
 
   const handleMarketAdded = () => {
     setMarketsAddedThisDonneur(prev => prev + 1);
+    setRefreshMarkets(prev => prev + 1);
     if (currentSession) {
       sessionService.incrementSessionMarkets(currentSession.id);
     }
+  };
+
+  const handleMarketDeleted = () => {
+    setMarketsAddedThisDonneur(prev => Math.max(0, prev - 1));
+    setRefreshMarkets(prev => prev + 1);
   };
 
   const handleNextDonneurOrdre = async () => {
@@ -312,6 +320,16 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
                 sessionId={currentSession?.id || ''}
                 onMarketAdded={handleMarketAdded}
               />
+
+              {currentSession && (
+                <div className="mt-6">
+                  <SessionMarketsList
+                    key={refreshMarkets}
+                    sessionId={currentSession.id}
+                    onUpdate={handleMarketDeleted}
+                  />
+                </div>
+              )}
 
               <div className={`flex gap-3 justify-end mt-4 pt-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
                 <button
