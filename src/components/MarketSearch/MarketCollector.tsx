@@ -164,20 +164,25 @@ export const MarketCollector: React.FC = () => {
   const callEdgeFunction = async (action: string, data?: any, marketId?: string) => {
     const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/market-collector-save`;
 
+    const payload = {
+      password: COLLECTOR_PASSWORD,
+      action,
+      data,
+      marketId
+    };
+
+    console.log('Calling edge function with:', { action, passwordLength: COLLECTOR_PASSWORD?.length, apiUrl });
+
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        password: COLLECTOR_PASSWORD,
-        action,
-        data,
-        marketId
-      })
+      body: JSON.stringify(payload)
     });
 
     const result = await response.json();
+    console.log('Edge function response:', { status: response.status, ok: response.ok, result });
 
     if (!response.ok || result.error) {
       throw new Error(result.error || 'Operation failed');
