@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { X, Play, CheckCircle, Clock, ExternalLink, AlertCircle, Save, SkipForward, ListChecks, Upload } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
-import { sessionService, DonneurOrdre, Session, SessionWithProgress } from '../../services/sessionService';
+import { sessionService, DonneurOrdre, Session, SessionWithProgress, SessionSummaryData } from '../../services/sessionService';
 import { MarketEntryForm } from './MarketEntryForm';
 import { SessionMarketsList } from './SessionMarketsList';
+import { SessionSummary } from './SessionSummary';
 import { supabase } from '../../lib/supabase';
 
 interface SessionWizardProps {
@@ -22,6 +23,8 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
   const [notes, setNotes] = useState('');
   const [refreshMarkets, setRefreshMarkets] = useState(0);
   const [publishing, setPublishing] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
+  const [sessionSummaryData, setSessionSummaryData] = useState<SessionSummaryData | null>(null);
 
   useEffect(() => {
     if (isOpen && operatorEmail) {
@@ -98,8 +101,14 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
           );
         } else {
           await sessionService.updateSessionStatus(currentSession.id, 'completed');
-          alert('Session terminée ! Tous les donneurs d\'ordre ont été traités.');
-          onClose();
+          const summary = await sessionService.getSessionSummary(currentSession.id);
+          if (summary) {
+            setSessionSummaryData(summary);
+            setShowSummary(true);
+          } else {
+            alert('Session terminée ! Tous les donneurs d\'ordre ont été traités.');
+            onClose();
+          }
         }
       }
     } catch (error) {
@@ -136,8 +145,14 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
           setCurrentDonneurOrdre(updatedSession.remaining_donneurs_ordre[0]);
         } else {
           await sessionService.updateSessionStatus(currentSession.id, 'completed');
-          alert('Session terminée !');
-          onClose();
+          const summary = await sessionService.getSessionSummary(currentSession.id);
+          if (summary) {
+            setSessionSummaryData(summary);
+            setShowSummary(true);
+          } else {
+            alert('Session terminée !');
+            onClose();
+          }
         }
       }
     } catch (error) {
@@ -200,7 +215,27 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
     }
   };
 
+  const handleNewSession = async () => {
+    setShowSummary(false);
+    setSessionSummaryData(null);
+    setCurrentSession(null);
+    setCurrentDonneurOrdre(null);
+    setMarketsAddedThisDonneur(0);
+    setNotes('');
+    await loadOrCreateSession();
+  };
+
   if (!isOpen) return null;
+
+  if (showSummary && sessionSummaryData) {
+    return (
+      <SessionSummary
+        sessionData={sessionSummaryData}
+        onClose={onClose}
+        onNewSession={handleNewSession}
+      />
+    );
+  }
 
   if (loading && !currentSession) {
     return (

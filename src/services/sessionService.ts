@@ -38,6 +38,31 @@ export interface SessionWithProgress extends Session {
   remaining_donneurs_ordre: DonneurOrdre[];
 }
 
+export interface Market {
+  id: string;
+  reference: string | null;
+  title: string;
+  client: string;
+  amount: number | null;
+  deadline: string | null;
+  created_at: string;
+}
+
+export interface ProgressWithDonneur {
+  donneur_name: string;
+  markets_count: number;
+  notes: string | null;
+  started_at: string | null;
+  completed_at: string | null;
+  is_completed: boolean;
+}
+
+export interface SessionSummaryData extends Session {
+  duration_minutes: number;
+  markets: Market[];
+  progress_with_donneurs: ProgressWithDonneur[];
+}
+
 class SessionService {
   async getDonneursOrdre(): Promise<DonneurOrdre[]> {
     const { data, error } = await supabase
@@ -261,6 +286,66 @@ class SessionService {
     }
 
     return data;
+  }
+
+  async getSessionSummary(sessionId: string): Promise<SessionSummaryData | null> {
+    const { data: session, error: sessionError } = await supabase
+      .from('manual_markets_sessions')
+      .select('*')
+      .eq('id', sessionId)
+      .single();
+
+    if (sessionError) {
+      console.error('Error fetching session:', sessionError);
+      return null;
+    }
+
+    const { data: progress, error: progressError } = await supabase
+      .from('manual_markets_session_progress')
+      .select('*')
+      .eq('session_id', sessionId)
+      .order('created_at', { ascending: true });
+
+    if (progressError) {
+      console.error('Error fetching progress:', progressError);
+      return null;
+    }
+
+    const { data: markets, error: marketsError } = await supabase
+      .from('manual_markets')
+      .select('id, reference, title, client, amount, deadline, created_at')
+      .eq('created_by', sessionId)
+      .order('created_at', { ascending: false });
+
+    if (marketsError) {
+      console.error('Error fetching markets:', marketsError);
+    }
+
+    const progressWithDonneurs: ProgressWithDonneur[] = [];
+    for (const prog of progress || []) {
+      const donneur = await this.getDonneurOrdreById(prog.donneur_ordre_id);
+      if (donneur) {
+        progressWithDonneurs.push({
+          donneur_name: donneur.name,
+          markets_count: prog.markets_added_count,
+          notes: prog.notes,
+          started_at: prog.started_at,
+          completed_at: prog.completed_at,
+          is_completed: prog.is_completed,
+        });
+      }
+    }
+
+    const startDate = new Date(session.started_at);
+    const endDate = session.completed_at ? new Date(session.completed_at) : new Date();
+    const durationMinutes = Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60));
+
+    return {
+      ...session,
+      duration_minutes: durationMinutes,
+      markets: markets || [],
+      progress_with_donneurs: progressWithDonneurs,
+    };
   }
 }
 

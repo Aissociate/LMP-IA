@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Search,
   Filter,
@@ -31,6 +32,7 @@ type TabType = 'active' | 'archived' | 'awarded';
 export const MarketSearch: React.FC = () => {
   const { isDark } = useTheme();
   const { user } = useAuth();
+  const location = useLocation();
 
   const [searchMode, setSearchMode] = useState<SearchMode>(() => {
     const saved = localStorage.getItem('marketSearchMode');
@@ -114,6 +116,22 @@ export const MarketSearch: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('marketActiveTab', activeTab);
   }, [activeTab]);
+
+  useEffect(() => {
+    if (location.state) {
+      const state = location.state as { filterBySession?: string; filterByDate?: string };
+      if (state.filterBySession || state.filterByDate) {
+        if (state.filterByDate) {
+          setFilters(prev => ({
+            ...prev,
+            deadlineFrom: state.filterByDate,
+            page: 1
+          }));
+        }
+        handleSearch();
+      }
+    }
+  }, [location.state]);
 
   // Déclencher la recherche quand la page change
   useEffect(() => {
