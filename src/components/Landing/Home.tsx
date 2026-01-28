@@ -245,7 +245,7 @@ export default function Home() {
               <Button
                 onClick={() => {
                   trackClick('home', 'navigation', 'search_markets_reunion');
-                  navigate('/marches-reunion');
+                  navigate('/marchepublics/974');
                 }}
                 variant="primary"
                 className="w-full text-lg"

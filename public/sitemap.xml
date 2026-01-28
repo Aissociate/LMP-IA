@@ -110,4 +110,16 @@
     <priority>0.75</priority>
   </url>
 
+  <!-- Répertoire des marchés publics réunionnais -->
+  <url>
+    <loc>https://lemarchepublic.fr/marchepublics/974</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://lemarchepublic.fr/logo1.png</image:loc>
+      <image:title>Marchés Publics Réunion 974 - Tous les appels d'offres</image:title>
+    </image:image>
+  </url>
+
 </urlset>
