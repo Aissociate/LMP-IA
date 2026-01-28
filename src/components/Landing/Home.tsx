@@ -129,7 +129,7 @@ export default function Home() {
         <div className="text-center relative z-10">
           <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <Sparkles className="w-4 h-4" />
-            Essai gratuit 7 jours - Sans carte bancaire
+            Essai gratuit 7 jours
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -191,10 +191,6 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <span className="text-green-500 text-lg">✓</span>
               <span>7 jours d'accès complet gratuit</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500 text-lg">✓</span>
-              <span>Sans carte bancaire</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-green-500 text-lg">✓</span>
@@ -271,16 +267,16 @@ export default function Home() {
       <Section className="py-12 bg-white border-y border-gray-200">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <div className="text-3xl font-bold text-[#F77F00] mb-2">500+</div>
+            <div className="text-3xl font-bold text-[#F77F00] mb-2">100</div>
             <div className="text-sm text-gray-600">Entreprises utilisatrices</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[#F77F00] mb-2">2000+</div>
-            <div className="text-sm text-gray-600">Mémoires générés</div>
+            <div className="text-3xl font-bold text-[#F77F00] mb-2">+ 200</div>
+            <div className="text-sm text-gray-600">Marchés actifs à La Réunion</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[#F77F00] mb-2">+30%</div>
-            <div className="text-sm text-gray-600">Taux de réussite moyen</div>
+            <div className="text-3xl font-bold text-[#F77F00] mb-2">150+</div>
+            <div className="text-sm text-gray-600">Marchés remportés en 2025</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-[#F77F00] mb-2">4.8/5</div>
@@ -1533,8 +1529,8 @@ export default function Home() {
 
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="bg-white p-6 rounded-xl shadow-md">
-            <h3 className="font-bold text-lg text-gray-900 mb-3">💳 Dois-je fournir ma carte bancaire pour l'essai gratuit ?</h3>
-            <p className="text-gray-700">Non, absolument pas. Vous pouvez tester gratuitement avec 1 mémoire offert sans aucune carte bancaire. Vous ne payez que si vous décidez de continuer.</p>
+            <h3 className="font-bold text-lg text-gray-900 mb-3">🎁 Comment fonctionne l'essai gratuit de 7 jours ?</h3>
+            <p className="text-gray-700">Vous bénéficiez d'un accès complet à toutes les fonctionnalités pendant 7 jours pour tester la plateforme. À l'issue de cette période, vous choisissez librement si vous souhaitez continuer avec un abonnement payant.</p>
           </div>
 
           <div className="bg-white p-6 rounded-xl shadow-md">
@@ -1564,7 +1560,7 @@ export default function Home() {
 
           <div className="bg-white p-6 rounded-xl shadow-md">
             <h3 className="font-bold text-lg text-gray-900 mb-3">🏆 Puis-je vraiment gagner plus de marchés ?</h3>
-            <p className="text-gray-700">Nos utilisateurs constatent en moyenne +30% de taux de réussite. Pourquoi ? Parce qu'ils répondent à plus d'appels d'offres (grâce au gain de temps), avec des mémoires mieux structurés et plus alignés sur les critères de notation.</p>
+            <p className="text-gray-700">Nos 100 entreprises utilisatrices ont déjà remporté plus de 150 marchés en 2025. La clé du succès ? Répondre à plus d'appels d'offres grâce au gain de temps, avec des mémoires mieux structurés et parfaitement alignés sur les critères de notation des acheteurs publics.</p>
           </div>
         </div>
       </Section>
@@ -1575,9 +1571,15 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-col md:flex-row items-center gap-4">
               <p className="text-gray-400">© 2025 Le Marché Public.fr - Tous droits réservés</p>
-              <a href="/cgv" className="text-gray-400 hover:text-[#F77F00] transition-colors text-sm">
-                Conditions Générales de Vente
-              </a>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <a href="/cgv" className="text-gray-400 hover:text-[#F77F00] transition-colors text-sm">
+                  CGV
+                </a>
+                <span className="text-gray-600">•</span>
+                <a href="/mentions-legales" className="text-gray-400 hover:text-[#F77F00] transition-colors text-sm">
+                  Mentions Légales & Confidentialité
+                </a>
+              </div>
             </div>
             <div className="flex items-center gap-6">
               <a
