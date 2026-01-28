@@ -265,6 +265,56 @@ class BOAMPService {
 
   async searchPublicMarkets(params: BOAMPSearchParams): Promise<BOAMPMarket[]> {
     try {
+      if (params.keywords && !params.location?.length && !params.serviceTypes?.length &&
+          !params.publicBuyer && !params.cpvCode) {
+        const { data, error } = await supabase.rpc('search_public_markets_with_relevance', {
+          search_query: params.keywords.toLowerCase(),
+          min_similarity: 0.1
+        });
+
+        if (error) {
+          console.error('[BOAMP Service] Error in relevance search:', error);
+        } else if (data && data.length > 0) {
+          let results = data;
+
+          if (params.deadlineFrom) {
+            results = results.filter((r: any) => !r.deadline || r.deadline >= params.deadlineFrom);
+          }
+          if (params.deadlineTo) {
+            results = results.filter((r: any) => !r.deadline || r.deadline <= params.deadlineTo);
+          }
+          if (params.amountMin !== undefined) {
+            results = results.filter((r: any) => r.amount !== null && r.amount >= params.amountMin!);
+          }
+          if (params.amountMax !== undefined) {
+            results = results.filter((r: any) => r.amount !== null && r.amount <= params.amountMax!);
+          }
+
+          return results.map((record: any) => ({
+            id: record.source === 'manual' ? `manual-${record.id}` : record.id,
+            reference: record.reference,
+            title: record.title,
+            client: record.client,
+            description: record.description || '',
+            deadline: record.deadline || '',
+            amount: record.amount ? parseFloat(String(record.amount)) : undefined,
+            location: record.location || 'Non specifie',
+            publicationDate: record.publication_date || '',
+            procedureType: record.procedure_type || 'Non specifie',
+            serviceType: record.service_type || 'Non specifie',
+            cpvCode: record.cpv_code,
+            url: record.url || '',
+            dceUrl: record.dce_url,
+            rawData: {
+              ...record,
+              isManualMarket: record.source === 'manual',
+              source: record.source,
+              relevanceScore: record.relevance_score
+            }
+          }));
+        }
+      }
+
       let query = supabase
         .from('public_markets')
         .select('*')
@@ -272,7 +322,16 @@ class BOAMPService {
 
       if (params.keywords) {
         const keywords = params.keywords.toLowerCase();
-        query = query.or(`title.ilike.%${keywords}%,client.ilike.%${keywords}%,description.ilike.%${keywords}%`);
+        const terms = keywords.split(/\s+/).filter(t => t.length > 0);
+
+        if (terms.length > 1) {
+          const searchConditions = terms.map(term =>
+            `title.ilike.%${term}%,client.ilike.%${term}%,description.ilike.%${term}%,location.ilike.%${term}%,service_type.ilike.%${term}%`
+          ).join(',');
+          query = query.or(searchConditions);
+        } else {
+          query = query.or(`title.ilike.%${keywords}%,client.ilike.%${keywords}%,description.ilike.%${keywords}%,location.ilike.%${keywords}%,service_type.ilike.%${keywords}%`);
+        }
       }
 
       if (params.location && params.location.length > 0) {
@@ -351,6 +410,56 @@ class BOAMPService {
 
   async searchManualMarkets(params: BOAMPSearchParams): Promise<BOAMPMarket[]> {
     try {
+      if (params.keywords && !params.location?.length && !params.serviceTypes?.length &&
+          !params.publicBuyer && !params.cpvCode) {
+        const { data, error } = await supabase.rpc('search_manual_markets_with_relevance', {
+          search_query: params.keywords.toLowerCase(),
+          min_similarity: 0.1
+        });
+
+        if (error) {
+          console.error('[BOAMP Service] Error in manual markets relevance search:', error);
+        } else if (data && data.length > 0) {
+          let results = data;
+
+          if (params.deadlineFrom) {
+            results = results.filter((r: any) => !r.deadline || r.deadline >= params.deadlineFrom);
+          }
+          if (params.deadlineTo) {
+            results = results.filter((r: any) => !r.deadline || r.deadline <= params.deadlineTo);
+          }
+          if (params.amountMin !== undefined) {
+            results = results.filter((r: any) => r.amount !== null && r.amount >= params.amountMin!);
+          }
+          if (params.amountMax !== undefined) {
+            results = results.filter((r: any) => r.amount !== null && r.amount <= params.amountMax!);
+          }
+
+          return results.map((record: any) => ({
+            id: `manual-${record.id}`,
+            reference: record.reference || `MAN-${record.id.substring(0, 8)}`,
+            title: record.title,
+            client: record.client,
+            description: record.description || '',
+            deadline: record.deadline || '',
+            amount: record.amount ? parseFloat(record.amount) : undefined,
+            location: record.location || 'Non specifie',
+            publicationDate: record.publication_date || '',
+            procedureType: record.procedure_type || 'Non specifie',
+            serviceType: record.service_type || 'Non specifie',
+            cpvCode: record.cpv_code,
+            url: record.url || '',
+            dceUrl: record.dce_url,
+            rawData: {
+              ...record,
+              source: 'manual',
+              isManualMarket: true,
+              relevanceScore: record.relevance_score
+            }
+          }));
+        }
+      }
+
       let query = supabase
         .from('manual_markets')
         .select('*')
@@ -358,7 +467,16 @@ class BOAMPService {
 
       if (params.keywords) {
         const keywords = params.keywords.toLowerCase();
-        query = query.or(`title.ilike.%${keywords}%,client.ilike.%${keywords}%,description.ilike.%${keywords}%`);
+        const terms = keywords.split(/\s+/).filter(t => t.length > 0);
+
+        if (terms.length > 1) {
+          const searchConditions = terms.map(term =>
+            `title.ilike.%${term}%,client.ilike.%${term}%,description.ilike.%${term}%,location.ilike.%${term}%,service_type.ilike.%${term}%`
+          ).join(',');
+          query = query.or(searchConditions);
+        } else {
+          query = query.or(`title.ilike.%${keywords}%,client.ilike.%${keywords}%,description.ilike.%${keywords}%,location.ilike.%${keywords}%,service_type.ilike.%${keywords}%`);
+        }
       }
 
       if (params.location && params.location.length > 0) {

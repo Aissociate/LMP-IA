@@ -775,6 +775,7 @@ export const MarketSearch: React.FC = () => {
                       isFavorite={favorites.has(market.reference)}
                       isDark={isDark}
                       isAdmin={isAdmin}
+                      searchQuery={filters.keywords || searchQuery}
                       onToggleFavorite={() => {
                         const isFav = favorites.has(market.reference);
                         if (isFav) {

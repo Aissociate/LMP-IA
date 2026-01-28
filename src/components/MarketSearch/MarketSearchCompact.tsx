@@ -12,16 +12,19 @@ import {
   Users,
   Shield,
   Sparkles,
-  Database
+  Database,
+  TrendingUp
 } from 'lucide-react';
 import { BOAMPMarket } from '../../types/boamp';
 import { marketSentinelService } from '../../services/marketSentinelService';
+import { highlightSearchTerms, extractSearchContext } from '../../utils/searchHighlight';
 
 interface MarketSearchCompactProps {
   market: BOAMPMarket;
   isFavorite: boolean;
   isDark: boolean;
   isAdmin?: boolean;
+  searchQuery?: string;
   onToggleFavorite: () => void;
   onProspect?: () => void;
   onAddLog?: (type: string, message: string) => void;
@@ -32,6 +35,7 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
   isFavorite,
   isDark,
   isAdmin = false,
+  searchQuery = '',
   onToggleFavorite,
   onProspect,
   onAddLog
@@ -98,6 +102,14 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
 
   const daysRemaining = getDaysRemaining(market.deadline);
   const isManualMarket = market.rawData?.isManualMarket === true || market.id.startsWith('manual-');
+  const relevanceScore = market.rawData?.relevanceScore;
+
+  const highlightedTitle = searchQuery ? highlightSearchTerms(market.title, searchQuery) : market.title;
+  const highlightedClient = searchQuery ? highlightSearchTerms(market.client, searchQuery) : market.client;
+  const descriptionContext = searchQuery && market.description
+    ? extractSearchContext(market.description, searchQuery, 200)
+    : market.description?.substring(0, 200) || '';
+  const highlightedDescription = searchQuery ? highlightSearchTerms(descriptionContext, searchQuery) : descriptionContext;
 
   return (
     <div
@@ -142,39 +154,55 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
               className={`text-base font-semibold line-clamp-2 ${
                 isDark ? 'text-white' : 'text-gray-900'
               }`}
-            >
-              {market.title}
-            </h3>
+              dangerouslySetInnerHTML={{ __html: highlightedTitle }}
+            />
 
-            {daysRemaining !== null && (
-              <div
-                className={`flex-shrink-0 px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
-                  daysRemaining < 7
-                    ? isDark
-                      ? 'bg-red-900/30 text-red-400'
-                      : 'bg-red-100 text-red-700'
-                    : daysRemaining < 15
-                    ? isDark
-                      ? 'bg-orange-900/30 text-orange-400'
-                      : 'bg-orange-100 text-orange-700'
-                    : isDark
-                    ? 'bg-green-900/30 text-green-400'
-                    : 'bg-green-100 text-green-700'
-                }`}
-              >
-                <Clock className="w-3 h-3" />
-                J-{daysRemaining}
-              </div>
-            )}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {relevanceScore && relevanceScore > 0.5 && (
+                <div
+                  className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+                    isDark
+                      ? 'bg-blue-900/30 text-blue-400'
+                      : 'bg-blue-100 text-blue-700'
+                  }`}
+                  title={`Score de pertinence: ${(relevanceScore * 100).toFixed(0)}%`}
+                >
+                  <TrendingUp className="w-3 h-3" />
+                  {(relevanceScore * 100).toFixed(0)}%
+                </div>
+              )}
+
+              {daysRemaining !== null && (
+                <div
+                  className={`flex-shrink-0 px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+                    daysRemaining < 7
+                      ? isDark
+                        ? 'bg-red-900/30 text-red-400'
+                        : 'bg-red-100 text-red-700'
+                      : daysRemaining < 15
+                      ? isDark
+                        ? 'bg-orange-900/30 text-orange-400'
+                        : 'bg-orange-100 text-orange-700'
+                      : isDark
+                      ? 'bg-green-900/30 text-green-400'
+                      : 'bg-green-100 text-green-700'
+                  }`}
+                >
+                  <Clock className="w-3 h-3" />
+                  J-{daysRemaining}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
             <div className="flex items-center gap-2 min-w-0">
               <Building className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
               <div className="min-w-0">
-                <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'} truncate`}>
-                  {market.client}
-                </p>
+                <p
+                  className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'} truncate`}
+                  dangerouslySetInnerHTML={{ __html: highlightedClient }}
+                />
               </div>
             </div>
 
