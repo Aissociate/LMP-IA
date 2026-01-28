@@ -105,7 +105,7 @@ export const NotificationSettings: React.FC = () => {
   const sendTestEmail = async () => {
     try {
       setSaving(true);
-      setMessage({ type: 'success', text: 'Envoi de l\'email de test en cours...' });
+      setMessage({ type: 'success', text: 'Envoi de l\'email de test avec vos détections récentes...' });
 
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -129,7 +129,14 @@ export const NotificationSettings: React.FC = () => {
         throw new Error(result.error || 'Failed to send test email');
       }
 
-      setMessage({ type: 'success', text: `Email de test envoyé avec succès à ${result.recipient}` });
+      const detectionMessage = result.detections_count > 0
+        ? `Email envoyé avec ${result.detections_count} détection${result.detections_count > 1 ? 's' : ''} des dernières 24h`
+        : 'Email de test envoyé (aucune détection récente)';
+
+      setMessage({
+        type: 'success',
+        text: `${detectionMessage} à ${result.recipient}`
+      });
       setTimeout(() => setMessage(null), 5000);
     } catch (error) {
       console.error('Error sending test email:', error);
@@ -297,10 +304,12 @@ export const NotificationSettings: React.FC = () => {
               Comment fonctionnent les alertes email ?
             </h4>
             <ul className={`text-sm space-y-1 ${isDark ? 'text-blue-200' : 'text-blue-800'}`}>
-              <li>• Les marchés sont vérifiés automatiquement à 8h et 18h</li>
-              <li>• Vous recevez UN SEUL email consolidé s'il y a de nouveaux marchés</li>
-              <li>• L'email regroupe tous les marchés détectés par vos alertes</li>
+              <li>• Les marchés sont vérifiés <strong>toutes les heures</strong> automatiquement</li>
+              <li>• Les emails sont envoyés <strong>2 fois par jour</strong> : à 8h00 et 18h00</li>
+              <li>• Vous recevez UN SEUL email consolidé par période s'il y a de nouveaux marchés</li>
+              <li>• L'email regroupe tous les marchés détectés par vos alertes actives</li>
               <li>• Aucun email n'est envoyé s'il n'y a pas de nouveau marché</li>
+              <li>• Le bouton "Email de test" envoie les détections des <strong>dernières 24h</strong></li>
             </ul>
           </div>
         </div>
