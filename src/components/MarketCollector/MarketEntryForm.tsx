@@ -23,7 +23,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
     description: '',
     deadline: '',
     amount: '',
-    location: '',
+    location: 'Réunion',
     procedure_type: '',
     service_type: '',
     cpv_code: '',
@@ -71,7 +71,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
     e.preventDefault();
 
     if (!formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
-        !formData.service_type || !formData.url.trim()) {
+        !formData.service_type || !formData.url.trim() || !formData.location.trim()) {
       alert('Tous les champs marqués d\'un * sont obligatoires');
       return;
     }
@@ -119,7 +119,7 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         description: '',
         deadline: '',
         amount: '',
-        location: '',
+        location: 'Réunion',
         procedure_type: '',
         service_type: '',
         cpv_code: '',
@@ -354,12 +354,13 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
 
         <div>
           <label className={`block text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-1`}>
-            Localisation
+            Localisation <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.location}
             onChange={(e) => handleChange('location', e.target.value)}
+            required
             className={`w-full px-3 py-1.5 rounded-lg border text-sm ${
               isDark
                 ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
@@ -460,10 +461,10 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         <button
           type="submit"
           disabled={saving || !formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
-                    !formData.service_type || !formData.url.trim()}
+                    !formData.service_type || !formData.url.trim() || !formData.location.trim()}
           className={`flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg ${
             (saving || !formData.title.trim() || !formData.reference.trim() || !formData.deadline ||
-             !formData.service_type || !formData.url.trim()) ? 'opacity-50 cursor-not-allowed' : ''
+             !formData.service_type || !formData.url.trim() || !formData.location.trim()) ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           {saving ? (
