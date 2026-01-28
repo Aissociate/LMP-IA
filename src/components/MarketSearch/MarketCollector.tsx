@@ -161,27 +161,6 @@ export const MarketCollector: React.FC = () => {
     }
   }, []);
 
-  const loadMarkets = async () => {
-    setLoading(true);
-    try {
-      const result = await callEdgeFunction('list');
-      setMarkets(result.data || []);
-    } catch (err: any) {
-      setError(`Erreur lors du chargement: ${err.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadDonneursOrdre = async () => {
-    try {
-      const result = await callEdgeFunction('listDonneursOrdre');
-      setDonneursOrdre(result.data || []);
-    } catch (err: any) {
-      console.error('Erreur chargement donneurs ordre:', err);
-    }
-  };
-
   const callEdgeFunction = async (action: string, data?: any, marketId?: string) => {
     const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/market-collector-save`;
 
@@ -205,6 +184,27 @@ export const MarketCollector: React.FC = () => {
     }
 
     return result;
+  };
+
+  const loadMarkets = async () => {
+    setLoading(true);
+    try {
+      const result = await callEdgeFunction('list');
+      setMarkets(result.data || []);
+    } catch (err: any) {
+      setError(`Erreur lors du chargement: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadDonneursOrdre = async () => {
+    try {
+      const result = await callEdgeFunction('listDonneursOrdre');
+      setDonneursOrdre(result.data || []);
+    } catch (err: any) {
+      console.error('Erreur chargement donneurs ordre:', err);
+    }
   };
 
   const handleSubmit = async (publish: boolean = false) => {
