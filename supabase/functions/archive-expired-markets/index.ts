@@ -37,21 +37,22 @@ Deno.serve(async (req: Request) => {
     }
 
     const expiredCount = expiredMarkets?.length || 0;
-    console.log(`[Archive Expired] Found ${expiredCount} expired markets to archive`);
+    console.log(`[Archive Expired] Found ${expiredCount} expired markets (not archiving, keeping public for SEO)`);
 
-    if (expiredCount > 0) {
-      const { error: updateError } = await supabase
-        .from('public_markets')
-        .update({ is_public: false })
-        .eq('is_public', true)
-        .lt('deadline', now);
-
-      if (updateError) {
-        throw new Error(`Error archiving markets: ${updateError.message}`);
-      }
-
-      console.log(`[Archive Expired] Successfully archived ${expiredCount} markets`);
-    }
+    // DO NOT archive expired markets - keep them public for SEO and historical reference
+    // if (expiredCount > 0) {
+    //   const { error: updateError } = await supabase
+    //     .from('public_markets')
+    //     .update({ is_public: false })
+    //     .eq('is_public', true)
+    //     .lt('deadline', now);
+    //
+    //   if (updateError) {
+    //     throw new Error(`Error archiving markets: ${updateError.message}`);
+    //   }
+    //
+    //   console.log(`[Archive Expired] Successfully archived ${expiredCount} markets`);
+    // }
 
     const executionTime = Date.now() - startTime;
 

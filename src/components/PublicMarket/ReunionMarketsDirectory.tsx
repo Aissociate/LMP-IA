@@ -47,7 +47,6 @@ export function ReunionMarketsDirectory() {
         .select('*', { count: 'exact' })
         .eq('department', '974')
         .eq('is_public', true)
-        .gte('deadline', new Date().toISOString())
         .order('publication_date', { ascending: false });
 
       if (searchTerm) {
@@ -134,8 +133,8 @@ export function ReunionMarketsDirectory() {
 
   const getStatusBadge = (deadline: string | null) => {
     const days = getDaysRemaining(deadline);
-    if (!days || days <= 0) return { label: 'Fermé', color: 'bg-red-50 text-red-700 border-red-200' };
-    if (days <= 7) return { label: 'Ouvert', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+    if (!days || days <= 0) return { label: 'Échu', color: 'bg-gray-100 text-gray-700 border-gray-300' };
+    if (days <= 7) return { label: `${days}j restants`, color: 'bg-red-50 text-red-700 border-red-200' };
     return { label: 'Ouvert', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
   };
 
