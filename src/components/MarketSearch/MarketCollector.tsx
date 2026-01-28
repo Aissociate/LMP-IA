@@ -25,7 +25,6 @@ import {
   Database,
   Play
 } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
 import { SessionWizard } from '../MarketCollector/SessionWizard';
 
 const COLLECTOR_PASSWORD = 'lemarchepublic974#';
@@ -165,14 +164,8 @@ export const MarketCollector: React.FC = () => {
   const loadMarkets = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('public_markets')
-        .select('*')
-        .eq('source', 'manual')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setMarkets(data || []);
+      const result = await callEdgeFunction('list');
+      setMarkets(result.data || []);
     } catch (err: any) {
       setError(`Erreur lors du chargement: ${err.message}`);
     } finally {
@@ -182,16 +175,36 @@ export const MarketCollector: React.FC = () => {
 
   const loadDonneursOrdre = async () => {
     try {
-      const { data, error } = await supabase
-        .from('manual_markets_donneurs_ordre')
-        .select('*')
-        .order('name');
-
-      if (error) throw error;
-      setDonneursOrdre(data || []);
+      const result = await callEdgeFunction('listDonneursOrdre');
+      setDonneursOrdre(result.data || []);
     } catch (err: any) {
       console.error('Erreur chargement donneurs ordre:', err);
     }
+  };
+
+  const callEdgeFunction = async (action: string, data?: any, marketId?: string) => {
+    const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/market-collector-save`;
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        password: COLLECTOR_PASSWORD,
+        action,
+        data,
+        marketId
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || result.error) {
+      throw new Error(result.error || 'Operation failed');
+    }
+
+    return result;
   };
 
   const handleSubmit = async (publish: boolean = false) => {
@@ -235,27 +248,15 @@ export const MarketCollector: React.FC = () => {
       };
 
       if (editingMarket) {
-        const { error } = await supabase
-          .from('public_markets')
-          .update(marketData)
-          .eq('id', editingMarket.id);
-
-        if (error) throw error;
+        await callEdgeFunction('update', marketData, editingMarket.id);
         setSuccess(`Marche "${formData.title}" mis a jour avec succes`);
       } else {
-        const { error } = await supabase
-          .from('public_markets')
-          .insert([marketData]);
-
-        if (error) throw error;
+        await callEdgeFunction('insert', marketData);
         setSuccess(`Marche "${formData.title}" ${publish ? 'publie' : 'enregistre comme brouillon'}`);
       }
 
       if (!donneursOrdre.find(d => d.name.toLowerCase() === formData.client.toLowerCase())) {
-        await supabase
-          .from('manual_markets_donneurs_ordre')
-          .insert([{ name: formData.client.trim() }])
-          .select();
+        await callEdgeFunction('insertDonneurOrdre', { name: formData.client.trim() });
         loadDonneursOrdre();
       }
 
@@ -292,12 +293,7 @@ export const MarketCollector: React.FC = () => {
     if (!confirm(`Supprimer le marche "${market.title}" ?`)) return;
 
     try {
-      const { error } = await supabase
-        .from('public_markets')
-        .delete()
-        .eq('id', market.id);
-
-      if (error) throw error;
+      await callEdgeFunction('delete', undefined, market.id);
       setSuccess('Marche supprime');
       loadMarkets();
     } catch (err: any) {
@@ -307,12 +303,7 @@ export const MarketCollector: React.FC = () => {
 
   const handlePublish = async (market: ManualMarket) => {
     try {
-      const { error } = await supabase
-        .from('public_markets')
-        .update({ is_public: true })
-        .eq('id', market.id);
-
-      if (error) throw error;
+      await callEdgeFunction('publish', undefined, market.id);
       setSuccess(`Marche "${market.title}" publie`);
       loadMarkets();
     } catch (err: any) {
@@ -322,12 +313,7 @@ export const MarketCollector: React.FC = () => {
 
   const handleArchive = async (market: ManualMarket) => {
     try {
-      const { error } = await supabase
-        .from('public_markets')
-        .update({ is_public: false })
-        .eq('id', market.id);
-
-      if (error) throw error;
+      await callEdgeFunction('archive', undefined, market.id);
       setSuccess(`Marche "${market.title}" archive`);
       loadMarkets();
     } catch (err: any) {
