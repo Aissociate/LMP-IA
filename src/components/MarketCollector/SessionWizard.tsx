@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { X, Play, CheckCircle, Clock, ExternalLink, AlertCircle, Save, SkipForward, ListChecks } from 'lucide-react';
+import { X, Play, CheckCircle, Clock, ExternalLink, AlertCircle, Save, SkipForward, ListChecks, Upload } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { sessionService, DonneurOrdre, Session, SessionWithProgress } from '../../services/sessionService';
 import { MarketEntryForm } from './MarketEntryForm';
 import { SessionMarketsList } from './SessionMarketsList';
+import { supabase } from '../../lib/supabase';
 
 interface SessionWizardProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
   const [showDonneurSelection, setShowDonneurSelection] = useState(false);
   const [notes, setNotes] = useState('');
   const [refreshMarkets, setRefreshMarkets] = useState(0);
+  const [publishing, setPublishing] = useState(false);
 
   useEffect(() => {
     if (isOpen && operatorEmail) {
@@ -165,6 +167,39 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
     }
   };
 
+  const handlePublishSession = async () => {
+    if (!currentSession) return;
+
+    if (!confirm('Voulez-vous publier tous les marchés de cette session ? Ils seront alors visibles dans la recherche de marchés.')) {
+      return;
+    }
+
+    setPublishing(true);
+    try {
+      const { data, error } = await supabase.rpc('publish_session_markets', {
+        session_id: currentSession.id
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      const publishedCount = data?.[0]?.published_count || 0;
+
+      if (publishedCount > 0) {
+        alert(`${publishedCount} marché(s) ont été publiés avec succès et sont maintenant visibles dans la recherche !`);
+        setRefreshMarkets(prev => prev + 1);
+      } else {
+        alert('Aucun marché à publier. Tous les marchés de cette session sont déjà publiés.');
+      }
+    } catch (error) {
+      console.error('Error publishing session markets:', error);
+      alert('Erreur lors de la publication des marchés. Veuillez réessayer.');
+    } finally {
+      setPublishing(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   if (loading && !currentSession) {
@@ -202,6 +237,21 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
                     {currentSession.total_markets_added} marchés
                   </span>
                 </div>
+                {currentSession.total_markets_added > 0 && (
+                  <button
+                    onClick={handlePublishSession}
+                    disabled={publishing}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                      publishing
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-lg'
+                    } text-white`}
+                    title="Publier tous les marchés de cette session pour les rendre visibles dans la recherche"
+                  >
+                    <Upload className="w-4 h-4" />
+                    {publishing ? 'Publication...' : 'Publier la session'}
+                  </button>
+                )}
               </div>
             )}
           </div>

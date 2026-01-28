@@ -106,7 +106,8 @@ export const MarketEntryForm: React.FC<MarketEntryFormProps> = ({
         url: formData.url || null,
         dce_url: formData.dce_url || null,
         source: `Session ${sessionId}`,
-        status: 'draft',
+        status: 'published',
+        publication_date: new Date().toISOString(),
         created_by: sessionId,
       });
 

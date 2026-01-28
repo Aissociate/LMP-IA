@@ -263,6 +263,92 @@ class BOAMPService {
     }
   }
 
+  async searchPublicMarkets(params: BOAMPSearchParams): Promise<BOAMPMarket[]> {
+    try {
+      let query = supabase
+        .from('public_markets')
+        .select('*')
+        .eq('is_public', true);
+
+      if (params.keywords) {
+        const keywords = params.keywords.toLowerCase();
+        query = query.or(`title.ilike.%${keywords}%,client.ilike.%${keywords}%,description.ilike.%${keywords}%`);
+      }
+
+      if (params.location && params.location.length > 0) {
+        const locationFilters = params.location.map(loc =>
+          `location.ilike.%${loc}%,department.ilike.%${loc}%`
+        ).join(',');
+        query = query.or(locationFilters);
+      }
+
+      if (params.serviceTypes && params.serviceTypes.length > 0) {
+        query = query.in('service_type', params.serviceTypes);
+      }
+
+      if (params.publicBuyer) {
+        query = query.ilike('client', `%${params.publicBuyer}%`);
+      }
+
+      if (params.cpvCode) {
+        query = query.ilike('cpv_code', `%${params.cpvCode}%`);
+      }
+
+      if (params.deadlineFrom) {
+        query = query.gte('deadline', params.deadlineFrom);
+      }
+
+      if (params.deadlineTo) {
+        query = query.lte('deadline', params.deadlineTo);
+      }
+
+      if (params.amountMin !== undefined) {
+        query = query.gte('amount', params.amountMin);
+      }
+
+      if (params.amountMax !== undefined) {
+        query = query.lte('amount', params.amountMax);
+      }
+
+      const sortField = params.sortBy === 'deadline' ? 'deadline' :
+                       params.sortBy === 'amount' ? 'amount' : 'publication_date';
+      const ascending = params.sortOrder === 'asc';
+      query = query.order(sortField, { ascending, nullsFirst: false });
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error('[BOAMP Service] Error searching public markets:', error);
+        return [];
+      }
+
+      return (data || []).map(record => ({
+        id: record.source === 'manual' ? `manual-${record.id}` : record.id,
+        reference: record.reference,
+        title: record.title,
+        client: record.client,
+        description: record.description || '',
+        deadline: record.deadline || '',
+        amount: record.amount ? parseFloat(String(record.amount)) : undefined,
+        location: record.location || 'Non specifie',
+        publicationDate: record.publication_date || '',
+        procedureType: record.procedure_type || 'Non specifie',
+        serviceType: record.service_type || 'Non specifie',
+        cpvCode: record.cpv_code,
+        url: record.url || '',
+        dceUrl: record.dce_url,
+        rawData: {
+          ...record,
+          isManualMarket: record.source === 'manual',
+          source: record.source
+        }
+      }));
+    } catch (error) {
+      console.error('[BOAMP Service] Error in searchPublicMarkets:', error);
+      return [];
+    }
+  }
+
   async searchManualMarkets(params: BOAMPSearchParams): Promise<BOAMPMarket[]> {
     try {
       let query = supabase
@@ -341,32 +427,14 @@ class BOAMPService {
 
   async searchMarketsWithManual(params: BOAMPSearchParams): Promise<BOAMPSearchResult> {
     try {
+      const publicMarkets = await this.searchPublicMarkets(params);
+
       const boampResult = await this.searchMarkets(params);
 
-      const deduplicationResult = await DeduplicationService.deduplicateMarkets(
-        boampResult.markets,
-        true
-      );
+      const existingReferences = new Set(publicMarkets.map(m => m.reference));
+      const newBoampMarkets = boampResult.markets.filter(m => !existingReferences.has(m.reference));
 
-      const convertedManualMarkets: BOAMPMarket[] = deduplicationResult.manualMarkets.map(record => ({
-        id: record.id,
-        reference: record.reference,
-        title: record.title,
-        client: record.client,
-        description: record.description || '',
-        deadline: record.deadline || '',
-        amount: record.amount ? parseFloat(record.amount) : undefined,
-        location: record.location || 'Non specifie',
-        publicationDate: record.publication_date || '',
-        procedureType: record.procedure_type || 'Non specifie',
-        serviceType: record.service_type || 'Non specifie',
-        cpvCode: record.cpv_code,
-        url: record.url || '',
-        dceUrl: record.dce_url,
-        rawData: { ...record, source: 'manual', isManualMarket: true }
-      }));
-
-      const allMarkets = [...deduplicationResult.boampMarkets, ...convertedManualMarkets];
+      const allMarkets = [...publicMarkets, ...newBoampMarkets];
 
       const sortField = params.sortBy || 'publication_date';
       const sortOrder = params.sortOrder || 'desc';
@@ -391,10 +459,10 @@ class BOAMPService {
         return valueB - valueA;
       });
 
-      const total = boampResult.total + convertedManualMarkets.length;
+      const total = allMarkets.length;
       const limit = params.limit || 20;
 
-      console.log(`[BOAMP Service] Déduplication: ${deduplicationResult.removedDuplicates} doublon(s) manuel(s) supprimé(s)`);
+      console.log(`[BOAMP Service] Unified search: ${publicMarkets.length} from public_markets (${publicMarkets.filter(m => m.rawData?.source === 'manual').length} manual), ${newBoampMarkets.length} new from BOAMP API`);
 
       return {
         markets: allMarkets,
