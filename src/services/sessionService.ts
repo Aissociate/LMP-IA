@@ -188,15 +188,27 @@ class SessionService {
       throw progressError;
     }
 
+    const { data: session, error: fetchError } = await supabase
+      .from('manual_markets_sessions')
+      .select('total_markets_added')
+      .eq('id', sessionId)
+      .single();
+
+    if (fetchError) {
+      console.error('Error fetching session:', fetchError);
+      throw fetchError;
+    }
+
     const { error: sessionError } = await supabase
       .from('manual_markets_sessions')
       .update({
-        total_markets_added: supabase.rpc('increment', { x: marketsAddedCount }),
+        total_markets_added: (session.total_markets_added || 0) + marketsAddedCount,
       })
       .eq('id', sessionId);
 
     if (sessionError) {
       console.error('Error updating session:', sessionError);
+      throw sessionError;
     }
   }
 
