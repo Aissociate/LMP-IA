@@ -7,6 +7,7 @@ import { SignupForm } from './components/Auth/SignupForm';
 import { SubscriptionGate } from './components/Auth/SubscriptionGate';
 import { Sidebar } from './components/Layout/Sidebar';
 import { Dashboard } from './components/Dashboard/Dashboard';
+import { DashboardLinkedIn } from './components/Dashboard/DashboardLinkedIn';
 import { MarketList } from './components/Markets/MarketList';
 import { MarketListDebug } from './components/Markets/MarketListDebug';
 import { MarketSearch } from './components/MarketSearch/MarketSearch';
@@ -61,7 +62,7 @@ function AppContent() {
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <Dashboard />;
+        return <DashboardLinkedIn />;
       case 'recherche-marches':
         return <MarketSearch />;
       case 'surveillance-marches':
@@ -79,7 +80,7 @@ function AppContent() {
       case 'labo':
         return <Labo />;
       default:
-        return <Dashboard />;
+        return <DashboardLinkedIn />;
     }
   };
 
@@ -123,11 +124,8 @@ function AppContent() {
           </div>
         ) : (
           <SubscriptionGate>
-            <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'} flex transition-colors duration-200`}>
-              <Sidebar activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as AppTab)} />
-              <main className="flex-1 ml-64">
-                {renderContent()}
-              </main>
+            <div className="min-h-screen">
+              {renderContent()}
               <BugReportButton />
             </div>
           </SubscriptionGate>
