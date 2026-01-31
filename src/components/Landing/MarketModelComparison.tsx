@@ -51,7 +51,7 @@ export const MarketModelComparison: React.FC = () => {
                 <Sparkles className="w-5 h-5 text-orange-600" />
               </div>
               <div>
-                <p className="font-semibold text-gray-900">Qualité professionnelle</p>
+                <p className="font-semibold text-gray-900">Niveau de compétence : Professionnel</p>
                 <p className="text-sm text-gray-600">Mémoires techniques structurés et cohérents</p>
               </div>
             </div>
@@ -117,7 +117,7 @@ export const MarketModelComparison: React.FC = () => {
                 <Sparkles className="w-5 h-5 text-purple-600" />
               </div>
               <div>
-                <p className="font-semibold text-gray-900">Qualité premium</p>
+                <p className="font-semibold text-gray-900">Niveau de compétence : Expert</p>
                 <p className="text-sm text-gray-600">Analyse fine des critères et optimisation max</p>
               </div>
             </div>
