@@ -211,8 +211,8 @@ export default function Home() {
                 trackClick('home', 'cta', 'hero_trial');
                 navigate('/capture-lead');
               }}
-              variant="secondary"
-              className="text-lg px-10 py-5 bg-linkedin-500 text-white hover:bg-linkedin-600 font-bold shadow-2xl"
+              variant="primary"
+              className="text-lg px-10 py-5 bg-white text-linkedin-600 hover:bg-slate-100 font-bold shadow-2xl border-2 border-white"
             >
               Me prendre à l'essai gratuitement
               <ArrowRight className="w-5 h-5" />
@@ -220,7 +220,7 @@ export default function Home() {
             <Button
               onClick={() => document.getElementById('demo-video')?.scrollIntoView({ behavior: 'smooth' })}
               variant="outline"
-              className="text-lg px-10 py-5 border-2 border-white text-white hover:bg-white/10"
+              className="text-lg px-10 py-5 border-2 border-white text-white hover:bg-white/20"
             >
               Me voir en action
             </Button>
@@ -354,8 +354,8 @@ export default function Home() {
                 {/* Info principale */}
                 <div className="flex-1 pt-16 md:pt-0">
                   <h1 className="text-3xl font-bold text-slate-900 mb-1">Iris</h1>
-                  <p className="text-xl text-slate-700 mb-1 font-semibold">Assistante Marchés Publics</p>
-                  <p className="text-base text-slate-600 mb-3">Spécialisée Intelligence Artificielle</p>
+                  <p className="text-xl text-slate-900 mb-1 font-bold">Assistante Marchés Publics</p>
+                  <p className="text-base text-slate-700 mb-3">Spécialisée Intelligence Artificielle</p>
                   <p className="text-slate-600 mb-4">La Réunion (974) · <span className="text-linkedin-500 font-semibold">Disponible 24/7</span></p>
 
                   <div className="flex flex-wrap gap-3 mb-4">
@@ -419,19 +419,6 @@ export default function Home() {
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
             Regardez comment j'analyse un dossier de consultation de 200 pages et produis un mémoire technique en quelques minutes
           </p>
-        </div>
-
-        <div className="max-w-5xl mx-auto mb-12">
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-slate-900 aspect-video">
-            <video
-              src="/demo_lemarchepublic.mp4"
-              controls
-              className="w-full h-full"
-              poster="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1200"
-            >
-              Votre navigateur ne supporte pas la lecture de vidéos.
-            </video>
-          </div>
         </div>
 
         <Carousel />
@@ -527,7 +514,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* TARIFS - MODE EMPLOYÉ/ASSOCIÉ */}
+      {/* TARIFS - CONTRAT EMPLOYÉ/ASSOCIÉ */}
       <Section id="tarifs" className="py-20 bg-iris-card">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-linkedin-500 text-white px-6 py-3 rounded-full text-sm font-semibold mb-6 shadow-md">
@@ -582,11 +569,11 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* MODE EMPLOYÉ - Temps Partiel */}
+          {/* CONTRAT EMPLOYÉ - Temps Partiel */}
           <div className="bg-iris-card rounded-3xl shadow-card p-6 border-2 border-slate-200 hover:border-slate-400 transition-all hover:shadow-xl">
             <div className="text-center mb-4">
               <div className="inline-block bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-xs font-bold mb-3">
-                MODE EMPLOYÉ
+                CONTRAT EMPLOYÉ
               </div>
               <div className="text-4xl font-extrabold text-slate-900 mb-1">199€</div>
               <div className="text-slate-500 text-xs mb-3">HT / mois</div>
@@ -612,14 +599,14 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* MODE EMPLOYÉ - Temps Complet - RECOMMANDÉ */}
+          {/* CONTRAT EMPLOYÉ - Temps Complet - RECOMMANDÉ */}
           <div className="bg-gradient-to-br from-linkedin-500 to-linkedin-700 rounded-3xl shadow-2xl p-6 border-2 border-linkedin-500 transform md:scale-105 relative">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-linkedin-700 px-3 py-1 rounded-full text-xs font-bold shadow-lg">
               ⭐ RECOMMANDÉ
             </div>
             <div className="text-center mb-4 text-white">
               <div className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-xs font-bold mb-3">
-                MODE EMPLOYÉ
+                CONTRAT EMPLOYÉ
               </div>
               <div className="text-4xl font-extrabold mb-1">349€</div>
               <div className="text-white/80 text-xs mb-3">HT / mois</div>
@@ -645,11 +632,11 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* OPTION ASSOCIÉ */}
+          {/* CONTRAT D'ASSOCIÉ */}
           <div className="bg-gradient-to-br from-iris-gold to-yellow-500 rounded-3xl shadow-xl p-6 border-2 border-yellow-500 hover:shadow-2xl transition-all">
             <div className="text-center mb-4">
               <div className="inline-block bg-yellow-900/30 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold mb-3">
-                OPTION ASSOCIÉ
+                CONTRAT D'ASSOCIÉ
               </div>
               <div className="text-4xl font-extrabold text-slate-900 mb-1">649€</div>
               <div className="text-slate-700 text-xs mb-3">HT / mois</div>
@@ -671,7 +658,7 @@ export default function Home() {
               variant="outline"
               className="w-full text-sm py-2 bg-white hover:bg-slate-50"
             >
-              Me recruter en Option Associé
+              Me recruter (Contrat d'Associé)
             </Button>
           </div>
         </div>
