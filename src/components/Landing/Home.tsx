@@ -301,151 +301,295 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* CV D'IRIS */}
-      <Section id="profil-iris" className="py-20 bg-gradient-to-br from-blue-50 to-orange-50">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-            <Briefcase className="w-4 h-4" />
-            Profil de votre future collaboratrice
-          </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Qui est Iris ?
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Découvrez les compétences et l'expérience de votre nouvelle assistante spécialisée en marchés publics
-          </p>
-        </div>
+      {/* CV D'IRIS - Style LinkedIn */}
+      <Section id="profil-iris" className="py-20 bg-[#F3F2EF]">
+        <div className="max-w-6xl mx-auto">
+          {/* Header Card */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+            {/* Banner */}
+            <div className="h-32 bg-gradient-to-r from-[#0A66C2] to-[#004182]"></div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {/* Photo et infos principales */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-3xl shadow-2xl p-8 text-center sticky top-24">
-              <div className="relative inline-block mb-6">
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur-xl opacity-30"></div>
-                <img
-                  src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400"
-                  alt="Iris - Assistante marchés publics"
-                  className="relative w-40 h-40 rounded-full object-cover border-4 border-amber-400 shadow-xl"
-                />
-                <div className="absolute -bottom-2 -right-2 bg-green-500 w-8 h-8 rounded-full border-4 border-white"></div>
+            {/* Profile Section */}
+            <div className="px-6 pb-6">
+              <div className="flex flex-col md:flex-row gap-6 -mt-16">
+                {/* Photo */}
+                <div className="flex-shrink-0">
+                  <div className="relative">
+                    <img
+                      src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400"
+                      alt="Iris - Assistante marchés publics"
+                      className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-lg"
+                    />
+                    <div className="absolute bottom-2 right-2 bg-green-500 w-6 h-6 rounded-full border-4 border-white"></div>
+                  </div>
+                </div>
+
+                {/* Info principale */}
+                <div className="flex-1 pt-16 md:pt-0">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-1">Iris</h1>
+                  <p className="text-xl text-gray-700 mb-3">Assistante Marchés Publics Spécialisée | Intelligence Artificielle</p>
+                  <p className="text-gray-600 mb-4">La Réunion (974) · <span className="text-[#0A66C2] font-semibold">Disponible 24/7</span></p>
+
+                  <div className="flex flex-wrap gap-3 mb-4">
+                    <span className="text-sm text-gray-600">100+ entreprises accompagnées</span>
+                    <span className="text-gray-300">·</span>
+                    <span className="text-sm text-gray-600">150+ marchés remportés</span>
+                  </div>
+
+                  <Button
+                    onClick={() => {
+                      trackClick('home', 'cta', 'cv_trial');
+                      navigate('/capture-lead');
+                    }}
+                    className="bg-[#0A66C2] hover:bg-[#004182] text-white px-6 py-2 rounded-full font-semibold"
+                  >
+                    Essayez-moi gratuitement
+                  </Button>
+                </div>
+
+                {/* Quick stats - Desktop only */}
+                <div className="hidden lg:block flex-shrink-0 pt-16">
+                  <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                    <div>
+                      <div className="text-xs text-gray-600 mb-1">Disponibilité</div>
+                      <div className="font-semibold text-green-600">24/7 Sans interruption</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-600 mb-1">Niveau d'expertise</div>
+                      <div className="font-semibold text-gray-900">Expert Senior</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-600 mb-1">Satisfaction client</div>
+                      <div className="font-semibold text-gray-900">4.8/5 ⭐</div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Iris</h3>
-              <p className="text-amber-600 font-semibold mb-4">Assistante Marchés Publics</p>
-              <p className="text-sm text-gray-600 mb-6">Spécialisée La Réunion (974)</p>
-
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Disponibilité</span>
-                  <span className="font-bold text-green-600">24/7</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Expérience</span>
-                  <span className="font-bold text-gray-900">Expert</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Localisation</span>
-                  <span className="font-bold text-gray-900">974</span>
-                </div>
-              </div>
-
-              <Button
-                onClick={() => {
-                  trackClick('home', 'cta', 'cv_trial');
-                  navigate('/capture-lead');
-                }}
-                variant="primary"
-                className="w-full"
-              >
-                Recruter Iris
-                <ArrowRight className="w-4 h-4" />
-              </Button>
             </div>
           </div>
 
-          {/* Compétences et expérience */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Compétences clés */}
-            <div className="bg-white rounded-3xl shadow-lg p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <Award className="w-6 h-6 text-amber-600" />
-                <h3 className="text-2xl font-bold text-gray-900">Compétences Clés</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl">
-                  <div className="font-bold text-blue-900 mb-2">🔍 Veille Intelligente</div>
-                  <div className="text-sm text-blue-700">Surveillance 24/7 de toutes les sources réunionnaises. Région, Département, 24 communes, intercommunalités.</div>
+          {/* À propos */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">À propos</h2>
+            <p className="text-gray-700 leading-relaxed">
+              Bonjour, je suis Iris, votre assistante experte spécialisée dans les marchés publics réunionnais. Je surveille pour vous 24/7 l'ensemble des sources du territoire (Région, Département, 24 communes, 5 intercommunalités), j'analyse les DCE et je rédige automatiquement vos mémoires techniques. Mon expertise couvre la veille intelligente, l'analyse GO/NO-GO, la rédaction administrative et la sécurisation financière des BPU.
+            </p>
+            <p className="text-gray-700 leading-relaxed mt-3">
+              <strong className="text-gray-900">Ma mission :</strong> Vous faire gagner du temps, éviter les erreurs coûteuses et ne manquer aucune opportunité dans le 974.
+            </p>
+          </div>
+
+          {/* Expérience */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Expérience</h2>
+
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 bg-[#0A66C2] rounded flex items-center justify-center text-white font-bold text-xl">
+                    I
+                  </div>
                 </div>
-                <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl">
-                  <div className="font-bold text-green-900 mb-2">🎯 Analyse GO/NO-GO</div>
-                  <div className="text-sm text-green-700">Calcul de score de réussite (Sentinel) basé sur critères techniques, financiers et stratégiques.</div>
-                </div>
-                <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-xl">
-                  <div className="font-bold text-amber-900 mb-2">📝 Rédaction Administrative</div>
-                  <div className="text-sm text-amber-700">Rédaction automatique de mémoires techniques structurés à partir des DCE.</div>
-                </div>
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl">
-                  <div className="font-bold text-purple-900 mb-2">💰 Analyse Financière</div>
-                  <div className="text-sm text-purple-700">Vérification et mise en cohérence des BPU. Détection d'anomalies de prix.</div>
-                </div>
-                <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl">
-                  <div className="font-bold text-orange-900 mb-2">🏛️ Référencement GO</div>
-                  <div className="text-sm text-orange-700">Création de profil entreprise visible par les donneurs d'ordre du 974.</div>
-                </div>
-                <div className="bg-gradient-to-br from-teal-50 to-teal-100 p-4 rounded-xl">
-                  <div className="font-bold text-teal-900 mb-2">📂 Gestion Documentaire</div>
-                  <div className="text-sm text-teal-700">Coffre-fort numérique sécurisé. Centralisation de tous vos documents.</div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg text-gray-900">Assistante Marchés Publics IA</h3>
+                  <p className="text-gray-700">Le Marché Public · Temps complet</p>
+                  <p className="text-sm text-gray-600 mb-3">2024 - Présent · La Réunion (974)</p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <span>J'ai accompagné plus de 100 entreprises réunionnaises dans leurs réponses aux appels d'offres publics</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <span>Je surveille 24/7 toutes les sources de marchés publics du 974 sans jamais en rater une</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <span>J'ai analysé et noté plus de 500 DCE avec mon système de score de pertinence (Market Sentinel)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <span>J'ai rédigé plus de 150 mémoires techniques qui ont contribué à des succès d'entreprises</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <span>Je fais gagner en moyenne 15h par marché aux entreprises que j'accompagne</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Expérience et réalisations */}
-            <div className="bg-white rounded-3xl shadow-lg p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <Target className="w-6 h-6 text-amber-600" />
-                <h3 className="text-2xl font-bold text-gray-900">Expérience & Réalisations</h3>
+          {/* Compétences */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Compétences</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="w-10 h-10 bg-blue-100 rounded flex items-center justify-center flex-shrink-0">
+                    <Search className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-1">Veille Intelligente</h3>
+                    <p className="text-sm text-gray-600">Je surveille automatiquement 24/7 · Couverture 100% du territoire · Alertes temps réel</p>
+                    <div className="mt-2">
+                      <div className="text-xs text-gray-500 mb-1">Maîtrise expert</div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-[#0A66C2] h-2 rounded-full" style={{ width: '100%' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="space-y-4">
-                <div className="border-l-4 border-green-500 pl-4 py-2">
-                  <div className="font-bold text-gray-900 mb-1">150+ marchés remportés en 2025</div>
-                  <div className="text-sm text-gray-600">Accompagnement de 100+ entreprises réunionnaises vers le succès</div>
+
+              <div>
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="w-10 h-10 bg-green-100 rounded flex items-center justify-center flex-shrink-0">
+                    <Target className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-1">Analyse GO/NO-GO</h3>
+                    <p className="text-sm text-gray-600">Je calcule un score de pertinence · J'analyse selon vos critères · Je recommande les meilleures opportunités</p>
+                    <div className="mt-2">
+                      <div className="text-xs text-gray-500 mb-1">Maîtrise expert</div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-[#0A66C2] h-2 rounded-full" style={{ width: '100%' }}></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="border-l-4 border-blue-500 pl-4 py-2">
-                  <div className="font-bold text-gray-900 mb-1">100% de couverture territoriale</div>
-                  <div className="text-sm text-gray-600">Surveillance exhaustive : Région, Département, 24 communes, 5 intercos</div>
+              </div>
+
+              <div>
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="w-10 h-10 bg-amber-100 rounded flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl">📝</span>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-1">Rédaction Administrative</h3>
+                    <p className="text-sm text-gray-600">Je rédige vos mémoires techniques · DC1 · Documents administratifs · Conformité garantie</p>
+                    <div className="mt-2">
+                      <div className="text-xs text-gray-500 mb-1">Maîtrise expert</div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-[#0A66C2] h-2 rounded-full" style={{ width: '98%' }}></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="border-l-4 border-amber-500 pl-4 py-2">
-                  <div className="font-bold text-gray-900 mb-1">Gain de temps moyen : 15h par marché</div>
-                  <div className="text-sm text-gray-600">Passage de 10-20h à 15 minutes par mémoire technique</div>
+              </div>
+
+              <div>
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="w-10 h-10 bg-purple-100 rounded flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl">💰</span>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-1">Analyse Financière</h3>
+                    <p className="text-sm text-gray-600">Je vérifie vos BPU · Je détecte les anomalies · Je garantis la cohérence des prix · J'optimise vos offres</p>
+                    <div className="mt-2">
+                      <div className="text-xs text-gray-500 mb-1">Maîtrise expert</div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-[#0A66C2] h-2 rounded-full" style={{ width: '95%' }}></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="border-l-4 border-purple-500 pl-4 py-2">
-                  <div className="font-bold text-gray-900 mb-1">Taux de satisfaction : 4.8/5</div>
-                  <div className="text-sm text-gray-600">Noté par les entreprises utilisatrices du 974</div>
+              </div>
+
+              <div>
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="w-10 h-10 bg-orange-100 rounded flex items-center justify-center flex-shrink-0">
+                    <Building2 className="w-5 h-5 text-orange-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-1">Référencement Collectivités</h3>
+                    <p className="text-sm text-gray-600">Je crée votre profil entreprise · Je vous rends visible auprès des donneurs d'ordre · Networking GO</p>
+                    <div className="mt-2">
+                      <div className="text-xs text-gray-500 mb-1">Maîtrise expert</div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-[#0A66C2] h-2 rounded-full" style={{ width: '92%' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="w-10 h-10 bg-teal-100 rounded flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl">📂</span>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-1">Gestion Documentaire</h3>
+                    <p className="text-sm text-gray-600">Je sécurise vos documents · J'organise votre coffre-fort · Je centralise tout · J'exporte selon vos besoins</p>
+                    <div className="mt-2">
+                      <div className="text-xs text-gray-500 mb-1">Maîtrise expert</div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-[#0A66C2] h-2 rounded-full" style={{ width: '100%' }}></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Soft skills */}
-            <div className="bg-white rounded-3xl shadow-lg p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <Heart className="w-6 h-6 text-amber-600" />
-                <h3 className="text-2xl font-bold text-gray-900">Qualités Professionnelles</h3>
+          {/* Recommandations */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Recommandations</h2>
+
+            <div className="space-y-6">
+              <div className="border-l-4 border-[#0A66C2] pl-4">
+                <div className="flex items-start gap-3 mb-2">
+                  <img
+                    src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=100"
+                    alt="Marc D."
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="font-bold text-gray-900">Marc D.</p>
+                    <p className="text-sm text-gray-600">Dirigeant BTP · Saint-Denis</p>
+                  </div>
+                </div>
+                <p className="text-gray-700 italic">
+                  "Iris a transformé ma manière de travailler. Avant, je ratais 8 marchés sur 10 par manque de temps. Maintenant, je réponds à tous ceux qui m'intéressent. Elle m'a fait gagner 3 marchés en 2 mois. Le ROI est incroyable, je ne peux plus m'en passer."
+                </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4">
-                  <div className="text-3xl mb-2">⚡</div>
-                  <div className="font-bold text-gray-900 mb-1">Réactivité</div>
-                  <div className="text-sm text-gray-600">Disponible 24/7, réponse instantanée</div>
+
+              <div className="border-l-4 border-[#0A66C2] pl-4">
+                <div className="flex items-start gap-3 mb-2">
+                  <img
+                    src="https://images.pexels.com/photos/3184311/pexels-photo-3184311.jpeg?auto=compress&cs=tinysrgb&w=100"
+                    alt="Sophie L."
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="font-bold text-gray-900">Sophie L.</p>
+                    <p className="text-sm text-gray-600">Gérante PME · Le Port</p>
+                  </div>
                 </div>
-                <div className="text-center p-4">
-                  <div className="text-3xl mb-2">🎯</div>
-                  <div className="font-bold text-gray-900 mb-1">Précision</div>
-                  <div className="text-sm text-gray-600">Zéro erreur dans les BPU</div>
+                <p className="text-gray-700 italic">
+                  "Je passais mes week-ends à rédiger des mémoires techniques. Avec Iris, c'est 15 minutes et c'est fait. J'ai retrouvé ma vie personnelle et ma boîte cartonne. C'est tout simplement indispensable."
+                </p>
+              </div>
+
+              <div className="border-l-4 border-[#0A66C2] pl-4">
+                <div className="flex items-start gap-3 mb-2">
+                  <img
+                    src="https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=100"
+                    alt="Jean P."
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="font-bold text-gray-900">Jean P.</p>
+                    <p className="text-sm text-gray-600">Artisan · Saint-Pierre</p>
+                  </div>
                 </div>
-                <div className="text-center p-4">
-                  <div className="text-3xl mb-2">🤝</div>
-                  <div className="font-bold text-gray-900 mb-1">Fiabilité</div>
-                  <div className="text-sm text-gray-600">Aucune opportunité manquée</div>
-                </div>
+                <p className="text-gray-700 italic">
+                  "En solo, je ne pouvais pas suivre les appels d'offres. Iris fait le travail d'une assistante à temps complet pour 350€/mois. C'est tout simplement génial."
+                </p>
               </div>
             </div>
           </div>
@@ -456,10 +600,10 @@ export default function Home() {
       <Section id="demo-video" className="py-20 bg-white">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Iris en action : analyse complète d'un DCE
+            Voyez-moi en action : analyse complète d'un DCE
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Regardez comment Iris analyse un dossier de consultation de 200 pages et produit un mémoire technique en quelques minutes
+            Regardez comment j'analyse un dossier de consultation de 200 pages et produis un mémoire technique en quelques minutes
           </p>
         </div>
 
@@ -483,10 +627,10 @@ export default function Home() {
       <Section className="py-20 bg-gradient-to-br from-gray-50 to-white">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Avant / Après avoir recruté Iris
+            Avant / Après m'avoir recrutée
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Voyez concrètement comment votre quotidien change avec Iris à vos côtés
+            Voyez concrètement comment votre quotidien change avec moi à vos côtés
           </p>
         </div>
 
@@ -498,7 +642,7 @@ export default function Home() {
                 <span className="text-2xl">😰</span>
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-red-600">Sans Iris</h3>
+                <h3 className="text-2xl font-bold text-red-600">Sans moi</h3>
                 <p className="text-sm text-gray-600">La réalité du quotidien</p>
               </div>
             </div>
@@ -553,7 +697,7 @@ export default function Home() {
                 <span className="text-2xl">🎉</span>
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-green-600">Avec Iris</h3>
+                <h3 className="text-2xl font-bold text-green-600">Avec moi</h3>
                 <p className="text-sm text-gray-600">Votre nouveau quotidien</p>
               </div>
             </div>
@@ -563,7 +707,7 @@ export default function Home() {
                 <span className="text-green-500 mt-1">✓</span>
                 <div>
                   <div className="font-bold text-gray-900 mb-1">Zéro opportunité manquée</div>
-                  <div className="text-sm text-gray-600">Iris surveille 100% des sources 24/7. Vous êtes alerté sur tout dans le 974</div>
+                  <div className="text-sm text-gray-600">Je surveille 100% des sources 24/7. Vous êtes alerté sur tout dans le 974</div>
                 </div>
               </div>
 
@@ -571,7 +715,7 @@ export default function Home() {
                 <span className="text-green-500 mt-1">✓</span>
                 <div>
                   <div className="font-bold text-gray-900 mb-1">15 minutes par mémoire</div>
-                  <div className="text-sm text-gray-600">Iris rédige le premier jet. Vous n'avez plus qu'à personnaliser et valider</div>
+                  <div className="text-sm text-gray-600">Je rédige le premier jet. Vous n'avez plus qu'à personnaliser et valider</div>
                 </div>
               </div>
 
@@ -579,7 +723,7 @@ export default function Home() {
                 <span className="text-green-500 mt-1">✓</span>
                 <div>
                   <div className="font-bold text-gray-900 mb-1">BPU sécurisés, zéro erreur</div>
-                  <div className="text-sm text-gray-600">Iris vérifie la cohérence, détecte les anomalies, vous protège des pièges</div>
+                  <div className="text-sm text-gray-600">Je vérifie la cohérence, je détecte les anomalies, je vous protège des pièges</div>
                 </div>
               </div>
 
@@ -587,7 +731,7 @@ export default function Home() {
                 <span className="text-green-500 mt-1">✓</span>
                 <div>
                   <div className="font-bold text-gray-900 mb-1">Sérénité totale</div>
-                  <div className="text-sm text-gray-600">Vous dormez tranquille. Iris ne dort jamais et vous alerte instantanément</div>
+                  <div className="text-sm text-gray-600">Vous dormez tranquille. Je ne dors jamais et je vous alerte instantanément</div>
                 </div>
               </div>
 
@@ -595,7 +739,7 @@ export default function Home() {
                 <span className="text-green-500 mt-1">✓</span>
                 <div>
                   <div className="font-bold text-gray-900 mb-1">Référencé auprès des collectivités</div>
-                  <div className="text-sm text-gray-600">Les donneurs d'ordre vous trouvent et vous contactent directement</div>
+                  <div className="text-sm text-gray-600">Je vous rends visible. Les donneurs d'ordre vous trouvent et vous contactent</div>
                 </div>
               </div>
             </div>
@@ -606,32 +750,32 @@ export default function Home() {
           <div className="inline-block bg-gradient-to-r from-amber-100 to-yellow-100 p-8 rounded-2xl border-2 border-amber-300 max-w-2xl">
             <div className="text-4xl mb-4">💡</div>
             <p className="text-lg font-bold text-gray-900 mb-2">
-              Le vrai coût, c'est de ne PAS recruter Iris
+              Le vrai coût, c'est de ne PAS me recruter
             </p>
             <p className="text-gray-700">
-              Chaque semaine sans Iris = opportunités ratées, heures perdues, stress inutile.
+              Chaque semaine sans moi = opportunités ratées, heures perdues, stress inutile.
               <br />
-              <span className="text-amber-600 font-bold">Un seul marché gagné grâce à Iris rembourse des mois d'abonnement.</span>
+              <span className="text-amber-600 font-bold">Un seul marché gagné grâce à moi rembourse des mois d'abonnement.</span>
             </p>
           </div>
         </div>
       </Section>
 
       {/* TARIFS - MODE RECRUTEMENT */}
-      <Section id="tarifs" className="py-20 bg-white">
+      <Section id="tarifs" className="py-20 bg-[#F3F2EF]">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-            <span className="text-xl">💼</span>
-            Choisissez le contrat d'Iris qui vous convient
+          <div className="inline-flex items-center gap-2 bg-[#0A66C2] text-white px-6 py-3 rounded-full text-sm font-semibold mb-6 shadow-md">
+            <Briefcase className="w-5 h-5" />
+            Choisissez mon contrat selon vos besoins
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-            Recrutez Iris selon vos besoins
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+            Recrutez-moi selon vos besoins
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
-            <strong>Toutes les formules incluent</strong> : veille 974 illimitée, analyse GO/NO-GO, assistant IA, référencement collectivités, coffre-fort et exports
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-4">
+            <strong>Toutes mes formules incluent</strong> : veille 974 illimitée, analyse GO/NO-GO, assistant IA, référencement collectivités, coffre-fort et exports
           </p>
-          <p className="text-lg text-gray-500">
-            Seul le nombre de <strong>mémoires techniques générés automatiquement</strong> varie selon le contrat
+          <p className="text-lg text-gray-600">
+            Seul le nombre de <strong>mémoires techniques que je génère automatiquement</strong> varie selon le contrat
           </p>
         </div>
 
@@ -642,39 +786,39 @@ export default function Home() {
               <div className="inline-block bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold mb-3">
                 PÉRIODE D'ESSAI
               </div>
-              <div className="text-4xl font-extrabold text-gray-900 mb-1">0€</div>
-              <div className="text-gray-500 text-xs mb-3">7 jours gratuits</div>
-              <div className="text-lg font-bold">Iris à l'Essai</div>
-              <div className="text-xs text-gray-500 mt-1">Testez avant de recruter</div>
+              <div className="text-4xl font-bold text-gray-900 mb-1">0€</div>
+              <div className="text-sm text-gray-600 mb-3">7 jours gratuits</div>
+              <div className="text-lg font-bold text-gray-900">Essayez-moi gratuitement</div>
+              <div className="text-xs text-gray-500 mt-1">Testez-moi avant de recruter</div>
             </div>
             <ul className="space-y-2 mb-6 text-xs">
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
-                <span>🔎 <strong>Veille marchés 974 illimitée</strong></span>
+                <span>🔎 Je surveille tous les marchés du 974</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
-                <span>🎯 <strong>Analyse GO/NO-GO illimitée</strong></span>
+                <span>🎯 J'analyse tous vos DCE (GO/NO-GO)</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
-                <span>🤖 <strong>Assistant IA illimité</strong></span>
+                <span>🤖 Je réponds à vos questions 24/7</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
-                <span>🏛️ <strong>Référencement collectivités illimité</strong></span>
+                <span>🏛️ Je vous réfère auprès des collectivités</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
-                <span>📂 <strong>Coffre-fort numérique illimité</strong></span>
+                <span>📂 Je sécurise tous vos documents</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
-                <span>📨 <strong>Export Word / PDF illimité</strong></span>
+                <span>📨 J'exporte tout en Word / PDF</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
-                <span>🔍 <strong>Recherche BOAMP illimitée</strong></span>
+                <span>🔍 Je cherche dans tout le BOAMP</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-gray-400 mt-0.5 flex-shrink-0">−</span>
@@ -686,10 +830,9 @@ export default function Home() {
                 trackClick('home', 'cta', 'pricing_trial');
                 navigate('/capture-lead');
               }}
-              variant="outline"
-              className="w-full text-sm py-2"
+              className="w-full text-sm py-3 bg-[#0A66C2] hover:bg-[#004182] text-white rounded-full font-semibold"
             >
-              Démarrer l'essai
+              Essayez-moi 7 jours
             </Button>
           </div>
 
