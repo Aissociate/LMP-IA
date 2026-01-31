@@ -256,7 +256,7 @@ export const LandingLead: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleCTAClick = () => {
-    window.location.href = 'https://api.leadconnectorhq.com/widget/form/wJUtQv8tF6XLSswJ2vf0';
+    navigate('/capture-lead');
   };
 
   React.useEffect(() => {

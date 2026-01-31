@@ -104,7 +104,7 @@ export default function Home() {
           <Button
             onClick={() => {
               trackClick('home', 'cta', 'header_trial');
-              window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+              navigate('/capture-lead');
             }}
             variant="primary"
             className="text-xs md:text-base px-3 py-2 md:px-6 md:py-3"
@@ -171,7 +171,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'hero_trial');
-                window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+                navigate('/capture-lead');
               }}
               variant="primary"
               className="text-lg px-8 py-4"
@@ -1242,7 +1242,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_trial');
-                window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+                navigate('/capture-lead');
               }}
               variant="outline"
               className="w-full text-sm py-2"
@@ -1295,7 +1295,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_bronze');
-                window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+                navigate('/capture-lead');
               }}
               variant="outline"
               className="w-full text-sm py-2"
@@ -1351,7 +1351,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_argent');
-                window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+                navigate('/capture-lead');
               }}
               variant="secondary"
               className="w-full text-sm py-2"
@@ -1404,7 +1404,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_or');
-                window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+                navigate('/capture-lead');
               }}
               variant="outline"
               className="w-full text-sm py-2 bg-white hover:bg-gray-50"
@@ -1475,7 +1475,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'final_trial');
-                window.location.href = 'https://api.leadconnectorhq.com/widget/form/u3CAIFPf7Jb64jzwWzSe';
+                navigate('/capture-lead');
               }}
               variant="secondary"
               className="text-lg px-8 py-4"

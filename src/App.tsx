@@ -20,6 +20,7 @@ import { LandingPME } from './components/Landing/LandingPME';
 import { LandingBTP } from './components/Landing/LandingBTP';
 import { LandingArtisans } from './components/Landing/LandingArtisans';
 import { LandingLead } from './components/Landing/LandingLead';
+import { LeadCapturePage } from './components/Landing/LeadCapturePage';
 import { CGV, ThankYou } from './components/Landing';
 import { MentionsLegales } from './components/Landing/MentionsLegales';
 import Home from './components/Landing/Home';
@@ -40,7 +41,7 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const location = useLocation();
 
-  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/mmp', '/cgv', '/mentions-legales', '/merci', '/recrutement', '/collecte', '/subscription'];
+  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/capture-lead', '/mmp', '/cgv', '/mentions-legales', '/merci', '/recrutement', '/collecte', '/subscription'];
   const isPublicRoute = publicRoutes.includes(location.pathname) || location.pathname.startsWith('/marchepublics/974');
 
   if (loading && !isPublicRoute) {
@@ -93,6 +94,7 @@ function AppContent() {
       <Route path="/landing/btp" element={<LandingBTP />} />
       <Route path="/landing/artisans" element={<LandingArtisans />} />
       <Route path="/lead" element={<LandingLead />} />
+      <Route path="/capture-lead" element={<LeadCapturePage />} />
       <Route path="/cgv" element={<CGV />} />
       <Route path="/mentions-legales" element={<MentionsLegales />} />
       <Route path="/merci" element={<ThankYou />} />
