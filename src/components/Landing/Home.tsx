@@ -569,11 +569,11 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* MODE STANDARD - Temps Partiel */}
+          {/* CONTRAT EMPLOYÉ - Temps Partiel */}
           <div className="bg-iris-card rounded-3xl shadow-card p-6 border-2 border-slate-200 hover:border-slate-400 transition-all hover:shadow-xl">
             <div className="text-center mb-4">
               <div className="inline-block bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-xs font-bold mb-3">
-                MODE STANDARD
+                CONTRAT EMPLOYÉ
               </div>
               <div className="text-4xl font-extrabold text-slate-900 mb-1">199€</div>
               <div className="text-slate-500 text-xs mb-3">HT / mois</div>
@@ -599,14 +599,14 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* MODE STANDARD - Temps Complet - RECOMMANDÉ */}
+          {/* CONTRAT EMPLOYÉ - Temps Complet - RECOMMANDÉ */}
           <div className="bg-gradient-to-br from-linkedin-500 to-linkedin-700 rounded-3xl shadow-2xl p-6 border-2 border-linkedin-500 transform md:scale-105 relative">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-linkedin-700 px-3 py-1 rounded-full text-xs font-bold shadow-lg">
               ⭐ RECOMMANDÉ
             </div>
             <div className="text-center mb-4 text-white">
               <div className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-xs font-bold mb-3">
-                MODE STANDARD
+                CONTRAT EMPLOYÉ
               </div>
               <div className="text-4xl font-extrabold mb-1">349€</div>
               <div className="text-white/80 text-xs mb-3">HT / mois</div>
@@ -632,11 +632,11 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* MODE PREMIUM */}
+          {/* HEURES SUPPLÉMENTAIRES */}
           <div className="bg-gradient-to-br from-iris-gold to-yellow-500 rounded-3xl shadow-xl p-6 border-2 border-yellow-500 hover:shadow-2xl transition-all">
             <div className="text-center mb-4">
               <div className="inline-block bg-yellow-900/30 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold mb-3">
-                MODE PREMIUM
+                HEURES SUPPLÉMENTAIRES
               </div>
               <div className="text-4xl font-extrabold text-slate-900 mb-1">649€</div>
               <div className="text-slate-700 text-xs mb-3">HT / mois</div>
@@ -658,7 +658,7 @@ export default function Home() {
               variant="outline"
               className="w-full text-sm py-2 bg-white hover:bg-slate-50"
             >
-              Me recruter en Mode Premium
+              Me recruter (Heures Supplémentaires)
             </Button>
           </div>
         </div>

@@ -49,7 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
     <div className={`${isDark ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} h-screen w-64 fixed left-0 top-0 flex flex-col border-r transition-colors duration-200`}>
       <div className={`px-6 py-5 border-b ${isDark ? 'border-gray-800' : 'border-gray-200'}`}>
         <div className="flex items-center justify-center">
-          <img src="/logo1.png" alt="Le Marché Public.fr" className="h-30 w-auto" />
+          <img src="/logo1.png" alt="Le Marché Public.fr" className="h-15 w-auto" />
         </div>
       </div>
 
