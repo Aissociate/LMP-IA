@@ -126,7 +126,7 @@ export default function Home() {
       <header className="bg-iris-card shadow-subtle sticky top-0 z-50 border-b border-iris-border">
         <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-2">
           <div className="flex items-center flex-shrink-0">
-            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-16 md:h-24 lg:h-[120px] w-auto object-contain" />
+            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-12 md:h-16 lg:h-20 w-auto object-contain" />
           </div>
           <Button
             onClick={() => {

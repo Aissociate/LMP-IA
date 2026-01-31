@@ -20,7 +20,7 @@ export const MarketModelComparison: React.FC = () => {
               <Zap className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-gray-900">Mode Standard</h3>
+              <h3 className="text-2xl font-bold text-gray-900">Compétences Professionnelles</h3>
               <p className="text-sm text-gray-600">Inclus dans tous les plans</p>
             </div>
           </div>
@@ -76,7 +76,7 @@ export const MarketModelComparison: React.FC = () => {
               <Brain className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-gray-900">Mode Premium</h3>
+              <h3 className="text-2xl font-bold text-gray-900">Compétences Expert</h3>
               <p className="text-sm text-purple-700 font-semibold">+99€/mois</p>
             </div>
           </div>
@@ -131,16 +131,6 @@ export const MarketModelComparison: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-12 text-center">
-        <div className="inline-block backdrop-blur-sm bg-white/80 rounded-2xl p-6 border border-gray-200/50 shadow-lg">
-          <p className="text-gray-700 mb-2">
-            <span className="font-bold text-orange-600">Le Mode Standard</span> est inclus dans tous nos plans.
-          </p>
-          <p className="text-gray-700">
-            <span className="font-bold text-purple-600">Le Mode Premium</span> est disponible en option pour +99€/mois sur tous les plans.
-          </p>
-        </div>
-      </div>
     </div>
   );
 };
