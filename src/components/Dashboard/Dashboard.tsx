@@ -266,7 +266,7 @@ export const Dashboard: React.FC = () => {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur-xl opacity-30 animate-pulse"></div>
               <img
-                src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=150"
+                src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150"
                 alt="Iris - Votre assistante"
                 className="relative w-16 h-16 rounded-full object-cover border-3 border-amber-400 shadow-lg"
               />

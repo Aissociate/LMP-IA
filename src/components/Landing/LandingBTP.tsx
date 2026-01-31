@@ -121,7 +121,7 @@ export const LandingBTP: React.FC = () => {
           <div>
             <div className="flex items-center gap-4 mb-6">
               <img
-                src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=200"
+                src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=200"
                 alt="Iris - Assistante experte BTP"
                 className="w-20 h-20 rounded-full object-cover border-4 border-amber-400 shadow-lg"
               />
