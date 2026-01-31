@@ -157,7 +157,7 @@ export const LandingArtisans: React.FC = () => {
               className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-8 py-4"
               onClick={() => navigate('/capture-lead')}
             >
-              J'obtiens mon mémoire gratuit maintenant
+              Recruter Iris pour mon dossier
               <ArrowRight className="w-5 h-5" />
             </Button>
 

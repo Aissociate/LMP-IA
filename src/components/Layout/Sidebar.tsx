@@ -23,7 +23,7 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
+  { id: 'dashboard', label: 'Iris - Mon Assistante', icon: BarChart3 },
   { id: 'recherche-marches', label: 'Recherche de marchés', icon: Search },
   { id: 'surveillance-marches', label: 'Market Sentinel™', icon: Shield },
   { id: 'marche', label: 'Marchés', icon: FileText },

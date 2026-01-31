@@ -119,43 +119,49 @@ export const LandingBTP: React.FC = () => {
       <Section className="pt-16 pb-12 sm:pt-20 sm:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              <span className="text-xl">🚧</span>
-              Accès prioritaire entreprises BTP
+            <div className="flex items-center gap-4 mb-6">
+              <img
+                src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=200"
+                alt="Iris - Assistante experte BTP"
+                className="w-20 h-20 rounded-full object-cover border-4 border-amber-400 shadow-lg"
+              />
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 to-yellow-500 text-[#1e3a5f] px-4 py-2 rounded-full text-sm font-bold">
+                <span className="text-xl">🚧</span>
+                Iris - Spécialiste Marchés BTP
+              </div>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-              Entreprises BTP : votre <span className="text-[#F77F00]">dossier technique</span> vous fait perdre des points
+              <span className="bg-gradient-to-r from-[#1e3a5f] to-[#2a5a8f] bg-clip-text text-transparent">Iris analyse vos DCE</span> et rédige vos <span className="text-amber-500">mémoires techniques</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-700 mb-8">
-              Pas vos prix. Pas votre savoir-faire. <span className="font-bold text-[#F77F00]">Votre dossier administratif.</span>
+              Pendant que vous êtes sur vos chantiers, <span className="font-bold text-[#1e3a5f]">Iris travaille pour vous :</span> veille 24/7, analyse des critères, rédaction structurée.
             </p>
 
-            <div className="bg-gradient-to-r from-orange-50 to-orange-100 border-l-4 border-[#F77F00] p-6 rounded-xl mb-8 shadow-lg">
+            <div className="bg-gradient-to-r from-[#1e3a5f]/10 to-[#2a5a8f]/10 border-l-4 border-amber-500 p-6 rounded-xl mb-8 shadow-lg">
               <p className="text-lg font-semibold text-gray-900">
-                Plus de <span className="text-2xl text-[#F77F00] font-bold">2000 mémoires</span> générés via LMP<br/>
-                avec une <span className="font-bold">nette augmentation du score final</span><br/>
-                grâce à l'analyse automatique du DCE.
+                "Iris détecte tous les marchés de la Région, du Département et des 24 communes. Je calcule votre score de réussite avant même que vous ne perdiez du temps."
               </p>
+              <p className="text-sm text-gray-600 mt-2 font-medium">— Iris, votre assistante marchés publics</p>
             </div>
 
             <Button
-              className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-8 py-4"
+              className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-[#1e3a5f] text-lg px-8 py-4 font-bold"
               onClick={() => navigate('/capture-lead')}
             >
-              Je veux un dossier qui coche tous les critères
+              Démarrer mon test gratuit avec Iris
               <ArrowRight className="w-5 h-5" />
             </Button>
 
             <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-600">
               <div className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
-                <span>Sans CB</span>
+                <span className="text-amber-500 font-bold">✓</span>
+                <span>Zéro logiciel à installer</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
-                <span>Sans engagement</span>
+                <span className="text-amber-500 font-bold">✓</span>
+                <span>Alertes WhatsApp</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-green-500">✓</span>
@@ -297,7 +303,7 @@ export const LandingBTP: React.FC = () => {
               className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-10 py-5 mb-4"
               onClick={() => navigate('/capture-lead')}
             >
-              👉 Je génère mon 1er mémoire maintenant
+              Laisser Iris rédiger mon premier mémoire
               <ArrowRight className="w-5 h-5" />
             </Button>
             <p className="text-base font-bold text-[#F77F00] bg-orange-100 py-2 px-6 rounded-full inline-block">
@@ -330,7 +336,7 @@ export const LandingBTP: React.FC = () => {
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-10 py-5"
             onClick={() => navigate('/capture-lead')}
           >
-            Je teste l'assistant numérique sur mon prochain DCE
+            Recruter Iris pour mon prochain marché
             <ArrowRight className="w-5 h-5" />
           </Button>
         </div>

@@ -144,7 +144,7 @@ export const LandingPME: React.FC = () => {
               className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-8 py-4"
               onClick={() => navigate('/capture-lead')}
             >
-              J'active mon assistant numérique 7 jours
+              Recruter Iris pour 7 jours gratuits
               <ArrowRight className="w-5 h-5" />
             </Button>
 

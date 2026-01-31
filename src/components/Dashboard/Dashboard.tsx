@@ -262,12 +262,24 @@ export const Dashboard: React.FC = () => {
     <div className={`min-h-screen transition-colors duration-200 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="max-w-7xl mx-auto p-8">
         <div className="mb-8">
-          <h1 className={`text-3xl font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            Tableau de bord
-          </h1>
-          <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            Vue d'ensemble de vos appels d'offres et performances
-          </p>
+          <div className="flex items-center gap-4 mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur-xl opacity-30 animate-pulse"></div>
+              <img
+                src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=150"
+                alt="Iris - Votre assistante"
+                className="relative w-16 h-16 rounded-full object-cover border-3 border-amber-400 shadow-lg"
+              />
+            </div>
+            <div>
+              <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <span className="bg-gradient-to-r from-amber-500 to-yellow-500 bg-clip-text text-transparent">Iris</span> - Votre Assistante
+              </h1>
+              <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                Je surveille vos marchés et prépare vos dossiers 24/7
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

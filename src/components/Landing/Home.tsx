@@ -117,53 +117,64 @@ export default function Home() {
       </header>
 
       {/* HERO SECTION */}
-      <Section className="pt-20 pb-16 sm:pt-32 sm:pb-24 relative">
+      <Section className="pt-20 pb-16 sm:pt-32 sm:pb-24 relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6978a15c00336c6d64d341bb.jpg)'
           }}
         >
-          <div className="absolute inset-0 bg-white/65"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a5f]/90 via-[#2a5a8f]/85 to-[#1e3a5f]/90"></div>
         </div>
+
         <div className="text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-orange-100 text-[#F77F00] px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <Sparkles className="w-4 h-4" />
-            Essai gratuit 7 jours
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 to-yellow-500 text-[#1e3a5f] px-6 py-3 rounded-full text-sm font-bold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500 shadow-lg">
+            <Sparkles className="w-5 h-5" />
+            Testez Iris gratuitement pendant 7 jours
           </div>
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <span className="bg-gradient-to-r from-gray-900 via-[#F77F00] to-gray-900 bg-clip-text text-transparent">
-              Gagnez plus de marchés publics
+          <div className="flex justify-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-600">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur-2xl opacity-30 animate-pulse"></div>
+              <img
+                src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=400"
+                alt="Iris - Votre assistante experte en marchés publics"
+                className="relative w-32 h-32 rounded-full object-cover border-4 border-amber-400 shadow-2xl"
+              />
+            </div>
+          </div>
+
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent">
+              Recrutez Iris,
             </span>
             <br />
-            <span className="text-gray-900">à La Réunion 974 avec votre assistant numérique</span>
+            <span className="text-white">votre assistante experte</span>
+            <br />
+            <span className="text-white/90">en marchés publics réunionnais</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            Veille exhaustive 24/7 des marchés publics réunionnais, alertes instantanées, génération automatique de mémoires techniques et référencement auprès des collectivités locales.
+          <p className="text-lg md:text-xl text-white/90 max-w-4xl mx-auto mb-12 leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 px-4">
+            Pendant que vous gérez vos chantiers, <span className="font-bold text-amber-400">Iris scanne 100% des sources 24/7</span>, analyse les DCE de 200 pages et rédige vos premiers jets de mémoires techniques.
+            <br />
+            <span className="text-lg font-semibold text-amber-300 mt-2 block">Plus qu'un outil, c'est votre nouveau bras droit stratégique.</span>
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12 text-left">
-            <div className="bg-white p-4 rounded-xl shadow-md">
-              <div className="text-2xl mb-2">📡</div>
-              <div className="text-sm font-semibold text-gray-900">Veille 24/7</div>
-              <div className="text-xs text-gray-600">BOAMP nationale + Réunion 974</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12 text-left px-4">
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white/20 hover:bg-white/15 transition-all duration-300">
+              <div className="text-4xl mb-3">👁️</div>
+              <div className="text-xl font-bold text-amber-400 mb-2">Vision Totale</div>
+              <div className="text-sm text-white/90">"Je surveille chaque jour la Région, le Département et les 24 communes pour vous. Rien ne m'échappe."</div>
             </div>
-            <div className="bg-white p-4 rounded-xl shadow-md">
-              <div className="text-2xl mb-2">📱</div>
-              <div className="text-sm font-semibold text-gray-900">Alertes multi-canal</div>
-              <div className="text-xs text-gray-600">Mail, SMS, WhatsApp</div>
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white/20 hover:bg-white/15 transition-all duration-300">
+              <div className="text-4xl mb-3">🧠</div>
+              <div className="text-xl font-bold text-amber-400 mb-2">Intelligence Critique</div>
+              <div className="text-sm text-white/90">"Je ne me contente pas de vous alerter. Je calcule votre score de réussite (Sentinel) avant que vous ne perdiez une seule heure."</div>
             </div>
-            <div className="bg-white p-4 rounded-xl shadow-md">
-              <div className="text-2xl mb-2">⚖️</div>
-              <div className="text-sm font-semibold text-gray-900">Analyse juridique</div>
-              <div className="text-xs text-gray-600">Conformité garantie</div>
-            </div>
-            <div className="bg-white p-4 rounded-xl shadow-md">
-              <div className="text-2xl mb-2">🔐</div>
-              <div className="text-sm font-semibold text-gray-900">Coffre-fort</div>
-              <div className="text-xs text-gray-600">Documents sécurisés</div>
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white/20 hover:bg-white/15 transition-all duration-300">
+              <div className="text-4xl mb-3">✍️</div>
+              <div className="text-xl font-bold text-amber-400 mb-2">Plume Administrative</div>
+              <div className="text-sm text-white/90">"Donnez-moi un DCE, je vous rends un mémoire technique structuré et un BPU cohérent. Vous n'avez plus qu'à valider."</div>
             </div>
           </div>
 
@@ -174,27 +185,32 @@ export default function Home() {
                 navigate('/capture-lead');
               }}
               variant="primary"
-              className="text-lg px-8 py-4"
+              className="text-lg px-10 py-5 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-[#1e3a5f] font-bold shadow-2xl"
             >
-              Démarrer mes 7 jours gratuits
+              Démarrer mon test gratuit avec Iris
+              <ArrowRight className="w-5 h-5" />
             </Button>
             <Button
-              onClick={() => document.getElementById('fonctionnalites')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('demo-video')?.scrollIntoView({ behavior: 'smooth' })}
               variant="outline"
-              className="text-lg px-8 py-4"
+              className="text-lg px-10 py-5 border-2 border-amber-400 text-white hover:bg-amber-400/20"
             >
-              Découvrir les fonctionnalités
+              Voir Iris analyser un DCE
             </Button>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 items-center">
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-white/80 items-center">
             <div className="flex items-center gap-2">
-              <span className="text-green-500 text-lg">✓</span>
-              <span>7 jours d'accès complet gratuit</span>
+              <span className="text-amber-400 text-xl font-bold">✓</span>
+              <span className="font-medium">Zéro logiciel à installer</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-green-500 text-lg">✓</span>
-              <span>Accès à toutes les fonctionnalités</span>
+              <span className="text-amber-400 text-xl font-bold">✓</span>
+              <span className="font-medium">Onboarding WhatsApp en 10 secondes</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-amber-400 text-xl font-bold">✓</span>
+              <span className="font-medium">Sans engagement</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-green-500 text-lg">✓</span>
@@ -286,13 +302,17 @@ export default function Home() {
       </Section>
 
       {/* VIDEO DEMO SECTION */}
-      <Section className="py-16 bg-white">
+      <Section id="demo-video" className="py-16 bg-gradient-to-br from-[#1e3a5f] to-[#2a5a8f]">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
-            Découvrez l'interface en vidéo
+          <div className="inline-flex items-center gap-2 bg-amber-400/20 px-4 py-2 rounded-full mb-4">
+            <span className="text-2xl">🎬</span>
+            <span className="text-amber-400 font-bold">Démo en direct</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-white">
+            Voyez Iris en action
           </h2>
-          <p className="text-lg text-gray-600">
-            Une solution intuitive et puissante pour gagner plus de marchés
+          <p className="text-lg text-white/80">
+            Découvrez comment Iris analyse un DCE en quelques secondes
           </p>
         </div>
         <div className="max-w-5xl mx-auto">
