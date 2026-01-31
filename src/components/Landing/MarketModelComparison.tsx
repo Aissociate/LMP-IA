@@ -6,10 +6,10 @@ export const MarketModelComparison: React.FC = () => {
     <div className="mx-auto max-w-6xl">
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-          Mode Standard vs Mode Premium
+          Choisissez le modèle IA adapté à vos besoins
         </h2>
         <p className="text-xl text-gray-700">
-          Choisissez le modèle IA adapté à vos besoins
+          Niveau de compétence : Professionnel pour Standard, Expert pour Premium
         </p>
       </div>
 
