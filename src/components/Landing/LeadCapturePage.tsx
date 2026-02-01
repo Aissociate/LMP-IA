@@ -627,7 +627,7 @@ export const LeadCapturePage: React.FC = () => {
 
               <p className="text-sm text-gray-600 text-center">
                 En soumettant ce formulaire, vous acceptez d'être recontacté par notre équipe.
-                Aucune carte bancaire n'est requise pour l'essai gratuit.
+                Offre Gratuite sans engagement.
               </p>
             </div>
           </div>
