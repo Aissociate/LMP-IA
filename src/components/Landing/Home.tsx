@@ -1,8 +1,29 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Target, ChevronLeft, ChevronRight, Mail, Search, MapPin, Briefcase, Award, Users, Heart, CheckCircle } from 'lucide-react';
+import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Target, ChevronLeft, ChevronRight, Mail, Search, MapPin, Briefcase, Award, Users, Heart, CheckCircle, Bell, FileText } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { initAnalytics, trackClick } from '../../lib/analytics';
 import { MarketModelComparison } from './MarketModelComparison';
+
+const VARIANTES = [
+  {
+    id: 'A',
+    titre: 'Recrutez Iris, votre nouvelle collaboratrice',
+    soustitre: 'experte en marchés publics réunionnais',
+    description: 'Pendant que vous gérez vos chantiers, Iris scanne 100% des sources 24/7, analyse les DCE de 200 pages et rédige vos premiers jets de mémoires techniques.'
+  },
+  {
+    id: 'B',
+    titre: 'Embauchez Iris pour 349€/mois',
+    soustitre: 'au lieu de 3500€ pour une assistante classique',
+    description: 'Iris surveille tous les marchés 974, analyse les DCE, rédige vos mémoires et ne prend jamais de congés. Disponible 24/7 sans RTT ni absences.'
+  },
+  {
+    id: 'C',
+    titre: 'Iris : Votre bras droit stratégique',
+    soustitre: 'spécialisé marchés publics La Réunion',
+    description: 'Elle détecte chaque opportunité dans le 974, calcule votre score GO/NO-GO et rédige vos mémoires techniques. Vous ne faites que valider et envoyer.'
+  }
+];
 
 const Button = ({ children, onClick, className = "", variant = "primary" }: { children: React.ReactNode; onClick: () => void; className?: string; variant?: "primary" | "secondary" | "outline" }) => {
   const baseClasses = "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105";
@@ -88,15 +109,16 @@ const Carousel = () => {
 
 export default function Home() {
   const navigate = useNavigate();
+  const [copy] = useState(() => VARIANTES[Math.floor(Math.random() * VARIANTES.length)]);
 
   useEffect(() => {
     return initAnalytics('home');
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-orange-50/30 to-white">
+    <div className="min-h-screen bg-iris-bg">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+      <header className="bg-iris-card shadow-subtle sticky top-0 z-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-2">
           <div className="flex items-center flex-shrink-0">
             <img src="/logo1.png" alt="Le Marché Public.fr" className="h-16 md:h-24 lg:h-[120px] w-auto object-contain" />
@@ -107,7 +129,7 @@ export default function Home() {
               navigate('/capture-lead');
             }}
             variant="primary"
-            className="text-xs md:text-base px-3 py-2 md:px-6 md:py-3"
+            className="text-xs md:text-base px-3 py-2 md:px-6 md:py-3 bg-linkedin-500 hover:bg-linkedin-600"
           >
             <span className="hidden sm:inline">Recruter Iris 7 jours gratuits</span>
             <span className="sm:hidden">Recruter Iris</span>
@@ -116,187 +138,208 @@ export default function Home() {
         </div>
       </header>
 
-      {/* HERO SECTION */}
-      <Section className="pt-20 pb-16 sm:pt-32 sm:pb-24 relative overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: 'url(https://storage.googleapis.com/msgsndr/Khh3gHoXw8rbmLrz89s4/media/6978a15c00336c6d64d341bb.jpg)'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a5f]/90 via-[#2a5a8f]/85 to-[#1e3a5f]/90"></div>
-        </div>
+      {/* HERO SECTION - LinkedIn Style */}
+      <Section className="pt-12 pb-16">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column - Content */}
+          <div>
+            <div className="inline-flex items-center gap-2 bg-linkedin-50 text-linkedin-700 px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-linkedin-200">
+              <Sparkles className="w-4 h-4" />
+              Essai gratuit 7 jours • Sans carte bancaire
+            </div>
 
-        <div className="text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 to-yellow-500 text-[#1e3a5f] px-6 py-3 rounded-full text-sm font-bold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500 shadow-lg">
-            <Sparkles className="w-5 h-5" />
-            Recrutez Iris gratuitement pendant 7 jours
-          </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+              {copy.titre}
+              <br />
+              <span className="text-linkedin-500">{copy.soustitre}</span>
+            </h1>
 
-          <div className="flex justify-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-600">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur-2xl opacity-30 animate-pulse"></div>
-              <img
-                src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400"
-                alt="Iris - Votre nouvelle collaboratrice experte en marchés publics"
-                className="relative w-32 h-32 rounded-full object-cover border-4 border-amber-400 shadow-2xl"
-              />
+            <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+              {copy.description}
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <Button
+                onClick={() => {
+                  trackClick('home', 'cta', `hero_trial_${copy.id}`);
+                  navigate('/capture-lead');
+                }}
+                variant="primary"
+                className="text-lg px-8 py-4 bg-linkedin-500 hover:bg-linkedin-600 shadow-lg"
+              >
+                Recruter Iris gratuitement
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+              <Button
+                onClick={() => document.getElementById('demo-video')?.scrollIntoView({ behavior: 'smooth' })}
+                variant="outline"
+                className="text-lg px-8 py-4 border-2 border-gray-300 text-gray-700 hover:border-linkedin-500 hover:text-linkedin-500"
+              >
+                Voir la démo
+              </Button>
+            </div>
+
+            <div className="flex flex-wrap gap-6 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-linkedin-500" />
+                <span>7 jours gratuits</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-linkedin-500" />
+                <span>Sans engagement</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-linkedin-500" />
+                <span>Formation incluse</span>
+              </div>
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent">
-              Recrutez Iris,
-            </span>
-            <br />
-            <span className="text-white">votre nouvelle collaboratrice experte</span>
-            <br />
-            <span className="text-white/90">en marchés publics réunionnais</span>
-          </h1>
+          {/* Right Column - Widget Simulation Iris */}
+          <div className="relative">
+            <div className="bg-iris-card rounded-lg shadow-linkedin p-6 border border-gray-200">
+              <div className="flex items-center gap-3 mb-6">
+                <img
+                  src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150"
+                  alt="Iris"
+                  className="w-16 h-16 rounded-full object-cover border-2 border-linkedin-500"
+                />
+                <div>
+                  <h3 className="font-bold text-lg text-gray-900">Iris</h3>
+                  <p className="text-sm text-gray-600">Assistante marchés publics IA</p>
+                  <div className="flex items-center gap-1 mt-1">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span className="text-xs text-green-600 font-medium">Disponible 24/7</span>
+                  </div>
+                </div>
+              </div>
 
-          <p className="text-lg md:text-xl text-white/90 max-w-4xl mx-auto mb-12 leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 px-4">
-            Pendant que vous gérez vos chantiers, <span className="font-bold text-amber-400">Iris scanne 100% des sources 24/7</span>, analyse les DCE de 200 pages et rédige vos premiers jets de mémoires techniques.
-            <br />
-            <span className="text-lg font-semibold text-amber-300 mt-2 block">Plus qu'un outil, c'est votre nouveau bras droit stratégique.</span>
-          </p>
+              <div className="bg-linkedin-50 rounded-lg p-4 mb-4 border border-linkedin-100">
+                <div className="flex items-start gap-3">
+                  <Bell className="w-5 h-5 text-linkedin-500 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 mb-2">
+                      Nouveau dossier détecté pour vous
+                    </p>
+                    <div className="bg-white rounded p-3 shadow-sm border border-gray-200">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <FileText className="w-4 h-4 text-gray-600" />
+                          <span className="text-xs font-medium text-gray-900">Travaux voirie - Saint-Denis</span>
+                        </div>
+                        <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">92% match</span>
+                      </div>
+                      <p className="text-xs text-gray-600 mb-2">Budget : 450 000€ • Échéance : 14 jours</p>
+                      <div className="flex gap-2">
+                        <button className="text-xs bg-linkedin-500 text-white px-3 py-1 rounded font-medium hover:bg-linkedin-600 transition">
+                          Analyser le DCE
+                        </button>
+                        <button className="text-xs border border-gray-300 text-gray-700 px-3 py-1 rounded font-medium hover:border-linkedin-500 hover:text-linkedin-500 transition">
+                          Ignorer
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12 text-left px-4">
-            <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white/20 hover:bg-white/15 transition-all duration-300">
-              <div className="text-4xl mb-3">👁️</div>
-              <div className="text-xl font-bold text-amber-400 mb-2">Vision Totale</div>
-              <div className="text-sm text-white/90">"Je surveille chaque jour la Région, le Département et les 24 communes pour vous. Rien ne m'échappe."</div>
+              <div className="grid grid-cols-3 gap-3 text-center">
+                <div className="bg-gray-50 rounded p-3">
+                  <div className="text-xl font-bold text-linkedin-500">24/7</div>
+                  <div className="text-xs text-gray-600">Veille active</div>
+                </div>
+                <div className="bg-gray-50 rounded p-3">
+                  <div className="text-xl font-bold text-linkedin-500">100%</div>
+                  <div className="text-xs text-gray-600">Sources 974</div>
+                </div>
+                <div className="bg-gray-50 rounded p-3">
+                  <div className="text-xl font-bold text-linkedin-500">15min</div>
+                  <div className="text-xs text-gray-600">Par mémoire</div>
+                </div>
+              </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white/20 hover:bg-white/15 transition-all duration-300">
-              <div className="text-4xl mb-3">🧠</div>
-              <div className="text-xl font-bold text-amber-400 mb-2">Intelligence Critique</div>
-              <div className="text-sm text-white/90">"Je ne me contente pas de vous alerter. Je calcule votre score de réussite avant que vous ne perdiez une seule heure."</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white/20 hover:bg-white/15 transition-all duration-300">
-              <div className="text-4xl mb-3">✍️</div>
-              <div className="text-xl font-bold text-amber-400 mb-2">Plume Administrative</div>
-              <div className="text-sm text-white/90">"Donnez-moi un DCE, je vous rends un mémoire technique structuré et un BPU cohérent. Vous n'avez plus qu'à valider."</div>
-            </div>
-          </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1200">
-            <Button
-              onClick={() => {
-                trackClick('home', 'cta', 'hero_trial');
-                navigate('/capture-lead');
-              }}
-              variant="primary"
-              className="text-lg px-10 py-5 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-[#1e3a5f] font-bold shadow-2xl"
-            >
-              Démarrer mon essai gratuit avec Iris
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-            <Button
-              onClick={() => document.getElementById('demo-video')?.scrollIntoView({ behavior: 'smooth' })}
-              variant="outline"
-              className="text-lg px-10 py-5 border-2 border-amber-400 text-white hover:bg-amber-400/20"
-            >
-              Voir Iris analyser un DCE
-            </Button>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-white/80 items-center">
-            <div className="flex items-center gap-2">
-              <span className="text-amber-400 text-xl font-bold">✓</span>
-              <span className="font-medium">Disponible immédiatement</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-amber-400 text-xl font-bold">✓</span>
-              <span className="font-medium">Formation incluse</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-amber-400 text-xl font-bold">✓</span>
-              <span className="font-medium">Sans engagement</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500 text-lg">✓</span>
-              <span>Résiliation en 1 clic</span>
+            <div className="absolute -bottom-4 -right-4 bg-amber-400 text-gray-900 px-4 py-2 rounded-lg shadow-lg font-bold text-sm transform rotate-3">
+              Preuve de concept en direct
             </div>
           </div>
         </div>
       </Section>
 
       {/* SEARCH MARKETS SECTION */}
-      <Section className="py-16 bg-gradient-to-br from-[#F77F00] to-[#E06F00]">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-              Découvrez les marchés publics à La Réunion
-            </h2>
-            <p className="text-lg text-white/90">
-              Explorez dès maintenant les opportunités qu'Iris surveille pour vous dans le 974
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-2xl p-8">
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3 text-gray-700 mb-4">
-                <MapPin className="w-6 h-6 text-[#F77F00]" />
-                <span className="font-semibold text-lg">Marchés publics actifs à La Réunion</span>
+      <Section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-iris-card rounded-lg shadow-linkedin border border-gray-200 p-8">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 bg-linkedin-50 text-linkedin-700 px-4 py-2 rounded-full text-sm font-semibold mb-4 border border-linkedin-200">
+                <MapPin className="w-4 h-4" />
+                Territoire 974
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
-                  <div className="font-bold text-blue-900 mb-1">CINOR, TCO, CIREST</div>
-                  <div className="text-sm text-blue-700">Intercommunalités du Nord et de l'Est</div>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
-                  <div className="font-bold text-blue-900 mb-1">CIVIS, CASUD</div>
-                  <div className="text-sm text-blue-700">Intercommunalités du Sud et de l'Ouest</div>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
-                  <div className="font-bold text-blue-900 mb-1">Région Réunion</div>
-                  <div className="text-sm text-blue-700">Marchés régionaux et départementaux</div>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
-                  <div className="font-bold text-blue-900 mb-1">24 Communes du 974</div>
-                  <div className="text-sm text-blue-700">Saint-Denis, Saint-Pierre, Le Port...</div>
-                </div>
-              </div>
-
-              <Button
-                onClick={() => {
-                  trackClick('home', 'navigation', 'search_markets_reunion');
-                  navigate('/marchepublics/974');
-                }}
-                variant="primary"
-                className="w-full text-lg"
-              >
-                <Search className="w-5 h-5" />
-                Voir tous les marchés qu'Iris surveille
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-
-              <p className="text-sm text-gray-600 text-center mt-2">
-                Accès gratuit aux consultations en cours • Mise à jour quotidienne par Iris
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Découvrez les marchés qu'Iris surveille
+              </h2>
+              <p className="text-lg text-gray-600">
+                Accès gratuit aux consultations en cours à La Réunion
               </p>
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="bg-linkedin-50 p-4 rounded-lg border border-linkedin-100">
+                <div className="font-bold text-gray-900 mb-1">CINOR, TCO, CIREST</div>
+                <div className="text-sm text-gray-600">Intercommunalités Nord et Est</div>
+              </div>
+              <div className="bg-linkedin-50 p-4 rounded-lg border border-linkedin-100">
+                <div className="font-bold text-gray-900 mb-1">CIVIS, CASUD</div>
+                <div className="text-sm text-gray-600">Intercommunalités Sud et Ouest</div>
+              </div>
+              <div className="bg-linkedin-50 p-4 rounded-lg border border-linkedin-100">
+                <div className="font-bold text-gray-900 mb-1">Région Réunion</div>
+                <div className="text-sm text-gray-600">Marchés régionaux et départementaux</div>
+              </div>
+              <div className="bg-linkedin-50 p-4 rounded-lg border border-linkedin-100">
+                <div className="font-bold text-gray-900 mb-1">24 Communes du 974</div>
+                <div className="text-sm text-gray-600">Saint-Denis, Saint-Pierre, Le Port...</div>
+              </div>
+            </div>
+
+            <Button
+              onClick={() => {
+                trackClick('home', 'navigation', 'search_markets_reunion');
+                navigate('/marchepublics/974');
+              }}
+              variant="primary"
+              className="w-full text-lg bg-linkedin-500 hover:bg-linkedin-600"
+            >
+              <Search className="w-5 h-5" />
+              Voir tous les marchés surveillés par Iris
+              <ArrowRight className="w-5 h-5" />
+            </Button>
+
+            <p className="text-sm text-gray-500 text-center mt-4">
+              Mise à jour quotidienne • 100% des sources du territoire
+            </p>
           </div>
         </div>
       </Section>
 
       {/* TRUST INDICATORS */}
-      <Section className="py-12 bg-white border-y border-gray-200">
+      <Section className="py-12 bg-iris-bg">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <div className="text-3xl font-bold text-[#F77F00] mb-2">100+</div>
-            <div className="text-sm text-gray-600">Entreprises accompagnées par Iris</div>
+          <div className="bg-iris-card rounded-lg p-6 shadow-subtle border border-gray-200">
+            <div className="text-4xl font-bold text-linkedin-500 mb-2">100+</div>
+            <div className="text-sm text-gray-600 font-medium">Entreprises accompagnées</div>
           </div>
-          <div>
-            <div className="text-3xl font-bold text-[#F77F00] mb-2">24/7</div>
-            <div className="text-sm text-gray-600">Iris veille pour vous</div>
+          <div className="bg-iris-card rounded-lg p-6 shadow-subtle border border-gray-200">
+            <div className="text-4xl font-bold text-linkedin-500 mb-2">24/7</div>
+            <div className="text-sm text-gray-600 font-medium">Veille active</div>
           </div>
-          <div>
-            <div className="text-3xl font-bold text-[#F77F00] mb-2">150+</div>
-            <div className="text-sm text-gray-600">Marchés remportés avec Iris</div>
+          <div className="bg-iris-card rounded-lg p-6 shadow-subtle border border-gray-200">
+            <div className="text-4xl font-bold text-linkedin-500 mb-2">150+</div>
+            <div className="text-sm text-gray-600 font-medium">Marchés remportés</div>
           </div>
-          <div>
-            <div className="text-3xl font-bold text-[#F77F00] mb-2">4.8/5</div>
-            <div className="text-sm text-gray-600">Satisfaction employeurs</div>
+          <div className="bg-iris-card rounded-lg p-6 shadow-subtle border border-gray-200">
+            <div className="text-4xl font-bold text-linkedin-500 mb-2">4.8/5</div>
+            <div className="text-sm text-gray-600 font-medium">Satisfaction client</div>
           </div>
         </div>
       </Section>
