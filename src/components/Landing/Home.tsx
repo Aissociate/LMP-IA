@@ -206,7 +206,7 @@ export default function Home() {
                 />
                 <div>
                   <h3 className="font-bold text-lg text-gray-900">Iris</h3>
-                  <p className="text-sm text-gray-600">Assistante IA • Experte Marchés Publics</p>
+                  <p className="text-base font-semibold text-gray-900">Assistante IA • Experte Marchés Publics</p>
                   <div className="flex items-center gap-1 mt-1">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     <span className="text-xs text-green-600 font-medium">Disponible 24/7</span>
@@ -370,8 +370,8 @@ export default function Home() {
                 {/* Info principale */}
                 <div className="flex-1 pt-16 md:pt-0">
                   <h1 className="text-3xl font-bold text-gray-900 mb-1">Iris</h1>
-                  <p className="text-xl text-gray-700 mb-3">Assistante IA • Experte Marchés Publics La Réunion</p>
-                  <p className="text-gray-600 mb-4">Saint-Denis (974) · <span className="text-[#0A66C2] font-semibold">Disponible 24/7</span></p>
+                  <p className="text-2xl font-semibold text-gray-900 mb-3">Assistante IA • Experte Marchés Publics La Réunion</p>
+                  <p className="text-base text-gray-700 mb-4">Saint-Denis (974) · <span className="text-[#0A66C2] font-semibold">Disponible 24/7</span></p>
 
                   <div className="flex flex-wrap gap-3 mb-4">
                     <span className="text-sm text-gray-600">100+ entreprises accompagnées</span>
