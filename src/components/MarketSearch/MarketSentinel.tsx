@@ -479,13 +479,13 @@ export const MarketSentinel: React.FC = () => {
   const unreadCount = detections.filter(d => !d.is_read).length;
 
   const renderAlertsTab = () => (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {!showCreateAlertForm && (
         <button
           onClick={() => setShowCreateAlertForm(true)}
-          className="w-full p-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-lg hover:shadow-xl font-semibold flex items-center justify-center gap-2"
+          className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all font-medium flex items-center justify-center gap-2 shadow-sm hover:shadow"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4" />
           Créer une nouvelle alerte
         </button>
       )}
@@ -504,13 +504,13 @@ export const MarketSentinel: React.FC = () => {
       )}
 
       {searchAlerts.length === 0 && !showCreateAlertForm ? (
-        <div className={`p-12 rounded-xl text-center ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
-          <Bell className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-400'}`} />
-          <h3 className={`text-xl font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        <div className="text-center py-16">
+          <Bell className={`w-12 h-12 mx-auto mb-3 ${isDark ? 'text-gray-700' : 'text-gray-300'}`} />
+          <h3 className={`text-base font-semibold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
             Aucune alerte configurée
           </h3>
-          <p className={`mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            Créez une alerte pour être notifié automatiquement des nouveaux marchés correspondants
+          <p className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+            Créez une alerte pour être notifié automatiquement
           </p>
         </div>
       ) : (
@@ -519,147 +519,153 @@ export const MarketSentinel: React.FC = () => {
           return (
             <div
               key={alert.id}
-              className={`p-6 rounded-xl shadow-lg transition-all duration-200 ${
-                isDark ? 'bg-gray-800' : 'bg-white'
-              } ${alert.is_active ? 'border-2 border-green-500' : 'border-2 border-transparent'}`}
+              className={`group ${
+                isDark ? 'bg-gray-800/50 hover:bg-gray-800' : 'bg-white hover:bg-gray-50'
+              } rounded-lg border transition-all ${
+                alert.is_active
+                  ? isDark ? 'border-green-500/50' : 'border-green-200'
+                  : isDark ? 'border-gray-700/50' : 'border-gray-200'
+              }`}
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  {editingAlert === alert.id ? (
-                    <div className="flex items-center gap-2 mb-3">
-                      <input
-                        type="text"
-                        value={editName}
-                        onChange={(e) => setEditName(e.target.value)}
-                        className={`px-3 py-2 border rounded-lg flex-1 ${
-                          isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
-                        }`}
-                        autoFocus
-                      />
-                      <button
-                        onClick={() => handleUpdateAlertName(alert.id)}
-                        className="p-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-                      >
-                        <Save className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => {
-                          setEditingAlert(null);
-                          setEditName('');
-                        }}
-                        className={`p-2 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-3 mb-3">
-                      {alert.notifications_enabled && (
-                        <div className="bg-orange-500 p-1.5 rounded-lg">
-                          <Bell className="w-4 h-4 text-white" />
-                        </div>
-                      )}
-                      <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {alert.name}
-                      </h3>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        alert.is_active
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-gray-100 text-gray-600'
-                      }`}>
-                        {alert.is_active ? 'Active' : 'Inactive'}
-                      </span>
-                    </div>
-                  )}
-
-                  {alert.keywords && alert.keywords.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {alert.keywords.map((keyword, idx) => (
-                        <span
-                          key={idx}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium"
+              <div className="p-4">
+                <div className="flex items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    {editingAlert === alert.id ? (
+                      <div className="flex items-center gap-2 mb-3">
+                        <input
+                          type="text"
+                          value={editName}
+                          onChange={(e) => setEditName(e.target.value)}
+                          className={`px-3 py-1.5 border rounded-lg flex-1 text-sm ${
+                            isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                          }`}
+                          autoFocus
+                        />
+                        <button
+                          onClick={() => handleUpdateAlertName(alert.id)}
+                          className="p-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700"
                         >
-                          <Tag className="w-3 h-3" />
-                          {keyword}
+                          <Save className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditingAlert(null);
+                            setEditName('');
+                          }}
+                          className={`p-1.5 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 mb-2">
+                        {alert.notifications_enabled && (
+                          <Bell className="w-3.5 h-3.5 text-orange-500" />
+                        )}
+                        <h3 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                          {alert.name}
+                        </h3>
+                        <span className={`text-xs px-2 py-0.5 rounded ${
+                          alert.is_active
+                            ? 'bg-green-100 text-green-700'
+                            : isDark ? 'bg-gray-700 text-gray-400' : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {alert.is_active ? 'Active' : 'Inactive'}
                         </span>
-                      ))}
-                      {alert.match_all_keywords && (
-                        <span className="inline-flex items-center px-2.5 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                          Tous requis
-                        </span>
-                      )}
-                    </div>
-                  )}
-
-                  <p className={`text-sm mb-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    {formatSearchParams(alert.search_params)}
-                  </p>
-
-                  {alertStat && (
-                    <div className="grid grid-cols-3 gap-3 mt-3">
-                      <div className={`p-3 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                        <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-1`}>Détections</div>
-                        <div className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{alertStat.total_markets}</div>
                       </div>
-                      <div className={`p-3 rounded-lg ${isDark ? 'bg-green-900/20' : 'bg-green-50'}`}>
-                        <div className="text-xs text-green-600 mb-1">GO</div>
-                        <div className="text-lg font-bold text-green-600">{alertStat.go_count}</div>
-                      </div>
-                      <div className={`p-3 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                        <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-1`}>Score moyen</div>
-                        <div className={`text-lg font-bold ${getScoreColor(alertStat.avg_score)}`}>{alertStat.avg_score}/100</div>
-                      </div>
-                    </div>
-                  )}
+                    )}
 
-                  {alert.last_checked_at && (
-                    <div className={`flex items-center gap-1 text-sm mt-3 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
-                      <Clock className="w-4 h-4" />
-                      Dernière vérification: {formatDate(alert.last_checked_at)}
-                    </div>
-                  )}
-                </div>
+                    {alert.keywords && alert.keywords.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mb-2">
+                        {alert.keywords.map((keyword, idx) => (
+                          <span
+                            key={idx}
+                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs ${
+                              isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'
+                            }`}
+                          >
+                            <Tag className="w-3 h-3" />
+                            {keyword}
+                          </span>
+                        ))}
+                        {alert.match_all_keywords && (
+                          <span className="inline-flex items-center px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">
+                            Tous requis
+                          </span>
+                        )}
+                      </div>
+                    )}
 
-                <div className="flex flex-col gap-2 ml-4">
-                  <button
-                    onClick={() => handleToggleAlert(alert.id, alert.is_active)}
-                    className={`p-2 rounded-lg ${
-                      alert.is_active
-                        ? 'bg-yellow-600 text-white hover:bg-yellow-700'
-                        : 'bg-green-600 text-white hover:bg-green-700'
-                    }`}
-                    title={alert.is_active ? 'Mettre en pause' : 'Activer'}
-                  >
-                    {alert.is_active ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                  </button>
-                  <button
-                    onClick={() => handleToggleNotifications(alert.id, alert.notifications_enabled)}
-                    className={`p-2 rounded-lg ${
-                      alert.notifications_enabled
-                        ? 'bg-orange-600 text-white hover:bg-orange-700'
-                        : isDark ? 'bg-gray-700 text-gray-400 hover:bg-gray-600' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-                    }`}
-                    title={alert.notifications_enabled ? 'Désactiver les notifications' : 'Activer les notifications'}
-                  >
-                    <Mail className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setEditingAlert(alert.id);
-                      setEditName(alert.name);
-                    }}
-                    className={`p-2 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'}`}
-                    title="Modifier le nom"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteAlert(alert.id)}
-                    className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                    title="Supprimer"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                    <p className={`text-xs mb-3 ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>
+                      {formatSearchParams(alert.search_params)}
+                    </p>
+
+                    {alertStat && (
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className={`p-2 rounded ${isDark ? 'bg-gray-900/50' : 'bg-gray-50'}`}>
+                          <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'} mb-0.5`}>Détections</div>
+                          <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{alertStat.total_markets}</div>
+                        </div>
+                        <div className={`p-2 rounded ${isDark ? 'bg-green-900/20' : 'bg-green-50'}`}>
+                          <div className="text-xs text-green-600 mb-0.5">GO</div>
+                          <div className="text-sm font-bold text-green-600">{alertStat.go_count}</div>
+                        </div>
+                        <div className={`p-2 rounded ${isDark ? 'bg-gray-900/50' : 'bg-gray-50'}`}>
+                          <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'} mb-0.5`}>Moy.</div>
+                          <div className={`text-sm font-bold ${getScoreColor(alertStat.avg_score)}`}>{alertStat.avg_score}</div>
+                        </div>
+                      </div>
+                    )}
+
+                    {alert.last_checked_at && (
+                      <div className={`flex items-center gap-1 text-xs mt-2 ${isDark ? 'text-gray-600' : 'text-gray-500'}`}>
+                        <Clock className="w-3 h-3" />
+                        {formatDate(alert.last_checked_at)}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-start gap-1.5">
+                    <button
+                      onClick={() => handleToggleAlert(alert.id, alert.is_active)}
+                      className={`p-1.5 rounded-lg transition-all ${
+                        alert.is_active
+                          ? 'bg-yellow-600 text-white hover:bg-yellow-700'
+                          : 'bg-green-600 text-white hover:bg-green-700'
+                      }`}
+                      title={alert.is_active ? 'Mettre en pause' : 'Activer'}
+                    >
+                      {alert.is_active ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                    </button>
+                    <button
+                      onClick={() => handleToggleNotifications(alert.id, alert.notifications_enabled)}
+                      className={`p-1.5 rounded-lg transition-all ${
+                        alert.notifications_enabled
+                          ? 'bg-orange-600 text-white hover:bg-orange-700'
+                          : isDark ? 'text-gray-600 hover:text-orange-500 hover:bg-gray-700' : 'text-gray-400 hover:text-orange-600 hover:bg-gray-100'
+                      }`}
+                      title={alert.notifications_enabled ? 'Désactiver les notifications' : 'Activer les notifications'}
+                    >
+                      <Mail className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditingAlert(alert.id);
+                        setEditName(alert.name);
+                      }}
+                      className={`p-1.5 rounded-lg transition-all ${isDark ? 'text-gray-600 hover:text-gray-300 hover:bg-gray-700' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'}`}
+                      title="Modifier le nom"
+                    >
+                      <Edit2 className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteAlert(alert.id)}
+                      className={`p-1.5 rounded-lg transition-all ${isDark ? 'text-gray-600 hover:text-red-500 hover:bg-gray-700' : 'text-gray-400 hover:text-red-600 hover:bg-gray-100'}`}
+                      title="Supprimer"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -668,17 +674,17 @@ export const MarketSentinel: React.FC = () => {
       )}
 
       {searchAlerts.length > 0 && (
-        <div className={`p-4 rounded-lg ${isDark ? 'bg-blue-900/20 border border-blue-500/30' : 'bg-blue-50 border border-blue-200'}`}>
-          <div className="flex items-start gap-3">
-            <AlertCircle className={`w-5 h-5 mt-0.5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
-            <div className="text-sm">
+        <div className={`p-3 rounded-lg ${isDark ? 'bg-blue-900/20 border border-blue-700/50' : 'bg-blue-50 border border-blue-200'}`}>
+          <div className="flex items-start gap-2">
+            <AlertCircle className={`w-4 h-4 mt-0.5 flex-shrink-0 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+            <div className="text-xs">
               <p className={`font-medium mb-1 ${isDark ? 'text-blue-300' : 'text-blue-900'}`}>
-                Comment fonctionnent les alertes ?
+                Fonctionnement
               </p>
-              <ul className={`space-y-1 ${isDark ? 'text-blue-200' : 'text-blue-800'}`}>
-                <li>• Les alertes sont vérifiées automatiquement 2 fois par jour (8h et 18h)</li>
-                <li>• Vous recevez un email avec les nouveaux marchés détectés</li>
-                <li>• Consultez tous les résultats dans l'onglet "Détections"</li>
+              <ul className={`space-y-0.5 ${isDark ? 'text-blue-200' : 'text-blue-800'}`}>
+                <li>• Vérification automatique 2x/jour (8h et 18h)</li>
+                <li>• Notifications par email</li>
+                <li>• Résultats dans "Détections"</li>
               </ul>
             </div>
           </div>
@@ -688,13 +694,13 @@ export const MarketSentinel: React.FC = () => {
   );
 
   const renderDetectionsTab = () => (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-3">
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
         <select
           value={filterAlert}
           onChange={(e) => setFilterAlert(e.target.value)}
-          className={`px-4 py-2 rounded-lg border ${
-            isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+          className={`px-3 py-2 rounded-lg border text-sm transition-colors ${
+            isDark ? 'bg-gray-800 border-gray-700 text-gray-200 hover:border-gray-600' : 'bg-white border-gray-200 hover:border-gray-300'
           }`}
         >
           <option value="all">Toutes les alertes</option>
@@ -703,34 +709,35 @@ export const MarketSentinel: React.FC = () => {
           ))}
         </select>
 
-        <div className="ml-auto flex gap-2">
+        <div className="flex gap-2">
           <button
             onClick={() => setFilterStatus('all')}
-            className={`px-4 py-2 rounded-lg font-medium ${
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
               filterStatus === 'all'
-                ? 'bg-blue-600 text-white'
-                : isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : isDark ? 'bg-gray-800 text-gray-400 hover:text-gray-200 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
             Tous
           </button>
           <button
             onClick={() => setFilterStatus('unread')}
-            className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-all ${
               filterStatus === 'unread'
-                ? 'bg-blue-600 text-white'
-                : isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : isDark ? 'bg-gray-800 text-gray-400 hover:text-gray-200 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            Non lus {unreadCount > 0 && `(${unreadCount})`}
+            Non lus {unreadCount > 0 && <span className="text-xs opacity-75">({unreadCount})</span>}
           </button>
           <button
             onClick={() => setFilterStatus('favorited')}
-            className={`px-4 py-2 rounded-lg font-medium ${
+            className={`p-1.5 rounded-lg text-sm font-medium transition-all ${
               filterStatus === 'favorited'
-                ? 'bg-blue-600 text-white'
-                : isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : isDark ? 'bg-gray-800 text-gray-400 hover:text-gray-200 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
+            title="Favoris"
           >
             <Star className="w-4 h-4" />
           </button>
@@ -738,14 +745,14 @@ export const MarketSentinel: React.FC = () => {
       </div>
 
       {detections.length === 0 ? (
-        <div className="text-center py-12">
-          <Shield className={`w-12 h-12 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-400'}`} />
-          <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+        <div className="text-center py-16">
+          <Shield className={`w-12 h-12 mx-auto mb-3 ${isDark ? 'text-gray-700' : 'text-gray-300'}`} />
+          <p className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
             Aucune détection pour le moment
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {detections.map((detection) => {
             const score = detection.score;
             const categoryConfig = score ? getCategoryConfig(score.score_category) : null;
@@ -756,147 +763,163 @@ export const MarketSentinel: React.FC = () => {
             return (
               <div
                 key={detection.id}
-                className={`p-5 rounded-xl border-2 ${
-                  categoryConfig ? categoryConfig.bgClass : isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-                } ${!detection.is_read ? 'ring-2 ring-blue-500 shadow-lg' : 'shadow-md'} hover:shadow-xl transition-all hover:scale-[1.01]`}
+                className={`group relative ${
+                  isDark ? 'bg-gray-800/50 hover:bg-gray-800' : 'bg-white hover:bg-gray-50'
+                } rounded-lg border transition-all duration-200 ${
+                  !detection.is_read
+                    ? isDark ? 'border-blue-500/40 shadow-lg shadow-blue-500/10' : 'border-blue-200 shadow-md shadow-blue-100'
+                    : isDark ? 'border-gray-700/50' : 'border-gray-200'
+                }`}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      {score && categoryConfig && (
-                        <>
-                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${categoryConfig.badgeClass}`}>
-                            {categoryConfig.label}
-                          </span>
-                          <span className={`text-2xl font-bold ${getScoreColor(score.relevance_score)}`}>
-                            {score.relevance_score}/100
-                          </span>
-                        </>
-                      )}
-                      {!detection.is_read && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          NOUVEAU
-                        </span>
-                      )}
-                      {detection.alert_name && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                          {detection.alert_name}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
-                      {detection.market_title}
-                    </h3>
-                    {detection.market_reference && (
-                      <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-2`}>
-                        Réf: {detection.market_reference}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {CategoryIcon && <CategoryIcon className={`w-6 h-6 ${categoryConfig?.textClass}`} />}
-                    <button
-                      onClick={() => handleToggleFavorite(detection.id, detection.is_favorited)}
-                      className={`p-2 rounded-lg transition-colors ${
-                        detection.is_favorited
-                          ? 'bg-yellow-500 text-white'
-                          : isDark ? 'bg-gray-700 text-gray-400 hover:bg-gray-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                    >
-                      <Star className={`w-5 h-5 ${detection.is_favorited ? 'fill-current' : ''}`} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  {detection.market_location && (
-                    <div className="flex items-center gap-2">
-                      <MapPin className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                        {detection.market_location}
-                      </span>
-                    </div>
-                  )}
-                  {detection.market_amount && (
-                    <div className="flex items-center gap-2">
-                      <Euro className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                        {detection.market_amount.toLocaleString()} €
-                      </span>
-                    </div>
-                  )}
-                  {detection.market_deadline && (
-                    <div className="flex items-center gap-2">
-                      <Calendar className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                        {new Date(detection.market_deadline).toLocaleDateString()}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {score && recConfig && RecIcon && (
-                  <div className={`p-3 rounded-lg ${isDark ? 'bg-gray-700/50' : 'bg-white/50'} mb-4`}>
-                    <div className="flex items-start gap-2 mb-2">
-                      <Sparkles className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                      <div className="flex-1">
-                        <p className={`text-sm font-medium mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                          Recommandation IA: <RecIcon className={`inline w-4 h-4 ${recConfig.color}`} /> {recConfig.label}
-                        </p>
-                        {score.ai_reasoning && (
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                            {score.ai_reasoning}
-                          </p>
-                        )}
-                      </div>
-                    </div>
+                {!detection.is_read && (
+                  <div className="absolute top-3 right-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                   </div>
                 )}
 
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      setSelectedDetectionForAnalysis(detection);
-                      setShowAIAnalysisModal(true);
-                    }}
-                    className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-md hover:shadow-lg flex items-center gap-2 font-medium"
-                    title="Analyse IA GO/NO GO"
-                  >
-                    <Brain className="w-4 h-4" />
-                    Analyse IA
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedDetection(detection);
-                      setShowDetailModal(true);
-                      if (!detection.is_read) {
-                        handleMarkAsRead(detection.id);
-                      }
-                    }}
-                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg font-medium"
-                  >
-                    Voir détails
-                  </button>
-                  {detection.market_url && (
-                    <a
-                      href={detection.market_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 shadow-md hover:shadow-lg ${
-                        isDark ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' : 'bg-white hover:bg-gray-50 text-gray-700 border border-gray-200'
-                      }`}
-                      title="Ouvrir dans BOAMP"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  )}
-                  <button
-                    onClick={() => handleDeleteDetection(detection.id, score?.id)}
-                    className="px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
-                    title="Supprimer"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                <div className="p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        {score && categoryConfig && (
+                          <div className="flex items-center gap-2">
+                            <CategoryIcon className={`w-4 h-4 ${categoryConfig.textClass}`} />
+                            <span className={`text-lg font-bold ${getScoreColor(score.relevance_score)}`}>
+                              {score.relevance_score}
+                            </span>
+                            <span className={`text-xs px-2 py-0.5 rounded ${categoryConfig.badgeClass}`}>
+                              {categoryConfig.label}
+                            </span>
+                          </div>
+                        )}
+                        {detection.alert_name && (
+                          <span className={`text-xs px-2 py-0.5 rounded ${isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                            {detection.alert_name}
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 className={`text-base font-semibold mb-1 ${isDark ? 'text-white' : 'text-gray-900'} line-clamp-2`}>
+                        {detection.market_title}
+                      </h3>
+
+                      {detection.market_reference && (
+                        <p className={`text-xs mb-3 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                          {detection.market_reference}
+                        </p>
+                      )}
+
+                      <div className="flex flex-wrap gap-3 text-xs mb-3">
+                        {detection.market_location && (
+                          <div className={`flex items-center gap-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                            <MapPin className="w-3.5 h-3.5" />
+                            <span>{detection.market_location}</span>
+                          </div>
+                        )}
+                        {detection.market_amount && (
+                          <div className={`flex items-center gap-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                            <Euro className="w-3.5 h-3.5" />
+                            <span>{detection.market_amount.toLocaleString()} €</span>
+                          </div>
+                        )}
+                        {detection.market_deadline && (
+                          <div className={`flex items-center gap-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                            <Calendar className="w-3.5 h-3.5" />
+                            <span>{new Date(detection.market_deadline).toLocaleDateString('fr-FR')}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {score && recConfig && RecIcon && (
+                        <div className={`p-2.5 rounded-lg mb-3 ${isDark ? 'bg-gray-900/50' : 'bg-gray-50'}`}>
+                          <div className="flex items-start gap-2">
+                            <Sparkles className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" />
+                            <div className="flex-1 min-w-0">
+                              <p className={`text-xs font-medium mb-0.5 ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
+                                <RecIcon className={`inline w-3.5 h-3.5 mr-1 ${recConfig.color}`} />
+                                {recConfig.label}
+                              </p>
+                              {score.ai_reasoning && (
+                                <p className={`text-xs line-clamp-2 ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>
+                                  {score.ai_reasoning}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          onClick={() => {
+                            setSelectedDetectionForAnalysis(detection);
+                            setShowAIAnalysisModal(true);
+                          }}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+                            isDark
+                              ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                              : 'bg-blue-600 hover:bg-blue-700 text-white'
+                          }`}
+                          title="Analyse IA GO/NO GO"
+                        >
+                          <Brain className="w-3.5 h-3.5" />
+                          Analyse IA
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedDetection(detection);
+                            setShowDetailModal(true);
+                            if (!detection.is_read) {
+                              handleMarkAsRead(detection.id);
+                            }
+                          }}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                            isDark
+                              ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
+                              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                          }`}
+                        >
+                          Voir détails
+                        </button>
+                        {detection.market_url && (
+                          <a
+                            href={detection.market_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`px-2 py-1.5 rounded-lg transition-all flex items-center ${
+                              isDark ? 'bg-gray-700 hover:bg-gray-600 text-gray-400 hover:text-gray-200' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                            }`}
+                            title="Ouvrir dans BOAMP"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-end gap-2">
+                      <button
+                        onClick={() => handleToggleFavorite(detection.id, detection.is_favorited)}
+                        className={`p-1.5 rounded-lg transition-all ${
+                          detection.is_favorited
+                            ? 'bg-yellow-500 text-white shadow-sm'
+                            : isDark ? 'text-gray-600 hover:text-yellow-500 hover:bg-gray-700' : 'text-gray-400 hover:text-yellow-500 hover:bg-gray-100'
+                        }`}
+                        title={detection.is_favorited ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+                      >
+                        <Star className={`w-4 h-4 ${detection.is_favorited ? 'fill-current' : ''}`} />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteDetection(detection.id, score?.id)}
+                        className={`opacity-0 group-hover:opacity-100 p-1.5 rounded-lg transition-all ${
+                          isDark ? 'text-gray-600 hover:text-red-500 hover:bg-gray-700' : 'text-gray-400 hover:text-red-600 hover:bg-gray-100'
+                        }`}
+                        title="Supprimer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             );
@@ -907,56 +930,56 @@ export const MarketSentinel: React.FC = () => {
   );
 
   const renderStatsTab = () => (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {stats && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className={`p-5 rounded-xl ${isDark ? 'bg-gradient-to-br from-gray-700 to-gray-800 border border-gray-600' : 'bg-gradient-to-br from-white to-gray-50 border border-gray-200'} shadow-md hover:shadow-lg transition-shadow`}>
-            <div className="flex items-center gap-2 mb-2">
-              <BarChart3 className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-              <span className={`text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Total</span>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className={`p-4 rounded-lg ${isDark ? 'bg-gray-800/50 border border-gray-700/50' : 'bg-white border border-gray-200'}`}>
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <BarChart3 className={`w-4 h-4 ${isDark ? 'text-gray-500' : 'text-gray-500'}`} />
+              <span className={`text-xs font-medium ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Total</span>
             </div>
-            <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {stats.total_markets}
             </p>
           </div>
 
-          <div className={`p-5 rounded-xl ${isDark ? 'bg-gradient-to-br from-green-900/30 to-green-900/20 border border-green-700' : 'bg-gradient-to-br from-green-50 to-green-100 border border-green-200'} shadow-md hover:shadow-lg transition-shadow`}>
-            <div className="flex items-center gap-2 mb-2">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              <span className="text-sm font-medium text-green-600">GO</span>
+          <div className={`p-4 rounded-lg ${isDark ? 'bg-green-900/20 border border-green-700/50' : 'bg-green-50 border border-green-200'}`}>
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              <span className="text-xs font-medium text-green-600">GO</span>
             </div>
-            <p className="text-3xl font-bold text-green-600">
+            <p className="text-2xl font-bold text-green-600">
               {stats.go_count}
             </p>
           </div>
 
-          <div className={`p-5 rounded-xl ${isDark ? 'bg-gradient-to-br from-orange-900/30 to-orange-900/20 border border-orange-700' : 'bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200'} shadow-md hover:shadow-lg transition-shadow`}>
-            <div className="flex items-center gap-2 mb-2">
-              <AlertTriangle className="w-5 h-5 text-orange-600" />
-              <span className="text-sm font-medium text-orange-600">CONDITIONAL</span>
+          <div className={`p-4 rounded-lg ${isDark ? 'bg-orange-900/20 border border-orange-700/50' : 'bg-orange-50 border border-orange-200'}`}>
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <AlertTriangle className="w-4 h-4 text-orange-600" />
+              <span className="text-xs font-medium text-orange-600">CONDITIONAL</span>
             </div>
-            <p className="text-3xl font-bold text-orange-600">
+            <p className="text-2xl font-bold text-orange-600">
               {stats.conditional_count}
             </p>
           </div>
 
-          <div className={`p-5 rounded-xl ${isDark ? 'bg-gradient-to-br from-gray-700 to-gray-800 border border-gray-600' : 'bg-gradient-to-br from-white to-gray-50 border border-gray-200'} shadow-md hover:shadow-lg transition-shadow`}>
-            <div className="flex items-center gap-2 mb-2">
-              <TrendingUp className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-              <span className={`text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Score moyen</span>
+          <div className={`p-4 rounded-lg ${isDark ? 'bg-gray-800/50 border border-gray-700/50' : 'bg-white border border-gray-200'}`}>
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <TrendingUp className={`w-4 h-4 ${isDark ? 'text-gray-500' : 'text-gray-500'}`} />
+              <span className={`text-xs font-medium ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Moy.</span>
             </div>
-            <p className={`text-3xl font-bold ${getScoreColor(stats.avg_score)}`}>
-              {stats.avg_score}/100
+            <p className={`text-2xl font-bold ${getScoreColor(stats.avg_score)}`}>
+              {stats.avg_score}
             </p>
           </div>
         </div>
       )}
 
       <div>
-        <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-          Statistiques par alerte (30 derniers jours)
+        <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          Par alerte (30 derniers jours)
         </h3>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {searchAlerts.map(alert => {
             const alertStat = alertStats[alert.id];
             if (!alertStat) return null;
@@ -964,39 +987,41 @@ export const MarketSentinel: React.FC = () => {
             return (
               <div
                 key={alert.id}
-                className={`p-6 rounded-xl ${isDark ? 'bg-gray-800' : 'bg-white'} shadow-lg`}
+                className={`p-4 rounded-lg border ${isDark ? 'bg-gray-800/50 border-gray-700/50' : 'bg-white border-gray-200'}`}
               >
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {alert.name}
                   </h4>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    alert.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
+                  <span className={`text-xs px-2 py-0.5 rounded ${
+                    alert.is_active
+                      ? 'bg-green-100 text-green-700'
+                      : isDark ? 'bg-gray-700 text-gray-400' : 'bg-gray-100 text-gray-600'
                   }`}>
                     {alert.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                  <div className={`p-3 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                    <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-1`}>Total</div>
-                    <div className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{alertStat.total_markets}</div>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                  <div className={`p-2 rounded ${isDark ? 'bg-gray-900/50' : 'bg-gray-50'}`}>
+                    <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'} mb-0.5`}>Total</div>
+                    <div className={`text-base font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{alertStat.total_markets}</div>
                   </div>
-                  <div className={`p-3 rounded-lg ${isDark ? 'bg-green-900/20' : 'bg-green-50'}`}>
-                    <div className="text-xs text-green-600 mb-1">GO</div>
-                    <div className="text-xl font-bold text-green-600">{alertStat.go_count}</div>
+                  <div className={`p-2 rounded ${isDark ? 'bg-green-900/20' : 'bg-green-50'}`}>
+                    <div className="text-xs text-green-600 mb-0.5">GO</div>
+                    <div className="text-base font-bold text-green-600">{alertStat.go_count}</div>
                   </div>
-                  <div className={`p-3 rounded-lg ${isDark ? 'bg-orange-900/20' : 'bg-orange-50'}`}>
-                    <div className="text-xs text-orange-600 mb-1">CONDITIONAL</div>
-                    <div className="text-xl font-bold text-orange-600">{alertStat.conditional_count}</div>
+                  <div className={`p-2 rounded ${isDark ? 'bg-orange-900/20' : 'bg-orange-50'}`}>
+                    <div className="text-xs text-orange-600 mb-0.5">COND.</div>
+                    <div className="text-base font-bold text-orange-600">{alertStat.conditional_count}</div>
                   </div>
-                  <div className={`p-3 rounded-lg ${isDark ? 'bg-red-900/20' : 'bg-red-50'}`}>
-                    <div className="text-xs text-red-600 mb-1">NO-GO</div>
-                    <div className="text-xl font-bold text-red-600">{alertStat.no_go_count || 0}</div>
+                  <div className={`p-2 rounded ${isDark ? 'bg-red-900/20' : 'bg-red-50'}`}>
+                    <div className="text-xs text-red-600 mb-0.5">NO-GO</div>
+                    <div className="text-base font-bold text-red-600">{alertStat.no_go_count || 0}</div>
                   </div>
-                  <div className={`p-3 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                    <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-1`}>Score moyen</div>
-                    <div className={`text-xl font-bold ${getScoreColor(alertStat.avg_score)}`}>{alertStat.avg_score}/100</div>
+                  <div className={`p-2 rounded ${isDark ? 'bg-gray-900/50' : 'bg-gray-50'}`}>
+                    <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'} mb-0.5`}>Moy.</div>
+                    <div className={`text-base font-bold ${getScoreColor(alertStat.avg_score)}`}>{alertStat.avg_score}</div>
                   </div>
                 </div>
               </div>
@@ -1016,70 +1041,67 @@ export const MarketSentinel: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className={`${isDark ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700' : 'bg-gradient-to-br from-white to-gray-50 border-gray-200'} rounded-xl shadow-lg border p-6`}>
-        <div className="flex items-center justify-between mb-6">
+    <div className="space-y-4">
+      <div className={`${isDark ? 'bg-gray-800/50 border-gray-700/50' : 'bg-white border-gray-200'} rounded-lg border p-4`}>
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-xl shadow-lg">
-              <Shield className="w-7 h-7 text-white" />
+            <div className="bg-blue-600 p-2 rounded-lg">
+              <Shield className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Market Sentinel™
+              <h2 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                Market Sentinel
               </h2>
-              <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Veille intelligente avec détection automatique de marchés
+              <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                Veille intelligente automatique
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            {unreadCount > 0 && (
-              <div className="px-3 py-1 rounded-full bg-red-500 text-white text-sm font-bold">
-                {unreadCount} nouveau{unreadCount > 1 ? 'x' : ''}
-              </div>
-            )}
-            <Target className={`w-8 h-8 ${isDark ? 'text-gray-600' : 'text-gray-400'}`} />
-          </div>
+          {unreadCount > 0 && (
+            <div className="px-2.5 py-1 rounded-full bg-red-500 text-white text-xs font-semibold">
+              {unreadCount} nouveau{unreadCount > 1 ? 'x' : ''}
+            </div>
+          )}
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setActiveTab('detections')}
-            className={`px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg ${
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
               activeTab === 'detections'
-                ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white scale-105'
-                : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : isDark ? 'bg-gray-900/50 text-gray-400 hover:text-gray-200 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4" />
+            <div className="flex items-center gap-1.5">
+              <Shield className="w-3.5 h-3.5" />
               Détections ({detections.length})
             </div>
           </button>
           <button
             onClick={() => setActiveTab('alerts')}
-            className={`px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg ${
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
               activeTab === 'alerts'
-                ? 'bg-gradient-to-r from-orange-600 to-orange-700 text-white scale-105'
-                : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : isDark ? 'bg-gray-900/50 text-gray-400 hover:text-gray-200 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            <div className="flex items-center gap-2">
-              <Bell className="w-4 h-4" />
-              Mes Alertes ({searchAlerts.filter(a => a.is_active).length})
+            <div className="flex items-center gap-1.5">
+              <Bell className="w-3.5 h-3.5" />
+              Alertes ({searchAlerts.filter(a => a.is_active).length})
             </div>
           </button>
           <button
             onClick={() => setActiveTab('stats')}
-            className={`px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg ${
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
               activeTab === 'stats'
-                ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white scale-105'
-                : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : isDark ? 'bg-gray-900/50 text-gray-400 hover:text-gray-200 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            <div className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
-              Statistiques
+            <div className="flex items-center gap-1.5">
+              <BarChart3 className="w-3.5 h-3.5" />
+              Stats
             </div>
           </button>
         </div>
@@ -1090,24 +1112,27 @@ export const MarketSentinel: React.FC = () => {
       </div>
 
       {showDetailModal && selectedDetection && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-          <div className={`${isDark ? 'bg-gradient-to-br from-gray-800 to-gray-900' : 'bg-gradient-to-br from-white to-gray-50'} rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom-4 duration-300`}>
-            <div className={`sticky top-0 ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b px-6 py-4 flex items-center justify-between z-10`}>
-              <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className={`${isDark ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto`}>
+            <div className={`sticky top-0 ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b px-4 py-3 flex items-center justify-between z-10`}>
+              <h3 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 Détails du marché
               </h3>
-              <button onClick={() => setShowDetailModal(false)}>
-                <X className={`w-6 h-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className={`p-1 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
+              >
+                <X className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
               </button>
             </div>
 
-            <div className="p-6 space-y-6">
+            <div className="p-4 space-y-4">
               <div>
-                <h4 className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+                <h4 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-gray-900'} mb-1`}>
                   {selectedDetection.market_title}
                 </h4>
                 {selectedDetection.market_description && (
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                     {selectedDetection.market_description}
                   </p>
                 )}
@@ -1115,9 +1140,9 @@ export const MarketSentinel: React.FC = () => {
 
               {selectedDetection.market_client && (
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Building className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-                    <span className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Client</span>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Building className={`w-3.5 h-3.5 ${isDark ? 'text-gray-500' : 'text-gray-500'}`} />
+                    <span className={`text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Client</span>
                   </div>
                   <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     {selectedDetection.market_client}
@@ -1127,14 +1152,14 @@ export const MarketSentinel: React.FC = () => {
 
               {selectedDetection.score && selectedDetection.score.key_strengths.length > 0 && (
                 <div>
-                  <h5 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+                  <h5 className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
                     Points forts
                   </h5>
-                  <ul className="space-y-1">
+                  <ul className="space-y-1.5">
                     {selectedDetection.score.key_strengths.map((strength, idx) => (
-                      <li key={idx} className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'} flex items-start gap-2`}>
-                        <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                        {strength}
+                      <li key={idx} className={`text-xs ${isDark ? 'text-gray-300' : 'text-gray-700'} flex items-start gap-2`}>
+                        <CheckCircle className="w-3.5 h-3.5 text-green-600 flex-shrink-0 mt-0.5" />
+                        <span>{strength}</span>
                       </li>
                     ))}
                   </ul>
@@ -1143,14 +1168,14 @@ export const MarketSentinel: React.FC = () => {
 
               {selectedDetection.score && selectedDetection.score.key_risks.length > 0 && (
                 <div>
-                  <h5 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+                  <h5 className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
                     Risques identifiés
                   </h5>
-                  <ul className="space-y-1">
+                  <ul className="space-y-1.5">
                     {selectedDetection.score.key_risks.map((risk, idx) => (
-                      <li key={idx} className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'} flex items-start gap-2`}>
-                        <AlertTriangle className="w-4 h-4 text-orange-600 flex-shrink-0 mt-0.5" />
-                        {risk}
+                      <li key={idx} className={`text-xs ${isDark ? 'text-gray-300' : 'text-gray-700'} flex items-start gap-2`}>
+                        <AlertTriangle className="w-3.5 h-3.5 text-orange-600 flex-shrink-0 mt-0.5" />
+                        <span>{risk}</span>
                       </li>
                     ))}
                   </ul>
@@ -1158,46 +1183,46 @@ export const MarketSentinel: React.FC = () => {
               )}
 
               {selectedDetection.score && (
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => handleAction(selectedDetection, 'respond')}
-                    className="px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl hover:from-green-700 hover:to-green-800 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-medium"
+                    className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all flex items-center justify-center gap-1.5 text-xs font-medium"
                   >
-                    <CheckCircle className="w-5 h-5" />
+                    <CheckCircle className="w-3.5 h-3.5" />
                     Répondre
                   </button>
                   <button
                     onClick={() => handleAction(selectedDetection, 'request_expert')}
-                    className="px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-medium"
+                    className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all flex items-center justify-center gap-1.5 text-xs font-medium"
                   >
-                    <Users className="w-5 h-5" />
-                    Activer Expert
+                    <Users className="w-3.5 h-3.5" />
+                    Expert
                   </button>
                   <button
                     onClick={() => handleAction(selectedDetection, 'order_memory')}
-                    className="px-4 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-xl hover:from-orange-700 hover:to-orange-800 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-medium"
+                    className="px-3 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-all flex items-center justify-center gap-1.5 text-xs font-medium"
                   >
-                    <FileText className="w-5 h-5" />
-                    Commander Mémoire
+                    <FileText className="w-3.5 h-3.5" />
+                    Mémoire
                   </button>
                   <button
                     onClick={() => handleAction(selectedDetection, 'ignore')}
-                    className={`px-4 py-3 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-medium ${
-                      isDark ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' : 'bg-white hover:bg-gray-50 text-gray-700 border border-gray-200'
+                    className={`px-3 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 text-xs font-medium ${
+                      isDark ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
                     }`}
                   >
-                    <ThumbsDown className="w-5 h-5" />
+                    <ThumbsDown className="w-3.5 h-3.5" />
                     Ignorer
                   </button>
                 </div>
               )}
 
-              <div className={`flex gap-3 pt-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+              <div className={`flex gap-2 pt-3 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
                 <button
                   onClick={() => handleDeleteDetection(selectedDetection.id, selectedDetection.score?.id)}
-                  className="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl hover:from-red-700 hover:to-red-800 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-medium"
+                  className="flex-1 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all flex items-center justify-center gap-1.5 text-xs font-medium"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3.5 h-3.5" />
                   Supprimer
                 </button>
               </div>
