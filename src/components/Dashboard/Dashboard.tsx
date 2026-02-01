@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   Activity
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { StatsCard } from './StatsCard';
 import { supabase } from '../../lib/supabase';
 import { MarketStats } from '../../types';
@@ -55,18 +56,21 @@ export const Dashboard: React.FC = () => {
   const [recentMarkets, setRecentMarkets] = useState<RecentMarket[]>([]);
   const [upcomingDeadlines, setUpcomingDeadlines] = useState<RecentMarket[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hasKnowledgeFiles, setHasKnowledgeFiles] = useState(true);
 
   useEffect(() => {
     fetchStats();
     fetchTimeStats();
     fetchRecentMarkets();
     fetchUpcomingDeadlines();
+    fetchKnowledgeFiles();
 
     const interval = setInterval(() => {
       fetchStats();
       fetchTimeStats();
       fetchRecentMarkets();
       fetchUpcomingDeadlines();
+      fetchKnowledgeFiles();
     }, 300000);
 
     return () => clearInterval(interval);
@@ -208,6 +212,27 @@ export const Dashboard: React.FC = () => {
     }
   };
 
+  const fetchKnowledgeFiles = async () => {
+    try {
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('knowledge_files')
+        .select('id')
+        .eq('user_id', user.id)
+        .limit(1);
+
+      if (error) {
+        console.error('Error checking knowledge files:', error);
+        return;
+      }
+
+      setHasKnowledgeFiles(data && data.length > 0);
+    } catch (error) {
+      console.error('Error checking knowledge files:', error);
+    }
+  };
+
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'Non spécifié';
     const date = new Date(dateString);
@@ -280,6 +305,31 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {!hasKnowledgeFiles && (
+          <div className={`${isDark ? 'bg-[#915907]/10 border-[#F5C75D]' : 'bg-amber-50 border-amber-200'} rounded-lg border mb-4 p-4`}>
+            <div className="flex items-start gap-3">
+              <AlertTriangle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isDark ? 'text-[#F5C75D]' : 'text-amber-600'}`} />
+              <div className="flex-1">
+                <h3 className={`text-sm font-semibold mb-1 ${isDark ? 'text-[#F5C75D]' : 'text-amber-900'}`}>
+                  Base de connaissance vide
+                </h3>
+                <p className={`text-sm mb-2 ${isDark ? 'text-[#B0B7BE]' : 'text-amber-800'}`}>
+                  Ajoutez des documents à votre base de connaissance pour améliorer la qualité des réponses d'Iris et personnaliser vos mémoires techniques.
+                </p>
+                <Link
+                  to="/settings?tab=knowledge"
+                  className={`inline-flex items-center text-sm font-medium ${isDark ? 'text-[#70B5F9] hover:text-[#0A66C2]' : 'text-[#0A66C2] hover:text-[#004182]'} transition-colors`}
+                >
+                  Ajouter des documents
+                  <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <StatsCard
