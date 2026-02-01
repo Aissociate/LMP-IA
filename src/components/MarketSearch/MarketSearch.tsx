@@ -434,75 +434,91 @@ export const MarketSearch: React.FC = () => {
   };
 
   return (
-    <div className={`p-8 min-h-screen transition-colors duration-200 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
-      <div className="mb-8">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-3 rounded-xl shadow-lg">
-            <Search className="w-8 h-8 text-white" />
-          </div>
-          <div className="flex-1">
-            <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              Recherche de marchés
-            </h1>
-            <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} mt-2`}>
-              Explorez les marchés publics du BOAMP
-            </p>
-          </div>
-          {isAdmin && (
-            <div className={`px-3 py-1 rounded-lg text-xs font-semibold ${
-              isDark ? 'bg-purple-900/30 text-purple-400' : 'bg-purple-100 text-purple-700'
-            }`}>
-              Mode Admin
+    <div className={`min-h-screen transition-colors duration-200 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      <div className={`${isDark ? 'bg-gray-800 border-b border-gray-700' : 'bg-white border-b border-gray-100'} sticky top-0 z-30 backdrop-blur-sm bg-opacity-95`}>
+        <div className="max-w-6xl mx-auto px-6 py-6">
+          <div className="flex items-center gap-4">
+            <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-2.5 rounded-lg shadow-sm">
+              <Search className="w-6 h-6 text-white" />
             </div>
-          )}
+            <div className="flex-1">
+              <h1 className={`text-2xl font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                Marchés publics
+              </h1>
+              <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-sm mt-0.5`}>
+                Explorez les marchés publics de la Réunion
+              </p>
+            </div>
+            {isAdmin && (
+              <div className={`px-3 py-1.5 rounded-md text-xs font-medium ${
+                isDark ? 'bg-purple-900/30 text-purple-400' : 'bg-purple-100 text-purple-700'
+              }`}>
+                Admin
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-sm border p-6 mb-6`}>
-        <div className="flex items-center gap-3 mb-4">
+      <div className="max-w-6xl mx-auto px-6 py-6">
+
+      <div className={`${isDark ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-sm p-6 mb-4`}>
+        <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setSearchMode('keyword')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
               searchMode === 'keyword'
-                ? 'bg-orange-600 text-white'
-                : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             Mots-clés
           </button>
           <button
             onClick={() => setSearchMode('reference')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
               searchMode === 'reference'
-                ? 'bg-orange-600 text-white'
-                : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             Référence
           </button>
         </div>
 
-        <div className="flex gap-3">
-          <div className="flex-1 flex gap-3">
+        <div className="flex gap-2">
+          <div className={`flex-1 flex items-center gap-3 border-2 rounded-xl px-4 ${
+            isDark ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'
+          } focus-within:border-blue-500 focus-within:bg-${isDark ? 'gray-700' : 'white'} transition-all`}>
+            <Search className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              placeholder={searchMode === 'reference' ? 'Rechercher par référence BOAMP...' : 'Quels marchés vous intéressent ?'}
-              className={`flex-1 px-4 py-3 border rounded-lg ${
-                isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
-              } focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
+              placeholder={searchMode === 'reference' ? 'Ex: 24-000001' : 'Rechercher par mots-clés : travaux, fournitures, services...'}
+              className={`flex-1 py-3 bg-transparent outline-none ${
+                isDark ? 'text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'
+              }`}
             />
-            <button
-              onClick={handleSearch}
-              disabled={loading}
-              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium px-6 py-3 rounded-lg flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50"
-            >
-              <Search className="w-5 h-5" />
-              Rechercher
-            </button>
           </div>
+          <button
+            onClick={handleSearch}
+            disabled={loading}
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium px-6 py-3 rounded-xl flex items-center gap-2 transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span className="hidden sm:inline">Recherche...</span>
+              </>
+            ) : (
+              <>
+                <Search className="w-5 h-5" />
+                <span className="hidden sm:inline">Rechercher</span>
+              </>
+            )}
+          </button>
         </div>
 
         <div className="flex justify-between items-center gap-2 mt-3">
@@ -558,83 +574,85 @@ export const MarketSearch: React.FC = () => {
             <button
               onClick={handleSaveSearch}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
-                isDark ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-600 text-white hover:bg-blue-700'
+                isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
               title="Sauvegarder cette recherche"
             >
               <Bookmark className="w-4 h-4" />
-              Sauvegarder
+              <span className="hidden sm:inline">Sauvegarder</span>
             </button>
 
             {isAdmin && (
-              <button
-                onClick={async () => {
-                  addLog('info', 'Récupération du schéma BOAMP...');
-                  try {
-                    const schema = await boampService.getSchema();
-                    if (schema.fields) {
-                      addLog('success', `${schema.fields.length} champs disponibles dans le schéma BOAMP`);
-                      addLog('info', 'Liste des champs:');
-                      schema.fields.forEach((field: any) => {
-                        addLog('info', `  • ${field.name} (${field.type})`);
-                      });
+              <>
+                <button
+                  onClick={async () => {
+                    addLog('info', 'Récupération du schéma BOAMP...');
+                    try {
+                      const schema = await boampService.getSchema();
+                      if (schema.fields) {
+                        addLog('success', `${schema.fields.length} champs disponibles dans le schéma BOAMP`);
+                        addLog('info', 'Liste des champs:');
+                        schema.fields.forEach((field: any) => {
+                          addLog('info', `  • ${field.name} (${field.type})`);
+                        });
+                      }
+                    } catch (error: any) {
+                      addLog('error', `Erreur lors de la récupération du schéma: ${error.message}`);
                     }
-                  } catch (error: any) {
-                    addLog('error', `Erreur lors de la récupération du schéma: ${error.message}`);
-                  }
-                }}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  isDark ? 'bg-purple-600 text-white hover:bg-purple-700' : 'bg-purple-600 text-white hover:bg-purple-700'
-                }`}
-              >
-                Voir Schéma
-              </button>
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    isDark ? 'bg-purple-600 text-white hover:bg-purple-700' : 'bg-purple-600 text-white hover:bg-purple-700'
+                  }`}
+                >
+                  Voir Schéma
+                </button>
+
+                <button
+                  onClick={async () => {
+                    addLog('info', 'Test rapide: Recherche sans filtres...');
+                    setLoading(true);
+                    try {
+                      const result = await boampService.searchMarkets({ page: 1, limit: 5 });
+                      addLog('success', `Test réussi: ${result.total} marchés trouvés`);
+
+                      if (result.markets.length > 0) {
+                        const sample = result.markets[0];
+                        addLog('info', `Exemple - Titre: ${sample.title}`);
+                        addLog('info', `Exemple - Client: ${sample.client}`);
+                        addLog('info', `Exemple - Localisation: ${sample.location}`);
+                        addLog('info', `Exemple - Type: ${sample.serviceType}`);
+                        addLog('info', `Tous les champs (${Object.keys(sample.rawData).length}): ${Object.keys(sample.rawData).sort().join(', ')}`);
+
+                        const locationFields = Object.keys(sample.rawData).filter(k =>
+                          k.toLowerCase().includes('ville') ||
+                          k.toLowerCase().includes('dep') ||
+                          k.toLowerCase().includes('postal') ||
+                          k.toLowerCase().includes('commune') ||
+                          k.toLowerCase().includes('lieu')
+                        );
+                        addLog('info', `Champs liés à la localisation: ${locationFields.join(', ') || 'AUCUN'}`);
+
+                        locationFields.forEach(field => {
+                          const value = sample.rawData[field];
+                          addLog('info', `  ${field} = ${JSON.stringify(value)}`);
+                        });
+                      }
+
+                      setSearchResult(result);
+                    } catch (error: any) {
+                      addLog('error', `Test échoué: ${error.message}`);
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    isDark ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  Test API
+                </button>
+              </>
             )}
-
-            <button
-              onClick={async () => {
-              addLog('info', 'Test rapide: Recherche sans filtres...');
-              setLoading(true);
-              try {
-                const result = await boampService.searchMarkets({ page: 1, limit: 5 });
-                addLog('success', `Test réussi: ${result.total} marchés trouvés`);
-
-                if (result.markets.length > 0) {
-                  const sample = result.markets[0];
-                  addLog('info', `Exemple - Titre: ${sample.title}`);
-                  addLog('info', `Exemple - Client: ${sample.client}`);
-                  addLog('info', `Exemple - Localisation: ${sample.location}`);
-                  addLog('info', `Exemple - Type: ${sample.serviceType}`);
-                  addLog('info', `Tous les champs (${Object.keys(sample.rawData).length}): ${Object.keys(sample.rawData).sort().join(', ')}`);
-
-                  const locationFields = Object.keys(sample.rawData).filter(k =>
-                    k.toLowerCase().includes('ville') ||
-                    k.toLowerCase().includes('dep') ||
-                    k.toLowerCase().includes('postal') ||
-                    k.toLowerCase().includes('commune') ||
-                    k.toLowerCase().includes('lieu')
-                  );
-                  addLog('info', `Champs liés à la localisation: ${locationFields.join(', ') || 'AUCUN'}`);
-
-                  locationFields.forEach(field => {
-                    const value = sample.rawData[field];
-                    addLog('info', `  ${field} = ${JSON.stringify(value)}`);
-                  });
-                }
-
-                setSearchResult(result);
-              } catch (error: any) {
-                addLog('error', `Test échoué: ${error.message}`);
-              } finally {
-                setLoading(false);
-              }
-            }}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              isDark ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-600 text-white hover:bg-blue-700'
-            }`}
-          >
-            Test API
-          </button>
           </div>
         </div>
 
@@ -643,52 +661,57 @@ export const MarketSearch: React.FC = () => {
           filters.deadlineTo || filters.procedureType) && (
           <div className="mt-4 flex flex-wrap gap-2">
             {filters.location?.map(loc => (
-              <span key={loc} className={`px-3 py-1 rounded-full text-sm ${
-                isDark ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-800'
+              <span key={loc} className={`px-2.5 py-1 rounded-md text-xs font-medium ${
+                isDark ? 'bg-blue-900/30 text-blue-400 border border-blue-800' : 'bg-blue-50 text-blue-700 border border-blue-200'
               }`}>
-                📍 {loc}
+                <MapPin className="w-3 h-3 inline mr-1" />
+                {loc}
               </span>
             ))}
             {filters.serviceTypes?.map(type => (
-              <span key={type} className={`px-3 py-1 rounded-full text-sm ${
-                isDark ? 'bg-green-600 text-white' : 'bg-green-100 text-green-800'
+              <span key={type} className={`px-2.5 py-1 rounded-md text-xs font-medium ${
+                isDark ? 'bg-green-900/30 text-green-400 border border-green-800' : 'bg-green-50 text-green-700 border border-green-200'
               }`}>
-                🏗️ {type}
+                <Building className="w-3 h-3 inline mr-1" />
+                {type}
               </span>
             ))}
             {filters.publicBuyer && (
-              <span className={`px-3 py-1 rounded-full text-sm ${
-                isDark ? 'bg-purple-600 text-white' : 'bg-purple-100 text-purple-800'
+              <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${
+                isDark ? 'bg-purple-900/30 text-purple-400 border border-purple-800' : 'bg-purple-50 text-purple-700 border border-purple-200'
               }`}>
-                🏛️ {filters.publicBuyer}
+                <Building className="w-3 h-3 inline mr-1" />
+                {filters.publicBuyer}
               </span>
             )}
             {filters.cpvCode && (
-              <span className={`px-3 py-1 rounded-full text-sm ${
-                isDark ? 'bg-yellow-600 text-white' : 'bg-yellow-100 text-yellow-800'
+              <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${
+                isDark ? 'bg-yellow-900/30 text-yellow-400 border border-yellow-800' : 'bg-yellow-50 text-yellow-700 border border-yellow-200'
               }`}>
-                🏷️ CPV: {filters.cpvCode}
+                CPV: {filters.cpvCode}
               </span>
             )}
             {(filters.amountMin || filters.amountMax) && (
-              <span className={`px-3 py-1 rounded-full text-sm ${
-                isDark ? 'bg-orange-600 text-white' : 'bg-orange-100 text-orange-800'
+              <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${
+                isDark ? 'bg-orange-900/30 text-orange-400 border border-orange-800' : 'bg-orange-50 text-orange-700 border border-orange-200'
               }`}>
-                💰 {filters.amountMin || 0}€ - {filters.amountMax || '∞'}€
+                <Euro className="w-3 h-3 inline mr-1" />
+                {filters.amountMin || 0}€ - {filters.amountMax || '∞'}€
               </span>
             )}
             {(filters.deadlineFrom || filters.deadlineTo) && (
-              <span className={`px-3 py-1 rounded-full text-sm ${
-                isDark ? 'bg-red-600 text-white' : 'bg-red-100 text-red-800'
+              <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${
+                isDark ? 'bg-red-900/30 text-red-400 border border-red-800' : 'bg-red-50 text-red-700 border border-red-200'
               }`}>
-                📅 {filters.deadlineFrom || '...'} → {filters.deadlineTo || '...'}
+                <Calendar className="w-3 h-3 inline mr-1" />
+                {filters.deadlineFrom || '...'} → {filters.deadlineTo || '...'}
               </span>
             )}
             {filters.procedureType && (
-              <span className={`px-3 py-1 rounded-full text-sm ${
-                isDark ? 'bg-pink-600 text-white' : 'bg-pink-100 text-pink-800'
+              <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${
+                isDark ? 'bg-pink-900/30 text-pink-400 border border-pink-800' : 'bg-pink-50 text-pink-700 border border-pink-200'
               }`}>
-                📋 {filters.procedureType}
+                {filters.procedureType}
               </span>
             )}
           </div>
@@ -697,28 +720,25 @@ export const MarketSearch: React.FC = () => {
 
       {searchResult && (
         <>
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex gap-6">
-              <button
-                onClick={() => setActiveTab('active')}
-                className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
-                  activeTab === 'active'
-                    ? 'border-orange-600 text-orange-600'
-                    : isDark ? 'border-transparent text-gray-400 hover:text-gray-300' : 'border-transparent text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Appels d'offres actifs ({searchResult.total})
-              </button>
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {searchResult.total} résultat{searchResult.total > 1 ? 's' : ''}
+              </h2>
+              <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                Appels d'offres actifs
+              </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setViewMode('cards')}
                 className={`p-2 rounded-lg transition-colors ${
                   viewMode === 'cards'
-                    ? 'bg-orange-600 text-white'
-                    : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
+                title="Vue en grille"
               >
                 <Grid3x3 className="w-4 h-4" />
               </button>
@@ -726,9 +746,10 @@ export const MarketSearch: React.FC = () => {
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded-lg transition-colors ${
                   viewMode === 'list'
-                    ? 'bg-orange-600 text-white'
-                    : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
+                title="Vue en liste"
               >
                 <List className="w-4 h-4" />
               </button>
@@ -826,18 +847,20 @@ export const MarketSearch: React.FC = () => {
       )}
 
       {!searchResult && !loading && (
-        <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-sm border p-12 text-center`}>
+        <div className={`${isDark ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-sm p-12 text-center`}>
           <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-100'} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4`}>
             <Search className={`w-10 h-10 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
           </div>
-          <h3 className={`text-lg font-medium ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+          <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
             Lancez votre recherche
           </h3>
-          <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            Utilisez les filtres ci-dessus pour trouver des marchés publics
+          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            Utilisez la barre de recherche ci-dessus pour trouver des marchés publics
           </p>
         </div>
       )}
+
+      </div>
 
       <MarketSearchFilters
         isOpen={showFilters}
