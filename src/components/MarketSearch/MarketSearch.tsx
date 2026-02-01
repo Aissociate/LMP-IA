@@ -133,14 +133,6 @@ export const MarketSearch: React.FC = () => {
     }
   }, [location.state]);
 
-  useEffect(() => {
-    const hasSearched = sessionStorage.getItem('marketSearchInitialized');
-    if (!hasSearched && user) {
-      handleSearch();
-      sessionStorage.setItem('marketSearchInitialized', 'true');
-    }
-  }, [user]);
-
   // Déclencher la recherche quand la page change
   useEffect(() => {
     if (searchResult && filters.page !== searchResult.page) {
@@ -702,25 +694,6 @@ export const MarketSearch: React.FC = () => {
           </div>
         )}
       </div>
-
-      {!searchResult && !loading && (
-        <div className={`text-center py-16 px-4 rounded-xl ${isDark ? 'bg-gray-800' : 'bg-white'} border-2 border-dashed ${isDark ? 'border-gray-700' : 'border-gray-300'}`}>
-          <Search className={`w-20 h-20 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
-          <h3 className={`text-xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            Recherchez des marchés publics
-          </h3>
-          <p className={`text-sm mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'} max-w-md mx-auto`}>
-            Utilisez la barre de recherche ci-dessus pour trouver des marchés publics. Vous pouvez rechercher par mots-clés, référence, ou utiliser les filtres avancés pour affiner votre recherche.
-          </p>
-          <button
-            onClick={handleSearch}
-            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium rounded-lg flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl mx-auto"
-          >
-            <Search className="w-5 h-5" />
-            Lancer une recherche
-          </button>
-        </div>
-      )}
 
       {searchResult && (
         <>

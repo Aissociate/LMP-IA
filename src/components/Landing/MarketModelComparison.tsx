@@ -6,10 +6,10 @@ export const MarketModelComparison: React.FC = () => {
     <div className="mx-auto max-w-6xl">
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-          Choisissez le modèle IA adapté à vos besoins
+          Mode Standard vs Mode Premium
         </h2>
         <p className="text-xl text-gray-700">
-          Niveau de compétence : Professionnel pour Standard, Expert pour Premium
+          Choisissez le modèle IA adapté à vos besoins
         </p>
       </div>
 
@@ -20,7 +20,7 @@ export const MarketModelComparison: React.FC = () => {
               <Zap className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-gray-900">Compétences Professionnelles</h3>
+              <h3 className="text-2xl font-bold text-gray-900">Mode Standard</h3>
               <p className="text-sm text-gray-600">Inclus dans tous les plans</p>
             </div>
           </div>
@@ -51,7 +51,7 @@ export const MarketModelComparison: React.FC = () => {
                 <Sparkles className="w-5 h-5 text-orange-600" />
               </div>
               <div>
-                <p className="font-semibold text-gray-900">Niveau de compétence : Professionnel</p>
+                <p className="font-semibold text-gray-900">Qualité professionnelle</p>
                 <p className="text-sm text-gray-600">Mémoires techniques structurés et cohérents</p>
               </div>
             </div>
@@ -76,7 +76,7 @@ export const MarketModelComparison: React.FC = () => {
               <Brain className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-gray-900">Compétences Expert</h3>
+              <h3 className="text-2xl font-bold text-gray-900">Mode Premium</h3>
               <p className="text-sm text-purple-700 font-semibold">+99€/mois</p>
             </div>
           </div>
@@ -117,7 +117,7 @@ export const MarketModelComparison: React.FC = () => {
                 <Sparkles className="w-5 h-5 text-purple-600" />
               </div>
               <div>
-                <p className="font-semibold text-gray-900">Niveau de compétence : Expert</p>
+                <p className="font-semibold text-gray-900">Qualité premium</p>
                 <p className="text-sm text-gray-600">Analyse fine des critères et optimisation max</p>
               </div>
             </div>
@@ -131,6 +131,16 @@ export const MarketModelComparison: React.FC = () => {
         </div>
       </div>
 
+      <div className="mt-12 text-center">
+        <div className="inline-block backdrop-blur-sm bg-white/80 rounded-2xl p-6 border border-gray-200/50 shadow-lg">
+          <p className="text-gray-700 mb-2">
+            <span className="font-bold text-orange-600">Le Mode Standard</span> est inclus dans tous nos plans.
+          </p>
+          <p className="text-gray-700">
+            <span className="font-bold text-purple-600">Le Mode Premium</span> est disponible en option pour +99€/mois sur tous les plans.
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

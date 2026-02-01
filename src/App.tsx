@@ -7,7 +7,6 @@ import { SignupForm } from './components/Auth/SignupForm';
 import { SubscriptionGate } from './components/Auth/SubscriptionGate';
 import { Sidebar } from './components/Layout/Sidebar';
 import { Dashboard } from './components/Dashboard/Dashboard';
-import { DashboardLinkedIn } from './components/Dashboard/DashboardLinkedIn';
 import { MarketList } from './components/Markets/MarketList';
 import { MarketListDebug } from './components/Markets/MarketListDebug';
 import { MarketSearch } from './components/MarketSearch/MarketSearch';
@@ -31,7 +30,6 @@ import { BugReportButton } from './components/Common/BugReportButton';
 import { PublicMarketPage } from './components/PublicMarket/PublicMarketPage';
 import { ReunionMarketsDirectory } from './components/PublicMarket/ReunionMarketsDirectory';
 import { SubscriptionSelection } from './components/Subscription/SubscriptionSelection';
-import { MarketDetailPage } from './components/MarketSearch/MarketDetailPage';
 
 type AuthMode = 'login' | 'signup';
 type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'coffre-fort' | 'assistant' | 'parametres' | 'admin' | 'labo';
@@ -63,7 +61,7 @@ function AppContent() {
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <DashboardLinkedIn />;
+        return <Dashboard />;
       case 'recherche-marches':
         return <MarketSearch />;
       case 'surveillance-marches':
@@ -81,7 +79,7 @@ function AppContent() {
       case 'labo':
         return <Labo />;
       default:
-        return <DashboardLinkedIn />;
+        return <Dashboard />;
     }
   };
 
@@ -105,17 +103,6 @@ function AppContent() {
       <Route path="/subscription" element={<SubscriptionSelection />} />
       <Route path="/marchepublics/974" element={<ReunionMarketsDirectory />} />
       <Route path="/marchepublics/974/:slug" element={<PublicMarketPage />} />
-      <Route path="/marche/:marketId" element={
-        user ? (
-          <SubscriptionGate>
-            <MarketDetailPage />
-          </SubscriptionGate>
-        ) : (
-          <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900/20' : 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200'} flex items-center justify-center p-4 transition-colors duration-200`}>
-            <LoginForm onToggleMode={() => setAuthMode('signup')} />
-          </div>
-        )
-      } />
       <Route path="/mmp" element={
         <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900/20' : 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200'} flex items-center justify-center p-4 transition-colors duration-200`}>
           {authMode === 'login' ? (
@@ -136,8 +123,11 @@ function AppContent() {
           </div>
         ) : (
           <SubscriptionGate>
-            <div className="min-h-screen">
-              {renderContent()}
+            <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'} flex transition-colors duration-200`}>
+              <Sidebar activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as AppTab)} />
+              <main className="flex-1 ml-64">
+                {renderContent()}
+              </main>
               <BugReportButton />
             </div>
           </SubscriptionGate>
