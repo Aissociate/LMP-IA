@@ -95,196 +95,186 @@ export const MarketListCompact: React.FC<MarketListCompactProps> = ({
 
   return (
     <div
-      className={`${
-        isDark ? 'bg-gray-800 border-gray-700 hover:bg-gray-750' : 'bg-white border-gray-200 hover:bg-gray-50'
-      } rounded-lg shadow-sm border p-4 transition-all duration-200`}
+      className={`group ${
+        isDark ? 'bg-gray-800/50 hover:bg-gray-800' : 'bg-white hover:bg-gray-50'
+      } rounded-lg border transition-all ${
+        isDark ? 'border-gray-700/50' : 'border-gray-200'
+      }`}
     >
-      <div className="flex gap-4">
-        <div
-          className={`flex-shrink-0 w-10 h-10 rounded-lg ${status.color} flex items-center justify-center`}
-        >
-          <StatusIcon className="w-5 h-5" />
-        </div>
+      <div className="p-4">
+        <div className="flex gap-3">
+          <div
+            className={`flex-shrink-0 w-8 h-8 rounded-lg ${status.color} flex items-center justify-center`}
+          >
+            <StatusIcon className="w-4 h-4" />
+          </div>
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-3 mb-2">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3
-                  className={`text-base font-semibold line-clamp-2 ${
-                    isDark ? 'text-white' : 'text-gray-900'
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3
+                    className={`text-base font-semibold line-clamp-1 ${
+                      isDark ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
+                    {market.title}
+                  </h3>
+                  {market.market_url && (
+                    <a
+                      href={market.market_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex-shrink-0 p-1 rounded transition-colors ${
+                        isDark ? 'text-gray-600 hover:text-gray-400 hover:bg-gray-700' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'
+                      }`}
+                      title="Voir la consultation"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
+                <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'} mt-0.5`}>
+                  {market.reference}
+                </p>
+              </div>
+
+              {daysRemaining !== null && daysRemaining > 0 && (
+                <div
+                  className={`flex-shrink-0 px-2 py-0.5 rounded text-xs font-medium flex items-center gap-1 ${
+                    daysRemaining < 7
+                      ? isDark
+                        ? 'bg-red-900/30 text-red-400'
+                        : 'bg-red-100 text-red-700'
+                      : daysRemaining < 15
+                      ? isDark
+                        ? 'bg-orange-900/30 text-orange-400'
+                        : 'bg-orange-100 text-orange-700'
+                      : isDark
+                      ? 'bg-green-900/30 text-green-400'
+                      : 'bg-green-100 text-green-700'
                   }`}
                 >
-                  {market.title}
-                </h3>
-                {market.market_url && (
-                  <a
-                    href={market.market_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex-shrink-0 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
-                      isDark ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'
-                    }`}
-                    title="Voir la consultation"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                )}
-              </div>
-              <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'} mt-1`}>
-                Réf: {market.reference}
+                  <Clock className="w-3 h-3" />
+                  J-{daysRemaining}
+                </div>
+              )}
+            </div>
+
+            {market.description && (
+              <p
+                className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-600'} line-clamp-2 mb-3`}
+              >
+                {market.description}
               </p>
-            </div>
-
-            {daysRemaining !== null && daysRemaining > 0 && (
-              <div
-                className={`flex-shrink-0 px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
-                  daysRemaining < 7
-                    ? isDark
-                      ? 'bg-red-900/30 text-red-400'
-                      : 'bg-red-100 text-red-700'
-                    : daysRemaining < 15
-                    ? isDark
-                      ? 'bg-orange-900/30 text-orange-400'
-                      : 'bg-orange-100 text-orange-700'
-                    : isDark
-                    ? 'bg-green-900/30 text-green-400'
-                    : 'bg-green-100 text-green-700'
-                }`}
-              >
-                <Clock className="w-3 h-3" />
-                J-{daysRemaining}
-              </div>
             )}
-          </div>
 
-          {market.description && (
-            <p
-              className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} line-clamp-2 mb-3`}
-            >
-              {market.description}
-            </p>
-          )}
+            <div className="flex flex-wrap gap-3 text-xs mb-3">
+              <div className={`flex items-center gap-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <Building className="w-3.5 h-3.5" />
+                <span>{market.client}</span>
+              </div>
 
-          <div className="grid grid-cols-3 gap-3 mb-3">
-            <div className="flex items-center gap-2 min-w-0">
-              <Building className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
-              <div className="min-w-0">
-                <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Client</p>
-                <p className={`text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} truncate`}>
-                  {market.client}
-                </p>
+              <div className={`flex items-center gap-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <Calendar className="w-3.5 h-3.5" />
+                <span>{formatDate(market.deadline)}</span>
+              </div>
+
+              <div className={`flex items-center gap-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <Euro className="w-3.5 h-3.5" />
+                <span>{formatCurrency(market.budget)}</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 min-w-0">
-              <Calendar className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
-              <div className="min-w-0">
-                <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Échéance</p>
-                <p className={`text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                  {formatDate(market.deadline)}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 min-w-0">
-              <Euro className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
-              <div className="min-w-0">
-                <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Budget</p>
-                <p className={`text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                  {formatCurrency(market.budget)}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Boutons d'action en ligne horizontale */}
-          <div className="flex flex-wrap items-center gap-1.5">
-            <button
-              onClick={onEdit}
-              className={`px-2.5 py-1.5 rounded-md text-xs font-medium transition-all duration-200 flex items-center gap-1.5 shadow-sm ${
-                isDark
-                  ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                  : 'bg-gray-600 hover:bg-gray-700 text-white'
-              }`}
-              title="Éditer le marché"
-            >
-              <Edit3 className="w-3.5 h-3.5" />
-              <span>Éditer</span>
-            </button>
-
-            <button
-              onClick={onAnalysis}
-              className="px-2.5 py-1.5 rounded-md text-xs font-medium transition-all duration-200 flex items-center gap-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-sm"
-              title="Analyser les documents"
-            >
-              <Brain className="w-3.5 h-3.5" />
-              <span>Analyse</span>
-            </button>
-
-            <button
-              onClick={onTechnicalMemory}
-              className="px-2.5 py-1.5 rounded-md text-xs font-medium transition-all duration-200 flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-sm"
-              title="Mémoire technique"
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>Mémoire</span>
-            </button>
-
-            <button
-              onClick={onEconomicDocs}
-              className="px-2.5 py-1.5 rounded-md text-xs font-medium transition-all duration-200 flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white shadow-sm"
-              title="Documents économiques (BPU, DQE, DPGF)"
-            >
-              <Calculator className="w-3.5 h-3.5" />
-              <span>Éco</span>
-            </button>
-
-            <button
-              onClick={onDC1}
-              className="px-2.5 py-1.5 rounded-md text-xs font-medium transition-all duration-200 flex items-center gap-1.5 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white shadow-sm"
-              title="Déclaration de Candidature (DC1)"
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>DC1</span>
-            </button>
-
-            {onArchive && (
+            <div className="flex flex-wrap items-center gap-1.5">
               <button
-                onClick={onArchive}
-                className={`px-2.5 py-1.5 rounded-md text-xs font-medium transition-all duration-200 flex items-center gap-1.5 shadow-sm ${
+                onClick={onEdit}
+                className={`px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 ${
                   isDark
-                    ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-                    : 'bg-gray-300 hover:bg-gray-400 text-gray-700'
+                    ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                 }`}
-                title="Archiver le marché"
+                title="Éditer"
               >
-                <Archive className="w-3.5 h-3.5" />
-                <span>Archiver</span>
+                <Edit3 className="w-3.5 h-3.5" />
+                <span>Éditer</span>
               </button>
-            )}
 
-            {onDelete && (
               <button
-                onClick={onDelete}
-                className="px-2.5 py-1.5 rounded-md text-xs font-medium transition-all duration-200 flex items-center gap-1.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-sm"
-                title="Supprimer le marché"
+                onClick={onAnalysis}
+                className="px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white"
+                title="Analyse IA"
               >
-                <X className="w-3.5 h-3.5" />
-                <span>Suppr.</span>
+                <Brain className="w-3.5 h-3.5" />
+                <span>Analyse</span>
               </button>
-            )}
 
-            {market.status === 'en_cours' && onWin && (
               <button
-                onClick={onWin}
-                className="px-2.5 py-1.5 rounded-md text-xs font-medium transition-all duration-200 flex items-center gap-1.5 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-sm ml-auto"
-                title="Marquer comme gagné"
+                onClick={onTechnicalMemory}
+                className="px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white"
+                title="Mémoire technique"
               >
-                <Trophy className="w-3.5 h-3.5" />
-                <span>Gagné</span>
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Mémoire</span>
               </button>
-            )}
+
+              <button
+                onClick={onEconomicDocs}
+                className="px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white"
+                title="Docs économiques"
+              >
+                <Calculator className="w-3.5 h-3.5" />
+                <span>Éco</span>
+              </button>
+
+              <button
+                onClick={onDC1}
+                className="px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 bg-orange-600 hover:bg-orange-700 text-white"
+                title="DC1"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>DC1</span>
+              </button>
+
+              {market.status === 'en_cours' && onWin && (
+                <button
+                  onClick={onWin}
+                  className="px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white ml-auto"
+                  title="Gagné"
+                >
+                  <Trophy className="w-3.5 h-3.5" />
+                  <span>Gagné</span>
+                </button>
+              )}
+
+              {onArchive && (
+                <button
+                  onClick={onArchive}
+                  className={`opacity-0 group-hover:opacity-100 px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 ${
+                    isDark
+                      ? 'text-gray-600 hover:text-gray-300 hover:bg-gray-700'
+                      : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'
+                  }`}
+                  title="Archiver"
+                >
+                  <Archive className="w-3.5 h-3.5" />
+                </button>
+              )}
+
+              {onDelete && (
+                <button
+                  onClick={onDelete}
+                  className={`opacity-0 group-hover:opacity-100 px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 ${
+                    isDark
+                      ? 'text-gray-600 hover:text-red-500 hover:bg-gray-700'
+                      : 'text-gray-400 hover:text-red-600 hover:bg-gray-100'
+                  }`}
+                  title="Supprimer"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

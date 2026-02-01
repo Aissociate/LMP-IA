@@ -142,26 +142,26 @@ export const MarketList: React.FC = () => {
 
   if (error) {
     return (
-      <div className={`p-8 min-h-screen transition-colors duration-200 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
-        <div className="flex items-center gap-4 mb-8">
-          <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-3 rounded-xl shadow-lg">
-            <FileText className="w-8 h-8 text-white" />
+      <div className={`p-6 min-h-screen transition-colors duration-200 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="bg-blue-600 p-2 rounded-lg">
+            <FileText className="w-5 h-5 text-white" />
           </div>
-          <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Marchés</h1>
+          <h1 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Marchés</h1>
         </div>
-        <div className={`${isDark ? 'bg-red-900/20 border-red-800' : 'bg-red-50 border-red-200'} border rounded-xl p-6`}>
-          <div className="flex items-center gap-3 mb-2">
-            <AlertTriangle className="w-6 h-6 text-red-600" />
-            <h3 className={`font-semibold ${isDark ? 'text-red-400' : 'text-red-900'}`}>Erreur</h3>
+        <div className={`${isDark ? 'bg-red-900/20 border-red-700/50' : 'bg-red-50 border-red-200'} border rounded-lg p-4`}>
+          <div className="flex items-center gap-2 mb-2">
+            <AlertTriangle className="w-4 h-4 text-red-600" />
+            <h3 className={`text-sm font-semibold ${isDark ? 'text-red-400' : 'text-red-900'}`}>Erreur</h3>
           </div>
-          <p className={`${isDark ? 'text-red-300' : 'text-red-700'} mb-4`}>{error}</p>
+          <p className={`text-xs ${isDark ? 'text-red-300' : 'text-red-700'} mb-3`}>{error}</p>
           <button
             onClick={() => {
               setError(null);
               setLoading(true);
               fetchMarkets();
             }}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg transition-colors text-xs font-medium"
           >
             Réessayer
           </button>
@@ -171,46 +171,42 @@ export const MarketList: React.FC = () => {
   }
 
   return (
-    <div className={`p-8 min-h-screen transition-colors duration-200 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <div className="flex items-center gap-4 mb-4">
-            <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-3 rounded-xl shadow-lg">
-              <FileText className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Marchés</h1>
-              <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} mt-2`}>Gérez vos marchés publics</p>
-            </div>
+    <div className={`p-6 min-h-screen transition-colors duration-200 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-3">
+          <div className="bg-blue-600 p-2 rounded-lg">
+            <FileText className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h1 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Marchés</h1>
+            <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Gérez vos marchés publics</p>
           </div>
         </div>
         <button
           onClick={() => setIsCreateModalOpen(true)}
-          className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium px-6 py-3 rounded-lg flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-all text-sm shadow-sm hover:shadow"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4" />
           Nouveau marché
         </button>
       </div>
 
-      <div className="flex gap-6 mb-6">
-        <div className="text-sm font-medium pb-2 border-b-2 border-orange-600 text-orange-600">
+      <div className="flex gap-3 mb-4">
+        <div className={`text-xs font-medium pb-2 border-b-2 ${isDark ? 'border-blue-500 text-blue-400' : 'border-blue-600 text-blue-600'}`}>
           Mes marchés ({markets.length})
         </div>
       </div>
 
       {markets.length === 0 ? (
-        <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-sm border p-12 text-center transition-colors duration-200`}>
-          <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-100'} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4`}>
-            <FileText className={`w-10 h-10 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
-          </div>
-          <h3 className={`text-lg font-medium ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>Aucun marché</h3>
-          <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} mb-6`}>Commencez par créer votre premier marché ou ajoutez-en depuis vos détections d'alertes</p>
+        <div className="text-center py-16">
+          <FileText className={`w-12 h-12 mx-auto mb-3 ${isDark ? 'text-gray-700' : 'text-gray-300'}`} />
+          <h3 className={`text-base font-semibold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>Aucun marché</h3>
+          <p className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-500'} mb-4`}>Créez votre premier marché ou ajoutez-en depuis vos alertes</p>
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium px-6 py-3 rounded-lg inline-flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg inline-flex items-center gap-2 transition-all text-sm shadow-sm hover:shadow"
           >
-            <Plus className="w-5 h-5" />
+            <Plus className="w-4 h-4" />
             Créer un marché
           </button>
         </div>
