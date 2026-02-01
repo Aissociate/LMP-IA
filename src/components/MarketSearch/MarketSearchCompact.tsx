@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   MapPin,
   Building,
@@ -40,6 +41,7 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
   onProspect,
   onAddLog
 }) => {
+  const navigate = useNavigate();
   const [analyzingMarket, setAnalyzingMarket] = useState(false);
 
   const handleAnalyzeWithSentinel = async () => {
@@ -272,10 +274,8 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
         </div>
 
         <div className="flex flex-col gap-2">
-          <a
-            href={market.url}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => navigate(`/marche/${market.reference}`, { state: { market } })}
             className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
               isDark
                 ? 'bg-blue-600 hover:bg-blue-700 text-white'
@@ -284,7 +284,7 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
           >
             <Eye className="w-4 h-4" />
             Voir
-          </a>
+          </button>
 
           {market.dceUrl ? (
             <a

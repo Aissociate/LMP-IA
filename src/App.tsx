@@ -31,6 +31,7 @@ import { BugReportButton } from './components/Common/BugReportButton';
 import { PublicMarketPage } from './components/PublicMarket/PublicMarketPage';
 import { ReunionMarketsDirectory } from './components/PublicMarket/ReunionMarketsDirectory';
 import { SubscriptionSelection } from './components/Subscription/SubscriptionSelection';
+import { MarketDetailPage } from './components/MarketSearch/MarketDetailPage';
 
 type AuthMode = 'login' | 'signup';
 type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'coffre-fort' | 'assistant' | 'parametres' | 'admin' | 'labo';
@@ -104,6 +105,17 @@ function AppContent() {
       <Route path="/subscription" element={<SubscriptionSelection />} />
       <Route path="/marchepublics/974" element={<ReunionMarketsDirectory />} />
       <Route path="/marchepublics/974/:slug" element={<PublicMarketPage />} />
+      <Route path="/marche/:marketId" element={
+        user ? (
+          <SubscriptionGate>
+            <MarketDetailPage />
+          </SubscriptionGate>
+        ) : (
+          <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900/20' : 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200'} flex items-center justify-center p-4 transition-colors duration-200`}>
+            <LoginForm onToggleMode={() => setAuthMode('signup')} />
+          </div>
+        )
+      } />
       <Route path="/mmp" element={
         <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900/20' : 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200'} flex items-center justify-center p-4 transition-colors duration-200`}>
           {authMode === 'login' ? (
