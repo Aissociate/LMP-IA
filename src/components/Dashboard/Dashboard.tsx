@@ -228,12 +228,12 @@ export const Dashboard: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     const colors = {
-      'en_cours': isDark ? 'text-blue-400 bg-blue-500/10' : 'text-blue-700 bg-blue-50',
-      'soumis': isDark ? 'text-amber-400 bg-amber-500/10' : 'text-amber-700 bg-amber-50',
-      'gagne': isDark ? 'text-green-400 bg-green-500/10' : 'text-green-700 bg-green-50',
-      'perdu': isDark ? 'text-red-400 bg-red-500/10' : 'text-red-700 bg-red-50'
+      'en_cours': isDark ? 'text-[#70B5F9] bg-[#0A66C2]/10' : 'text-[#0A66C2] bg-[#0A66C2]/5',
+      'soumis': isDark ? 'text-[#F5C75D] bg-[#F5C75D]/10' : 'text-[#915907] bg-[#915907]/10',
+      'gagne': isDark ? 'text-[#57B894] bg-[#057642]/10' : 'text-[#057642] bg-[#057642]/5',
+      'perdu': isDark ? 'text-[#F5989D] bg-[#CC1016]/10' : 'text-[#CC1016] bg-[#CC1016]/5'
     };
-    return colors[status as keyof typeof colors] || (isDark ? 'text-gray-400 bg-gray-500/10' : 'text-gray-700 bg-gray-50');
+    return colors[status as keyof typeof colors] || (isDark ? 'text-[#B0B7BE] bg-[#38434F]/50' : 'text-gray-700 bg-gray-100');
   };
 
   const getStatusLabel = (status: string) => {
@@ -252,37 +252,36 @@ export const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className={`flex items-center justify-center min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600"></div>
+      <div className={`flex items-center justify-center min-h-screen ${isDark ? 'bg-[#000000]' : 'bg-[#F3F2EF]'}`}>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#0A66C2]"></div>
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-200 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
-      <div className="max-w-7xl mx-auto p-8">
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-6">
+    <div className={`min-h-screen transition-colors duration-200 ${isDark ? 'bg-[#000000]' : 'bg-[#F3F2EF]'}`}>
+      <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className={`${isDark ? 'bg-[#1B1F23]' : 'bg-white'} rounded-lg shadow-sm border ${isDark ? 'border-[#38434F]' : 'border-gray-200'} mb-4 p-6`}>
+          <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur-xl opacity-30 animate-pulse"></div>
               <img
                 src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150"
                 alt="Iris - Votre assistante"
-                className="relative w-16 h-16 rounded-full object-cover border-3 border-amber-400 shadow-lg"
+                className="w-20 h-20 rounded-full object-cover border-2 border-[#0A66C2]"
               />
             </div>
-            <div>
-              <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                <span className="bg-gradient-to-r from-amber-500 to-yellow-500 bg-clip-text text-transparent">Iris</span> - Votre Assistante
+            <div className="flex-1">
+              <h1 className={`text-2xl font-semibold ${isDark ? 'text-white' : 'text-[#000000DE]'} mb-1`}>
+                Bonjour, bienvenue sur votre tableau de bord
               </h1>
-              <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Je surveille vos marchés et prépare vos dossiers 24/7
+              <p className={`text-sm ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
+                Iris surveille vos marchés et prépare vos dossiers 24/7
               </p>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <StatsCard
             title="Total marchés"
             value={stats.total}
@@ -309,40 +308,41 @@ export const Dashboard: React.FC = () => {
             title="Budget total"
             value={`${(stats.budget_total / 1000000).toFixed(1)}M€`}
             icon={Euro}
-            color="purple"
+            color="blue"
             isDark={isDark}
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className={`lg:col-span-2 rounded-xl border p-6 ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className={`p-2 rounded-lg ${isDark ? 'bg-blue-500/10' : 'bg-blue-50'}`}>
-                <BarChart3 className={`w-5 h-5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
-              </div>
-              <div>
-                <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+          <div className={`lg:col-span-2 rounded-lg border shadow-sm ${isDark ? 'bg-[#1B1F23] border-[#38434F]' : 'bg-white border-gray-200'}`}>
+            <div className="p-6 border-b ${isDark ? 'border-[#38434F]' : 'border-gray-200'}">
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-lg ${isDark ? 'bg-[#0A66C2]/10' : 'bg-[#0A66C2]/5'}`}>
+                  <BarChart3 className={`w-5 h-5 ${isDark ? 'text-[#70B5F9]' : 'text-[#0A66C2]'}`} />
+                </div>
+                <h2 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                   Répartition des marchés
                 </h2>
               </div>
             </div>
+            <div className="p-6">
 
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`w-3 h-3 rounded-full ${isDark ? 'bg-blue-500' : 'bg-blue-600'}`}></div>
-                  <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <div className={`w-2.5 h-2.5 rounded-full ${isDark ? 'bg-[#0A66C2]' : 'bg-[#0A66C2]'}`}></div>
+                  <span className={`text-sm font-medium ${isDark ? 'text-[#B0B7BE]' : 'text-gray-700'}`}>
                     En cours
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-48 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className={`w-48 ${isDark ? 'bg-[#38434F]' : 'bg-gray-200'} rounded-full h-2`}>
                     <div
-                      className={`h-2 rounded-full ${isDark ? 'bg-blue-500' : 'bg-blue-600'}`}
+                      className={`h-2 rounded-full ${isDark ? 'bg-[#0A66C2]' : 'bg-[#0A66C2]'}`}
                       style={{ width: `${stats.total > 0 ? (stats.en_cours / stats.total) * 100 : 0}%` }}
                     ></div>
                   </div>
-                  <span className={`text-sm font-semibold w-12 text-right ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <span className={`text-sm font-semibold w-12 text-right ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                     {stats.en_cours}
                   </span>
                 </div>
@@ -350,19 +350,19 @@ export const Dashboard: React.FC = () => {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`w-3 h-3 rounded-full ${isDark ? 'bg-amber-500' : 'bg-amber-600'}`}></div>
-                  <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <div className={`w-2.5 h-2.5 rounded-full ${isDark ? 'bg-[#F5C75D]' : 'bg-[#915907]'}`}></div>
+                  <span className={`text-sm font-medium ${isDark ? 'text-[#B0B7BE]' : 'text-gray-700'}`}>
                     Soumis
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-48 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className={`w-48 ${isDark ? 'bg-[#38434F]' : 'bg-gray-200'} rounded-full h-2`}>
                     <div
-                      className={`h-2 rounded-full ${isDark ? 'bg-amber-500' : 'bg-amber-600'}`}
+                      className={`h-2 rounded-full ${isDark ? 'bg-[#F5C75D]' : 'bg-[#915907]'}`}
                       style={{ width: `${stats.total > 0 ? (stats.soumis / stats.total) * 100 : 0}%` }}
                     ></div>
                   </div>
-                  <span className={`text-sm font-semibold w-12 text-right ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <span className={`text-sm font-semibold w-12 text-right ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                     {stats.soumis}
                   </span>
                 </div>
@@ -370,19 +370,19 @@ export const Dashboard: React.FC = () => {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`w-3 h-3 rounded-full ${isDark ? 'bg-green-500' : 'bg-green-600'}`}></div>
-                  <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <div className={`w-2.5 h-2.5 rounded-full ${isDark ? 'bg-[#57B894]' : 'bg-[#057642]'}`}></div>
+                  <span className={`text-sm font-medium ${isDark ? 'text-[#B0B7BE]' : 'text-gray-700'}`}>
                     Gagnés
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-48 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className={`w-48 ${isDark ? 'bg-[#38434F]' : 'bg-gray-200'} rounded-full h-2`}>
                     <div
-                      className={`h-2 rounded-full ${isDark ? 'bg-green-500' : 'bg-green-600'}`}
+                      className={`h-2 rounded-full ${isDark ? 'bg-[#57B894]' : 'bg-[#057642]'}`}
                       style={{ width: `${stats.total > 0 ? (stats.gagne / stats.total) * 100 : 0}%` }}
                     ></div>
                   </div>
-                  <span className={`text-sm font-semibold w-12 text-right ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <span className={`text-sm font-semibold w-12 text-right ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                     {stats.gagne}
                   </span>
                 </div>
@@ -390,107 +390,110 @@ export const Dashboard: React.FC = () => {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`w-3 h-3 rounded-full ${isDark ? 'bg-red-500' : 'bg-red-600'}`}></div>
-                  <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <div className={`w-2.5 h-2.5 rounded-full ${isDark ? 'bg-[#F5989D]' : 'bg-[#CC1016]'}`}></div>
+                  <span className={`text-sm font-medium ${isDark ? 'text-[#B0B7BE]' : 'text-gray-700'}`}>
                     Perdus
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-48 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className={`w-48 ${isDark ? 'bg-[#38434F]' : 'bg-gray-200'} rounded-full h-2`}>
                     <div
-                      className={`h-2 rounded-full ${isDark ? 'bg-red-500' : 'bg-red-600'}`}
+                      className={`h-2 rounded-full ${isDark ? 'bg-[#F5989D]' : 'bg-[#CC1016]'}`}
                       style={{ width: `${stats.total > 0 ? (stats.perdu / stats.total) * 100 : 0}%` }}
                     ></div>
                   </div>
-                  <span className={`text-sm font-semibold w-12 text-right ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <span className={`text-sm font-semibold w-12 text-right ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                     {stats.perdu}
                   </span>
                 </div>
               </div>
             </div>
+            </div>
           </div>
 
-          <div className={`rounded-xl border p-6 ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className={`p-2 rounded-lg ${isDark ? 'bg-purple-500/10' : 'bg-purple-50'}`}>
-                <Activity className={`w-5 h-5 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
-              </div>
-              <div>
-                <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          <div className={`rounded-lg border shadow-sm ${isDark ? 'bg-[#1B1F23] border-[#38434F]' : 'bg-white border-gray-200'}`}>
+            <div className={`p-6 border-b ${isDark ? 'border-[#38434F]' : 'border-gray-200'}`}>
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-lg ${isDark ? 'bg-[#0A66C2]/10' : 'bg-[#0A66C2]/5'}`}>
+                  <Activity className={`w-5 h-5 ${isDark ? 'text-[#70B5F9]' : 'text-[#0A66C2]'}`} />
+                </div>
+                <h2 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                   Productivité
                 </h2>
               </div>
             </div>
+            <div className="p-6">
 
-            <div className="space-y-6">
+            <div className="space-y-5">
               <div>
                 <div className="flex items-baseline gap-2 mb-1">
-                  <span className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <span className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                     {timeStats.analyzedDocuments}
                   </span>
                 </div>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-xs ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
                   Documents analysés
                 </p>
               </div>
 
               <div>
                 <div className="flex items-baseline gap-2 mb-1">
-                  <span className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <span className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                     {timeStats.completedMemories}
                   </span>
                 </div>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-xs ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
                   Sections de mémoire générées
                 </p>
               </div>
 
               <div>
-                <div className="flex items-baseline gap-2 mb-1">
-                  <span className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                     {timeStats.days}
                   </span>
-                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <span className={`text-xs ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
                     jours économisés
                   </span>
                 </div>
-                <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                <p className={`text-xs ${isDark ? 'text-[#9CA3AF]' : 'text-gray-500'}`}>
                   soit {timeStats.hours}h de travail
                 </p>
               </div>
             </div>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className={`rounded-xl border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className={`rounded-lg border shadow-sm ${isDark ? 'bg-[#1B1F23] border-[#38434F]' : 'bg-white border-gray-200'}`}>
+            <div className={`p-5 border-b ${isDark ? 'border-[#38434F]' : 'border-gray-200'}`}>
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${isDark ? 'bg-blue-500/10' : 'bg-blue-50'}`}>
-                  <Clock className={`w-5 h-5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+                <div className={`p-2 rounded-lg ${isDark ? 'bg-[#0A66C2]/10' : 'bg-[#0A66C2]/5'}`}>
+                  <Clock className={`w-5 h-5 ${isDark ? 'text-[#70B5F9]' : 'text-[#0A66C2]'}`} />
                 </div>
-                <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h2 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                   Marchés récents
                 </h2>
               </div>
             </div>
-            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+            <div className={`divide-y ${isDark ? 'divide-[#38434F]' : 'divide-gray-200'}`}>
               {recentMarkets.length === 0 ? (
                 <div className="p-8 text-center">
-                  <FileText className={`w-12 h-12 mx-auto mb-3 ${isDark ? 'text-gray-600' : 'text-gray-400'}`} />
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <FileText className={`w-10 h-10 mx-auto mb-2 ${isDark ? 'text-[#38434F]' : 'text-gray-300'}`} />
+                  <p className={`text-sm ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
                     Aucun marché récent
                   </p>
                 </div>
               ) : (
                 recentMarkets.map((market) => (
-                  <div key={market.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
+                  <div key={market.id} className={`p-4 ${isDark ? 'hover:bg-[#38434F]/20' : 'hover:bg-gray-50'} transition-colors cursor-pointer`}>
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
-                        <h3 className={`text-sm font-medium mb-1 truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        <h3 className={`text-sm font-medium mb-1 truncate ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                           {market.title}
                         </h3>
-                        <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                        <p className={`text-xs ${isDark ? 'text-[#9CA3AF]' : 'text-gray-500'}`}>
                           {formatDate(market.created_at)}
                         </p>
                       </div>
@@ -504,22 +507,22 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className={`rounded-xl border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className={`rounded-lg border shadow-sm ${isDark ? 'bg-[#1B1F23] border-[#38434F]' : 'bg-white border-gray-200'}`}>
+            <div className={`p-5 border-b ${isDark ? 'border-[#38434F]' : 'border-gray-200'}`}>
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${isDark ? 'bg-red-500/10' : 'bg-red-50'}`}>
-                  <AlertTriangle className={`w-5 h-5 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                <div className={`p-2 rounded-lg ${isDark ? 'bg-[#CC1016]/10' : 'bg-[#CC1016]/5'}`}>
+                  <AlertTriangle className={`w-5 h-5 ${isDark ? 'text-[#F5989D]' : 'text-[#CC1016]'}`} />
                 </div>
-                <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h2 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                   Échéances à venir
                 </h2>
               </div>
             </div>
-            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+            <div className={`divide-y ${isDark ? 'divide-[#38434F]' : 'divide-gray-200'}`}>
               {upcomingDeadlines.length === 0 ? (
                 <div className="p-8 text-center">
-                  <CheckCircle className={`w-12 h-12 mx-auto mb-3 ${isDark ? 'text-gray-600' : 'text-gray-400'}`} />
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <CheckCircle className={`w-10 h-10 mx-auto mb-2 ${isDark ? 'text-[#38434F]' : 'text-gray-300'}`} />
+                  <p className={`text-sm ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
                     Aucune échéance proche
                   </p>
                 </div>
@@ -529,20 +532,20 @@ export const Dashboard: React.FC = () => {
                   const isUrgent = days !== null && days <= 3;
 
                   return (
-                    <div key={market.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
+                    <div key={market.id} className={`p-4 ${isDark ? 'hover:bg-[#38434F]/20' : 'hover:bg-gray-50'} transition-colors cursor-pointer`}>
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
-                          <h3 className={`text-sm font-medium mb-1 truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                          <h3 className={`text-sm font-medium mb-1 truncate ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
                             {market.title}
                           </h3>
-                          <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                          <p className={`text-xs ${isDark ? 'text-[#9CA3AF]' : 'text-gray-500'}`}>
                             {formatDate(market.deadline)}
                           </p>
                         </div>
                         <span className={`ml-3 px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
                           isUrgent
-                            ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
-                            : 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400'
+                            ? isDark ? 'bg-[#CC1016]/10 text-[#F5989D]' : 'bg-[#CC1016]/10 text-[#CC1016]'
+                            : isDark ? 'bg-[#F5C75D]/10 text-[#F5C75D]' : 'bg-[#915907]/10 text-[#915907]'
                         }`}>
                           {days !== null && days > 0 ? `${days}j restants` : 'Aujourd\'hui'}
                         </span>
