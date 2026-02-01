@@ -36,6 +36,7 @@ export default {
           border: '#E0E0E0',
           gold: '#F5B800',
           night: '#001F3F',
+          accent: '#0A66C2', // LinkedIn Blue
         }
       },
       backgroundColor: {

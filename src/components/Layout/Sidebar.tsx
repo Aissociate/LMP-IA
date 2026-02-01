@@ -66,8 +66,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-200 focus-visible-ring ${
                     isActive
                       ? isDark
-                        ? 'bg-blue-600 text-white shadow-sm'
-                        : 'bg-blue-600 text-white shadow-sm'
+                        ? 'bg-linkedin-500 text-white shadow-sm'
+                        : 'bg-linkedin-500 text-white shadow-sm'
                       : isDark
                         ? 'text-gray-300 hover:bg-gray-800 hover:text-white'
                         : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
