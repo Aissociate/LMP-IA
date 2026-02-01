@@ -350,11 +350,11 @@ export default function Home() {
           {/* Header Card */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
             {/* Banner */}
-            <div className="h-32 bg-gradient-to-r from-[#0A66C2] to-[#004182]"></div>
+            <div className="h-48 bg-gradient-to-r from-[#0A66C2] to-[#004182]"></div>
 
             {/* Profile Section */}
             <div className="px-6 pb-6">
-              <div className="flex flex-col md:flex-row gap-6 -mt-16">
+              <div className="flex flex-col md:flex-row gap-6 -mt-24">
                 {/* Photo */}
                 <div className="flex-shrink-0">
                   <div className="relative">
@@ -368,15 +368,15 @@ export default function Home() {
                 </div>
 
                 {/* Info principale */}
-                <div className="flex-1 pt-16 md:pt-0">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-1">Iris</h1>
-                  <p className="text-2xl font-semibold text-gray-900 mb-3">Assistante IA • Experte Marchés Publics La Réunion</p>
-                  <p className="text-base text-gray-700 mb-4">Saint-Denis (974) · <span className="text-[#0A66C2] font-semibold">Disponible 24/7</span></p>
+                <div className="flex-1 pt-4 md:pt-0">
+                  <h1 className="text-3xl font-bold text-white mb-1">Iris</h1>
+                  <p className="text-2xl font-semibold text-white mb-3">Assistante IA • Experte Marchés Publics La Réunion</p>
+                  <p className="text-base text-white mb-4">Saint-Denis (974) · <span className="text-yellow-300 font-semibold">Disponible 24/7</span></p>
 
                   <div className="flex flex-wrap gap-3 mb-4">
-                    <span className="text-sm text-gray-600">100+ entreprises accompagnées</span>
-                    <span className="text-gray-300">·</span>
-                    <span className="text-sm text-gray-600">150+ marchés remportés</span>
+                    <span className="text-sm text-white/90">100+ entreprises accompagnées</span>
+                    <span className="text-white/50">·</span>
+                    <span className="text-sm text-white/90">150+ marchés remportés</span>
                   </div>
 
                   <Button
