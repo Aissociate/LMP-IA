@@ -297,10 +297,10 @@ export const Dashboard: React.FC = () => {
             </div>
             <div className="flex-1">
               <h1 className={`text-2xl font-semibold ${isDark ? 'text-white' : 'text-[#000000DE]'} mb-1`}>
-                Bonjour, bienvenue sur votre tableau de bord
+                Bonjour ! Je suis Iris, votre assistante IA
               </h1>
               <p className={`text-sm ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
-                Iris surveille vos marchés et prépare vos dossiers 24/7
+                Je surveille vos marchés et prépare vos dossiers 24/7 pendant que vous vous concentrez sur votre métier
               </p>
             </div>
           </div>
@@ -312,16 +312,16 @@ export const Dashboard: React.FC = () => {
               <AlertTriangle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isDark ? 'text-[#F5C75D]' : 'text-amber-600'}`} />
               <div className="flex-1">
                 <h3 className={`text-sm font-semibold mb-1 ${isDark ? 'text-[#F5C75D]' : 'text-amber-900'}`}>
-                  Base de connaissance vide
+                  J'ai besoin de vos documents
                 </h3>
                 <p className={`text-sm mb-2 ${isDark ? 'text-[#B0B7BE]' : 'text-amber-800'}`}>
-                  Ajoutez des documents à votre base de connaissance pour améliorer la qualité des réponses d'Iris et personnaliser vos mémoires techniques.
+                  Pour mieux vous connaître et personnaliser vos mémoires techniques, j'ai besoin que vous m'ajoutiez quelques documents sur votre entreprise (plaquettes, références, certifications...).
                 </p>
                 <Link
                   to="/settings?tab=knowledge"
                   className={`inline-flex items-center text-sm font-medium ${isDark ? 'text-[#70B5F9] hover:text-[#0A66C2]' : 'text-[#0A66C2] hover:text-[#004182]'} transition-colors`}
                 >
-                  Ajouter des documents
+                  Partager mes documents avec Iris
                   <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -333,21 +333,21 @@ export const Dashboard: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <StatsCard
-            title="Total marchés"
+            title="Vos marchés"
             value={stats.total}
             icon={FileText}
             color="blue"
             isDark={isDark}
           />
           <StatsCard
-            title="En cours"
+            title="En cours de traitement"
             value={stats.en_cours}
             icon={Clock}
             color="amber"
             isDark={isDark}
           />
           <StatsCard
-            title="Taux de réussite"
+            title="Votre taux de succès"
             value={`${successRate}%`}
             icon={TrendingUp}
             color="green"
@@ -355,7 +355,7 @@ export const Dashboard: React.FC = () => {
             subtitle={`${stats.gagne} gagnés / ${stats.soumis} soumis`}
           />
           <StatsCard
-            title="Budget total"
+            title="Volume total suivi"
             value={`${(stats.budget_total / 1000000).toFixed(1)}M€`}
             icon={Euro}
             color="blue"
@@ -371,7 +371,7 @@ export const Dashboard: React.FC = () => {
                   <BarChart3 className={`w-5 h-5 ${isDark ? 'text-[#70B5F9]' : 'text-[#0A66C2]'}`} />
                 </div>
                 <h2 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
-                  Répartition des marchés
+                  Où en sont vos marchés
                 </h2>
               </div>
             </div>
@@ -468,7 +468,7 @@ export const Dashboard: React.FC = () => {
                   <Activity className={`w-5 h-5 ${isDark ? 'text-[#70B5F9]' : 'text-[#0A66C2]'}`} />
                 </div>
                 <h2 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
-                  Productivité
+                  Le temps que je vous fais gagner
                 </h2>
               </div>
             </div>
@@ -482,7 +482,7 @@ export const Dashboard: React.FC = () => {
                   </span>
                 </div>
                 <p className={`text-xs ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
-                  Documents analysés
+                  Documents que j'ai analysés pour vous
                 </p>
               </div>
 
@@ -493,7 +493,7 @@ export const Dashboard: React.FC = () => {
                   </span>
                 </div>
                 <p className={`text-xs ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
-                  Sections de mémoire générées
+                  Sections de mémoire que j'ai rédigées
                 </p>
               </div>
 
@@ -503,11 +503,11 @@ export const Dashboard: React.FC = () => {
                     {timeStats.days}
                   </span>
                   <span className={`text-xs ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
-                    jours économisés
+                    jours que je vous ai fait gagner
                   </span>
                 </div>
                 <p className={`text-xs ${isDark ? 'text-[#9CA3AF]' : 'text-gray-500'}`}>
-                  soit {timeStats.hours}h de travail
+                  soit {timeStats.hours}h que vous avez pu consacrer à votre métier
                 </p>
               </div>
             </div>
@@ -523,7 +523,7 @@ export const Dashboard: React.FC = () => {
                   <Clock className={`w-5 h-5 ${isDark ? 'text-[#70B5F9]' : 'text-[#0A66C2]'}`} />
                 </div>
                 <h2 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
-                  Marchés récents
+                  Vos derniers marchés
                 </h2>
               </div>
             </div>
@@ -532,7 +532,7 @@ export const Dashboard: React.FC = () => {
                 <div className="p-8 text-center">
                   <FileText className={`w-10 h-10 mx-auto mb-2 ${isDark ? 'text-[#38434F]' : 'text-gray-300'}`} />
                   <p className={`text-sm ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
-                    Aucun marché récent
+                    Vous n'avez pas encore de marché. Je suis prête à vous aider dès que vous en ajouterez un !
                   </p>
                 </div>
               ) : (
@@ -564,7 +564,7 @@ export const Dashboard: React.FC = () => {
                   <AlertTriangle className={`w-5 h-5 ${isDark ? 'text-[#F5989D]' : 'text-[#CC1016]'}`} />
                 </div>
                 <h2 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-[#000000DE]'}`}>
-                  Échéances à venir
+                  Les échéances que je surveille
                 </h2>
               </div>
             </div>
@@ -573,7 +573,7 @@ export const Dashboard: React.FC = () => {
                 <div className="p-8 text-center">
                   <CheckCircle className={`w-10 h-10 mx-auto mb-2 ${isDark ? 'text-[#38434F]' : 'text-gray-300'}`} />
                   <p className={`text-sm ${isDark ? 'text-[#B0B7BE]' : 'text-gray-600'}`}>
-                    Aucune échéance proche
+                    Pas d'échéance urgente pour le moment. Je continue à surveiller pour vous !
                   </p>
                 </div>
               ) : (
