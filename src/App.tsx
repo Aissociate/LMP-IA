@@ -4,6 +4,7 @@ import { useAuth } from './hooks/useAuth';
 import { useTheme } from './hooks/useTheme';
 import { LoginForm } from './components/Auth/LoginForm';
 import { SignupForm } from './components/Auth/SignupForm';
+import { ResetPasswordForm } from './components/Auth/ResetPasswordForm';
 import { SubscriptionGate } from './components/Auth/SubscriptionGate';
 import { Sidebar } from './components/Layout/Sidebar';
 import { Dashboard } from './components/Dashboard/Dashboard';
@@ -41,7 +42,7 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const location = useLocation();
 
-  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/capture-lead', '/mmp', '/cgv', '/mentions-legales', '/merci', '/recrutement', '/collecte', '/subscription'];
+  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/capture-lead', '/mmp', '/cgv', '/mentions-legales', '/merci', '/recrutement', '/collecte', '/subscription', '/reset-password'];
   const isPublicRoute = publicRoutes.includes(location.pathname) || location.pathname.startsWith('/marchepublics/974');
 
   if (loading && !isPublicRoute) {
@@ -101,6 +102,11 @@ function AppContent() {
       <Route path="/recrutement" element={<Recrutement />} />
       <Route path="/collecte" element={<MarketCollector />} />
       <Route path="/subscription" element={<SubscriptionSelection />} />
+      <Route path="/reset-password" element={
+        <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900/20' : 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200'} flex items-center justify-center p-4 transition-colors duration-200`}>
+          <ResetPasswordForm />
+        </div>
+      } />
       <Route path="/marchepublics/974" element={<ReunionMarketsDirectory />} />
       <Route path="/marchepublics/974/:slug" element={<PublicMarketPage />} />
       <Route path="/mmp" element={
