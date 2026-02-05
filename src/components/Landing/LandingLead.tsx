@@ -2,26 +2,9 @@ import React, { useState, useEffect } from "react";
 import { ArrowRight, CheckCircle, FileText, BarChart3, Target, MessageSquare, X, Upload, Sparkles, Zap, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { MarketModelComparison } from "./MarketModelComparison";
-
-const Button = ({ className = "", children, onClick, ...props }: any) => (
-  <button
-    className={`group inline-flex items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-lg shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-offset-2 ${className}`}
-    onClick={onClick}
-    {...props}
-  >
-    {children}
-  </button>
-);
-
-const Section = ({ className = "", children }: any) => (
-  <section className={`mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-24 ${className}`}>{children}</section>
-);
-
-const Card = ({ className = "", children, hover = true }: any) => (
-  <div className={`backdrop-blur-sm bg-white/80 rounded-3xl p-8 border border-gray-200/50 shadow-xl ${hover ? 'transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-white' : ''} ${className}`}>
-    {children}
-  </div>
-);
+import { Button } from '../ui/Button';
+import { Section } from '../ui/Section';
+import { Card } from '../ui/Card';
 
 const Carousel = () => {
   const images = ['/caroussel 1.png', '/caroussel 2.png', '/caroussel 3.png', '/caroussel 5.png', '/caroussel 6.png', '/caroussel 7.png', '/caroussel 8.png'];

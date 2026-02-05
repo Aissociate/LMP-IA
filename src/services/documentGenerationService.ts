@@ -24,6 +24,7 @@ import { saveAs } from 'file-saver';
 import { marked } from 'marked';
 import { Section } from '../types/technicalMemory';
 import { supabase } from '../lib/supabase';
+import { getEnabledSectionsWithContent } from '../utils/sectionUtils';
 
 interface DocumentGenerationOptions {
   marketTitle: string;
@@ -49,8 +50,7 @@ export class DocumentGenerationService {
       console.log('[DocGen] Génération document Word démarrée...');
 
       // Filtrer les sections activées et avec du contenu
-      const sectionsWithContent = sections
-        .filter(section => section.isEnabled !== false && section.content && section.content.trim());
+      const sectionsWithContent = getEnabledSectionsWithContent(sections);
 
       if (sectionsWithContent.length === 0) {
         throw new Error('Aucune section avec du contenu à exporter');

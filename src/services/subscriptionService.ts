@@ -19,7 +19,18 @@ export interface MemoryStats {
   status: string;
 }
 
-export const subscriptionService = {
+export class SubscriptionService {
+  private static instance: SubscriptionService;
+
+  private constructor() {}
+
+  static getInstance(): SubscriptionService {
+    if (!SubscriptionService.instance) {
+      SubscriptionService.instance = new SubscriptionService();
+    }
+    return SubscriptionService.instance;
+  }
+
   async checkMemoryLimit(userId: string): Promise<MemoryUsageResult> {
     try {
       const stats = await this.getMemoryStats(userId);
@@ -49,7 +60,7 @@ export const subscriptionService = {
         message: 'Erreur lors de la vérification de la limite'
       };
     }
-  },
+  }
 
   async incrementMemoryUsage(userId: string): Promise<MemoryUsageResult> {
     try {
@@ -68,7 +79,7 @@ export const subscriptionService = {
         message: error.message || 'Erreur lors de l\'incrémentation de l\'usage'
       };
     }
-  },
+  }
 
   async getMemoryStats(userId: string): Promise<MemoryStats> {
     try {
@@ -91,7 +102,7 @@ export const subscriptionService = {
         status: 'error'
       };
     }
-  },
+  }
 
   async checkUserAccess(userId: string) {
     try {
@@ -106,7 +117,7 @@ export const subscriptionService = {
       console.error('Error checking user access:', error);
       throw error;
     }
-  },
+  }
 
   async startTrial(userId: string) {
     try {
@@ -122,4 +133,6 @@ export const subscriptionService = {
       throw error;
     }
   }
-};
+}
+
+export const subscriptionService = SubscriptionService.getInstance();

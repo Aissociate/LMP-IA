@@ -1,5 +1,6 @@
 import { Section } from '../types/technicalMemory';
 import { supabase } from '../lib/supabase';
+import { getEnabledSectionsWithContent } from '../utils/sectionUtils';
 
 interface PDFGenerationOptions {
   marketTitle: string;
@@ -25,7 +26,7 @@ export class PDFGenerationService {
       console.log('[PDFGen] Génération PDF démarrée...');
 
       // Filtrer les sections activées et avec du contenu
-      const sectionsWithContent = sections.filter(section => section.isEnabled !== false && section.content && section.content.trim());
+      const sectionsWithContent = getEnabledSectionsWithContent(sections);
 
       if (sectionsWithContent.length === 0) {
         throw new Error('Aucune section avec du contenu à exporter');

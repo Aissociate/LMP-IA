@@ -3,32 +3,8 @@ import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Ta
 import { useState, useEffect } from 'react';
 import { initAnalytics, trackClick } from '../../lib/analytics';
 import { MarketModelComparison } from './MarketModelComparison';
-
-const Button = ({ children, onClick, className = "", variant = "primary" }: { children: React.ReactNode; onClick: () => void; className?: string; variant?: "primary" | "secondary" | "outline" }) => {
-  const baseClasses = "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105";
-  const defaultSize = "px-6 py-3";
-  const variants = {
-    primary: "bg-[#F77F00] text-white hover:bg-[#E06F00] shadow-lg hover:shadow-xl",
-    secondary: "bg-white text-[#F77F00] border-2 border-[#F77F00] hover:bg-[#F77F00] hover:text-white shadow-md",
-    outline: "bg-transparent text-gray-700 border-2 border-gray-300 hover:border-[#F77F00] hover:text-[#F77F00]"
-  };
-
-  const sizeClasses = className.includes('px-') || className.includes('py-') ? '' : defaultSize;
-
-  return (
-    <button onClick={onClick} className={`${baseClasses} ${sizeClasses} ${variants[variant]} ${className}`}>
-      {children}
-    </button>
-  );
-};
-
-const Section = ({ children, className = "", id = "" }: { children: React.ReactNode; className?: string; id?: string }) => (
-  <section id={id} className={`w-full ${className}`}>
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {children}
-    </div>
-  </section>
-);
+import { Button } from '../ui/Button';
+import { Section } from '../ui/Section';
 
 const Carousel = () => {
   const images = ['/caroussel 1.png', '/caroussel 2.png', '/caroussel 3.png', '/caroussel 5.png', '/caroussel 6.png', '/caroussel 7.png', '/caroussel 8.png'];
