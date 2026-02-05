@@ -56,30 +56,22 @@ export function SubscriptionOnboarding() {
       return;
     }
 
-    // Si c'est le plan TRIAL, activer directement
     if (plan.name === 'TRIAL') {
       setProcessingPlan(plan.id);
       try {
-        // Créer l'abonnement trial
-        const { error } = await supabase
-          .from('user_subscriptions')
-          .upsert({
-            user_id: user.id,
-            plan_id: plan.id,
-            status: 'trialing',
-            trial_start: new Date().toISOString(),
-            trial_end: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-            current_period_start: new Date().toISOString(),
-            current_period_end: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-          });
+        const { data, error } = await supabase.rpc('start_trial', {
+          p_user_id: user.id
+        });
 
         if (error) throw error;
+        if (data && !data.success) {
+          throw new Error(data.message || 'Erreur lors du démarrage de l\'essai');
+        }
 
-        // Rediriger vers le dashboard
         navigate('/dashboard');
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error starting trial:', error);
-        alert('Erreur lors du démarrage de l\'essai gratuit');
+        alert(error.message || 'Erreur lors du démarrage de l\'essai gratuit');
       } finally {
         setProcessingPlan(null);
       }

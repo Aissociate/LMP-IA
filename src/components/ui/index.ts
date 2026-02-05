@@ -9,3 +9,6 @@ export type { SectionProps } from './Section';
 
 export { Modal } from './Modal';
 export type { ModalProps } from './Modal';
+
+export { Carousel } from './Carousel';
+export type { CarouselProps } from './Carousel';

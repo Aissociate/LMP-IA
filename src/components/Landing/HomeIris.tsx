@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
@@ -8,192 +8,164 @@ import {
   TrendingUp,
   Clock,
   Shield,
-  Users,
   Sparkles,
-  ChevronLeft,
-  ChevronRight,
   Star,
   Award,
-  BarChart3
+  BarChart3,
+  FileText,
+  Bell
 } from "lucide-react";
-import { Button } from '../ui/Button';
-import { Section } from '../ui/Section';
-
-const Carousel = () => {
-  const images = ['/caroussel-1.png', '/caroussel-2.png', '/caroussel-3.png', '/caroussel-5.png', '/caroussel-6.png', '/caroussel-7.png', '/caroussel-8.png'];
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
-
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  };
-
-  return (
-    <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gray-100 group max-w-5xl mx-auto">
-      <img
-        src={images[currentIndex]}
-        alt={`Aperçu ${currentIndex + 1}`}
-        className="w-full h-full object-cover transition-opacity duration-500"
-      />
-      <button
-        onClick={goToPrevious}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
-      >
-        <ChevronLeft className="w-6 h-6 text-gray-800" />
-      </button>
-      <button
-        onClick={goToNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
-      >
-        <ChevronRight className="w-6 h-6 text-gray-800" />
-      </button>
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-        {images.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setCurrentIndex(idx)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              idx === currentIndex ? 'bg-white w-8' : 'bg-white/60'
-            }`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
+import { Carousel } from '../ui/Carousel';
 
 export function HomeIris() {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      {/* Hero Section - Style LinkedIn Premium */}
-      <Section className="py-20 lg:py-32">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+
+      {/* Navbar */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+          <div className="flex items-center gap-3">
+            <img src="/logo1.png" alt="Iris" className="h-10 w-auto" />
+            <span className="font-bold text-xl text-gray-900">Iris</span>
+          </div>
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+            <a href="#methode" className="hover:text-orange-600 transition-colors">Comment ca marche</a>
+            <a href="#resultats" className="hover:text-orange-600 transition-colors">Resultats</a>
+            <a href="#fonctionnalites" className="hover:text-orange-600 transition-colors">Fonctionnalites</a>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate('/mmp')}
+              className="text-sm font-semibold text-gray-700 hover:text-orange-600 transition-colors px-4 py-2"
+            >
+              Se connecter
+            </button>
+            <button
+              onClick={() => navigate('/signup')}
+              className="text-sm font-bold bg-gradient-to-r from-orange-600 to-red-600 text-white px-5 py-2.5 rounded-xl hover:shadow-lg transition-all hover:scale-105"
+            >
+              Essai gratuit
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-28">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="space-y-8">
-            {/* Badge Premium */}
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-50 to-orange-50 px-4 py-2 rounded-full border border-amber-200">
-              <Sparkles className="w-4 h-4 text-amber-600" />
-              <span className="text-sm font-semibold text-amber-900">Rejoignez 500+ entrepreneurs qui gagnent leurs marchés</span>
+            <div className="inline-flex items-center gap-2 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
+              <Sparkles className="w-4 h-4 text-orange-600" />
+              <span className="text-sm font-medium text-orange-800">L'assistant IA des marches publics</span>
             </div>
 
-            {/* Titre accrocheur - Style Neil Patel */}
-            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-              J'ai transformé la <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">prospection de marchés publics</span> en avantage compétitif
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-[1.1]">
+              J'ai arrete de courir apres les marches.
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mt-2">Maintenant, ce sont eux qui viennent a moi.</span>
             </h1>
 
-            {/* Sous-titre émotionnel - Style Alex Hormozi */}
-            <p className="text-xl text-gray-600 leading-relaxed">
-              Pendant que mes concurrents passent des heures à chercher des marchés,
-              <strong className="text-gray-900"> j'utilise Iris pour identifier, analyser et remporter les opportunités qui comptent vraiment</strong>.
-              En 7 jours, vous verrez la différence.
+            <p className="text-lg text-gray-600 leading-relaxed max-w-xl">
+              Avant, je passais mes lundis matin a eplucher le BOAMP. Je ratais des opportunites, je repondais a des marches trop gros ou trop loin.
+              <strong className="text-gray-800"> Depuis que j'utilise Iris, je recois chaque matin les marches qui me correspondent vraiment.</strong>
+              Le reste, c'est de l'IA.
             </p>
 
-            {/* Social Proof */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4">
               <div className="flex -space-x-2">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 border-2 border-white" />
+                {[
+                  'bg-blue-500', 'bg-green-500', 'bg-orange-500', 'bg-teal-500', 'bg-rose-500'
+                ].map((color, i) => (
+                  <div key={i} className={`w-9 h-9 rounded-full ${color} border-2 border-white flex items-center justify-center text-white text-xs font-bold`}>
+                    {['M','S','J','A','L'][i]}
+                  </div>
                 ))}
               </div>
-              <div className="text-sm">
-                <div className="flex gap-1 mb-1">
-                  {[1, 2, 3, 4, 5].map((i) => (
+              <div>
+                <div className="flex gap-0.5">
+                  {[1,2,3,4,5].map((i) => (
                     <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <p className="text-gray-600">4.9/5 • Plus de 500 utilisateurs actifs</p>
+                <p className="text-xs text-gray-500 mt-0.5">Utilise par des artisans, PME et bureaux d'etude</p>
               </div>
             </div>
 
-            {/* CTA Principal - Style Russell Brunson */}
-            <div className="space-y-4">
-              <Button
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
                 onClick={() => navigate('/signup')}
-                variant="primary"
-                className="w-full sm:w-auto bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-8 py-4 text-lg font-bold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all"
+                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-7 py-4 rounded-xl text-lg font-bold shadow-lg hover:shadow-xl transition-all hover:scale-[1.03]"
               >
-                <span>Commencer mon essai gratuit de 7 jours</span>
+                Tester gratuitement pendant 7 jours
                 <ArrowRight className="w-5 h-5" />
-              </Button>
-              <p className="text-sm text-gray-500">
-                ✓ Aucune carte bancaire requise pour démarrer • ✓ Accès immédiat à toutes les fonctionnalités
-              </p>
+              </button>
+              <button
+                onClick={() => navigate('/mmp')}
+                className="inline-flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-700 px-7 py-4 rounded-xl font-semibold hover:border-orange-400 hover:text-orange-600 transition-all"
+              >
+                J'ai deja un compte
+              </button>
             </div>
+            <p className="text-sm text-gray-400">Sans carte bancaire. Sans engagement.</p>
           </div>
 
-          {/* Visuel */}
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-400 rounded-3xl blur-3xl opacity-20" />
-            <Carousel />
+            <div className="absolute -inset-4 bg-gradient-to-tr from-orange-200 to-red-200 rounded-3xl blur-3xl opacity-30" />
+            <Carousel className="relative max-w-full" />
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* Section Problème/Solution - Style Alex Hormozi */}
-      <Section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-4xl mx-auto text-center space-y-12">
-          <div className="space-y-4">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">
-              Voici pourquoi vous perdez des marchés
-              <br />
-              <span className="text-red-600">(et comment j'ai résolu ce problème)</span>
+      {/* Le vrai probleme */}
+      <section className="bg-gray-50 py-16 lg:py-24">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+              Soyons honnetes : repondre aux marches publics, c'est epuisant
             </h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              Je le sais parce que je suis passe par la. Et j'en ai eu marre.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 text-left">
-            {/* Avant */}
-            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8 space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center">
-                  <span className="text-2xl">❌</span>
-                </div>
-                <h3 className="text-2xl font-bold text-red-900">AVANT Iris</h3>
-              </div>
-              <ul className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-2xl p-7 border border-red-100 shadow-sm">
+              <h3 className="text-lg font-bold text-red-800 mb-4 flex items-center gap-2">
+                <span className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-sm font-bold">X</span>
+                Ce que je vivais avant
+              </h3>
+              <ul className="space-y-3">
                 {[
-                  "Je passais 10h/semaine à chercher des marchés",
-                  "Je manquais les meilleures opportunités",
-                  "Je répondais à tout sans stratégie",
-                  "Mes mémoires techniques manquaient d'impact",
-                  "Mon taux de réussite stagnait à 15%"
+                  "Des heures a chercher les bons marches sur le BOAMP",
+                  "Je decouvrais des appels d'offres la veille de la date limite",
+                  "Je repondais a tout, meme aux marches que je ne pouvais pas gagner",
+                  "3 jours pour rediger un memoire technique moyen",
+                  "Resultat : beaucoup d'efforts, peu de marches gagnes"
                 ].map((item, idx) => (
-                  <li key={idx} className="flex gap-3 text-gray-700">
-                    <span className="text-red-600 font-bold">×</span>
+                  <li key={idx} className="flex gap-3 text-sm text-gray-700">
+                    <span className="text-red-400 mt-0.5">--</span>
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Après */}
-            <div className="bg-green-50 border-2 border-green-300 rounded-2xl p-8 space-y-6 shadow-xl">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center">
-                  <span className="text-2xl">✓</span>
-                </div>
-                <h3 className="text-2xl font-bold text-green-900">APRÈS Iris</h3>
-              </div>
-              <ul className="space-y-4">
+            <div className="bg-white rounded-2xl p-7 border-2 border-green-200 shadow-md">
+              <h3 className="text-lg font-bold text-green-800 mb-4 flex items-center gap-2">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+                Ce qui a change avec Iris
+              </h3>
+              <ul className="space-y-3">
                 {[
-                  "Je trouve les marchés qualifiés en 15 minutes",
-                  "L'IA me notifie des opportunités parfaites",
-                  "Je cible les marchés à fort ROI uniquement",
-                  "Mes mémoires sont générées en 1 clic",
-                  "Mon taux de réussite a bondi à 42%"
+                  "Je recois chaque matin les marches qui me correspondent",
+                  "L'IA me dit si ca vaut le coup d'y repondre, ou pas",
+                  "Je me concentre uniquement sur les opportunites rentables",
+                  "Mon memoire technique est genere en 15 minutes",
+                  "Je reponds mieux, plus vite, et je gagne plus souvent"
                 ].map((item, idx) => (
-                  <li key={idx} className="flex gap-3 text-gray-800 font-medium">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <li key={idx} className="flex gap-3 text-sm text-gray-800 font-medium">
+                    <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -201,239 +173,232 @@ export function HomeIris() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-2xl p-8">
-            <p className="text-2xl font-bold">
-              Le coût réel de ne PAS utiliser Iris ?
-              <span className="block mt-2">Un marché à 50 000€ perdu = 250 mois d'abonnement 💰</span>
+          <div className="mt-8 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-2xl p-6 text-center">
+            <p className="text-lg font-semibold">
+              Un seul marche gagne rembourse des annees d'abonnement.
+              <span className="block text-orange-100 mt-1 text-base font-normal">Combien de marches passent sous votre radar chaque semaine ?</span>
             </p>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* Méthode/Process - Style Value Ladder */}
-      <Section className="py-20">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">
-            Ma méthode en 4 étapes pour <span className="text-orange-600">gagner plus de marchés</span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Le système exact que j'utilise chaque jour pour identifier et remporter les marchés les plus rentables
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            {
-              icon: Target,
-              step: "ÉTAPE 1",
-              title: "Je cible",
-              description: "L'IA scanne 50 000+ marchés et me propose uniquement ceux qui matchent mon expertise",
-              color: "from-blue-500 to-blue-600"
-            },
-            {
-              icon: Zap,
-              step: "ÉTAPE 2",
-              title: "J'analyse",
-              description: "L'assistant GO/NO-GO évalue mes chances de succès et le ROI potentiel en temps réel",
-              color: "from-purple-500 to-purple-600"
-            },
-            {
-              icon: Award,
-              step: "ÉTAPE 3",
-              title: "Je produis",
-              description: "Je génère un mémoire technique professionnel en 1 clic au lieu de 3 jours de rédaction",
-              color: "from-orange-500 to-orange-600"
-            },
-            {
-              icon: TrendingUp,
-              step: "ÉTAPE 4",
-              title: "Je gagne",
-              description: "Je soumets des réponses de qualité supérieure et je multiplie mes chances de succès",
-              color: "from-green-500 to-green-600"
-            }
-          ].map((item, idx) => (
-            <div key={idx} className="relative group">
-              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all border-2 border-gray-100 hover:border-orange-300 h-full">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <item.icon className="w-8 h-8 text-white" />
-                </div>
-                <div className="text-xs font-bold text-orange-600 mb-2">{item.step}</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
-              </div>
-              {idx < 3 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
-                  <ArrowRight className="w-8 h-8 text-orange-400" />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ROI Calculator - Style Alex Hormozi */}
-      <Section className="py-20 bg-gradient-to-b from-slate-900 to-slate-800 text-white">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center space-y-4 mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold">
-              Voici ce qu'Iris m'a <span className="text-orange-400">vraiment rapporté</span>
+      {/* Methode en 4 etapes */}
+      <section id="methode" className="py-16 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+              Concretement, voici comment je fais maintenant
             </h2>
-            <p className="text-xl text-gray-300">
-              Les chiffres que je partage avec mes prospects pour les convaincre
+            <p className="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
+              4 etapes. 15 minutes le matin. Et je passe a autre chose.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
-                metric: "42%",
-                label: "Taux de réussite",
-                detail: "vs 15% avant",
+                icon: Bell,
+                step: "1",
+                title: "Je recois mes alertes",
+                description: "Chaque matin, Iris me notifie les nouveaux marches qui correspondent a mon activite, ma zone, mon chiffre d'affaires.",
+                color: "from-blue-500 to-blue-600"
+              },
+              {
+                icon: Target,
+                step: "2",
+                title: "Je filtre en 1 clic",
+                description: "L'assistant GO/NO-GO me dit si le marche est pour moi. Montant, delai, concurrence... tout est analyse.",
+                color: "from-teal-500 to-teal-600"
+              },
+              {
+                icon: FileText,
+                step: "3",
+                title: "Je genere mon memoire",
+                description: "L'IA redige un memoire technique adapte au marche, a mon entreprise et au cahier des charges. Je n'ai plus qu'a relire.",
+                color: "from-orange-500 to-orange-600"
+              },
+              {
+                icon: Award,
+                step: "4",
+                title: "Je depose et je gagne",
+                description: "Mon dossier est complet, professionnel, et depose en avance. Mes chances de succes ont triple.",
+                color: "from-green-500 to-green-600"
+              }
+            ].map((item, idx) => (
+              <div key={idx} className="relative group">
+                <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all border border-gray-100 hover:border-orange-200 h-full">
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <item.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <div className="text-xs font-bold text-orange-600 mb-1">ETAPE {item.step}</div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                </div>
+                {idx < 3 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
+                    <ArrowRight className="w-6 h-6 text-gray-300" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Resultats concrets */}
+      <section id="resultats" className="py-16 lg:py-24 bg-slate-900 text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold">
+              Ce que ca a change pour moi <span className="text-orange-400">(en vrai)</span>
+            </h2>
+            <p className="mt-3 text-lg text-gray-400 max-w-2xl mx-auto">
+              Pas de promesses en l'air. Juste les chiffres de mon activite depuis que j'utilise Iris au quotidien.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-6">
+            {[
+              {
+                metric: "x3",
+                label: "marches gagnes",
+                detail: "Par rapport a l'annee precedente",
                 icon: TrendingUp
               },
               {
-                metric: "23h",
-                label: "Économisées/mois",
-                detail: "Sur la prospection",
+                metric: "2h",
+                label: "au lieu de 2 jours",
+                detail: "Pour un memoire technique complet",
                 icon: Clock
               },
               {
-                metric: "320K€",
-                label: "CA additionnel",
-                detail: "En 6 mois d'utilisation",
+                metric: "0",
+                label: "opportunite ratee",
+                detail: "Grace aux alertes automatiques",
                 icon: BarChart3
               }
             ].map((stat, idx) => (
-              <div key={idx} className="bg-white/10 backdrop-blur rounded-2xl p-8 border border-white/20 hover:bg-white/15 transition-all">
-                <stat.icon className="w-12 h-12 text-orange-400 mb-4" />
-                <div className="text-5xl font-bold text-white mb-2">{stat.metric}</div>
-                <div className="text-xl font-semibold text-gray-200 mb-1">{stat.label}</div>
-                <div className="text-sm text-gray-400">{stat.detail}</div>
+              <div key={idx} className="bg-white/5 backdrop-blur rounded-2xl p-7 border border-white/10 hover:bg-white/10 transition-all">
+                <stat.icon className="w-10 h-10 text-orange-400 mb-3" />
+                <div className="text-4xl font-bold text-white mb-1">{stat.metric}</div>
+                <div className="text-base font-semibold text-gray-200">{stat.label}</div>
+                <div className="text-sm text-gray-400 mt-1">{stat.detail}</div>
               </div>
             ))}
           </div>
 
-          <div className="mt-12 bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl p-8 text-center">
-            <p className="text-2xl font-bold mb-4">
-              Pour 199€/mois, Iris ne m'a rapporté qu'UN SEUL marché de 50K€
+          <div className="mt-10 bg-white/10 rounded-2xl p-6 text-center border border-white/10">
+            <p className="text-lg text-gray-200 leading-relaxed">
+              "Honnement, je ne pensais pas qu'un outil pouvait changer autant ma facon de travailler. Avant, la reponse aux AO c'etait ma bete noire.
+              Maintenant c'est presque devenu agreable."
             </p>
-            <p className="text-xl text-orange-100">
-              ROI : 25 000% • Retour sur investissement en moins de 30 jours
-            </p>
+            <p className="mt-3 text-sm text-orange-400 font-semibold">-- Un utilisateur Iris, artisan electricien a La Reunion</p>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* Fonctionnalités - Style Benefit Driven */}
-      <Section className="py-20">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">
-            Tout ce dont vous avez besoin pour <span className="text-orange-600">dominer votre marché</span>
-          </h2>
-        </div>
+      {/* Fonctionnalites */}
+      <section id="fonctionnalites" className="py-16 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+              Tout ce qu'il faut pour <span className="text-orange-600">repondre sereinement</span>
+            </h2>
+            <p className="mt-3 text-lg text-gray-600">
+              Pas de gadget. Juste les outils dont j'avais vraiment besoin.
+            </p>
+          </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              icon: Target,
-              title: "Veille Intelligente",
-              description: "Recevez uniquement les marchés qui correspondent à votre ADN d'entreprise. Plus de temps perdu sur des opportunités inadaptées."
-            },
-            {
-              icon: Sparkles,
-              title: "IA Analyse GO/NO-GO",
-              description: "Sachez instantanément si un marché vaut votre temps. L'IA calcule vos chances et le ROI potentiel avant même de lire le DCE."
-            },
-            {
-              icon: Award,
-              title: "Mémoires Techniques IA",
-              description: "Générez des mémoires professionnels en 1 clic. Ce qui prenait 3 jours se fait maintenant en 15 minutes avec une qualité supérieure."
-            },
-            {
-              icon: Shield,
-              title: "Coffre-Fort Sécurisé",
-              description: "Stockez tous vos documents sensibles avec un chiffrement de niveau bancaire. Accessible 24/7, même sur mobile."
-            },
-            {
-              icon: Users,
-              title: "Multi-Utilisateurs",
-              description: "Collaborez avec votre équipe en temps réel. Partagez les marchés, assignez les tâches, suivez l'avancement."
-            },
-            {
-              icon: BarChart3,
-              title: "Analytics & Reporting",
-              description: "Suivez vos performances, identifiez vos points forts et optimisez votre stratégie de réponse aux marchés."
-            }
-          ].map((feature, idx) => (
-            <div key={idx} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 hover:border-orange-300">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-4">
-                <feature.icon className="w-7 h-7 text-white" />
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Bell,
+                title: "Veille sur mesure",
+                description: "Recevez les marches qui correspondent a votre metier, votre zone geographique et votre capacite. Rien de plus, rien de moins."
+              },
+              {
+                icon: Sparkles,
+                title: "Analyse GO/NO-GO",
+                description: "L'IA evalue chaque marche : est-ce que ca vaut le coup d'y passer du temps ? Reponse en 10 secondes."
+              },
+              {
+                icon: FileText,
+                title: "Memoire technique IA",
+                description: "Generez un memoire technique adapte a chaque marche. L'IA connait votre entreprise et s'adapte au DCE."
+              },
+              {
+                icon: Shield,
+                title: "Coffre-fort documents",
+                description: "Tous vos documents administratifs stockes en securite. Kbis, attestations, references... tout est pret quand vous en avez besoin."
+              },
+              {
+                icon: Zap,
+                title: "Export Word & PDF",
+                description: "Telechargez vos memoires dans le format que vous voulez. Pret a deposer sur la plateforme de l'acheteur."
+              },
+              {
+                icon: BarChart3,
+                title: "Suivi des candidatures",
+                description: "Gardez un oeil sur toutes vos reponses en cours. Plus de post-it ni de tableurs Excel qui se perdent."
+              }
+            ].map((feature, idx) => (
+              <div key={idx} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-orange-200">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-4">
+                  <feature.icon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
 
-      {/* CTA Final - Style Urgence */}
-      <Section className="py-20 bg-gradient-to-r from-orange-600 to-red-600">
-        <div className="max-w-4xl mx-auto text-center text-white space-y-8">
-          <h2 className="text-4xl lg:text-5xl font-bold">
-            Vous avez deux options aujourd'hui
+      {/* CTA Final */}
+      <section className="py-16 lg:py-20 bg-gradient-to-br from-orange-600 to-red-600">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+          <h2 className="text-3xl lg:text-4xl font-bold leading-tight">
+            Si j'avais su que ca existait, j'aurais commence bien plus tot
           </h2>
+          <p className="mt-4 text-lg text-orange-100 max-w-2xl mx-auto leading-relaxed">
+            Chaque semaine sans Iris, ce sont des marches que vous ne voyez pas, des opportunites qui passent, et du temps que vous ne recupererez pas. L'essai est gratuit. Le risque est a zero. Le seul regret, ce sera de ne pas avoir essaye plus tot.
+          </p>
 
-          <div className="grid md:grid-cols-2 gap-6 text-left">
-            <div className="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20">
-              <div className="text-2xl font-bold mb-4">❌ Option 1</div>
-              <p className="text-white/90 text-lg">
-                Continuer comme avant. Passer des heures sur la prospection. Manquer les meilleures opportunités.
-                Voir vos concurrents gagner les marchés que vous auriez pu remporter.
-              </p>
-            </div>
-            <div className="bg-white/20 backdrop-blur rounded-xl p-6 border-2 border-white/40 shadow-2xl">
-              <div className="text-2xl font-bold mb-4">✓ Option 2</div>
-              <p className="text-white text-lg font-medium">
-                Rejoindre les 500+ entrepreneurs qui utilisent Iris pour gagner plus de marchés, plus rapidement.
-                Tester gratuitement pendant 7 jours. Sans risque. Sans engagement.
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-4 pt-4">
-            <Button
+          <div className="mt-8 space-y-4">
+            <button
               onClick={() => navigate('/signup')}
-              className="bg-white text-orange-600 hover:bg-gray-100 px-12 py-5 text-xl font-bold shadow-2xl hover:scale-105 transform transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-white text-orange-600 hover:bg-orange-50 px-10 py-4 rounded-xl text-lg font-bold shadow-2xl hover:scale-105 transition-all"
             >
-              <span>Je commence mon essai gratuit maintenant</span>
-              <ArrowRight className="w-6 h-6" />
-            </Button>
-            <p className="text-white/90 text-lg">
-              ✓ Accès immédiat • ✓ Aucune CB requise • ✓ 7 jours pour tout tester
-            </p>
-            <p className="text-white/70 text-sm">
-              Rejoignez les 47 entrepreneurs qui ont créé leur compte cette semaine
+              Je teste Iris gratuitement pendant 7 jours
+              <ArrowRight className="w-5 h-5" />
+            </button>
+            <p className="text-orange-100 text-sm">
+              Sans carte bancaire. Sans engagement. Acces immediat.
             </p>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* Footer Simple */}
-      <Section className="py-8 bg-slate-900 text-white">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-sm text-gray-400">
-            © 2026 Iris - Expert IA en Marchés Publics • Tous droits réservés
+      {/* Footer */}
+      <footer className="bg-slate-900 text-white py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-2">
+            <img src="/logo1.png" alt="Iris" className="h-8 w-auto brightness-200" />
+            <span className="text-sm text-gray-400">© 2026 Iris - Expert IA en Marches Publics</span>
           </div>
           <div className="flex gap-6 text-sm text-gray-400">
             <button onClick={() => navigate('/mentions-legales')} className="hover:text-white transition-colors">
-              Mentions légales
+              Mentions legales
             </button>
             <button onClick={() => navigate('/cgv')} className="hover:text-white transition-colors">
               CGV
             </button>
+            <button onClick={() => navigate('/mmp')} className="hover:text-white transition-colors">
+              Connexion
+            </button>
           </div>
         </div>
-      </Section>
+      </footer>
     </div>
   );
 }
