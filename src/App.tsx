@@ -30,6 +30,8 @@ import { BugReportButton } from './components/Common/BugReportButton';
 import { PublicMarketPage } from './components/PublicMarket/PublicMarketPage';
 import { ReunionMarketsDirectory } from './components/PublicMarket/ReunionMarketsDirectory';
 import { SubscriptionSelection } from './components/Subscription/SubscriptionSelection';
+import { SubscriptionOnboarding } from './components/Subscription/SubscriptionOnboarding';
+import { HomeIris } from './components/Landing/HomeIris';
 
 type AuthMode = 'login' | 'signup';
 type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'coffre-fort' | 'assistant' | 'parametres' | 'admin' | 'labo';
@@ -41,7 +43,7 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const location = useLocation();
 
-  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/capture-lead', '/mmp', '/cgv', '/mentions-legales', '/merci', '/recrutement', '/collecte', '/subscription'];
+  const publicRoutes = ['/', '/home', '/iris', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/capture-lead', '/mmp', '/cgv', '/mentions-legales', '/merci', '/recrutement', '/collecte', '/subscription', '/subscription-onboarding', '/login', '/signup'];
   const isPublicRoute = publicRoutes.includes(location.pathname) || location.pathname.startsWith('/marchepublics/974');
 
   if (loading && !isPublicRoute) {
@@ -85,7 +87,8 @@ function AppContent() {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<HomeIris />} />
+      <Route path="/iris" element={<HomeIris />} />
       <Route path="/home" element={<Home />} />
       <Route path="/pme" element={<LandingPME />} />
       <Route path="/btp" element={<LandingBTP />} />
@@ -101,6 +104,7 @@ function AppContent() {
       <Route path="/recrutement" element={<Recrutement />} />
       <Route path="/collecte" element={<MarketCollector />} />
       <Route path="/subscription" element={<SubscriptionSelection />} />
+      <Route path="/subscription-onboarding" element={<SubscriptionOnboarding />} />
       <Route path="/marchepublics/974" element={<ReunionMarketsDirectory />} />
       <Route path="/marchepublics/974/:slug" element={<PublicMarketPage />} />
       <Route path="/mmp" element={
