@@ -7,7 +7,7 @@ import { Button } from '../ui/Button';
 import { Section } from '../ui/Section';
 
 const Carousel = () => {
-  const images = ['/caroussel 1.png', '/caroussel 2.png', '/caroussel 3.png', '/caroussel 5.png', '/caroussel 6.png', '/caroussel 7.png', '/caroussel 8.png'];
+  const images = ['/caroussel-1.png', '/caroussel-2.png', '/caroussel-3.png', '/caroussel-5.png', '/caroussel-6.png', '/caroussel-7.png', '/caroussel-8.png'];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
