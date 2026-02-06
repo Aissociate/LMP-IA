@@ -74,15 +74,15 @@ export function HomeIris() {
                 <span className="text-sm font-medium text-orange-800">L'assistant IA des marches publics</span>
               </div>
               <div className="relative">
-                <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg ring-2 ring-orange-200">
+                <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-lg ring-2 ring-orange-200">
                   <img
-                    src="https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop"
+                    src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
                     alt="Iris AI Assistant"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-br from-orange-500 to-red-500 rounded-full border-2 border-white flex items-center justify-center">
-                  <Sparkles className="w-3 h-3 text-white" />
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-br from-orange-500 to-red-500 rounded-full border-2 border-white flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-white" />
                 </div>
               </div>
             </div>
