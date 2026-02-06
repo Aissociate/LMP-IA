@@ -75,9 +75,57 @@ export const SubscriptionSelection: React.FC = () => {
     }
   };
 
-  const handleSelectPlan = (planId: string) => {
-    setSelectedPlan(planId);
-    alert('L\'intégration Stripe sera disponible prochainement. Pour le moment, contactez-nous pour souscrire à cet abonnement.');
+  const handleSelectPlan = async (plan: Plan) => {
+    if (!user) {
+      setError('Vous devez être connecté pour souscrire à un abonnement');
+      return;
+    }
+
+    if (!plan.stripe_price_id) {
+      setError('Ce plan n\'est pas encore disponible. Veuillez contacter notre support.');
+      return;
+    }
+
+    try {
+      setSelectedPlan(plan.id);
+      setError(null);
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setError('Session expirée. Veuillez vous reconnecter.');
+        return;
+      }
+
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          price_id: plan.stripe_price_id,
+          mode: 'subscription',
+          success_url: `${window.location.origin}/subscription-onboarding?success=true`,
+          cancel_url: `${window.location.origin}/subscription?canceled=true`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Erreur lors de la création de la session de paiement');
+      }
+
+      if (result.url) {
+        window.location.href = result.url;
+      } else {
+        throw new Error('URL de checkout non reçue');
+      }
+    } catch (err: any) {
+      console.error('Error creating checkout session:', err);
+      setError(err.message || 'Erreur lors de la création de la session de paiement');
+      setSelectedPlan(null);
+    }
   };
 
   const getPlanIcon = (planName: string) => {
@@ -251,14 +299,22 @@ export const SubscriptionSelection: React.FC = () => {
                 </ul>
 
                 <button
-                  onClick={() => handleSelectPlan(plan.id)}
-                  className={`w-full py-3 rounded-lg font-bold transition-all ${
+                  onClick={() => handleSelectPlan(plan)}
+                  disabled={selectedPlan === plan.id}
+                  className={`w-full py-3 rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                     isPopular
                       ? `bg-gradient-to-r ${colors.gradient} text-white hover:shadow-lg`
                       : `border-2 ${colors.border} ${colors.text} hover:bg-gradient-to-r ${colors.gradient} hover:text-white`
                   }`}
                 >
-                  Choisir {plan.name}
+                  {selectedPlan === plan.id ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Chargement...
+                    </div>
+                  ) : (
+                    `Choisir ${plan.name}`
+                  )}
                 </button>
               </div>
             );
@@ -266,8 +322,18 @@ export const SubscriptionSelection: React.FC = () => {
         </div>
 
         <div className={`max-w-3xl mx-auto mt-12 p-6 rounded-xl ${isDark ? 'bg-gray-800' : 'bg-white'} shadow-md text-center`}>
-          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            L'intégration Stripe est en cours de configuration. Pour toute question ou souscription, veuillez nous contacter.
+          <div className="flex items-center justify-center gap-4 text-sm">
+            <div className="flex items-center gap-2 text-green-600">
+              <Shield className="w-5 h-5" />
+              <span>Paiement sécurisé par Stripe</span>
+            </div>
+            <div className="flex items-center gap-2 text-blue-600">
+              <CreditCard className="w-5 h-5" />
+              <span>Sans engagement</span>
+            </div>
+          </div>
+          <p className={`text-xs mt-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+            Questions ? Contactez-nous à contact@lemarchepublic.fr
           </p>
         </div>
       </div>

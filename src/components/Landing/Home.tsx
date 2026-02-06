@@ -1,11 +1,31 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Target, Mail, Search, MapPin } from 'lucide-react';
+import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Target, Mail, Search, MapPin, Star } from 'lucide-react';
 import { useEffect } from 'react';
 import { initAnalytics, trackClick } from '../../lib/analytics';
 import { MarketModelComparison } from './MarketModelComparison';
 import { Button } from '../ui/Button';
 import { Section } from '../ui/Section';
 import { Carousel } from '../ui/Carousel';
+
+const HERO_AVATARS = [
+  { src: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop", alt: "Utilisateur" },
+  { src: "https://images.pexels.com/photos/3771089/pexels-photo-3771089.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop", alt: "Utilisatrice" },
+  { src: "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop", alt: "Utilisateur" },
+  { src: "https://images.pexels.com/photos/3756681/pexels-photo-3756681.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop", alt: "Utilisatrice" },
+  { src: "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop", alt: "Utilisateur" }
+];
+
+const TESTIMONIAL_PHOTOS = {
+  marc: "https://images.pexels.com/photos/8961251/pexels-photo-8961251.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
+  sophie: "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
+  jeanpierre: "https://images.pexels.com/photos/5668858/pexels-photo-5668858.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
+};
+
+const SOLUTION_IMAGES = {
+  artisan: "https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop",
+  btp: "https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop",
+  pme: "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop"
+};
 
 export default function Home() {
   const navigate = useNavigate();
@@ -64,6 +84,27 @@ export default function Home() {
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
             Veille exhaustive 24/7 des marchés publics réunionnais, alertes instantanées, génération automatique de mémoires techniques et référencement auprès des collectivités locales.
           </p>
+
+          <div className="flex items-center justify-center gap-4 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1100">
+            <div className="flex -space-x-3">
+              {HERO_AVATARS.map((avatar, i) => (
+                <img
+                  key={i}
+                  src={avatar.src}
+                  alt={avatar.alt}
+                  className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm"
+                />
+              ))}
+            </div>
+            <div className="text-left">
+              <div className="flex gap-0.5">
+                {[1,2,3,4,5].map((i) => (
+                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+              <p className="text-sm text-gray-600 mt-0.5">Plus de 100 entreprises nous font confiance</p>
+            </div>
+          </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12 text-left">
             <div className="bg-white p-4 rounded-xl shadow-md">
@@ -860,11 +901,16 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* ARTISANS */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 border-2 border-transparent hover:border-[#F77F00] transition-all hover:shadow-2xl transform hover:-translate-y-2 duration-300">
-            <div className="bg-orange-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-              <Hammer className="w-8 h-8 text-[#F77F00]" />
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden border-2 border-transparent hover:border-[#F77F00] transition-all hover:shadow-2xl transform hover:-translate-y-2 duration-300">
+            <div className="h-40 overflow-hidden relative">
+              <img src={SOLUTION_IMAGES.artisan} alt="Artisan au travail" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute bottom-3 left-3 bg-orange-100 w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg">
+                <Hammer className="w-7 h-7 text-[#F77F00]" />
+              </div>
             </div>
-            <h3 className="text-2xl font-bold mb-4">Artisans & TPE</h3>
+            <div className="p-8">
+              <h3 className="text-2xl font-bold mb-4">Artisans & TPE</h3>
             <p className="text-gray-600 mb-6">
               Vous êtes artisan, chef d'une petite équipe ? Vous voulez des marchés publics sans la galère administrative ?
             </p>
@@ -893,14 +939,20 @@ export default function Home() {
               💪 Solution Artisans
               <ArrowRight className="w-4 h-4" />
             </Button>
+            </div>
           </div>
 
           {/* BTP */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 border-2 border-transparent hover:border-[#F77F00] transition-all hover:shadow-2xl transform hover:-translate-y-2 duration-300">
-            <div className="bg-orange-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-              <HardHat className="w-8 h-8 text-[#F77F00]" />
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden border-2 border-transparent hover:border-[#F77F00] transition-all hover:shadow-2xl transform hover:-translate-y-2 duration-300">
+            <div className="h-40 overflow-hidden relative">
+              <img src={SOLUTION_IMAGES.btp} alt="Chantier BTP" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute bottom-3 left-3 bg-orange-100 w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg">
+                <HardHat className="w-7 h-7 text-[#F77F00]" />
+              </div>
             </div>
-            <h3 className="text-2xl font-bold mb-4">Entreprises BTP</h3>
+            <div className="p-8">
+              <h3 className="text-2xl font-bold mb-4">Entreprises BTP</h3>
             <p className="text-gray-600 mb-6">
               Vous gérez des chantiers, des équipes, des devis ? Vous voulez multiplier vos appels d'offres gagnants ?
             </p>
@@ -929,14 +981,20 @@ export default function Home() {
               🏗️ Solution BTP
               <ArrowRight className="w-4 h-4" />
             </Button>
+            </div>
           </div>
 
           {/* PME */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 border-2 border-transparent hover:border-[#F77F00] transition-all hover:shadow-2xl transform hover:-translate-y-2 duration-300">
-            <div className="bg-orange-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-              <Building2 className="w-8 h-8 text-[#F77F00]" />
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden border-2 border-transparent hover:border-[#F77F00] transition-all hover:shadow-2xl transform hover:-translate-y-2 duration-300">
+            <div className="h-40 overflow-hidden relative">
+              <img src={SOLUTION_IMAGES.pme} alt="Équipe PME" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute bottom-3 left-3 bg-orange-100 w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg">
+                <Building2 className="w-7 h-7 text-[#F77F00]" />
+              </div>
             </div>
-            <h3 className="text-2xl font-bold mb-4">PME & Dirigeants</h3>
+            <div className="p-8">
+              <h3 className="text-2xl font-bold mb-4">PME & Dirigeants</h3>
             <p className="text-gray-600 mb-6">
               Vous dirigez une PME ? Vous voulez une stratégie gagnante sur les marchés publics avec un ROI mesurable ?
             </p>
@@ -965,6 +1023,7 @@ export default function Home() {
               📊 Solution PME
               <ArrowRight className="w-4 h-4" />
             </Button>
+            </div>
           </div>
         </div>
       </Section>
@@ -1046,43 +1105,73 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <div className="bg-white p-8 rounded-2xl shadow-lg">
-            <div className="flex items-center gap-1 mb-4">
-              {[...Array(5)].map((_, i) => (
-                <span key={i} className="text-[#F77F00] text-xl">★</span>
-              ))}
+          <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+            <div className="flex items-center gap-4 mb-4">
+              <img
+                src={TESTIMONIAL_PHOTOS.marc}
+                alt="Marc D."
+                className="w-16 h-16 rounded-full object-cover border-2 border-orange-200 shadow-sm"
+              />
+              <div>
+                <div className="flex gap-0.5 mb-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="font-semibold text-gray-900">Marc D.</p>
+                <p className="text-xs text-gray-500">Électricien, 8 salariés</p>
+              </div>
             </div>
-            <p className="text-gray-700 mb-4 italic">
+            <p className="text-gray-700 italic leading-relaxed">
               "J'ai remporté 3 marchés en 2 mois. Avant, je passais des semaines sur les dossiers. Maintenant, c'est réglé en quelques heures."
             </p>
-            <p className="font-semibold text-gray-900">Marc D.</p>
-            <p className="text-sm text-gray-500">Électricien, 8 salariés - La Réunion</p>
+            <p className="text-xs text-gray-400 mt-3">📍 La Réunion</p>
           </div>
 
-          <div className="bg-white p-8 rounded-2xl shadow-lg">
-            <div className="flex items-center gap-1 mb-4">
-              {[...Array(5)].map((_, i) => (
-                <span key={i} className="text-[#F77F00] text-xl">★</span>
-              ))}
+          <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+            <div className="flex items-center gap-4 mb-4">
+              <img
+                src={TESTIMONIAL_PHOTOS.sophie}
+                alt="Sophie L."
+                className="w-16 h-16 rounded-full object-cover border-2 border-orange-200 shadow-sm"
+              />
+              <div>
+                <div className="flex gap-0.5 mb-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="font-semibold text-gray-900">Sophie L.</p>
+                <p className="text-xs text-gray-500">Dirigeante PME BTP, 45 salariés</p>
+              </div>
             </div>
-            <p className="text-gray-700 mb-4 italic">
+            <p className="text-gray-700 italic leading-relaxed">
               "Le ROI est incroyable. On a multiplié par 2 notre CA sur les marchés publics en 6 mois. Et on a enfin du temps pour nos équipes."
             </p>
-            <p className="font-semibold text-gray-900">Sophie L.</p>
-            <p className="text-sm text-gray-500">Dirigeante PME BTP, 45 salariés - Mayotte</p>
+            <p className="text-xs text-gray-400 mt-3">📍 Mayotte</p>
           </div>
 
-          <div className="bg-white p-8 rounded-2xl shadow-lg">
-            <div className="flex items-center gap-1 mb-4">
-              {[...Array(5)].map((_, i) => (
-                <span key={i} className="text-[#F77F00] text-xl">★</span>
-              ))}
+          <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+            <div className="flex items-center gap-4 mb-4">
+              <img
+                src={TESTIMONIAL_PHOTOS.jeanpierre}
+                alt="Jean-Pierre M."
+                className="w-16 h-16 rounded-full object-cover border-2 border-orange-200 shadow-sm"
+              />
+              <div>
+                <div className="flex gap-0.5 mb-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="font-semibold text-gray-900">Jean-Pierre M.</p>
+                <p className="text-xs text-gray-500">Maçon indépendant</p>
+              </div>
             </div>
-            <p className="text-gray-700 mb-4 italic">
+            <p className="text-gray-700 italic leading-relaxed">
               "Franchement, je ne pensais pas que c'était possible. Fini les nuits blanches à remplir des formulaires. Je recommande à tous mes confrères."
             </p>
-            <p className="font-semibold text-gray-900">Jean-Pierre M.</p>
-            <p className="text-sm text-gray-500">Maçon indépendant - La Réunion</p>
+            <p className="text-xs text-gray-400 mt-3">📍 La Réunion</p>
           </div>
         </div>
 

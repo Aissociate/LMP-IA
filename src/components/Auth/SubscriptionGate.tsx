@@ -59,7 +59,7 @@ export const SubscriptionGate: React.FC<SubscriptionGateProps> = ({ children }) 
       } else {
         if (accessCheck.needs_subscription) {
           setTimeout(() => {
-            navigate('/subscription-onboarding');
+            navigate('/subscription');
           }, 2000);
         }
       }
