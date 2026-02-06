@@ -356,7 +356,7 @@ export function HomeIris() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Un tarif simple et transparent
+              Essai de 7 jours GRATUITS sans engagement
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Choisissez le plan qui correspond à votre rythme de réponse aux appels d'offres
