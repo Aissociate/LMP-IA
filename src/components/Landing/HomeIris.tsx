@@ -76,7 +76,7 @@ export function HomeIris() {
               <div className="relative">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg ring-2 ring-orange-200">
                   <img
-                    src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop"
+                    src="https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop"
                     alt="Iris AI Assistant"
                     className="w-full h-full object-cover"
                   />
