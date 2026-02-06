@@ -16,9 +16,20 @@ const HERO_AVATARS = [
 ];
 
 const TESTIMONIAL_PHOTOS = {
-  marc: "https://images.pexels.com/photos/8961251/pexels-photo-8961251.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
-  sophie: "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
-  jeanpierre: "https://images.pexels.com/photos/5668858/pexels-photo-5668858.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
+  marc: "https://images.pexels.com/photos/5490276/pexels-photo-5490276.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
+  sophie: "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
+  jeanpierre: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop"
+};
+
+const TEAM_PHOTOS = {
+  founder: "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop",
+  cofounder: "https://images.pexels.com/photos/3756681/pexels-photo-3756681.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop",
+  cto: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
+};
+
+const TRANSFORMATION_PHOTOS = {
+  before: "https://images.pexels.com/photos/3760607/pexels-photo-3760607.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop",
+  after: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop"
 };
 
 const SOLUTION_IMAGES = {
@@ -1029,18 +1040,32 @@ export default function Home() {
       </Section>
 
       {/* TRANSFORMATION PROMISE */}
-      <Section className="py-20">
-        <div className="max-w-4xl mx-auto">
+      <Section className="py-20 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
               Imaginez votre quotidien dans 30 jours
             </h2>
+            <p className="text-xl text-gray-600">La transformation que vivent nos clients</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div>
-              <h3 className="text-2xl font-bold mb-6 text-red-600">❌ Avant</h3>
-              <ul className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-red-200 hover:shadow-2xl transition-shadow">
+              <div className="h-48 overflow-hidden relative">
+                <img
+                  src={TRANSFORMATION_PHOTOS.before}
+                  alt="Avant - Stress et paperasse"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-red-900/80 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+                    <span className="text-3xl">❌</span> Avant
+                  </h3>
+                </div>
+              </div>
+              <div className="p-8">
+                <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl">•</span>
                   <span className="text-gray-700">Vous passez vos soirées sur la paperasse</span>
@@ -1062,11 +1087,25 @@ export default function Home() {
                   <span className="text-gray-700">Le stress et la frustration s'accumulent</span>
                 </li>
               </ul>
+              </div>
             </div>
 
-            <div>
-              <h3 className="text-2xl font-bold mb-6 text-green-600">✅ Après</h3>
-              <ul className="space-y-4">
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-green-200 hover:shadow-2xl transition-shadow">
+              <div className="h-48 overflow-hidden relative">
+                <img
+                  src={TRANSFORMATION_PHOTOS.after}
+                  alt="Après - Succès et sérénité"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+                    <span className="text-3xl">✅</span> Après
+                  </h3>
+                </div>
+              </div>
+              <div className="p-8">
+                <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <span className="text-green-500 text-xl">✓</span>
                   <span className="text-gray-700">Vous répondez en quelques heures au lieu de jours</span>
@@ -1088,6 +1127,7 @@ export default function Home() {
                   <span className="text-gray-700">Vous retrouvez du temps pour votre métier</span>
                 </li>
               </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -1105,73 +1145,85 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src={TESTIMONIAL_PHOTOS.marc}
-                alt="Marc D."
-                className="w-16 h-16 rounded-full object-cover border-2 border-orange-200 shadow-sm"
-              />
-              <div>
-                <div className="flex gap-0.5 mb-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all overflow-hidden border border-gray-100">
+            <div className="bg-gradient-to-br from-orange-50 to-white p-6">
+              <div className="flex flex-col items-center text-center mb-4">
+                <img
+                  src={TESTIMONIAL_PHOTOS.marc}
+                  alt="Marc D."
+                  className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg mb-3"
+                />
+                <div>
+                  <p className="font-bold text-lg text-gray-900">Marc Dubois</p>
+                  <p className="text-sm text-gray-600 font-medium">Électricien</p>
+                  <p className="text-xs text-gray-500 mt-1">8 salariés • La Réunion</p>
+                  <div className="flex gap-0.5 justify-center mt-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
                 </div>
-                <p className="font-semibold text-gray-900">Marc D.</p>
-                <p className="text-xs text-gray-500">Électricien, 8 salariés</p>
               </div>
             </div>
-            <p className="text-gray-700 italic leading-relaxed">
-              "J'ai remporté 3 marchés en 2 mois. Avant, je passais des semaines sur les dossiers. Maintenant, c'est réglé en quelques heures."
-            </p>
-            <p className="text-xs text-gray-400 mt-3">📍 La Réunion</p>
+            <div className="p-6">
+              <p className="text-gray-700 italic leading-relaxed text-center">
+                "J'ai remporté 3 marchés en 2 mois. Avant, je passais des semaines sur les dossiers. Maintenant, c'est réglé en quelques heures."
+              </p>
+            </div>
           </div>
 
-          <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src={TESTIMONIAL_PHOTOS.sophie}
-                alt="Sophie L."
-                className="w-16 h-16 rounded-full object-cover border-2 border-orange-200 shadow-sm"
-              />
-              <div>
-                <div className="flex gap-0.5 mb-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all overflow-hidden border border-gray-100">
+            <div className="bg-gradient-to-br from-blue-50 to-white p-6">
+              <div className="flex flex-col items-center text-center mb-4">
+                <img
+                  src={TESTIMONIAL_PHOTOS.sophie}
+                  alt="Sophie L."
+                  className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg mb-3"
+                />
+                <div>
+                  <p className="font-bold text-lg text-gray-900">Sophie Laurent</p>
+                  <p className="text-sm text-gray-600 font-medium">Dirigeante PME BTP</p>
+                  <p className="text-xs text-gray-500 mt-1">45 salariés • Mayotte</p>
+                  <div className="flex gap-0.5 justify-center mt-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
                 </div>
-                <p className="font-semibold text-gray-900">Sophie L.</p>
-                <p className="text-xs text-gray-500">Dirigeante PME BTP, 45 salariés</p>
               </div>
             </div>
-            <p className="text-gray-700 italic leading-relaxed">
-              "Le ROI est incroyable. On a multiplié par 2 notre CA sur les marchés publics en 6 mois. Et on a enfin du temps pour nos équipes."
-            </p>
-            <p className="text-xs text-gray-400 mt-3">📍 Mayotte</p>
+            <div className="p-6">
+              <p className="text-gray-700 italic leading-relaxed text-center">
+                "Le ROI est incroyable. On a multiplié par 2 notre CA sur les marchés publics en 6 mois. Et on a enfin du temps pour nos équipes."
+              </p>
+            </div>
           </div>
 
-          <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src={TESTIMONIAL_PHOTOS.jeanpierre}
-                alt="Jean-Pierre M."
-                className="w-16 h-16 rounded-full object-cover border-2 border-orange-200 shadow-sm"
-              />
-              <div>
-                <div className="flex gap-0.5 mb-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all overflow-hidden border border-gray-100">
+            <div className="bg-gradient-to-br from-green-50 to-white p-6">
+              <div className="flex flex-col items-center text-center mb-4">
+                <img
+                  src={TESTIMONIAL_PHOTOS.jeanpierre}
+                  alt="Jean-Pierre M."
+                  className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg mb-3"
+                />
+                <div>
+                  <p className="font-bold text-lg text-gray-900">Jean-Pierre Martin</p>
+                  <p className="text-sm text-gray-600 font-medium">Maçon indépendant</p>
+                  <p className="text-xs text-gray-500 mt-1">La Réunion</p>
+                  <div className="flex gap-0.5 justify-center mt-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
                 </div>
-                <p className="font-semibold text-gray-900">Jean-Pierre M.</p>
-                <p className="text-xs text-gray-500">Maçon indépendant</p>
               </div>
             </div>
-            <p className="text-gray-700 italic leading-relaxed">
-              "Franchement, je ne pensais pas que c'était possible. Fini les nuits blanches à remplir des formulaires. Je recommande à tous mes confrères."
-            </p>
-            <p className="text-xs text-gray-400 mt-3">📍 La Réunion</p>
+            <div className="p-6">
+              <p className="text-gray-700 italic leading-relaxed text-center">
+                "Franchement, je ne pensais pas que c'était possible. Fini les nuits blanches à remplir des formulaires. Je recommande à tous mes confrères."
+              </p>
+            </div>
           </div>
         </div>
 
@@ -1522,6 +1574,85 @@ export default function Home() {
             <div className="bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg">
               <div className="font-semibold">✓ Annulation en 1 clic</div>
             </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* TEAM SECTION */}
+      <Section className="py-20 bg-white">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
+            L'équipe derrière Le Marché Public.fr
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Une équipe passionnée et expérimentée dédiée à la réussite de votre entreprise sur les marchés publics
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+          <div className="text-center group">
+            <div className="relative mb-6 mx-auto w-48 h-48">
+              <img
+                src={TEAM_PHOTOS.founder}
+                alt="Fondateur"
+                className="w-full h-full rounded-2xl object-cover shadow-xl border-4 border-white group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-[#F77F00] to-[#E06F00] text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
+                Fondateur
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Thomas Leroy</h3>
+            <p className="text-[#F77F00] font-semibold mb-3">CEO & Co-fondateur</p>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              15 ans d'expérience dans les marchés publics. Ancien responsable des appels d'offres dans une PME BTP réunionnaise.
+            </p>
+          </div>
+
+          <div className="text-center group">
+            <div className="relative mb-6 mx-auto w-48 h-48">
+              <img
+                src={TEAM_PHOTOS.cofounder}
+                alt="Co-fondatrice"
+                className="w-full h-full rounded-2xl object-cover shadow-xl border-4 border-white group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
+                Co-fondatrice
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Marie Fontaine</h3>
+            <p className="text-blue-600 font-semibold mb-3">COO & Stratégie</p>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Experte en transformation digitale et ancienne consultante pour les entreprises du secteur public à La Réunion.
+            </p>
+          </div>
+
+          <div className="text-center group">
+            <div className="relative mb-6 mx-auto w-48 h-48">
+              <img
+                src={TEAM_PHOTOS.cto}
+                alt="CTO"
+                className="w-full h-full rounded-2xl object-cover shadow-xl border-4 border-white group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
+                CTO
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Julien Bernard</h3>
+            <p className="text-green-600 font-semibold mb-3">Directeur Technique</p>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Ingénieur IA et expert en automatisation. 10 ans d'expérience dans le développement de solutions d'intelligence artificielle.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-16 max-w-4xl mx-auto bg-gradient-to-r from-orange-50 to-blue-50 rounded-2xl p-8 border-2 border-orange-200">
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Mission</h3>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              Simplifier l'accès aux marchés publics pour toutes les entreprises réunionnaises, des artisans aux PME.
+              Nous croyons que chaque entreprise mérite sa chance de remporter des marchés publics, sans se perdre dans
+              la complexité administrative.
+            </p>
           </div>
         </div>
       </Section>
