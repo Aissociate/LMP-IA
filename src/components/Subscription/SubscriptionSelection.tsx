@@ -50,23 +50,55 @@ export const SubscriptionSelection: React.FC = () => {
   };
 
   const handleStartTrial = async () => {
-    if (!user) return;
+    if (!user) {
+      setError('Vous devez être connecté pour démarrer l\'essai gratuit');
+      return;
+    }
+
+    // Récupérer le plan BRONZE pour l'essai gratuit
+    const bronzePlan = plans.find(p => p.name === 'BRONZE');
+
+    if (!bronzePlan || !bronzePlan.stripe_price_id) {
+      setError('Plan d\'essai non disponible. Veuillez réessayer ou contacter le support.');
+      return;
+    }
 
     try {
       setStartingTrial(true);
       setError(null);
 
-      const { data, error: rpcError } = await supabase.rpc('start_trial', {
-        p_user_id: user.id
-      });
-
-      if (rpcError) throw rpcError;
-
-      if (!data.success) {
-        throw new Error(data.message || 'Erreur lors du démarrage de l\'essai');
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setError('Session expirée. Veuillez vous reconnecter.');
+        return;
       }
 
-      window.location.href = '/';
+      // Rediriger vers Stripe avec le plan BRONZE qui aura automatiquement 7 jours d'essai gratuit
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          price_id: bronzePlan.stripe_price_id,
+          mode: 'subscription',
+          success_url: `${window.location.origin}/subscription-onboarding?success=true&trial=true`,
+          cancel_url: `${window.location.origin}/subscription?canceled=true`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Erreur lors de la création de la session de paiement');
+      }
+
+      if (result.url) {
+        window.location.href = result.url;
+      } else {
+        throw new Error('URL de checkout non reçue');
+      }
     } catch (err: any) {
       console.error('Error starting trial:', err);
       setError(err.message || 'Erreur lors du démarrage de l\'essai');
@@ -190,7 +222,7 @@ export const SubscriptionSelection: React.FC = () => {
             Choisissez votre plan
           </h1>
           <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            Commencez avec 7 jours d'essai gratuit avec CB, puis sélectionnez le plan adapté à vos besoins
+            Tous les plans incluent 7 jours d'essai gratuit avec CB. Aucun paiement avant la fin de l'essai.
           </p>
         </div>
 
@@ -209,10 +241,10 @@ export const SubscriptionSelection: React.FC = () => {
               <Zap className="w-8 h-8 text-white" />
             </div>
             <h2 className={`text-2xl font-bold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              Essai Gratuit - 7 Jours
+              Démarrez votre essai gratuit
             </h2>
             <p className={`mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-              Carte bancaire requise • Accès illimité à toutes les fonctionnalités sauf mémoires techniques
+              Commencez avec le plan BRONZE - 7 jours gratuits • Carte bancaire requise • Annulez à tout moment
             </p>
             <ul className={`text-left mb-6 space-y-2 max-w-md mx-auto ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               <li className="flex items-center gap-2">
