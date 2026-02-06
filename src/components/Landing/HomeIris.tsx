@@ -379,6 +379,192 @@ export function HomeIris() {
         </div>
       </section>
 
+      {/* Section Pricing */}
+      <section className="py-16 lg:py-24 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Un tarif simple et <span className="text-orange-600">transparent</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Choisissez le plan qui correspond à votre rythme de réponse aux appels d'offres
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Plan BRONZE - Mi-temps */}
+            <div className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all border-2 border-gray-200 overflow-hidden">
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-8 border-b border-gray-200">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-2xl font-bold text-gray-900">Bronze</h3>
+                  <span className="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">
+                    MI-TEMPS
+                  </span>
+                </div>
+                <div className="mb-4">
+                  <span className="text-5xl font-extrabold text-gray-900">199€</span>
+                  <span className="text-gray-600 text-lg">/mois</span>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Parfait pour démarrer et tester le marché public
+                </p>
+              </div>
+
+              <div className="p-8">
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">Veille marchés illimitée</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">IA et GO/NO-GO illimités</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 font-semibold">1 mémoire technique / mois</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">Export Word & PDF</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">Support email</span>
+                  </li>
+                </ul>
+
+                <button
+                  onClick={() => navigate('/subscription')}
+                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
+                >
+                  Commencer
+                </button>
+              </div>
+            </div>
+
+            {/* Plan ARGENT - Temps plein - POPULAIRE */}
+            <div className="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition-all border-2 border-blue-500 overflow-hidden relative transform md:scale-105">
+              <div className="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-4 py-1 rounded-bl-lg">
+                POPULAIRE
+              </div>
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 border-b border-blue-200">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-2xl font-bold text-gray-900">Argent</h3>
+                  <span className="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
+                    TEMPS PLEIN
+                  </span>
+                </div>
+                <div className="mb-4">
+                  <span className="text-5xl font-extrabold text-gray-900">349€</span>
+                  <span className="text-gray-600 text-lg">/mois</span>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Pour les entreprises actives sur les marchés publics
+                </p>
+              </div>
+
+              <div className="p-8">
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">Veille marchés illimitée</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">IA et GO/NO-GO illimités</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 font-semibold">2 mémoires techniques / mois</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">Export Word & PDF</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 font-semibold">Support prioritaire</span>
+                  </li>
+                </ul>
+
+                <button
+                  onClick={() => navigate('/subscription')}
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
+                >
+                  Commencer
+                </button>
+              </div>
+            </div>
+
+            {/* Plan OR - Heures supplémentaires */}
+            <div className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all border-2 border-gray-200 overflow-hidden">
+              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 p-8 border-b border-gray-200">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-2xl font-bold text-gray-900">Or</h3>
+                  <span className="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full">
+                    HEURES SUP
+                  </span>
+                </div>
+                <div className="mb-4">
+                  <span className="text-5xl font-extrabold text-gray-900">649€</span>
+                  <span className="text-gray-600 text-lg">/mois</span>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Pour maximiser votre activité marchés publics
+                </p>
+              </div>
+
+              <div className="p-8">
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">Veille marchés illimitée</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">IA et GO/NO-GO illimités</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 font-semibold">5 mémoires techniques / mois</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">Export Word & PDF</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 font-semibold">Support VIP</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 font-semibold">Accompagnement personnalisé</span>
+                  </li>
+                </ul>
+
+                <button
+                  onClick={() => navigate('/subscription')}
+                  className="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white font-bold py-3 px-6 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
+                >
+                  Commencer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-sm text-gray-600 mb-4">
+              7 jours d'essai gratuit • Sans carte bancaire • Sans engagement
+            </p>
+            <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-2">
+              <Shield className="w-5 h-5 text-green-600" />
+              <span className="text-sm text-green-800 font-medium">Paiement sécurisé via Stripe</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Temoignages clients - Style LinkedIn */}
       <section className="py-16 lg:py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
