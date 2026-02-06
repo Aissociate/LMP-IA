@@ -68,9 +68,23 @@ export function HomeIris() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
-              <Sparkles className="w-4 h-4 text-orange-600" />
-              <span className="text-sm font-medium text-orange-800">L'assistant IA des marches publics</span>
+            <div className="flex items-center gap-4 flex-wrap">
+              <div className="inline-flex items-center gap-2 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
+                <Sparkles className="w-4 h-4 text-orange-600" />
+                <span className="text-sm font-medium text-orange-800">L'assistant IA des marches publics</span>
+              </div>
+              <div className="relative">
+                <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg ring-2 ring-orange-200">
+                  <img
+                    src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop"
+                    alt="Iris AI Assistant"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-br from-orange-500 to-red-500 rounded-full border-2 border-white flex items-center justify-center">
+                  <Sparkles className="w-3 h-3 text-white" />
+                </div>
+              </div>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-[1.1]">
