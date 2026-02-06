@@ -16,22 +16,14 @@ import { Admin } from './components/Admin/Admin';
 import { Labo } from './components/Labo/Labo';
 import { Assistant } from './components/Assistant/Assistant';
 import { SecureVault } from './components/SecureVault/SecureVault';
-import { LandingPME } from './components/Landing/LandingPME';
-import { LandingBTP } from './components/Landing/LandingBTP';
-import { LandingArtisans } from './components/Landing/LandingArtisans';
-import { LandingLead } from './components/Landing/LandingLead';
-import { LeadCapturePage } from './components/Landing/LeadCapturePage';
-import { CGV, ThankYou } from './components/Landing';
+import { CGV } from './components/Landing';
 import { MentionsLegales } from './components/Landing/MentionsLegales';
-import Home from './components/Landing/Home';
-import { Recrutement } from './components/Landing/Recrutement';
 import { MarketCollector } from './components/MarketSearch/MarketCollector';
 import { BugReportButton } from './components/Common/BugReportButton';
 import { PublicMarketPage } from './components/PublicMarket/PublicMarketPage';
 import { ReunionMarketsDirectory } from './components/PublicMarket/ReunionMarketsDirectory';
 import { SubscriptionSelection } from './components/Subscription/SubscriptionSelection';
 import { SubscriptionOnboarding } from './components/Subscription/SubscriptionOnboarding';
-import { HomeIris } from './components/Landing/HomeIris';
 
 type AuthMode = 'login' | 'signup';
 type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'coffre-fort' | 'assistant' | 'parametres' | 'admin' | 'labo';
@@ -43,7 +35,7 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const location = useLocation();
 
-  const publicRoutes = ['/', '/home', '/iris', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/capture-lead', '/mmp', '/cgv', '/mentions-legales', '/merci', '/recrutement', '/collecte', '/subscription', '/subscription-onboarding', '/login', '/signup'];
+  const publicRoutes = ['/', '/cgv', '/mentions-legales', '/collecte', '/subscription', '/subscription-onboarding', '/login', '/signup'];
   const isPublicRoute = publicRoutes.includes(location.pathname) || location.pathname.startsWith('/marchepublics/974');
 
   if (loading && !isPublicRoute) {
@@ -87,35 +79,13 @@ function AppContent() {
 
   return (
     <Routes>
-      <Route path="/" element={<HomeIris />} />
-      <Route path="/iris" element={<HomeIris />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/pme" element={<LandingPME />} />
-      <Route path="/btp" element={<LandingBTP />} />
-      <Route path="/artisans" element={<LandingArtisans />} />
-      <Route path="/landing/pme" element={<LandingPME />} />
-      <Route path="/landing/btp" element={<LandingBTP />} />
-      <Route path="/landing/artisans" element={<LandingArtisans />} />
-      <Route path="/lead" element={<LandingLead />} />
-      <Route path="/capture-lead" element={<LeadCapturePage />} />
       <Route path="/cgv" element={<CGV />} />
       <Route path="/mentions-legales" element={<MentionsLegales />} />
-      <Route path="/merci" element={<ThankYou />} />
-      <Route path="/recrutement" element={<Recrutement />} />
       <Route path="/collecte" element={<MarketCollector />} />
       <Route path="/subscription" element={<SubscriptionSelection />} />
       <Route path="/subscription-onboarding" element={<SubscriptionOnboarding />} />
       <Route path="/marchepublics/974" element={<ReunionMarketsDirectory />} />
       <Route path="/marchepublics/974/:slug" element={<PublicMarketPage />} />
-      <Route path="/mmp" element={
-        <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900/20' : 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200'} flex items-center justify-center p-4 transition-colors duration-200`}>
-          {authMode === 'login' ? (
-            <LoginForm onToggleMode={() => setAuthMode('signup')} />
-          ) : (
-            <SignupForm onToggleMode={() => setAuthMode('login')} />
-          )}
-        </div>
-      } />
       <Route path="/*" element={
         !user ? (
           <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900/20' : 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200'} flex items-center justify-center p-4 transition-colors duration-200`}>
