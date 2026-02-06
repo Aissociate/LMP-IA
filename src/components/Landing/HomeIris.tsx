@@ -43,9 +43,9 @@ export function HomeIris() {
             <span className="font-bold text-xl text-gray-900">Iris</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-            <a href="#methode" className="hover:text-orange-600 transition-colors">Comment ca marche</a>
-            <a href="#resultats" className="hover:text-orange-600 transition-colors">Resultats</a>
-            <a href="#fonctionnalites" className="hover:text-orange-600 transition-colors">Fonctionnalites</a>
+            <a href="#methode" className="hover:text-orange-600 transition-colors">Comment ça marche</a>
+            <a href="#resultats" className="hover:text-orange-600 transition-colors">Résultats</a>
+            <a href="#fonctionnalites" className="hover:text-orange-600 transition-colors">Fonctionnalités</a>
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -74,28 +74,28 @@ export function HomeIris() {
                 <span className="text-sm font-medium text-orange-800">L'assistant IA des marches publics</span>
               </div>
               <div className="relative">
-                <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-lg ring-2 ring-orange-200">
+                <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg ring-2 ring-orange-200">
                   <img
-                    src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
-                    alt="Iris AI Assistant"
+                    src="https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
+                    alt="Iris - Assistante IA"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-br from-orange-500 to-red-500 rounded-full border-2 border-white flex items-center justify-center">
+                <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full border-2 border-white flex items-center justify-center">
                   <Sparkles className="w-4 h-4 text-white" />
                 </div>
               </div>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-[1.1]">
-              J'ai arrete de courir apres les marches.
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mt-2">Maintenant, ce sont eux qui viennent a moi.</span>
+              J'ai arrêté de courir après les marchés.
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mt-2">Maintenant, je reçois chaque matin ceux qui me correspondent.</span>
             </h1>
 
             <p className="text-lg text-gray-600 leading-relaxed max-w-xl">
-              Avant, je passais mes lundis matin a eplucher le BOAMP. Je ratais des opportunites, je repondais a des marches trop gros ou trop loin.
-              <strong className="text-gray-800"> Depuis que j'utilise Iris, je recois chaque matin les marches qui me correspondent vraiment.</strong>
-              Le reste, c'est de l'IA.
+              Avant, je passais mes lundis matin à éplucher le BOAMP. Je ratais des opportunités, je répondais à des marchés trop gros ou trop loin.
+              <strong className="text-gray-800"> Depuis qu'Iris fait le travail pour moi, je reçois uniquement les marchés que je peux gagner.</strong>
+              Résultat : j'ai triplé mes réponses gagnantes en 6 mois.
             </p>
 
             <div className="flex items-center gap-4">
@@ -114,7 +114,7 @@ export function HomeIris() {
                     <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <p className="text-xs text-gray-500 mt-0.5">Utilise par des artisans, PME et bureaux d'etude</p>
+                <p className="text-xs text-gray-500 mt-0.5">Utilisé par des artisans, PME et bureaux d'étude</p>
               </div>
             </div>
 
@@ -130,7 +130,7 @@ export function HomeIris() {
                 onClick={() => navigate('/mmp')}
                 className="inline-flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-700 px-7 py-4 rounded-xl font-semibold hover:border-orange-400 hover:text-orange-600 transition-all"
               >
-                J'ai deja un compte
+                J'ai déjà un compte
               </button>
             </div>
             <p className="text-sm text-gray-400">Sans carte bancaire. Sans engagement.</p>
@@ -148,10 +148,10 @@ export function HomeIris() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
-              Soyons honnetes : repondre aux marches publics, c'est epuisant
+              Soyons honnêtes : répondre aux marchés publics, c'était mon enfer
             </h2>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              Je le sais parce que je suis passe par la. Et j'en ai eu marre.
+              Je sais exactement ce que vous vivez. J'y suis passé. Ça m'a pris des années à comprendre qu'il y avait une meilleure façon de faire.
             </p>
           </div>
 
@@ -163,11 +163,11 @@ export function HomeIris() {
               </h3>
               <ul className="space-y-3">
                 {[
-                  "Des heures a chercher les bons marches sur le BOAMP",
-                  "Je decouvrais des appels d'offres la veille de la date limite",
-                  "Je repondais a tout, meme aux marches que je ne pouvais pas gagner",
-                  "3 jours pour rediger un memoire technique moyen",
-                  "Resultat : beaucoup d'efforts, peu de marches gagnes"
+                  "Des heures à chercher les bons marchés sur le BOAMP",
+                  "Je découvrais des appels d'offres la veille de la date limite",
+                  "Je répondais à tout, même aux marchés que je ne pouvais pas gagner",
+                  "3 jours pour rédiger un mémoire technique moyen",
+                  "Résultat : beaucoup d'efforts, peu de marchés gagnés"
                 ].map((item, idx) => (
                   <li key={idx} className="flex gap-3 text-sm text-gray-700">
                     <span className="text-red-400 mt-0.5">--</span>
@@ -184,11 +184,11 @@ export function HomeIris() {
               </h3>
               <ul className="space-y-3">
                 {[
-                  "Je recois chaque matin les marches qui me correspondent",
-                  "L'IA me dit si ca vaut le coup d'y repondre, ou pas",
-                  "Je me concentre uniquement sur les opportunites rentables",
-                  "Mon memoire technique est genere en 15 minutes",
-                  "Je reponds mieux, plus vite, et je gagne plus souvent"
+                  "Je reçois chaque matin les marchés qui me correspondent",
+                  "L'IA me dit si ça vaut le coup d'y répondre, ou pas",
+                  "Je me concentre uniquement sur les opportunités rentables",
+                  "Mon mémoire technique est généré en 15 minutes",
+                  "Je réponds mieux, plus vite, et je gagne plus souvent"
                 ].map((item, idx) => (
                   <li key={idx} className="flex gap-3 text-sm text-gray-800 font-medium">
                     <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
@@ -201,8 +201,8 @@ export function HomeIris() {
 
           <div className="mt-8 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-2xl p-6 text-center">
             <p className="text-lg font-semibold">
-              Un seul marche gagne rembourse des annees d'abonnement.
-              <span className="block text-orange-100 mt-1 text-base font-normal">Combien de marches passent sous votre radar chaque semaine ?</span>
+              Un seul marché gagné rembourse des années d'abonnement.
+              <span className="block text-orange-100 mt-1 text-base font-normal">Combien de marchés passent sous votre radar chaque semaine ?</span>
             </p>
           </div>
         </div>
@@ -213,10 +213,10 @@ export function HomeIris() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
-              Concretement, voici comment je fais maintenant
+              Concrètement, voici comment je fais maintenant
             </h2>
             <p className="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
-              4 etapes. 15 minutes le matin. Et je passe a autre chose.
+              4 étapes. 15 minutes le matin. Et je passe à autre chose.
             </p>
           </div>
 
@@ -225,29 +225,29 @@ export function HomeIris() {
               {
                 icon: Bell,
                 step: "1",
-                title: "Je recois mes alertes",
-                description: "Chaque matin, Iris me notifie les nouveaux marches qui correspondent a mon activite, ma zone, mon chiffre d'affaires.",
+                title: "Je reçois mes alertes",
+                description: "Chaque matin, Iris me notifie les nouveaux marchés qui correspondent à mon activité, ma zone, mon chiffre d'affaires.",
                 color: "from-blue-500 to-blue-600"
               },
               {
                 icon: Target,
                 step: "2",
                 title: "Je filtre en 1 clic",
-                description: "L'assistant GO/NO-GO me dit si le marche est pour moi. Montant, delai, concurrence... tout est analyse.",
+                description: "L'assistant GO/NO-GO me dit si le marché est pour moi. Montant, délai, concurrence... tout est analysé.",
                 color: "from-teal-500 to-teal-600"
               },
               {
                 icon: FileText,
                 step: "3",
-                title: "Je genere mon memoire",
-                description: "L'IA redige un memoire technique adapte au marche, a mon entreprise et au cahier des charges. Je n'ai plus qu'a relire.",
+                title: "Je génère mon mémoire",
+                description: "L'IA rédige un mémoire technique adapté au marché, à mon entreprise et au cahier des charges. Je n'ai plus qu'à relire.",
                 color: "from-orange-500 to-orange-600"
               },
               {
                 icon: Award,
                 step: "4",
-                title: "Je depose et je gagne",
-                description: "Mon dossier est complet, professionnel, et depose en avance. Mes chances de succes ont triple.",
+                title: "Je dépose et je gagne",
+                description: "Mon dossier est complet, professionnel, et déposé en avance. Mes chances de succès ont triplé.",
                 color: "from-green-500 to-green-600"
               }
             ].map((item, idx) => (
@@ -276,10 +276,10 @@ export function HomeIris() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold">
-              Ce que ca a change pour moi <span className="text-orange-400">(en vrai)</span>
+              Ce que ça a changé pour moi <span className="text-orange-400">(en vrai)</span>
             </h2>
             <p className="mt-3 text-lg text-gray-400 max-w-2xl mx-auto">
-              Pas de promesses en l'air. Juste les chiffres de mon activite depuis que j'utilise Iris au quotidien.
+              Pas de promesses en l'air. Juste mes chiffres depuis que j'utilise Iris au quotidien.
             </p>
           </div>
 
@@ -287,20 +287,20 @@ export function HomeIris() {
             {[
               {
                 metric: "x3",
-                label: "marches gagnes",
-                detail: "Par rapport a l'annee precedente",
+                label: "marchés gagnés",
+                detail: "Par rapport à l'année précédente",
                 icon: TrendingUp
               },
               {
                 metric: "2h",
                 label: "au lieu de 2 jours",
-                detail: "Pour un memoire technique complet",
+                detail: "Pour un mémoire technique complet",
                 icon: Clock
               },
               {
                 metric: "0",
-                label: "opportunite ratee",
-                detail: "Grace aux alertes automatiques",
+                label: "opportunité ratée",
+                detail: "Grâce aux alertes automatiques",
                 icon: BarChart3
               }
             ].map((stat, idx) => (
@@ -321,8 +321,8 @@ export function HomeIris() {
                 className="w-20 h-20 rounded-full object-cover border-4 border-white/20 shadow-lg mb-4"
               />
               <p className="text-lg text-gray-200 leading-relaxed mb-4">
-                "Honnement, je ne pensais pas qu'un outil pouvait changer autant ma facon de travailler. Avant, la reponse aux AO c'etait ma bete noire.
-                Maintenant c'est presque devenu agreable."
+                "Honnêtement, je ne pensais pas qu'un outil pouvait changer autant ma façon de travailler. Avant, la réponse aux AO c'était ma bête noire.
+                Maintenant c'est presque devenu agréable."
               </p>
               <div className="flex gap-1 mb-3">
                 {[...Array(5)].map((_, i) => (
@@ -353,32 +353,32 @@ export function HomeIris() {
               {
                 icon: Bell,
                 title: "Veille sur mesure",
-                description: "Recevez les marches qui correspondent a votre metier, votre zone geographique et votre capacite. Rien de plus, rien de moins."
+                description: "Recevez les marchés qui correspondent à votre métier, votre zone géographique et votre capacité. Rien de plus, rien de moins."
               },
               {
                 icon: Sparkles,
                 title: "Analyse GO/NO-GO",
-                description: "L'IA evalue chaque marche : est-ce que ca vaut le coup d'y passer du temps ? Reponse en 10 secondes."
+                description: "L'IA évalue chaque marché : est-ce que ça vaut le coup d'y passer du temps ? Réponse en 10 secondes."
               },
               {
                 icon: FileText,
-                title: "Memoire technique IA",
-                description: "Generez un memoire technique adapte a chaque marche. L'IA connait votre entreprise et s'adapte au DCE."
+                title: "Mémoire technique IA",
+                description: "Générez un mémoire technique adapté à chaque marché. L'IA connaît votre entreprise et s'adapte au DCE."
               },
               {
                 icon: Shield,
                 title: "Coffre-fort documents",
-                description: "Tous vos documents administratifs stockes en securite. Kbis, attestations, references... tout est pret quand vous en avez besoin."
+                description: "Tous vos documents administratifs stockés en sécurité. Kbis, attestations, références... tout est prêt quand vous en avez besoin."
               },
               {
                 icon: Zap,
                 title: "Export Word & PDF",
-                description: "Telechargez vos memoires dans le format que vous voulez. Pret a deposer sur la plateforme de l'acheteur."
+                description: "Téléchargez vos mémoires dans le format que vous voulez. Prêt à déposer sur la plateforme de l'acheteur."
               },
               {
                 icon: BarChart3,
                 title: "Suivi des candidatures",
-                description: "Gardez un oeil sur toutes vos reponses en cours. Plus de post-it ni de tableurs Excel qui se perdent."
+                description: "Gardez un œil sur toutes vos réponses en cours. Plus de post-it ni de tableurs Excel qui se perdent."
               }
             ].map((feature, idx) => (
               <div key={idx} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-orange-200">
@@ -755,10 +755,10 @@ export function HomeIris() {
       <section className="py-16 lg:py-20 bg-gradient-to-br from-orange-600 to-red-600">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
           <h2 className="text-3xl lg:text-4xl font-bold leading-tight">
-            Si j'avais su que ca existait, j'aurais commence bien plus tot
+            Si j'avais su que ça existait, j'aurais commencé bien plus tôt
           </h2>
           <p className="mt-4 text-lg text-orange-100 max-w-2xl mx-auto leading-relaxed">
-            Chaque semaine sans Iris, ce sont des marches que vous ne voyez pas, des opportunites qui passent, et du temps que vous ne recupererez pas. L'essai est gratuit. Le risque est a zero. Le seul regret, ce sera de ne pas avoir essaye plus tot.
+            Chaque semaine sans Iris, ce sont des marchés que vous ne voyez pas, des opportunités qui passent, et du temps que vous ne récupérerez pas. L'essai est gratuit. Le risque est à zéro. Le seul regret, ce sera de ne pas avoir essayé plus tôt.
           </p>
 
           <div className="mt-8 space-y-4">
@@ -770,7 +770,7 @@ export function HomeIris() {
               <ArrowRight className="w-5 h-5" />
             </button>
             <p className="text-orange-100 text-sm">
-              Sans carte bancaire. Sans engagement. Acces immediat.
+              Sans carte bancaire. Sans engagement. Accès immédiat.
             </p>
           </div>
         </div>
@@ -785,7 +785,7 @@ export function HomeIris() {
           </div>
           <div className="flex gap-6 text-sm text-gray-400">
             <button onClick={() => navigate('/mentions-legales')} className="hover:text-white transition-colors">
-              Mentions legales
+              Mentions légales
             </button>
             <button onClick={() => navigate('/cgv')} className="hover:text-white transition-colors">
               CGV
