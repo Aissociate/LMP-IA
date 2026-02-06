@@ -41,24 +41,29 @@ export const Carousel: React.FC<CarouselProps> = ({
 
   return (
     <div className={`relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gray-100 group ${className}`}>
-      <img
-        src={images[currentIndex]}
-        alt={`Aperçu ${currentIndex + 1}`}
-        className="w-full h-full object-cover transition-opacity duration-500"
-      />
+      {images.map((image, idx) => (
+        <img
+          key={idx}
+          src={image}
+          alt={`Aperçu ${idx + 1}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            idx === currentIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      ))}
       <button
         onClick={goToPrevious}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10"
       >
         <ChevronLeft className="w-6 h-6 text-gray-800" />
       </button>
       <button
         onClick={goToNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10"
       >
         <ChevronRight className="w-6 h-6 text-gray-800" />
       </button>
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
         {images.map((_, idx) => (
           <button
             key={idx}
