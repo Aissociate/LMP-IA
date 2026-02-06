@@ -17,6 +17,18 @@ import {
 } from "lucide-react";
 import { Carousel } from '../ui/Carousel';
 
+const TESTIMONIAL_PHOTOS = {
+  marc: "https://images.pexels.com/photos/5490276/pexels-photo-5490276.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
+  sophie: "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
+  jeanpierre: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop"
+};
+
+const TEAM_PHOTOS = {
+  founder: "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop",
+  cofounder: "https://images.pexels.com/photos/3756681/pexels-photo-3756681.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop",
+  cto: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
+};
+
 export function HomeIris() {
   const navigate = useNavigate();
 
@@ -287,12 +299,25 @@ export function HomeIris() {
             ))}
           </div>
 
-          <div className="mt-10 bg-white/10 rounded-2xl p-6 text-center border border-white/10">
-            <p className="text-lg text-gray-200 leading-relaxed">
-              "Honnement, je ne pensais pas qu'un outil pouvait changer autant ma facon de travailler. Avant, la reponse aux AO c'etait ma bete noire.
-              Maintenant c'est presque devenu agreable."
-            </p>
-            <p className="mt-3 text-sm text-orange-400 font-semibold">-- Un utilisateur Iris, artisan electricien a La Reunion</p>
+          <div className="mt-10 bg-white/10 rounded-2xl p-8 border border-white/10">
+            <div className="flex flex-col items-center text-center max-w-2xl mx-auto">
+              <img
+                src={TESTIMONIAL_PHOTOS.marc}
+                alt="Marc Dubois"
+                className="w-20 h-20 rounded-full object-cover border-4 border-white/20 shadow-lg mb-4"
+              />
+              <p className="text-lg text-gray-200 leading-relaxed mb-4">
+                "Honnement, je ne pensais pas qu'un outil pouvait changer autant ma facon de travailler. Avant, la reponse aux AO c'etait ma bete noire.
+                Maintenant c'est presque devenu agreable."
+              </p>
+              <div className="flex gap-1 mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-orange-400 text-orange-400" />
+                ))}
+              </div>
+              <p className="text-base text-orange-400 font-bold">Marc Dubois</p>
+              <p className="text-sm text-gray-400">Artisan électricien • La Réunion</p>
+            </div>
           </div>
         </div>
       </section>
@@ -350,6 +375,178 @@ export function HomeIris() {
                 <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Temoignages clients - Style LinkedIn */}
+      <section className="py-16 lg:py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Ils ont transformé leur activité avec <span className="text-orange-600">Iris</span>
+            </h2>
+            <p className="text-lg text-gray-600">
+              Des entrepreneurs réunionnais qui partagent leur expérience
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all overflow-hidden border border-gray-100">
+              <div className="bg-gradient-to-br from-orange-50 to-white p-6">
+                <div className="flex flex-col items-center text-center">
+                  <img
+                    src={TESTIMONIAL_PHOTOS.marc}
+                    alt="Marc Dubois"
+                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg mb-3"
+                  />
+                  <h3 className="text-lg font-bold text-gray-900">Marc Dubois</h3>
+                  <p className="text-sm text-gray-600 font-medium">Électricien</p>
+                  <p className="text-xs text-gray-500 mt-1">8 salariés • La Réunion</p>
+                  <div className="flex gap-0.5 justify-center mt-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <p className="text-gray-700 italic leading-relaxed text-center text-sm">
+                  "J'ai remporté 3 marchés en 2 mois avec Iris. Avant, je passais des semaines sur les dossiers. Maintenant, c'est réglé en quelques heures."
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all overflow-hidden border border-gray-100">
+              <div className="bg-gradient-to-br from-blue-50 to-white p-6">
+                <div className="flex flex-col items-center text-center">
+                  <img
+                    src={TESTIMONIAL_PHOTOS.sophie}
+                    alt="Sophie Laurent"
+                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg mb-3"
+                  />
+                  <h3 className="text-lg font-bold text-gray-900">Sophie Laurent</h3>
+                  <p className="text-sm text-gray-600 font-medium">Dirigeante PME BTP</p>
+                  <p className="text-xs text-gray-500 mt-1">45 salariés • Mayotte</p>
+                  <div className="flex gap-0.5 justify-center mt-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <p className="text-gray-700 italic leading-relaxed text-center text-sm">
+                  "Le ROI est incroyable. On a multiplié par 2 notre CA sur les marchés publics en 6 mois. Et on a enfin du temps pour nos équipes."
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all overflow-hidden border border-gray-100">
+              <div className="bg-gradient-to-br from-green-50 to-white p-6">
+                <div className="flex flex-col items-center text-center">
+                  <img
+                    src={TESTIMONIAL_PHOTOS.jeanpierre}
+                    alt="Jean-Pierre Martin"
+                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg mb-3"
+                  />
+                  <h3 className="text-lg font-bold text-gray-900">Jean-Pierre Martin</h3>
+                  <p className="text-sm text-gray-600 font-medium">Maçon indépendant</p>
+                  <p className="text-xs text-gray-500 mt-1">La Réunion</p>
+                  <div className="flex gap-0.5 justify-center mt-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <p className="text-gray-700 italic leading-relaxed text-center text-sm">
+                  "Franchement, je ne pensais pas que c'était possible. Fini les nuits blanches à remplir des formulaires. Je recommande à tous mes confrères."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section equipe */}
+      <section className="py-16 lg:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              L'équipe derrière <span className="text-orange-600">Iris</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Une équipe passionnée et expérimentée dédiée à votre réussite sur les marchés publics
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-12">
+            <div className="text-center group">
+              <div className="relative mb-6 mx-auto w-48 h-48">
+                <img
+                  src={TEAM_PHOTOS.founder}
+                  alt="Thomas Leroy"
+                  className="w-full h-full rounded-2xl object-cover shadow-xl border-4 border-white group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-orange-600 to-red-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
+                  Fondateur
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Thomas Leroy</h3>
+              <p className="text-orange-600 font-semibold mb-3">CEO & Co-fondateur</p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                15 ans d'expérience dans les marchés publics. Ancien responsable des appels d'offres dans une PME BTP réunionnaise.
+              </p>
+            </div>
+
+            <div className="text-center group">
+              <div className="relative mb-6 mx-auto w-48 h-48">
+                <img
+                  src={TEAM_PHOTOS.cofounder}
+                  alt="Marie Fontaine"
+                  className="w-full h-full rounded-2xl object-cover shadow-xl border-4 border-white group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
+                  Co-fondatrice
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Marie Fontaine</h3>
+              <p className="text-blue-600 font-semibold mb-3">COO & Stratégie</p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Experte en transformation digitale et ancienne consultante pour les entreprises du secteur public à La Réunion.
+              </p>
+            </div>
+
+            <div className="text-center group">
+              <div className="relative mb-6 mx-auto w-48 h-48">
+                <img
+                  src={TEAM_PHOTOS.cto}
+                  alt="Julien Bernard"
+                  className="w-full h-full rounded-2xl object-cover shadow-xl border-4 border-white group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
+                  CTO
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Julien Bernard</h3>
+              <p className="text-green-600 font-semibold mb-3">Directeur Technique</p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Ingénieur IA et expert en automatisation. 10 ans d'expérience dans le développement de solutions d'intelligence artificielle.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-14 max-w-4xl mx-auto bg-gradient-to-r from-orange-50 to-blue-50 rounded-2xl p-8 border-2 border-orange-200">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Mission</h3>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Simplifier l'accès aux marchés publics pour toutes les entreprises réunionnaises, des artisans aux PME.
+                Nous croyons que chaque entreprise mérite sa chance de remporter des marchés publics, sans se perdre dans
+                la complexité administrative.
+              </p>
+            </div>
           </div>
         </div>
       </section>
