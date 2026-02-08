@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   CreditCard, Shield, Star, Crown, Zap, Calendar, Clock, AlertCircle,
-  CheckCircle, TrendingUp, FileText, Download, ExternalLink, ChevronRight
+  CheckCircle, TrendingUp, FileText, Download, ExternalLink, ChevronRight,
+  XCircle, RefreshCw
 } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
@@ -29,6 +30,9 @@ export const SubscriptionManagement: React.FC = () => {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [cancelLoading, setCancelLoading] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [cancelError, setCancelError] = useState<string | null>(null);
 
   useEffect(() => {
     loadSubscriptionDetails();
@@ -246,6 +250,69 @@ export const SubscriptionManagement: React.FC = () => {
     navigate('/subscription');
   };
 
+  const handleCancelSubscription = async () => {
+    setCancelLoading(true);
+    setCancelError(null);
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Non authentifie');
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-cancel`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ action: 'cancel' }),
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Erreur lors de l\'annulation');
+
+      setShowCancelConfirm(false);
+      await loadSubscriptionDetails();
+    } catch (err: any) {
+      setCancelError(err.message);
+    } finally {
+      setCancelLoading(false);
+    }
+  };
+
+  const handleReactivateSubscription = async () => {
+    setCancelLoading(true);
+    setCancelError(null);
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Non authentifie');
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-cancel`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ action: 'reactivate' }),
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Erreur lors de la reactivation');
+
+      await loadSubscriptionDetails();
+    } catch (err: any) {
+      setCancelError(err.message);
+    } finally {
+      setCancelLoading(false);
+    }
+  };
+
   if (loading || statsLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -359,6 +426,89 @@ export const SubscriptionManagement: React.FC = () => {
             <TrendingUp className="w-5 h-5" />
             {statusInfo.ctaText || 'Découvrir nos plans'}
           </button>
+        )}
+
+        {cancelError && (
+          <div className={`p-3 rounded-lg text-sm ${isDark ? 'bg-red-900/30 text-red-400 border border-red-800' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+            {cancelError}
+          </div>
+        )}
+
+        {subscriptionDetails?.cancel_at_period_end && subscriptionDetails?.stripe_subscription_id && !isAdmin && (
+          <button
+            onClick={handleReactivateSubscription}
+            disabled={cancelLoading}
+            className={`w-full py-3 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 mt-3 ${
+              isDark
+                ? 'bg-green-600 hover:bg-green-700 text-white disabled:bg-green-800'
+                : 'bg-green-600 hover:bg-green-700 text-white disabled:bg-green-400'
+            }`}
+          >
+            {cancelLoading ? (
+              <RefreshCw className="w-5 h-5 animate-spin" />
+            ) : (
+              <RefreshCw className="w-5 h-5" />
+            )}
+            {cancelLoading ? 'Reactivation en cours...' : 'Reactiver mon abonnement'}
+          </button>
+        )}
+
+        {subscriptionDetails?.stripe_subscription_id && subscriptionDetails?.status === 'active' && !subscriptionDetails?.cancel_at_period_end && !isAdmin && (
+          <>
+            {!showCancelConfirm ? (
+              <button
+                onClick={() => setShowCancelConfirm(true)}
+                className={`w-full py-3 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 mt-3 border ${
+                  isDark
+                    ? 'border-red-800 text-red-400 hover:bg-red-900/30'
+                    : 'border-red-200 text-red-600 hover:bg-red-50'
+                }`}
+              >
+                <XCircle className="w-5 h-5" />
+                Annuler mon abonnement
+              </button>
+            ) : (
+              <div className={`mt-3 p-4 rounded-xl border-2 ${isDark ? 'bg-red-900/20 border-red-800' : 'bg-red-50 border-red-200'}`}>
+                <div className="flex items-start gap-3 mb-4">
+                  <AlertCircle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                  <div>
+                    <h4 className={`font-semibold ${isDark ? 'text-red-400' : 'text-red-800'}`}>
+                      Confirmer l'annulation
+                    </h4>
+                    <p className={`text-sm mt-1 ${isDark ? 'text-red-300/80' : 'text-red-700'}`}>
+                      Votre abonnement restera actif jusqu'a la fin de la periode en cours.
+                      Vous pourrez le reactiver a tout moment avant cette date.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleCancelSubscription}
+                    disabled={cancelLoading}
+                    className="flex-1 py-2.5 px-4 rounded-lg font-semibold bg-red-600 hover:bg-red-700 text-white transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    {cancelLoading ? (
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <XCircle className="w-4 h-4" />
+                    )}
+                    {cancelLoading ? 'Annulation...' : 'Confirmer l\'annulation'}
+                  </button>
+                  <button
+                    onClick={() => setShowCancelConfirm(false)}
+                    disabled={cancelLoading}
+                    className={`flex-1 py-2.5 px-4 rounded-lg font-semibold transition-colors ${
+                      isDark
+                        ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                        : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                    }`}
+                  >
+                    Garder mon abonnement
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 
