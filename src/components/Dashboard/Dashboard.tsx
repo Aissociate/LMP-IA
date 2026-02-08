@@ -13,6 +13,7 @@ import {
   Activity
 } from 'lucide-react';
 import { StatsCard } from './StatsCard';
+import { FormationSection } from './FormationSection';
 import { supabase } from '../../lib/supabase';
 import { MarketStats } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
@@ -450,7 +451,7 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className={`rounded-xl border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-3">
@@ -542,6 +543,8 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <FormationSection />
       </div>
     </div>
   );
