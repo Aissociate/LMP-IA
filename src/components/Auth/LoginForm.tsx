@@ -88,9 +88,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
           </div>
 
           <div>
-            <label htmlFor="password" className={`block text-sm font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
-              Mot de passe
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label htmlFor="password" className={`block text-sm font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                Mot de passe
+              </label>
+              <a
+                href="/forgot-password"
+                className="text-sm text-orange-600 hover:text-orange-700 font-medium transition-colors"
+              >
+                Mot de passe oublié ?
+              </a>
+            </div>
             <div className="relative">
               <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
               <input
@@ -100,8 +108,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
                 onChange={(e) => setPassword(e.target.value)}
                maxLength={128}
                 className={`w-full pl-10 pr-12 py-3 border rounded-xl transition-all duration-200 ${
-                  isDark 
-                    ? 'border-gray-600 bg-gray-700 text-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500' 
+                  isDark
+                    ? 'border-gray-600 bg-gray-700 text-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500'
                     : 'border-gray-300 bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500'
                 }`}
                 placeholder="••••••••"
