@@ -12,7 +12,8 @@ import {
   Timer,
   Bell,
   MessageSquare,
-  Lock
+  Lock,
+  GraduationCap
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
@@ -29,6 +30,7 @@ const menuItems = [
   { id: 'marche', label: 'Marchés', icon: FileText },
   { id: 'assistant', label: 'Assistant IA', icon: MessageSquare },
   { id: 'coffre-fort', label: 'Coffre-Fort', icon: Lock },
+  { id: 'formation', label: 'Formation', icon: GraduationCap },
   { id: 'parametres', label: 'Paramètres', icon: Settings },
   { id: 'labo', label: 'Labo', icon: Beaker },
 ];

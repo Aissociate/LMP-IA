@@ -18,6 +18,7 @@ import { Admin } from './components/Admin/Admin';
 import { Labo } from './components/Labo/Labo';
 import { Assistant } from './components/Assistant/Assistant';
 import { SecureVault } from './components/SecureVault/SecureVault';
+import { Formation } from './components/Formation/Formation';
 import { CGV } from './components/Landing';
 import { MentionsLegales } from './components/Landing/MentionsLegales';
 import { MarketCollector } from './components/MarketSearch/MarketCollector';
@@ -28,7 +29,7 @@ import { SubscriptionSelection } from './components/Subscription/SubscriptionSel
 import { SubscriptionOnboarding } from './components/Subscription/SubscriptionOnboarding';
 
 type AuthMode = 'login' | 'signup';
-type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'coffre-fort' | 'assistant' | 'parametres' | 'admin' | 'labo';
+type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'coffre-fort' | 'assistant' | 'formation' | 'parametres' | 'admin' | 'labo';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -68,6 +69,8 @@ function AppContent() {
         return <SecureVault />;
       case 'assistant':
         return <Assistant />;
+      case 'formation':
+        return <Formation />;
       case 'parametres':
         return <Settings />;
       case 'admin':
