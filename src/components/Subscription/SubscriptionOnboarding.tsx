@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Check,
   Sparkles,
@@ -7,10 +7,13 @@ import {
   Zap,
   ArrowRight,
   Shield,
-  TrendingUp
+  TrendingUp,
+  Loader2,
+  CheckCircle
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../hooks/useTheme';
 
 interface SubscriptionPlan {
   id: string;
@@ -25,13 +28,93 @@ interface SubscriptionPlan {
 export function SubscriptionOnboarding() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isDark } = useTheme();
+  const [searchParams] = useSearchParams();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [processingPlan, setProcessingPlan] = useState<string | null>(null);
+  const [checkingSubscription, setCheckingSubscription] = useState(false);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<string>('');
 
   useEffect(() => {
-    loadPlans();
-  }, []);
+    const success = searchParams.get('success');
+    const isTrial = searchParams.get('trial');
+
+    if (success === 'true') {
+      checkSubscriptionStatus(isTrial === 'true');
+    } else {
+      loadPlans();
+    }
+  }, [searchParams]);
+
+  const checkSubscriptionStatus = async (isTrial: boolean) => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    setCheckingSubscription(true);
+    setSubscriptionStatus(isTrial ? 'Activation de votre période d\'essai...' : 'Activation de votre abonnement...');
+
+    let attempts = 0;
+    const maxAttempts = 30;
+    const checkInterval = 2000;
+
+    const checkAccess = async () => {
+      try {
+        const { data, error } = await supabase.rpc('check_user_access', {
+          p_user_id: user.id
+        });
+
+        if (error) {
+          console.error('Error checking access:', error);
+          return false;
+        }
+
+        if (data?.has_access) {
+          setSubscriptionStatus('Abonnement activé ! Redirection...');
+          setTimeout(() => {
+            navigate('/dashboard', { replace: true });
+          }, 1500);
+          return true;
+        }
+
+        return false;
+      } catch (err) {
+        console.error('Error in checkAccess:', err);
+        return false;
+      }
+    };
+
+    const pollSubscription = async () => {
+      while (attempts < maxAttempts) {
+        attempts++;
+        setSubscriptionStatus(
+          isTrial
+            ? `Activation en cours... (${attempts}/${maxAttempts})`
+            : `Synchronisation avec Stripe... (${attempts}/${maxAttempts})`
+        );
+
+        const hasAccess = await checkAccess();
+
+        if (hasAccess) {
+          return;
+        }
+
+        if (attempts >= maxAttempts) {
+          setSubscriptionStatus('La synchronisation prend plus de temps que prévu...');
+          setTimeout(() => {
+            navigate('/dashboard', { replace: true });
+          }, 3000);
+          return;
+        }
+
+        await new Promise(resolve => setTimeout(resolve, checkInterval));
+      }
+    };
+
+    await pollSubscription();
+  };
 
   const loadPlans = async () => {
     try {
@@ -145,12 +228,38 @@ export function SubscriptionOnboarding() {
 
   const isPopular = (planName: string) => planName === 'ARGENT';
 
+  if (checkingSubscription) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+        <div className="text-center max-w-md mx-auto p-8">
+          <div className="relative mb-8">
+            <div className="w-24 h-24 mx-auto">
+              <Loader2 className={`w-24 h-24 ${isDark ? 'text-orange-400' : 'text-orange-600'} animate-spin`} />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <CheckCircle className={`w-12 h-12 ${isDark ? 'text-green-400' : 'text-green-600'} animate-pulse`} />
+            </div>
+          </div>
+          <h2 className={`text-2xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            Finalisation de votre abonnement
+          </h2>
+          <p className={`text-base mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            {subscriptionStatus}
+          </p>
+          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            Cela ne prendra que quelques secondes...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des offres...</p>
+          <div className={`w-16 h-16 border-4 ${isDark ? 'border-orange-400 border-t-transparent' : 'border-orange-600 border-t-transparent'} rounded-full animate-spin mx-auto mb-4`}></div>
+          <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>Chargement des offres...</p>
         </div>
       </div>
     );
