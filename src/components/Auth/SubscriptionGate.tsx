@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Shield, Loader2, AlertCircle } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { supabase } from '../../lib/supabase';
@@ -21,10 +21,13 @@ interface AccessCheck {
 export const SubscriptionGate: React.FC<SubscriptionGateProps> = ({ children }) => {
   const { isDark } = useTheme();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [accessData, setAccessData] = useState<AccessCheck | null>(null);
+  const retryCountRef = useRef(0);
+  const maxRetries = 15;
 
   useEffect(() => {
     checkAccess();
@@ -57,7 +60,14 @@ export const SubscriptionGate: React.FC<SubscriptionGateProps> = ({ children }) 
       if (accessCheck.has_access) {
         setHasAccess(true);
       } else {
-        if (accessCheck.needs_subscription) {
+        const isReturningFromStripe = searchParams.get('subscription') === 'success';
+
+        if (isReturningFromStripe && retryCountRef.current < maxRetries) {
+          retryCountRef.current++;
+          setTimeout(() => {
+            checkAccess();
+          }, 2000);
+        } else if (accessCheck.needs_subscription) {
           setTimeout(() => {
             navigate('/subscription');
           }, 2000);
