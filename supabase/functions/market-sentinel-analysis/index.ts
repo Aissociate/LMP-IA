@@ -50,17 +50,6 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const openrouterKey = Deno.env.get("OPENROUTER_API_KEY");
-
-    console.log("[DEBUG] Environment variables check:");
-    console.log("- SUPABASE_URL:", supabaseUrl ? "✓ Set" : "✗ Missing");
-    console.log("- SUPABASE_ANON_KEY:", supabaseAnonKey ? "✓ Set" : "✗ Missing");
-    console.log("- SUPABASE_SERVICE_ROLE_KEY:", supabaseServiceKey ? "✓ Set" : "✗ Missing");
-    console.log("- OPENROUTER_API_KEY:", openrouterKey ? "✓ Set" : "✗ Missing");
-
-    if (!openrouterKey) {
-      throw new Error("OPENROUTER_API_KEY environment variable is not set");
-    }
 
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
@@ -138,108 +127,75 @@ Recommandations:
 
 Réponds UNIQUEMENT avec le JSON, sans texte additionnel.`;
 
-    const adminClient = createClient(supabaseUrl, supabaseServiceKey);
-    const { data: settings } = await adminClient
-      .from('admin_settings')
-      .select('setting_key, setting_value')
-      .in('setting_key', ['selected_ai_model', 'temperature', 'max_tokens']);
+    console.log("[market-sentinel] Calling ai-generation edge function...");
 
-    const settingsMap = settings?.reduce((acc: Record<string, string>, s: { setting_key: string; setting_value: string }) => {
-      acc[s.setting_key] = s.setting_value;
-      return acc;
-    }, {} as Record<string, string>) || {};
-
-    const selectedModel = settingsMap.selected_ai_model || "anthropic/claude-3.5-sonnet";
-    const temperature = settingsMap.temperature ? parseFloat(settingsMap.temperature) : 0.3;
-
-    console.log("[DEBUG] Calling OpenRouter API...");
-    console.log("[DEBUG] Model:", selectedModel);
-
-    const openrouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const aiGenerationUrl = `${supabaseUrl}/functions/v1/ai-generation`;
+    const aiResponse = await fetch(aiGenerationUrl, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${openrouterKey}`,
+        "Authorization": `Bearer ${supabaseServiceKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": supabaseUrl,
-        "X-Title": "Market Sentinel Analysis"
       },
       body: JSON.stringify({
-        model: selectedModel,
-        messages: [
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        temperature,
-        max_tokens: 2000
+        prompt,
+        temperature: 0.3,
+        maxTokens: 2000
       })
     });
 
-    console.log("[DEBUG] OpenRouter response status:", openrouterResponse.status);
-
-    if (!openrouterResponse.ok) {
-      const errorBody = await openrouterResponse.text();
-      console.error("[DEBUG] OpenRouter error body:", errorBody);
-      throw new Error(`OpenRouter API error: ${openrouterResponse.statusText} - ${errorBody}`);
+    if (!aiResponse.ok) {
+      const errorBody = await aiResponse.text();
+      console.error("[market-sentinel] ai-generation error:", errorBody);
+      throw new Error(`AI generation failed: ${aiResponse.status} - ${errorBody}`);
     }
 
-    const openrouterData = await openrouterResponse.json();
-    const aiResponse = openrouterData.choices[0].message.content;
+    const aiData = await aiResponse.json();
+    const aiContent = aiData.content;
 
-    const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+    console.log("[market-sentinel] AI response received:", aiContent.length, "chars");
+
+    const jsonMatch = aiContent.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       throw new Error("Failed to parse AI response");
     }
 
     const analysis = JSON.parse(jsonMatch[0]);
 
-    const scoreData = {
-      user_id: user.id,
-      market_id: market.id,
-      alert_id: alert_id || null,
-      market_title: market.title,
-      market_reference: market.reference,
-      market_description: market.description,
-      market_amount: market.amount || null,
-      market_location: market.location,
-      market_deadline: market.deadline,
-      market_url: market.url,
-      relevance_score: analysis.relevance_score,
-      score_category: analysis.score_category,
-      ai_recommendation: analysis.ai_recommendation,
-      ai_reasoning: analysis.ai_reasoning,
-      key_strengths: analysis.key_strengths || [],
-      key_risks: analysis.key_risks || [],
-      is_read: false,
-      is_archived: false
-    };
+    const adminClient = createClient(supabaseUrl, supabaseServiceKey);
 
-    const insertResponse = await fetch(
-      `${supabaseUrl}/rest/v1/market_relevance_scores`,
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${supabaseServiceKey}`,
-          "Content-Type": "application/json",
-          "apikey": supabaseServiceKey,
-          "Prefer": "return=representation"
-        },
-        body: JSON.stringify(scoreData)
-      }
-    );
+    const { data: insertedData, error: insertError } = await adminClient
+      .from('market_relevance_scores')
+      .insert({
+        user_id: user.id,
+        market_id: market.id,
+        alert_id: alert_id || null,
+        market_title: market.title,
+        market_reference: market.reference,
+        market_description: market.description,
+        market_amount: market.amount || null,
+        market_location: market.location,
+        market_deadline: market.deadline,
+        market_url: market.url,
+        relevance_score: analysis.relevance_score,
+        score_category: analysis.score_category,
+        ai_recommendation: analysis.ai_recommendation,
+        ai_reasoning: analysis.ai_reasoning,
+        key_strengths: analysis.key_strengths || [],
+        key_risks: analysis.key_risks || [],
+        is_read: false,
+        is_archived: false
+      })
+      .select()
+      .maybeSingle();
 
-    if (!insertResponse.ok) {
-      const errorText = await insertResponse.text();
-      throw new Error(`Failed to insert score: ${errorText}`);
+    if (insertError) {
+      throw new Error(`Failed to insert score: ${insertError.message}`);
     }
-
-    const insertedData = await insertResponse.json();
 
     return new Response(
       JSON.stringify({
         success: true,
-        data: insertedData[0]
+        data: insertedData
       }),
       {
         headers: {
