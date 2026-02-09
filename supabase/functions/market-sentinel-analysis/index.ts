@@ -127,31 +127,68 @@ Recommandations:
 
 Réponds UNIQUEMENT avec le JSON, sans texte additionnel.`;
 
-    console.log("[market-sentinel] Calling ai-generation edge function...");
+    console.log("[market-sentinel] Calling OpenRouter directly...");
 
-    const aiGenerationUrl = `${supabaseUrl}/functions/v1/ai-generation`;
-    const aiResponse = await fetch(aiGenerationUrl, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${supabaseServiceKey}`,
-        "Content-Type": "application/json",
-        "apikey": supabaseServiceKey,
-      },
-      body: JSON.stringify({
-        prompt,
-        temperature: 0.3,
-        maxTokens: 2000
-      })
-    });
+    const adminClient = createClient(supabaseUrl, supabaseServiceKey);
 
-    if (!aiResponse.ok) {
-      const errorBody = await aiResponse.text();
-      console.error("[market-sentinel] ai-generation error:", errorBody);
-      throw new Error(`AI generation failed: ${aiResponse.status} - ${errorBody}`);
+    const { data: settings } = await adminClient
+      .from('admin_settings')
+      .select('setting_key, setting_value')
+      .in('setting_key', ['selected_ai_model', 'reasoning_effort', 'reasoning_enabled', 'reasoning_exclude']);
+
+    const settingsMap = settings?.reduce((acc: Record<string, any>, s: any) => {
+      acc[s.setting_key] = s.setting_value;
+      return acc;
+    }, {} as Record<string, any>) || {};
+
+    const selectedModel = settingsMap.selected_ai_model || 'openai/gpt-3.5-turbo';
+    const reasoningEnabled = settingsMap.reasoning_enabled !== undefined ? settingsMap.reasoning_enabled : true;
+
+    let reasoning = undefined;
+    if (reasoningEnabled) {
+      reasoning = {
+        effort: settingsMap.reasoning_effort || 'medium',
+        enabled: true,
+        exclude: settingsMap.reasoning_exclude !== undefined ? settingsMap.reasoning_exclude : false,
+      };
     }
 
-    const aiData = await aiResponse.json();
-    const aiContent = aiData.content;
+    const apiKey = Deno.env.get('OPENROUTER_API_KEY');
+    if (!apiKey) {
+      throw new Error('OpenRouter API key not configured');
+    }
+
+    const openRouterResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': supabaseUrl,
+        'X-Title': 'Mon marché Public.fr Market Sentinel',
+      },
+      body: JSON.stringify({
+        model: selectedModel,
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 2000,
+        stream: false,
+        reasoning,
+      }),
+    });
+
+    if (!openRouterResponse.ok) {
+      const errorBody = await openRouterResponse.text();
+      console.error("[market-sentinel] OpenRouter error:", errorBody);
+      throw new Error(`OpenRouter API error: ${openRouterResponse.status} - ${errorBody}`);
+    }
+
+    const aiData = await openRouterResponse.json();
+
+    if (!aiData.choices || aiData.choices.length === 0) {
+      throw new Error("No response from AI");
+    }
+
+    const aiContent = aiData.choices[0].message.content;
 
     console.log("[market-sentinel] AI response received:", aiContent.length, "chars");
 
@@ -161,8 +198,6 @@ Réponds UNIQUEMENT avec le JSON, sans texte additionnel.`;
     }
 
     const analysis = JSON.parse(jsonMatch[0]);
-
-    const adminClient = createClient(supabaseUrl, supabaseServiceKey);
 
     const { data: insertedData, error: insertError } = await adminClient
       .from('market_relevance_scores')
