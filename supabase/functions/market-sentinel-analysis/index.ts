@@ -135,6 +135,7 @@ Réponds UNIQUEMENT avec le JSON, sans texte additionnel.`;
       headers: {
         "Authorization": `Bearer ${supabaseServiceKey}`,
         "Content-Type": "application/json",
+        "apikey": supabaseServiceKey,
       },
       body: JSON.stringify({
         prompt,
