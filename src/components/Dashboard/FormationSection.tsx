@@ -38,15 +38,13 @@ export const FormationSection: React.FC = () => {
           </div>
 
           <div className={`rounded-lg overflow-hidden ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
-            <video
-              className="w-full rounded-lg"
-              controls
-              preload="metadata"
-              poster=""
-            >
-              <source src="/demo_lemarchepublic.mp4" type="video/mp4" />
-              Votre navigateur ne supporte pas la lecture de vidéos.
-            </video>
+            <iframe
+              className="w-full aspect-video rounded-lg"
+              src={`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent('https://fb.watch/F8VvU4qj5i/')}&show_text=false&width=560`}
+              style={{ border: 'none', overflow: 'hidden' }}
+              allowFullScreen
+              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            />
           </div>
 
           <div className={`mt-4 p-3 rounded-lg ${isDark ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-blue-50 border border-blue-200'}`}>

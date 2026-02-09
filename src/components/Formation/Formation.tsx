@@ -24,7 +24,7 @@ interface Module {
   description: string;
   icon: React.ElementType;
   duration: string;
-  videoSrc?: string;
+  facebookVideoUrl?: string;
   steps: string[];
   tips: string[];
 }
@@ -36,7 +36,7 @@ const modules: Module[] = [
     description: 'Decouvrez les fonctionnalites principales et apprenez a naviguer efficacement dans l\'interface.',
     icon: Play,
     duration: '5 min',
-    videoSrc: '/demo_lemarchepublic.mp4',
+    facebookVideoUrl: 'https://fb.watch/F8VvU4qj5i/',
     steps: [
       'Connexion et premiere configuration de votre profil',
       'Navigation dans le tableau de bord et les menus',
@@ -341,17 +341,15 @@ export const Formation: React.FC = () => {
                   {currentModule.description}
                 </p>
 
-                {currentModule.videoSrc && (
+                {currentModule.facebookVideoUrl && (
                   <div className={`rounded-xl overflow-hidden border ${isDark ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}>
-                    <video
+                    <iframe
                       className="w-full aspect-video"
-                      controls
-                      preload="metadata"
-                      key={currentModule.videoSrc}
-                    >
-                      <source src={currentModule.videoSrc} type="video/mp4" />
-                      Votre navigateur ne supporte pas la lecture de videos.
-                    </video>
+                      src={`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(currentModule.facebookVideoUrl)}&show_text=false&width=560`}
+                      style={{ border: 'none', overflow: 'hidden' }}
+                      allowFullScreen
+                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    />
                   </div>
                 )}
 
