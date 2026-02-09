@@ -14,6 +14,9 @@ export interface MemoryStats {
   limit: number;
   used: number;
   remaining: number;
+  rollover_credits: number;
+  extra_credits: number;
+  total_limit: number;
   period_start: string;
   period_end: string;
   status: string;
@@ -116,6 +119,48 @@ export class SubscriptionService {
     } catch (error: any) {
       console.error('Error checking user access:', error);
       throw error;
+    }
+  }
+
+  async purchaseExtraMemory(): Promise<{ url: string } | null> {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Non authentifie');
+
+      const { data: settings } = await supabase
+        .from('admin_settings')
+        .select('setting_value')
+        .eq('setting_key', 'extra_memory_stripe_price_id')
+        .maybeSingle();
+
+      const priceId = settings?.setting_value;
+      if (!priceId) throw new Error('Prix non configure');
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            price_id: priceId,
+            mode: 'payment',
+            success_url: `${window.location.origin}/settings?purchase=success`,
+            cancel_url: `${window.location.origin}/settings?purchase=cancelled`,
+            metadata: { type: 'extra_memory', credits: '1' },
+          }),
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error);
+
+      return { url: result.url };
+    } catch (error: any) {
+      console.error('Error purchasing extra memory:', error);
+      return null;
     }
   }
 

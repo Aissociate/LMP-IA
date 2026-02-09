@@ -195,8 +195,57 @@ async function handleOneTimePayment(session: Stripe.Checkout.Session) {
       return;
     }
 
+    if (session.metadata?.type === 'extra_memory' && customerId) {
+      await handleExtraMemoryPurchase(customerId, session.id, session.metadata.credits ? parseInt(session.metadata.credits) : 1);
+    }
+
     console.info(`Successfully processed one-time payment for session: ${session.id}`);
   } catch (error) {
     console.error('Error processing one-time payment:', error);
+  }
+}
+
+async function handleExtraMemoryPurchase(customerId: string, sessionId: string, credits: number) {
+  try {
+    const { data: customerData } = await supabase
+      .from('stripe_customers')
+      .select('user_id')
+      .eq('customer_id', customerId)
+      .is('deleted_at', null)
+      .maybeSingle();
+
+    if (!customerData?.user_id) {
+      console.error(`No user found for customer ${customerId}`);
+      return;
+    }
+
+    const { error: purchaseError } = await supabase
+      .from('memory_purchases')
+      .insert({
+        user_id: customerData.user_id,
+        stripe_session_id: sessionId,
+        amount: 299 * credits,
+        credits,
+        status: 'completed',
+      });
+
+    if (purchaseError) {
+      console.error('Error recording memory purchase:', purchaseError);
+      return;
+    }
+
+    const { data: creditResult, error: creditError } = await supabase.rpc('add_extra_memory_credit', {
+      p_user_id: customerData.user_id,
+      p_credits: credits,
+    });
+
+    if (creditError) {
+      console.error('Error adding extra memory credit:', creditError);
+      return;
+    }
+
+    console.info(`Added ${credits} extra memory credit(s) for user ${customerData.user_id}`);
+  } catch (error) {
+    console.error('Error handling extra memory purchase:', error);
   }
 }

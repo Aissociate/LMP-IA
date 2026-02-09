@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import {
   CreditCard, Shield, Star, Crown, Zap, Calendar, Clock, AlertCircle,
   CheckCircle, TrendingUp, FileText, Download, ExternalLink, ChevronRight,
-  XCircle, RefreshCw
+  XCircle, RefreshCw, Plus, RotateCcw, ShoppingCart
 } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
 import { useSubscription } from '../../hooks/useSubscription';
 import { supabase } from '../../lib/supabase';
+import { subscriptionService } from '../../services/subscriptionService';
 
 interface Invoice {
   id: string;
@@ -33,6 +34,7 @@ export const SubscriptionManagement: React.FC = () => {
   const [cancelLoading, setCancelLoading] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [cancelError, setCancelError] = useState<string | null>(null);
+  const [purchaseLoading, setPurchaseLoading] = useState(false);
 
   useEffect(() => {
     loadSubscriptionDetails();
@@ -313,6 +315,20 @@ export const SubscriptionManagement: React.FC = () => {
     }
   };
 
+  const handlePurchaseExtraMemory = async () => {
+    setPurchaseLoading(true);
+    try {
+      const result = await subscriptionService.purchaseExtraMemory();
+      if (result?.url) {
+        window.location.href = result.url;
+      }
+    } catch (err: any) {
+      setCancelError(err.message || 'Erreur lors de l\'achat');
+    } finally {
+      setPurchaseLoading(false);
+    }
+  };
+
   if (loading || statsLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -381,13 +397,13 @@ export const SubscriptionManagement: React.FC = () => {
           <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50'} mb-6`}>
             <div className="flex items-center justify-between mb-2">
               <h4 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Mémoires techniques
+                Memoires techniques
               </h4>
               <span className={`text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                {memoryStats.used} / {memoryStats.limit === 999999 ? '∞' : memoryStats.limit}
+                {memoryStats.used} / {memoryStats.total_limit === 999999 ? '\u221E' : memoryStats.total_limit}
               </span>
             </div>
-            {memoryStats.limit > 0 && memoryStats.limit !== 999999 && (
+            {memoryStats.total_limit > 0 && memoryStats.total_limit !== 999999 && (
               <div className={`w-full h-2 rounded-full overflow-hidden ${isDark ? 'bg-gray-600' : 'bg-gray-200'}`}>
                 <div
                   className={`h-full transition-all duration-300 ${
@@ -397,18 +413,61 @@ export const SubscriptionManagement: React.FC = () => {
                         ? 'bg-orange-500'
                         : 'bg-green-500'
                   }`}
-                  style={{ width: `${(memoryStats.used / memoryStats.limit) * 100}%` }}
+                  style={{ width: `${Math.min(100, (memoryStats.used / memoryStats.total_limit) * 100)}%` }}
                 />
               </div>
             )}
+
+            <div className="flex flex-wrap gap-2 mt-3">
+              <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full ${isDark ? 'bg-gray-600 text-gray-300' : 'bg-gray-200 text-gray-700'}`}>
+                {memoryStats.limit} plan
+              </span>
+              {memoryStats.rollover_credits > 0 && (
+                <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full ${isDark ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
+                  <RotateCcw className="w-3 h-3" />
+                  +{memoryStats.rollover_credits} report{memoryStats.rollover_credits > 1 ? 's' : ''}
+                </span>
+              )}
+              {memoryStats.extra_credits > 0 && (
+                <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full ${isDark ? 'bg-green-900/30 text-green-400' : 'bg-green-100 text-green-700'}`}>
+                  <Plus className="w-3 h-3" />
+                  +{memoryStats.extra_credits} achat{memoryStats.extra_credits > 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
+
             <p className={`text-xs mt-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-              {memoryStats.limit === 0
-                ? 'Aucune mémoire technique disponible en période d\'essai'
+              {memoryStats.total_limit === 0
+                ? 'Aucune memoire technique disponible en periode d\'essai'
                 : memoryStats.remaining === 0
                   ? 'Limite atteinte pour ce mois-ci'
-                  : `${memoryStats.remaining} mémoire${memoryStats.remaining > 1 ? 's' : ''} restante${memoryStats.remaining > 1 ? 's' : ''} ce mois-ci`
+                  : `${memoryStats.remaining} memoire${memoryStats.remaining > 1 ? 's' : ''} restante${memoryStats.remaining > 1 ? 's' : ''} ce mois-ci`
               }
             </p>
+            {memoryStats.rollover_credits > 0 && (
+              <p className={`text-xs mt-1 italic ${isDark ? 'text-blue-400/70' : 'text-blue-600/70'}`}>
+                Les credits reportes expirent a la fin de ce mois.
+              </p>
+            )}
+
+            {subscriptionDetails?.status === 'active' && (
+              <button
+                onClick={handlePurchaseExtraMemory}
+                disabled={purchaseLoading}
+                className={`mt-4 w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 border-2 ${
+                  isDark
+                    ? 'border-orange-700 text-orange-400 hover:bg-orange-900/20 disabled:opacity-50'
+                    : 'border-orange-300 text-orange-700 hover:bg-orange-50 disabled:opacity-50'
+                }`}
+              >
+                {purchaseLoading ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <ShoppingCart className="w-4 h-4" />
+                )}
+                {purchaseLoading ? 'Redirection...' : 'Acheter une memoire supplementaire - 299\u20AC'}
+              </button>
+            )}
           </div>
         )}
 

@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
       return corsResponse({ error: 'Method not allowed' }, 405);
     }
 
-    const { price_id, success_url, cancel_url, mode } = await req.json();
+    const { price_id, success_url, cancel_url, mode, metadata } = await req.json();
 
     const error = validateParameters(
       { price_id, success_url, cancel_url, mode },
@@ -191,6 +191,10 @@ Deno.serve(async (req) => {
       success_url,
       cancel_url,
     };
+
+    if (metadata && typeof metadata === 'object') {
+      sessionConfig.metadata = metadata;
+    }
 
     // Add 7-day free trial for subscription mode
     if (mode === 'subscription') {

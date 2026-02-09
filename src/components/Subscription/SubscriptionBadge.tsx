@@ -69,11 +69,18 @@ export const SubscriptionBadge: React.FC = () => {
         <span className={`text-sm font-medium ${colors.text}`}>
           {memoryStats.plan_name}
         </span>
-        {memoryStats.limit > 0 && (
+        {memoryStats.total_limit > 0 && (
           <>
             <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>|</span>
             <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-              {memoryStats.used}/{memoryStats.limit} mémoires
+              {memoryStats.used}/{memoryStats.total_limit} mémoires
+              {(memoryStats.rollover_credits > 0 || memoryStats.extra_credits > 0) && (
+                <span className={`ml-1 ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                  ({memoryStats.rollover_credits > 0 ? `+${memoryStats.rollover_credits} report` : ''}
+                  {memoryStats.rollover_credits > 0 && memoryStats.extra_credits > 0 ? ', ' : ''}
+                  {memoryStats.extra_credits > 0 ? `+${memoryStats.extra_credits} extra` : ''})
+                </span>
+              )}
             </span>
           </>
         )}
