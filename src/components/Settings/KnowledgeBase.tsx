@@ -63,8 +63,8 @@ export const KnowledgeBase: React.FC = () => {
             throw new Error(`Type de fichier non autorisé: ${file.name}`);
           }
 
-          if (!SecurityValidation.validateFileSize(file.size, 20)) { // 20MB max
-            throw new Error(`Fichier trop volumineux: ${file.name} (max 20MB)`);
+          if (!SecurityValidation.validateFileSize(file.size, 50)) { // 50MB max
+            throw new Error(`Fichier trop volumineux: ${file.name} (max 50MB)`);
           }
           
           console.log(`Processing file ${i + 1}/${files.length}: ${file.name} (${Math.round(file.size / 1024)} KB)`);
