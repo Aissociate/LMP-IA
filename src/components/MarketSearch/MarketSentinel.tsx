@@ -147,11 +147,50 @@ export const MarketSentinel: React.FC = () => {
         searchAlerts.map(alert => [alert.id, alert.name])
       );
 
+      const detectionRefs = new Set(
+        (detectionsData || []).map(d => d.market_reference)
+      );
+
       const enrichedDetections: DetectionWithScore[] = (detectionsData || []).map(detection => ({
         ...detection,
         score: scoresMap.get(detection.market_reference),
         alert_name: alertsMap.get(detection.alert_id)
       }));
+
+      if (filterAlert === 'all') {
+        const manualScores = (scoresData || []).filter(
+          score => !detectionRefs.has(score.market_reference)
+        );
+
+        const manualDetections: DetectionWithScore[] = manualScores
+          .filter(score => {
+            if (filterStatus === 'unread') return !score.is_read;
+            return true;
+          })
+          .map(score => ({
+            id: score.id,
+            alert_id: '',
+            market_reference: score.market_reference,
+            market_title: score.market_title,
+            market_client: '',
+            market_description: score.market_description,
+            market_amount: score.market_amount,
+            market_location: score.market_location,
+            market_deadline: score.market_deadline,
+            market_url: score.market_url,
+            market_service_type: '',
+            detected_at: score.analyzed_at || score.created_at,
+            is_read: score.is_read,
+            is_favorited: false,
+            score: score,
+            alert_name: 'Analyse manuelle'
+          }));
+
+        enrichedDetections.push(...manualDetections);
+        enrichedDetections.sort((a, b) =>
+          new Date(b.detected_at).getTime() - new Date(a.detected_at).getTime()
+        );
+      }
 
       setDetections(enrichedDetections);
     } catch (error) {
@@ -369,10 +408,20 @@ export const MarketSentinel: React.FC = () => {
 
   const handleMarkAsRead = async (detectionId: string) => {
     try {
-      await supabase
-        .from('market_alert_detections')
-        .update({ is_read: true })
-        .eq('id', detectionId);
+      const detection = detections.find(d => d.id === detectionId);
+      const isManualAnalysis = detection?.score && detection.id === detection.score.id;
+
+      if (isManualAnalysis) {
+        await supabase
+          .from('market_relevance_scores')
+          .update({ is_read: true })
+          .eq('id', detectionId);
+      } else {
+        await supabase
+          .from('market_alert_detections')
+          .update({ is_read: true })
+          .eq('id', detectionId);
+      }
 
       loadDetections();
     } catch (error) {
@@ -391,10 +440,13 @@ export const MarketSentinel: React.FC = () => {
           .eq('id', scoreId);
       }
 
-      await supabase
-        .from('market_alert_detections')
-        .delete()
-        .eq('id', detectionId);
+      const isManualAnalysis = scoreId && detectionId === scoreId;
+      if (!isManualAnalysis) {
+        await supabase
+          .from('market_alert_detections')
+          .delete()
+          .eq('id', detectionId);
+      }
 
       loadDetections();
       loadStats();
@@ -687,13 +739,28 @@ export const MarketSentinel: React.FC = () => {
     </div>
   );
 
+  const getScoreBg = (score: number) => {
+    if (score >= 80) return 'bg-green-500';
+    if (score >= 60) return 'bg-orange-500';
+    return 'bg-red-500';
+  };
+
+  const getDeadlineStatus = (deadline?: string) => {
+    if (!deadline) return null;
+    const days = Math.ceil((new Date(deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+    if (days < 0) return { label: 'Expiré', cls: 'text-red-500' };
+    if (days <= 7) return { label: `${days}j restants`, cls: 'text-red-500 font-semibold' };
+    if (days <= 14) return { label: `${days}j restants`, cls: 'text-orange-500' };
+    return { label: `${days}j restants`, cls: isDark ? 'text-gray-400' : 'text-gray-500' };
+  };
+
   const renderDetectionsTab = () => (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-3">
+    <div className="space-y-5">
+      <div className="flex flex-col sm:flex-row gap-3">
         <select
           value={filterAlert}
           onChange={(e) => setFilterAlert(e.target.value)}
-          className={`px-4 py-2 rounded-lg border ${
+          className={`px-4 py-2.5 rounded-lg border text-sm ${
             isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
           }`}
         >
@@ -703,200 +770,220 @@ export const MarketSentinel: React.FC = () => {
           ))}
         </select>
 
-        <div className="ml-auto flex gap-2">
-          <button
-            onClick={() => setFilterStatus('all')}
-            className={`px-4 py-2 rounded-lg font-medium ${
-              filterStatus === 'all'
-                ? 'bg-blue-600 text-white'
-                : isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
-            }`}
-          >
-            Tous
-          </button>
-          <button
-            onClick={() => setFilterStatus('unread')}
-            className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${
-              filterStatus === 'unread'
-                ? 'bg-blue-600 text-white'
-                : isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
-            }`}
-          >
-            Non lus {unreadCount > 0 && `(${unreadCount})`}
-          </button>
-          <button
-            onClick={() => setFilterStatus('favorited')}
-            className={`px-4 py-2 rounded-lg font-medium ${
-              filterStatus === 'favorited'
-                ? 'bg-blue-600 text-white'
-                : isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
-            }`}
-          >
-            <Star className="w-4 h-4" />
-          </button>
+        <div className="sm:ml-auto flex gap-1.5">
+          {([
+            { key: 'all' as const, label: 'Tous' },
+            { key: 'unread' as const, label: `Non lus${unreadCount > 0 ? ` (${unreadCount})` : ''}` },
+            { key: 'favorited' as const, label: '' },
+          ]).map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setFilterStatus(key)}
+              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                filterStatus === key
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {key === 'favorited' ? <Star className="w-4 h-4" /> : label}
+            </button>
+          ))}
         </div>
       </div>
 
       {detections.length === 0 ? (
-        <div className="text-center py-12">
+        <div className="text-center py-16">
           <Shield className={`w-12 h-12 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-400'}`} />
-          <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             Aucune détection pour le moment
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {detections.map((detection) => {
             const score = detection.score;
             const categoryConfig = score ? getCategoryConfig(score.score_category) : null;
-            const CategoryIcon = categoryConfig?.icon;
             const recConfig = score ? getRecommendationConfig(score.ai_recommendation) : null;
             const RecIcon = recConfig?.icon;
+            const deadlineStatus = getDeadlineStatus(detection.market_deadline);
 
             return (
               <div
                 key={detection.id}
-                className={`p-5 rounded-xl border-2 ${
-                  categoryConfig ? categoryConfig.bgClass : isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-                } ${!detection.is_read ? 'ring-2 ring-blue-500 shadow-lg' : 'shadow-md'} hover:shadow-xl transition-all hover:scale-[1.01]`}
+                className={`relative rounded-xl border overflow-hidden transition-shadow hover:shadow-lg ${
+                  isDark ? 'bg-gray-800/80 border-gray-700' : 'bg-white border-gray-200'
+                } ${!detection.is_read ? 'shadow-md' : 'shadow-sm'}`}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      {score && categoryConfig && (
-                        <>
-                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${categoryConfig.badgeClass}`}>
-                            {categoryConfig.label}
-                          </span>
-                          <span className={`text-2xl font-bold ${getScoreColor(score.relevance_score)}`}>
-                            {score.relevance_score}/100
-                          </span>
-                        </>
-                      )}
-                      {!detection.is_read && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          NOUVEAU
-                        </span>
-                      )}
-                      {detection.alert_name && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                          {detection.alert_name}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
-                      {detection.market_title}
-                    </h3>
-                    {detection.market_reference && (
-                      <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-2`}>
-                        Réf: {detection.market_reference}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {CategoryIcon && <CategoryIcon className={`w-6 h-6 ${categoryConfig?.textClass}`} />}
-                    <button
-                      onClick={() => handleToggleFavorite(detection.id, detection.is_favorited)}
-                      className={`p-2 rounded-lg transition-colors ${
-                        detection.is_favorited
-                          ? 'bg-yellow-500 text-white'
-                          : isDark ? 'bg-gray-700 text-gray-400 hover:bg-gray-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                    >
-                      <Star className={`w-5 h-5 ${detection.is_favorited ? 'fill-current' : ''}`} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  {detection.market_location && (
-                    <div className="flex items-center gap-2">
-                      <MapPin className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                        {detection.market_location}
-                      </span>
-                    </div>
-                  )}
-                  {detection.market_amount && (
-                    <div className="flex items-center gap-2">
-                      <Euro className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                        {detection.market_amount.toLocaleString()} €
-                      </span>
-                    </div>
-                  )}
-                  {detection.market_deadline && (
-                    <div className="flex items-center gap-2">
-                      <Calendar className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                        {new Date(detection.market_deadline).toLocaleDateString()}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {score && recConfig && RecIcon && (
-                  <div className={`p-3 rounded-lg ${isDark ? 'bg-gray-700/50' : 'bg-white/50'} mb-4`}>
-                    <div className="flex items-start gap-2 mb-2">
-                      <Sparkles className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                      <div className="flex-1">
-                        <p className={`text-sm font-medium mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                          Recommandation IA: <RecIcon className={`inline w-4 h-4 ${recConfig.color}`} /> {recConfig.label}
-                        </p>
-                        {score.ai_reasoning && (
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                            {score.ai_reasoning}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                {!detection.is_read && (
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500" />
                 )}
 
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      setSelectedDetectionForAnalysis(detection);
-                      setShowAIAnalysisModal(true);
-                    }}
-                    className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-md hover:shadow-lg flex items-center gap-2 font-medium"
-                    title="Analyse IA GO/NO GO"
-                  >
-                    <Brain className="w-4 h-4" />
-                    Analyse IA
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedDetection(detection);
-                      setShowDetailModal(true);
-                      if (!detection.is_read) {
-                        handleMarkAsRead(detection.id);
-                      }
-                    }}
-                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg font-medium"
-                  >
-                    Voir détails
-                  </button>
-                  {detection.market_url && (
-                    <a
-                      href={detection.market_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 shadow-md hover:shadow-lg ${
-                        isDark ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' : 'bg-white hover:bg-gray-50 text-gray-700 border border-gray-200'
-                      }`}
-                      title="Ouvrir dans BOAMP"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
+                <div className="flex">
+                  {score && (
+                    <div className={`hidden sm:flex flex-col items-center justify-center w-20 flex-shrink-0 ${
+                      score.score_category === 'go'
+                        ? isDark ? 'bg-green-900/30' : 'bg-green-50'
+                        : score.score_category === 'conditional'
+                          ? isDark ? 'bg-orange-900/30' : 'bg-orange-50'
+                          : isDark ? 'bg-red-900/30' : 'bg-red-50'
+                    }`}>
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm ${getScoreBg(score.relevance_score)}`}>
+                        {score.relevance_score}
+                      </div>
+                      <span className={`text-[10px] font-bold mt-1.5 uppercase tracking-wide ${
+                        categoryConfig?.textClass
+                      }`}>
+                        {categoryConfig?.label}
+                      </span>
+                    </div>
                   )}
-                  <button
-                    onClick={() => handleDeleteDetection(detection.id, score?.id)}
-                    className="px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
-                    title="Supprimer"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+
+                  <div className="flex-1 min-w-0 p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          {score && categoryConfig && (
+                            <span className={`sm:hidden px-2 py-0.5 rounded text-[10px] font-bold uppercase ${categoryConfig.badgeClass}`}>
+                              {categoryConfig.label} {score.relevance_score}
+                            </span>
+                          )}
+                          {!detection.is_read && (
+                            <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-blue-100 text-blue-700">
+                              NOUVEAU
+                            </span>
+                          )}
+                          {detection.alert_name && (
+                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                              isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
+                            }`}>
+                              {detection.alert_name}
+                            </span>
+                          )}
+                        </div>
+
+                        <h3 className={`text-[15px] font-semibold leading-snug mb-1.5 line-clamp-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                          {detection.market_title}
+                        </h3>
+
+                        <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                          {detection.market_reference && (
+                            <span className="font-mono">{detection.market_reference}</span>
+                          )}
+                          {detection.market_client && (
+                            <span className="flex items-center gap-1">
+                              <Building className="w-3 h-3" />
+                              <span className="truncate max-w-[200px]">{detection.market_client}</span>
+                            </span>
+                          )}
+                          {detection.market_location && (
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              {detection.market_location}
+                            </span>
+                          )}
+                          {detection.market_amount != null && detection.market_amount > 0 && (
+                            <span className={`flex items-center gap-1 font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                              <Euro className="w-3 h-3" />
+                              {detection.market_amount.toLocaleString('fr-FR')} EUR
+                            </span>
+                          )}
+                          {detection.market_deadline && (
+                            <span className={`flex items-center gap-1 ${deadlineStatus?.cls || ''}`}>
+                              <Calendar className="w-3 h-3" />
+                              {new Date(detection.market_deadline).toLocaleDateString('fr-FR')}
+                              {deadlineStatus && <span className="ml-0.5">({deadlineStatus.label})</span>}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                        <button
+                          onClick={() => handleToggleFavorite(detection.id, detection.is_favorited)}
+                          className={`p-1.5 rounded-lg transition-colors ${
+                            detection.is_favorited
+                              ? 'text-yellow-500 hover:text-yellow-600'
+                              : isDark ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'
+                          }`}
+                          title={detection.is_favorited ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+                        >
+                          <Star className={`w-4 h-4 ${detection.is_favorited ? 'fill-current' : ''}`} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteDetection(detection.id, score?.id)}
+                          className={`p-1.5 rounded-lg transition-colors ${
+                            isDark ? 'text-gray-500 hover:text-red-400' : 'text-gray-400 hover:text-red-500'
+                          }`}
+                          title="Supprimer"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {score && recConfig && RecIcon && (
+                      <div className={`mt-2.5 flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs ${
+                        isDark ? 'bg-gray-700/60' : 'bg-gray-50'
+                      }`}>
+                        <Sparkles className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
+                        <span className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                          IA: <RecIcon className={`inline w-3.5 h-3.5 ${recConfig.color} -mt-0.5`} /> {recConfig.label}
+                        </span>
+                        {score.ai_reasoning && (
+                          <span className={`truncate ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                            - {score.ai_reasoning}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    <div className={`flex items-center gap-2 mt-3 pt-3 border-t border-dashed ${isDark ? 'border-gray-700/50' : 'border-gray-200/50'}`}>
+                      <button
+                        onClick={() => {
+                          setSelectedDetectionForAnalysis(detection);
+                          setShowAIAnalysisModal(true);
+                        }}
+                        className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs font-medium flex items-center gap-1.5"
+                      >
+                        <Brain className="w-3.5 h-3.5" />
+                        Analyse IA
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedDetection(detection);
+                          setShowDetailModal(true);
+                          if (!detection.is_read) {
+                            handleMarkAsRead(detection.id);
+                          }
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                          isDark
+                            ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        Voir détails
+                      </button>
+                      {detection.market_url && (
+                        <a
+                          href={detection.market_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                            isDark
+                              ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }`}
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          BOAMP
+                        </a>
+                      )}
+                      <span className={`ml-auto text-[10px] ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>
+                        {new Date(detection.detected_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             );
