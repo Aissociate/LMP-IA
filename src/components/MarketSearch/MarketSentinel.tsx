@@ -1212,6 +1212,8 @@ export const MarketSentinel: React.FC = () => {
           onClose={() => {
             setShowAIAnalysisModal(false);
             setSelectedDetectionForAnalysis(null);
+            loadDetections();
+            loadStats();
           }}
           marketData={{
             title: selectedDetectionForAnalysis.market_title || 'Marché sans titre',
