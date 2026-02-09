@@ -91,8 +91,8 @@ export function BugReportButton() {
         description: description.trim(),
         screenshot_url: screenshotUrl,
         page_url: window.location.href,
-        user_agent: navigator.userAgent,
-        status: 'reported',
+        browser_info: navigator.userAgent,
+        status: 'open',
       });
 
       if (error) throw error;
