@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Brain, Save, Key, Check } from 'lucide-react';
+import { Brain, Save, Key, Check, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { AdminSetting } from '../../types';
 import { useTheme } from '../../hooks/useTheme';
@@ -39,10 +39,31 @@ export const AIModelSelector: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [apiKey, setApiKey] = useState('');
+  const [showApiKey, setShowApiKey] = useState(false);
+  const [apiKeyLoaded, setApiKeyLoaded] = useState(false);
 
   useEffect(() => {
     fetchSettings();
+    fetchApiKey();
   }, []);
+
+  const fetchApiKey = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('admin_secrets')
+        .select('secret_value')
+        .eq('secret_key', 'openrouter_api_key')
+        .maybeSingle();
+
+      if (!error && data?.secret_value) {
+        setApiKey(data.secret_value);
+        setApiKeyLoaded(true);
+      }
+    } catch (error) {
+      console.error('Error fetching API key:', error);
+    }
+  };
 
   const fetchSettings = async () => {
     try {
@@ -71,17 +92,27 @@ export const AIModelSelector: React.FC = () => {
     setMessage(null);
 
     try {
-      const update = {
-        setting_key: 'selected_ai_model',
-        setting_value: selectedModel,
-        description: 'Modèle IA sélectionné'
-      };
-
       await supabase
         .from('admin_settings')
-        .upsert(update, { onConflict: 'setting_key' });
+        .upsert({
+          setting_key: 'selected_ai_model',
+          setting_value: selectedModel,
+          description: 'Modele IA selectionne'
+        }, { onConflict: 'setting_key' });
 
-      setMessage({ type: 'success', text: 'Configuration sauvegardée avec succès' });
+      if (apiKey.trim()) {
+        await supabase
+          .from('admin_secrets')
+          .upsert({
+            secret_key: 'openrouter_api_key',
+            secret_value: apiKey.trim(),
+            description: 'OpenRouter API Key',
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'secret_key' });
+        setApiKeyLoaded(true);
+      }
+
+      setMessage({ type: 'success', text: 'Configuration sauvegardee avec succes' });
     } catch (error: any) {
       setMessage({ type: 'error', text: error.message });
     } finally {
@@ -89,8 +120,7 @@ export const AIModelSelector: React.FC = () => {
     }
   };
 
-  // Vérifier si la clé API est configurée dans .env
-  const apiKeyConfigured = !!import.meta.env.VITE_OPENROUTER_API_KEY;
+  const apiKeyConfigured = apiKeyLoaded || !!import.meta.env.VITE_OPENROUTER_API_KEY;
   if (loading) {
     return (
       <div className="space-y-6">
@@ -119,48 +149,51 @@ export const AIModelSelector: React.FC = () => {
         </div>
 
         <div className={`p-4 rounded-lg border-2 ${
-          apiKeyConfigured 
+          apiKeyConfigured
             ? isDark ? 'border-green-700 bg-green-900/20' : 'border-green-200 bg-green-50'
             : isDark ? 'border-red-700 bg-red-900/20' : 'border-red-200 bg-red-50'
         }`}>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 mb-4">
             <div className={`w-3 h-3 rounded-full ${
               apiKeyConfigured ? 'bg-green-500' : 'bg-red-500'
             }`}></div>
             <div>
               <p className={`font-medium ${
-                apiKeyConfigured 
+                apiKeyConfigured
                   ? isDark ? 'text-green-400' : 'text-green-800'
                   : isDark ? 'text-red-400' : 'text-red-800'
               }`}>
-                {apiKeyConfigured 
-                  ? 'Clé API OpenRouter configurée' 
-                  : 'Clé API OpenRouter manquante'
-                }
-              </p>
-              <p className={`text-sm ${
-                apiKeyConfigured 
-                  ? isDark ? 'text-green-300' : 'text-green-600'
-                  : isDark ? 'text-red-300' : 'text-red-600'
-              }`}>
-                {apiKeyConfigured 
-                  ? 'Variable VITE_OPENROUTER_API_KEY détectée dans .env'
-                  : 'Ajoutez VITE_OPENROUTER_API_KEY dans votre fichier .env'
+                {apiKeyConfigured
+                  ? 'Cle API OpenRouter configuree'
+                  : 'Cle API OpenRouter manquante'
                 }
               </p>
             </div>
           </div>
-          
-          {!apiKeyConfigured && (
-            <div className={`mt-3 text-sm ${isDark ? 'text-red-300' : 'text-red-700'}`}>
-              <p><strong>Instructions :</strong></p>
-              <ol className="list-decimal list-inside mt-2 space-y-1">
-                <li>Obtenez votre clé API sur <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className={`${isDark ? 'text-red-400 hover:text-red-300' : 'text-red-600 hover:text-red-700'} underline`}>openrouter.ai/keys</a></li>
-                <li>Ajoutez <code className={`${isDark ? 'bg-red-900/30' : 'bg-red-100'} px-1 rounded`}>VITE_OPENROUTER_API_KEY=your_key_here</code> dans votre fichier .env</li>
-                <li>Redémarrez l'application</li>
-              </ol>
-            </div>
-          )}
+
+          <div className="relative">
+            <input
+              type={showApiKey ? 'text' : 'password'}
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              placeholder="sk-or-v1-..."
+              className={`w-full px-4 py-2.5 pr-12 rounded-lg border text-sm font-mono ${
+                isDark
+                  ? 'bg-gray-900 border-gray-600 text-white placeholder-gray-500'
+                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowApiKey(!showApiKey)}
+              className={`absolute right-3 top-1/2 -translate-y-1/2 ${isDark ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'}`}
+            >
+              {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
+          <p className={`mt-2 text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+            Obtenez votre cle sur <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="underline text-blue-500 hover:text-blue-400">openrouter.ai/keys</a>
+          </p>
         </div>
       </div>
 

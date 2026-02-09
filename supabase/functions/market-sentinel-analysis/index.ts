@@ -153,9 +153,17 @@ Réponds UNIQUEMENT avec le JSON, sans texte additionnel.`;
       };
     }
 
-    const apiKey = Deno.env.get('OPENROUTER_API_KEY');
+    let apiKey = Deno.env.get('OPENROUTER_API_KEY');
     if (!apiKey) {
-      throw new Error('OpenRouter API key not configured');
+      const { data: secretRow } = await adminClient
+        .from('admin_secrets')
+        .select('secret_value')
+        .eq('secret_key', 'openrouter_api_key')
+        .maybeSingle();
+      apiKey = secretRow?.secret_value || '';
+    }
+    if (!apiKey) {
+      throw new Error('OpenRouter API key not configured. Set it in Admin > AI Configuration.');
     }
 
     const openRouterResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
