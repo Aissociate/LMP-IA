@@ -115,10 +115,11 @@ export default function DC1Wizard({ marketId, marketTitle, onClose }: DC1WizardP
 
       const { data: knowledgeFiles } = await supabase
         .from('knowledge_files')
-        .select('extracted_text')
-        .eq('user_id', user.id);
+        .select('extracted_content')
+        .eq('user_id', user.id)
+        .eq('extraction_status', 'completed');
 
-      const context = knowledgeFiles?.map(f => f.extracted_text).join('\n\n') || '';
+      const context = knowledgeFiles?.map(f => f.extracted_content).filter(Boolean).join('\n\n') || '';
 
       const prompt = `En tant qu'assistant pour remplir une déclaration de candidature (DC1) pour un marché public, aide à remplir le champ suivant.
 

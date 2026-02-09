@@ -138,8 +138,22 @@ Recommandations:
 
 Réponds UNIQUEMENT avec le JSON, sans texte additionnel.`;
 
+    const adminClient = createClient(supabaseUrl, supabaseServiceKey);
+    const { data: settings } = await adminClient
+      .from('admin_settings')
+      .select('setting_key, setting_value')
+      .in('setting_key', ['selected_ai_model', 'temperature', 'max_tokens']);
+
+    const settingsMap = settings?.reduce((acc: Record<string, string>, s: { setting_key: string; setting_value: string }) => {
+      acc[s.setting_key] = s.setting_value;
+      return acc;
+    }, {} as Record<string, string>) || {};
+
+    const selectedModel = settingsMap.selected_ai_model || "anthropic/claude-3.5-sonnet";
+    const temperature = settingsMap.temperature ? parseFloat(settingsMap.temperature) : 0.3;
+
     console.log("[DEBUG] Calling OpenRouter API...");
-    console.log("[DEBUG] API Key first chars:", openrouterKey.substring(0, 10));
+    console.log("[DEBUG] Model:", selectedModel);
 
     const openrouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -150,14 +164,14 @@ Réponds UNIQUEMENT avec le JSON, sans texte additionnel.`;
         "X-Title": "Market Sentinel Analysis"
       },
       body: JSON.stringify({
-        model: "anthropic/claude-3.5-sonnet",
+        model: selectedModel,
         messages: [
           {
             role: "user",
             content: prompt
           }
         ],
-        temperature: 0.3,
+        temperature,
         max_tokens: 2000
       })
     });

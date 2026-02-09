@@ -7,6 +7,7 @@ interface MarketContext {
   deadline: string;
   status: string;
   description?: string;
+  global_memory_prompt?: string;
   documents?: MarketDocument[];
 }
 
@@ -161,6 +162,7 @@ CONTEXTE DU MARCHÉ :
 - Échéance : ${new Date(marketContext.deadline).toLocaleDateString('fr-FR')}
 - Statut : ${marketContext.status}
 ${marketContext.description ? `- Description : ${marketContext.description}` : ''}
+${marketContext.global_memory_prompt ? `\nINSTRUCTIONS SPÉCIFIQUES DU MARCHÉ :\n${marketContext.global_memory_prompt}\n` : ''}
 
 ${marketContext.documents && marketContext.documents.length > 0 ? `
 DOCUMENTS DU MARCHÉ ANALYSÉS :

@@ -172,6 +172,37 @@ export const Assistant: React.FC = () => {
       });
   };
 
+  const buildKnowledgeBaseContext = async (): Promise<string> => {
+    if (!user) return '';
+
+    try {
+      const { data: knowledgeFiles, error } = await supabase
+        .from('knowledge_files')
+        .select('name, extracted_content')
+        .eq('user_id', user.id)
+        .eq('extraction_status', 'completed');
+
+      if (error || !knowledgeFiles || knowledgeFiles.length === 0) return '';
+
+      const validFiles = knowledgeFiles.filter(f => f.extracted_content && f.extracted_content.trim().length > 50);
+      if (validFiles.length === 0) return '';
+
+      addLog(`Base de connaissances: ${validFiles.length} document(s) chargé(s)`, 'success');
+
+      let context = '\n\n=== BASE DE CONNAISSANCES DE L\'ENTREPRISE ===\n\n';
+      for (const file of validFiles) {
+        const content = file.extracted_content.length > 3000
+          ? file.extracted_content.substring(0, 3000) + '...'
+          : file.extracted_content;
+        context += `## Document: ${file.name}\n${content}\n\n`;
+      }
+      return context;
+    } catch (error) {
+      console.error('Error loading knowledge base:', error);
+      return '';
+    }
+  };
+
   const buildContextFromMarkets = async (): Promise<string> => {
     if (selectedMarkets.length === 0) {
       console.log('No markets selected for context');
@@ -294,9 +325,12 @@ export const Assistant: React.FC = () => {
 
     try {
       addLog('Début de la génération de réponse', 'info');
-      const marketContext = await buildContextFromMarkets();
-      console.log('Market context:', marketContext);
-      addLog(`Contexte construit: ${marketContext.length} caractères`, marketContext ? 'success' : 'info');
+      const [marketContext, knowledgeContext] = await Promise.all([
+        buildContextFromMarkets(),
+        buildKnowledgeBaseContext()
+      ]);
+      addLog(`Contexte marchés: ${marketContext.length} caractères`, marketContext ? 'success' : 'info');
+      addLog(`Contexte connaissances: ${knowledgeContext.length} caractères`, knowledgeContext ? 'success' : 'info');
 
       const conversationHistory = messages
         .slice(-10)
@@ -309,8 +343,8 @@ export const Assistant: React.FC = () => {
 
       const systemPrompt = `Tu es un assistant virtuel spécialisé dans les marchés publics et la rédaction de mémoires techniques.
 Tu aides les utilisateurs à analyser des marchés, rédiger des réponses, comprendre les critères et optimiser leurs candidatures.
-Sois professionnel, précis et constructif. Si des contextes de marchés sont fournis, utilise-les pour donner des réponses personnalisées.
-
+Sois professionnel, précis et constructif. Si des contextes de marchés ou une base de connaissances sont fournis, utilise-les pour donner des réponses personnalisées.
+${knowledgeContext ? `${knowledgeContext}\nUtilise ces documents de la base de connaissances pour mieux comprendre le profil et les capacités de l'entreprise.\n` : ''}
 ${marketContext ? `${marketContext}\n\nIMPORTANT: Utilise les informations ci-dessus sur les marchés pour personnaliser tes réponses et donner des conseils spécifiques au contexte fourni.` : ''}`;
 
       console.log('System prompt with context:', systemPrompt);

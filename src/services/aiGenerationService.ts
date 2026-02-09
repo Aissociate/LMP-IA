@@ -1,6 +1,7 @@
 import { openRouterService } from '../lib/openrouter';
 import { LogService } from './logService';
 import { ContextService } from './contextService';
+import { supabase } from '../lib/supabase';
 
 interface GenerationParams {
   sectionId: string;
@@ -20,6 +21,7 @@ export class AIGenerationService {
   private static instance: AIGenerationService;
   private logService: LogService;
   private contextService: ContextService;
+  private adminPromptsCache: Record<string, string> | null = null;
 
   constructor() {
     this.logService = LogService.getInstance();
@@ -31,6 +33,45 @@ export class AIGenerationService {
       AIGenerationService.instance = new AIGenerationService();
     }
     return AIGenerationService.instance;
+  }
+
+  async loadAdminPrompts(): Promise<Record<string, string>> {
+    if (this.adminPromptsCache) return this.adminPromptsCache;
+
+    try {
+      const { data, error } = await supabase
+        .from('admin_prompts')
+        .select('section_key, prompt_content')
+        .eq('prompt_type', 'technical_memory')
+        .eq('is_active', true);
+
+      if (error) {
+        console.warn('[AIGenerationService] Error loading admin prompts:', error);
+        return {};
+      }
+
+      const promptMap: Record<string, string> = {};
+      data?.forEach(p => {
+        if (p.section_key && p.prompt_content) {
+          promptMap[p.section_key] = p.prompt_content;
+        }
+      });
+
+      this.adminPromptsCache = promptMap;
+      this.logService.addLog(`📋 Prompts admin chargés: ${Object.keys(promptMap).length} prompts actifs`);
+      return promptMap;
+    } catch (error) {
+      console.warn('[AIGenerationService] Failed to load admin prompts:', error);
+      return {};
+    }
+  }
+
+  getAdminPromptForSection(sectionId: string, adminPrompts: Record<string, string>): string | null {
+    return adminPrompts[sectionId] || null;
+  }
+
+  clearPromptsCache(): void {
+    this.adminPromptsCache = null;
   }
 
   async generateSectionContent(params: GenerationParams): Promise<string> {
@@ -124,18 +165,25 @@ Veuillez vérifier votre configuration IA ou réessayer plus tard.`;
     const sectionsToGenerate = sections.filter(section => !section.content);
     if (sectionsToGenerate.length === 0) return;
 
+    const adminPrompts = await this.loadAdminPrompts();
+
     this.logService.addLog(`🔥 Génération EN PARALLÈLE de ${sectionsToGenerate.length} sections avec le modèle admin${params.globalPrompt ? ' et prompt global' : ''}`);
 
-    // Générer toutes les sections EN PARALLÈLE
     const generationPromises = sectionsToGenerate.map(async (section, index) => {
       this.logService.addLog(`📋 Démarrage ${index + 1}/${sectionsToGenerate.length}: ${section.title}`);
 
       try {
+        const adminPrompt = this.getAdminPromptForSection(section.id, adminPrompts);
+        const sectionPrompt = adminPrompt || section.defaultPrompt;
+        if (adminPrompt) {
+          this.logService.addLog(`   📋 Prompt admin utilisé pour "${section.title}"`);
+        }
+
         const generatedContent = await this.generateSectionContent({
           ...params,
           sectionId: section.id,
           sectionTitle: section.title,
-          prompt: section.defaultPrompt,
+          prompt: sectionPrompt,
           globalPrompt: params.globalPrompt,
           useMarketPro: params.useMarketPro || false
         });

@@ -198,19 +198,20 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
   const [contextLoading, setContextLoading] = useState(true);
   const [sectionsLoading, setSectionsLoading] = useState(false);
 
+  const [adminPrompts, setAdminPrompts] = React.useState<Record<string, string>>({});
+
   React.useEffect(() => {
-    // S'abonner aux logs
     const unsubscribe = logService.subscribe(setLogs);
-    
+
     const currentSection = sections.find(s => s.id === activeSection);
     if (currentSection) {
-      // Charger le prompt sauvegardé ou utiliser le prompt par défaut
       const savedSectionPrompt = localStorage.getItem(`section-prompt-${marketId}-${activeSection}`);
-      setCustomPrompt(savedSectionPrompt || currentSection.defaultPrompt);
+      const adminSectionPrompt = adminPrompts[activeSection];
+      setCustomPrompt(savedSectionPrompt || adminSectionPrompt || currentSection.defaultPrompt);
     }
-    
+
     return unsubscribe;
-  }, [activeSection, sections]);
+  }, [activeSection, sections, adminPrompts]);
 
   React.useEffect(() => {
     if (isOpen) {
@@ -218,12 +219,11 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
         checkSubscription();
         loadContexts();
         loadExistingSections();
-        // Charger le prompt global depuis localStorage
+        loadAdminPromptsData();
         const savedGlobalPrompt = localStorage.getItem(`global-prompt-${marketId}`);
         if (savedGlobalPrompt) {
           setGlobalPrompt(savedGlobalPrompt);
         }
-        // Charger le prompt de section depuis localStorage
         const savedSectionPrompt = localStorage.getItem(`section-prompt-${marketId}-${activeSection}`);
         if (savedSectionPrompt) {
           setCustomPrompt(savedSectionPrompt);
@@ -298,6 +298,16 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
     }
   };
 
+  const loadAdminPromptsData = async () => {
+    try {
+      aiGenerationService.clearPromptsCache();
+      const prompts = await aiGenerationService.loadAdminPrompts();
+      setAdminPrompts(prompts);
+    } catch (error) {
+      console.error('Error loading admin prompts:', error);
+    }
+  };
+
   const checkSubscription = async () => {
     setLoadingSubscription(true);
     try {
@@ -362,10 +372,14 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
     logService.addLog('🔄 Chargement des contextes...');
 
     try {
-      // Toujours charger le contexte du marché (nécessaire pour l'analyse du format)
       const context = await contextService.loadMarketContext(marketId, supabase);
       setMarketContext(context);
       logService.addLog('✅ Contexte marché chargé');
+
+      if (context?.global_memory_prompt && !localStorage.getItem(`global-prompt-${marketId}`)) {
+        setGlobalPrompt(context.global_memory_prompt);
+        logService.addLog(`🌐 Prompt global du marché chargé (${context.global_memory_prompt.length} caractères)`);
+      }
 
       // Charger le contexte de la base de connaissances
       if (useKnowledgeContext) {
@@ -1229,7 +1243,8 @@ Consignes:
                     <button
                       onClick={() => {
                         if (currentSection) {
-                          setCustomPrompt(currentSection.defaultPrompt);
+                          const adminSectionPrompt = adminPrompts[currentSection.id];
+                          setCustomPrompt(adminSectionPrompt || currentSection.defaultPrompt);
                         }
                       }}
                       className={`text-xs px-2 py-1 rounded transition-colors flex items-center gap-1 ${isDark ? 'text-gray-400 hover:text-white hover:bg-gray-700' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'}`}

@@ -99,8 +99,10 @@ export const PromptManager: React.FC = () => {
     }
   };
 
-  const promptTypeLabels = {
-    document_analysis: 'Analyse de documents'
+  const promptTypeLabels: Record<string, string> = {
+    document_analysis: 'Analyse de documents',
+    technical_memory: 'Mémoire technique',
+    assistant: 'Assistant IA'
   };
 
   const getPromptIcon = (type: string) => {
@@ -108,7 +110,9 @@ export const PromptManager: React.FC = () => {
   };
 
   const getPromptColor = (type: string) => {
-    return type === 'document_analysis' ? 'purple' : 'blue';
+    if (type === 'document_analysis') return 'purple';
+    if (type === 'technical_memory') return 'blue';
+    return 'green';
   };
 
   if (loading) {
@@ -162,6 +166,8 @@ export const PromptManager: React.FC = () => {
                     className={`w-full px-4 py-3 border ${isDark ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white'} rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
                   >
                     <option value="document_analysis">Analyse de documents</option>
+                    <option value="technical_memory">Mémoire technique</option>
+                    <option value="assistant">Assistant IA</option>
                   </select>
                 </div>
                 <div>
@@ -256,7 +262,7 @@ export const PromptManager: React.FC = () => {
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                          {promptTypeLabels[prompt.prompt_type]}
+                          {promptTypeLabels[prompt.prompt_type] || prompt.prompt_type}
                         </h3>
                         {prompt.section_key && (
                           <span className={`px-2 py-1 ${isDark ? 'bg-gray-700 text-gray-400' : 'bg-gray-100 text-gray-600'} text-xs rounded-full`}>

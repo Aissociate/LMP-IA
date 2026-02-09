@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { openRouterService } from '../lib/openrouter';
 
 export class ImageDescriptionService {
   private static instance: ImageDescriptionService;
@@ -14,66 +15,27 @@ export class ImageDescriptionService {
 
   async generateImageDescription(imageUrl: string, assetId: string): Promise<string> {
     try {
-      const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+      const prompt = `Analyse cette image accessible à l'URL suivante: ${imageUrl}
 
-      if (!apiKey) {
-        throw new Error('OpenRouter API key not configured');
-      }
-
-      const { data: modelSettings } = await supabase
-        .from('admin_settings')
-        .select('setting_value')
-        .eq('setting_key', 'ai_model')
-        .single();
-
-      const model = modelSettings?.setting_value || 'openai/gpt-4o-mini';
-
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': window.location.origin,
-          'X-Title': 'Mémoire Technique AI'
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: [
-            {
-              role: 'user',
-              content: [
-                {
-                  type: 'text',
-                  text: `Analyse cette image et génère une description détaillée en français. La description doit inclure:
+Génère une description détaillée en français. La description doit inclure:
 - Les éléments principaux visibles
 - Les couleurs dominantes
 - Le contexte ou l'environnement
 - L'utilité ou le propos de l'image
 - Tous les détails techniques pertinents
 
-Sois précis et factuel. Cette description servira de contexte pour aider une IA à comprendre l'image lors de la rédaction de documents techniques.`
-                },
-                {
-                  type: 'image_url',
-                  image_url: {
-                    url: imageUrl
-                  }
-                }
-              ]
-            }
-          ],
+Sois précis et factuel. Cette description servira de contexte pour aider une IA à comprendre l'image lors de la rédaction de documents techniques.`;
+
+      const systemPrompt = `Tu es un expert en analyse d'images pour la rédaction de documents techniques. Tu décris les images de manière précise et factuelle en français.`;
+
+      const description = await openRouterService.generateContent(
+        prompt,
+        systemPrompt,
+        {
           temperature: 0.3,
-          max_tokens: 500
-        })
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`OpenRouter API error: ${response.status} - ${errorText}`);
-      }
-
-      const data = await response.json();
-      const description = data.choices?.[0]?.message?.content || '';
+          maxTokens: 500
+        }
+      );
 
       if (description) {
         await supabase
