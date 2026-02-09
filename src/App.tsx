@@ -23,6 +23,7 @@ import { CGV } from './components/Landing';
 import { MentionsLegales } from './components/Landing/MentionsLegales';
 import { MarketCollector } from './components/MarketSearch/MarketCollector';
 import { BugReportButton } from './components/Common/BugReportButton';
+import { SetupBanner } from './components/Common/SetupBanner';
 import { PublicMarketPage } from './components/PublicMarket/PublicMarketPage';
 import { ReunionMarketsDirectory } from './components/PublicMarket/ReunionMarketsDirectory';
 import { SubscriptionSelection } from './components/Subscription/SubscriptionSelection';
@@ -114,9 +115,12 @@ function AppContent() {
           <SubscriptionGate>
             <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'} flex transition-colors duration-200`}>
               <Sidebar activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as AppTab)} />
-              <main className="flex-1 ml-64">
-                {renderContent()}
-              </main>
+              <div className="flex-1 ml-64 flex flex-col">
+                <SetupBanner onNavigate={(tab) => setActiveTab(tab as AppTab)} />
+                <main className="flex-1">
+                  {renderContent()}
+                </main>
+              </div>
               <BugReportButton />
             </div>
           </SubscriptionGate>
