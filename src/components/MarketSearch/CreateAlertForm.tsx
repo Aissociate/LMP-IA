@@ -230,7 +230,7 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onSuccess, onC
         search_params: searchParams,
         frequency: 'daily',
         is_active: true,
-        notifications_enabled: formData.notificationsEnabled,
+        notification_enabled: formData.notificationsEnabled,
       }).select().single();
 
       if (error) throw error;
