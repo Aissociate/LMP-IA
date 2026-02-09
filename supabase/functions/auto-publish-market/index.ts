@@ -30,35 +30,125 @@ interface MarketData {
   reference?: string;
   title: string;
   client?: string;
+  description?: string;
+  deadline?: string;
+  amount?: number;
+  location?: string;
+  publication_date?: string;
+  procedure_type?: string;
+  service_type?: string;
+  cpv_code?: string;
   url?: string;
+  department?: string;
   slug?: string;
+  source?: string;
 }
 
-async function fetchPrewrittenPosts(
-  supabase: ReturnType<typeof createClient>
-): Promise<string[]> {
-  const { data, error } = await supabase
-    .from("admin_settings")
-    .select("setting_key, setting_value")
-    .like("setting_key", "post_linkedin_%")
-    .order("setting_key", { ascending: true });
+interface WebhookPayload {
+  type: "INSERT";
+  table: string;
+  schema: string;
+  record: MarketData;
+}
 
-  if (error || !data || data.length === 0) {
-    return [];
+function formatDeadline(deadline: string | undefined): string {
+  if (!deadline) return "Non precise";
+  const date = new Date(deadline);
+  return date.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function formatAmount(amount: number | undefined): string {
+  if (!amount) return "";
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
+function buildAIPrompt(market: MarketData): string {
+  const parts = [
+    `Titre: ${market.title}`,
+    market.client ? `Donneur d'ordre: ${market.client}` : "",
+    market.location ? `Localisation: ${market.location}` : "",
+    market.department ? `Departement: ${market.department}` : "",
+    market.reference ? `Reference: ${market.reference}` : "",
+    market.service_type ? `Type: ${market.service_type}` : "",
+    market.procedure_type ? `Procedure: ${market.procedure_type}` : "",
+    market.amount ? `Montant: ${formatAmount(market.amount)}` : "",
+    market.deadline ? `Date limite: ${formatDeadline(market.deadline)}` : "",
+    market.description
+      ? `Description: ${market.description.substring(0, 500)}`
+      : "",
+    market.url ? `Lien: ${market.url}` : "",
+  ].filter(Boolean);
+
+  return `Tu es un community manager expert en marches publics a La Reunion.
+Genere un post professionnel et engageant pour les reseaux sociaux (Facebook et LinkedIn) a partir de ce marche public.
+
+Donnees du marche:
+${parts.join("\n")}
+
+Regles OBLIGATOIRES:
+- Utilise des emoticones pertinents (alerte, building, localisation, calendrier, lien, fleche, etc.)
+- Commence par une accroche avec emoticone d'alerte
+- Structure clairement: titre, donneur d'ordre, localisation, date limite, lien
+- Termine par un CTA invitant a s'inscrire sur www.lemarchepublic.fr pour ne plus manquer aucun marche
+- Ajoute des hashtags pertinents (#MarchePublic #LaReunion #AppelDOffres + hashtags specifiques au secteur)
+- Maximum 280 mots
+- Ton professionnel mais accessible
+- Ne mets PAS de guillemets autour du texte genere
+- Reponds UNIQUEMENT avec le texte du post, sans introduction ni explication`;
+}
+
+async function generateAIPost(
+  market: MarketData,
+  openRouterApiKey: string,
+  supabaseUrl: string
+): Promise<string> {
+  const prompt = buildAIPrompt(market);
+
+  const response = await fetch(
+    "https://openrouter.ai/api/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${openRouterApiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": supabaseUrl,
+        "X-Title": "Le Marche Public - Auto Publish",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.0-flash-001",
+        messages: [
+          {
+            role: "system",
+            content:
+              "Tu es un community manager specialise dans les marches publics a La Reunion. Tu rediges des posts engageants pour Facebook et LinkedIn.",
+          },
+          { role: "user", content: prompt },
+        ],
+        temperature: 0.7,
+        max_tokens: 1000,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`OpenRouter API error: ${response.status} - ${errorText}`);
   }
 
-  return data.map((row: { setting_value: string }) => row.setting_value);
-}
+  const data = await response.json();
+  if (!data.choices || data.choices.length === 0) {
+    throw new Error("No response from AI");
+  }
 
-async function getNextPostIndex(
-  supabase: ReturnType<typeof createClient>,
-  totalPosts: number
-): Promise<number> {
-  const { count } = await supabase
-    .from("market_social_posts")
-    .select("*", { count: "exact", head: true });
-
-  return (count || 0) % totalPosts;
+  return data.choices[0].message.content.trim();
 }
 
 async function postToBlotato(
@@ -161,15 +251,18 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
     const blotatoApiKey = Deno.env.get("BLOTATO_API_KEY");
+    const openRouterApiKey = Deno.env.get("OPENROUTER_API_KEY");
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     const emailFrom =
       Deno.env.get("EMAIL_FROM") ||
       "Le Marche Public <onboarding@resend.dev>";
 
-    if (!blotatoApiKey) {
-      console.error("[auto-publish] Missing BLOTATO_API_KEY");
+    if (!blotatoApiKey || !openRouterApiKey) {
+      console.error(
+        "[auto-publish] Missing required API keys (BLOTATO_API_KEY or OPENROUTER_API_KEY)"
+      );
       return new Response(
-        JSON.stringify({ error: "Missing BLOTATO_API_KEY" }),
+        JSON.stringify({ error: "Missing required API keys" }),
         {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -180,6 +273,7 @@ Deno.serve(async (req: Request) => {
     const body = await req.json();
 
     let market: MarketData;
+
     if (body.record) {
       market = body.record as MarketData;
     } else if (body.market) {
@@ -202,27 +296,35 @@ Deno.serve(async (req: Request) => {
       `[auto-publish] Processing market: ${market.title} (${market.reference || "no ref"})`
     );
 
-    const supabase = createClient(supabaseUrl, serviceRoleKey);
-
-    const prewrittenPosts = await fetchPrewrittenPosts(supabase);
-
-    if (prewrittenPosts.length === 0) {
-      console.error("[auto-publish] No pre-written posts found in admin_settings (post_linkedin_*)");
-      return new Response(
-        JSON.stringify({ error: "No pre-written posts found in admin_settings" }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
+    let postText: string;
+    try {
+      postText = await generateAIPost(market, openRouterApiKey, supabaseUrl);
+      console.log(
+        `[auto-publish] AI generated post: ${postText.length} chars`
       );
+    } catch (aiError) {
+      console.error("[auto-publish] AI generation failed:", aiError);
+      const fallbackParts = [
+        "\u{1F6A8} NOUVEAU MARCHE PUBLIC \u{1F6A8}",
+        "",
+        `\u{1F4CB} ${market.title}`,
+        market.client ? `\u{1F3E2} ${market.client}` : "",
+        market.location ? `\u{1F4CD} ${market.location}` : "",
+        market.deadline
+          ? `\u{23F0} Date limite : ${formatDeadline(market.deadline)}`
+          : "",
+        market.amount
+          ? `\u{1F4B0} Montant : ${formatAmount(market.amount)}`
+          : "",
+        market.url ? `\u{1F517} ${market.url}` : "",
+        "",
+        "\u{1F4A1} Ne manquez plus aucun marche public !",
+        "\u{1F449} Inscrivez-vous sur www.lemarchepublic.fr",
+        "",
+        "#MarchePublic #AppelDOffres #LaReunion",
+      ].filter(Boolean);
+      postText = fallbackParts.join("\n");
     }
-
-    const postIndex = await getNextPostIndex(supabase, prewrittenPosts.length);
-    const postText = prewrittenPosts[postIndex];
-
-    console.log(
-      `[auto-publish] Using pre-written post #${postIndex + 1} of ${prewrittenPosts.length} (${postText.length} chars)`
-    );
 
     const marketUrl =
       market.url ||
@@ -248,7 +350,9 @@ Deno.serve(async (req: Request) => {
           errors.push(errMsg);
           console.error(`[auto-publish] ${errMsg}`);
         } else {
-          console.log(`[auto-publish] ${platform} published successfully`);
+          console.log(
+            `[auto-publish] ${platform} published successfully`
+          );
         }
       } catch (err) {
         const errMsg = `${platform}: ${err instanceof Error ? err.message : String(err)}`;
@@ -257,6 +361,7 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    const supabase = createClient(supabaseUrl, serviceRoleKey);
     await supabase.from("market_social_posts").insert({
       market_id: market.id,
       market_table: body.table || "unknown",
@@ -270,10 +375,18 @@ Deno.serve(async (req: Request) => {
 
     if (errors.length > 0 && resendApiKey) {
       try {
-        await sendErrorEmail(resendApiKey, emailFrom, market.title, errors);
+        await sendErrorEmail(
+          resendApiKey,
+          emailFrom,
+          market.title,
+          errors
+        );
         console.log("[auto-publish] Error notification email sent");
       } catch (emailErr) {
-        console.error("[auto-publish] Failed to send error email:", emailErr);
+        console.error(
+          "[auto-publish] Failed to send error email:",
+          emailErr
+        );
       }
     }
 
@@ -283,8 +396,6 @@ Deno.serve(async (req: Request) => {
       JSON.stringify({
         success: allSuccess,
         market: { id: market.id, title: market.title },
-        postIndex: postIndex + 1,
-        totalPosts: prewrittenPosts.length,
         results,
         errors: errors.length > 0 ? errors : undefined,
       }),
