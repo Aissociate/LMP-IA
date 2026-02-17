@@ -15,7 +15,7 @@ interface SearchAlert {
   search_params: any;
   frequency: string;
   is_active: boolean;
-  notifications_enabled: boolean;
+  notification_enabled: boolean;
   last_checked_at?: string;
   created_at: string;
 }
@@ -251,12 +251,12 @@ export const MarketSentinel: React.FC = () => {
     try {
       const { error } = await supabase
         .from('search_alerts')
-        .update({ notifications_enabled: !currentState })
+        .update({ notification_enabled: !currentState })
         .eq('id', id);
 
       if (error) throw error;
       setSearchAlerts(prev => prev.map(a =>
-        a.id === id ? { ...a, notifications_enabled: !currentState } : a
+        a.id === id ? { ...a, notification_enabled: !currentState } : a
       ));
     } catch (error) {
       console.error('Error toggling notifications:', error);
@@ -606,7 +606,7 @@ export const MarketSentinel: React.FC = () => {
                     </div>
                   ) : (
                     <div className="flex items-center gap-3 mb-3">
-                      {alert.notifications_enabled && (
+                      {alert.notification_enabled && (
                         <div className="bg-orange-500 p-1.5 rounded-lg">
                           <Bell className="w-4 h-4 text-white" />
                         </div>
@@ -685,13 +685,13 @@ export const MarketSentinel: React.FC = () => {
                     {alert.is_active ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                   </button>
                   <button
-                    onClick={() => handleToggleNotifications(alert.id, alert.notifications_enabled)}
+                    onClick={() => handleToggleNotifications(alert.id, alert.notification_enabled)}
                     className={`p-2 rounded-lg ${
-                      alert.notifications_enabled
+                      alert.notification_enabled
                         ? 'bg-orange-600 text-white hover:bg-orange-700'
                         : isDark ? 'bg-gray-700 text-gray-400 hover:bg-gray-600' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
                     }`}
-                    title={alert.notifications_enabled ? 'Désactiver les notifications' : 'Activer les notifications'}
+                    title={alert.notification_enabled ? 'Désactiver les notifications' : 'Activer les notifications'}
                   >
                     <Mail className="w-4 h-4" />
                   </button>
