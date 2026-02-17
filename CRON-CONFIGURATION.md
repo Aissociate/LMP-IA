@@ -66,7 +66,7 @@ EMAIL_FROM=Le Marche Public <notifications@lemarchepublic.fr>
 
 #### Tâche 1 : Vérification des alertes
 - **Titre** : Check Market Alerts (Hourly)
-- **URL** : `https://[VOTRE_PROJECT].supabase.co/functions/v1/check-market-alerts`
+- **URL** : `https://tciryfaaussfrfbvalhk.supabase.co/functions/v1/check-market-alerts`
 - **Méthode** : POST
 - **Headers** :
   ```
