@@ -70,7 +70,7 @@ export default function Home() {
           <Button
             onClick={() => {
               trackClick('home', 'cta', 'header_trial');
-              navigate('/capture-lead');
+              window.open('https://lmp.bolt.host/', '_blank');
             }}
             variant="primary"
             className="text-xs md:text-base px-3 py-2 md:px-6 md:py-3 bg-linkedin-500 hover:bg-linkedin-600"
@@ -106,7 +106,7 @@ export default function Home() {
               <Button
                 onClick={() => {
                   trackClick('home', 'cta', `hero_trial_${copy.id}`);
-                  navigate('/capture-lead');
+                  window.open('https://lmp.bolt.host/', '_blank');
                 }}
                 variant="primary"
                 className="text-lg px-8 py-4 bg-linkedin-500 hover:bg-linkedin-600 shadow-lg"
@@ -326,7 +326,7 @@ export default function Home() {
                   <Button
                     onClick={() => {
                       trackClick('home', 'cta', 'cv_trial');
-                      navigate('/capture-lead');
+                      window.open('https://lmp.bolt.host/', '_blank');
                     }}
                     className="bg-[#0A66C2] hover:bg-[#004182] text-white px-6 py-2 rounded-full font-semibold"
                   >
@@ -813,7 +813,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_trial');
-                navigate('/capture-lead');
+                window.open('https://lmp.bolt.host/', '_blank');
               }}
               className="w-full text-sm py-3 bg-[#0A66C2] hover:bg-[#004182] text-white rounded-full font-semibold"
             >
@@ -869,7 +869,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_bronze');
-                navigate('/capture-lead');
+                window.open('https://lmp.bolt.host/', '_blank');
               }}
               variant="outline"
               className="w-full text-sm py-2"
@@ -929,7 +929,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_argent');
-                navigate('/capture-lead');
+                window.open('https://lmp.bolt.host/', '_blank');
               }}
               variant="secondary"
               className="w-full text-sm py-2"
@@ -986,7 +986,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_or');
-                navigate('/capture-lead');
+                window.open('https://lmp.bolt.host/', '_blank');
               }}
               variant="outline"
               className="w-full text-sm py-2 bg-white hover:bg-gray-50"
@@ -1136,7 +1136,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'final_trial');
-                navigate('/capture-lead');
+                window.open('https://lmp.bolt.host/', '_blank');
               }}
               variant="secondary"
               className="text-lg px-10 py-5 bg-white text-[#F77F00] hover:bg-gray-100 shadow-2xl"

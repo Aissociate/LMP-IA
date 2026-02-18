@@ -96,7 +96,7 @@ export const LandingBTP: React.FC = () => {
             <img src="/logo1.png" alt="Le Marché Public.fr" className="h-16 md:h-24 lg:h-[120px] w-auto object-contain" />
           </div>
           <Button
-            onClick={() => navigate('/capture-lead')}
+            onClick={() => window.open('https://lmp.bolt.host/', '_blank')}
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-xs md:text-base px-3 py-2 md:px-6 md:py-3"
           >
             <span className="hidden md:inline">Générer mon 1er dossier technique</span>
@@ -148,7 +148,7 @@ export const LandingBTP: React.FC = () => {
 
             <Button
               className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-[#1e3a5f] text-lg px-8 py-4 font-bold"
-              onClick={() => navigate('/capture-lead')}
+              onClick={() => window.open('https://lmp.bolt.host/', '_blank')}
             >
               Démarrer mon test gratuit avec Iris
               <ArrowRight className="w-5 h-5" />
@@ -301,7 +301,7 @@ export const LandingBTP: React.FC = () => {
           <div className="text-center">
             <Button
               className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-10 py-5 mb-4"
-              onClick={() => navigate('/capture-lead')}
+              onClick={() => window.open('https://lmp.bolt.host/', '_blank')}
             >
               Laisser Iris rédiger mon premier mémoire
               <ArrowRight className="w-5 h-5" />
@@ -334,7 +334,7 @@ export const LandingBTP: React.FC = () => {
           </h3>
           <Button
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-10 py-5"
-            onClick={() => navigate('/capture-lead')}
+            onClick={() => window.open('https://lmp.bolt.host/', '_blank')}
           >
             Recruter Iris pour mon prochain marché
             <ArrowRight className="w-5 h-5" />

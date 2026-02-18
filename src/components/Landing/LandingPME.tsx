@@ -96,7 +96,7 @@ export const LandingPME: React.FC = () => {
             <img src="/logo1.png" alt="Le Marché Public.fr" className="h-16 md:h-24 lg:h-[120px] w-auto object-contain" />
           </div>
           <Button
-            onClick={() => navigate('/capture-lead')}
+            onClick={() => window.open('https://lmp.bolt.host/', '_blank')}
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-xs md:text-base px-3 py-2 md:px-6 md:py-3"
           >
             <span className="hidden md:inline">Activer mon assistant numérique 7 jours</span>
@@ -142,7 +142,7 @@ export const LandingPME: React.FC = () => {
 
             <Button
               className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-8 py-4"
-              onClick={() => navigate('/capture-lead')}
+              onClick={() => window.open('https://lmp.bolt.host/', '_blank')}
             >
               Recruter Iris pour 7 jours gratuits
               <ArrowRight className="w-5 h-5" />
@@ -274,7 +274,7 @@ export const LandingPME: React.FC = () => {
           </h3>
           <Button
             className="bg-[#F77F00] text-white hover:bg-[#E06F00] text-lg px-10 py-5 mb-6"
-            onClick={() => navigate('/capture-lead')}
+            onClick={() => window.open('https://lmp.bolt.host/', '_blank')}
           >
             Je teste l'assistant complet 7 jours
             <ArrowRight className="w-5 h-5" />

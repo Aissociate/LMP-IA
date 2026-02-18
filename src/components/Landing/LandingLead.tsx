@@ -256,7 +256,7 @@ export const LandingLead: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleCTAClick = () => {
-    navigate('/capture-lead');
+    window.open('https://lmp.bolt.host/', '_blank');
   };
 
   React.useEffect(() => {
