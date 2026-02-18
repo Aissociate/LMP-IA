@@ -1188,7 +1188,7 @@ export default function Home() {
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Solutions</h4>
+              <h4 className="font-semibold mb-4"><a href="https://lmp.bolt.host/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-300">Solutions</a></h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><a href="#" onClick={() => navigate('/landing-btp')} className="hover:text-white">Pour le BTP</a></li>
                 <li><a href="#" onClick={() => navigate('/landing-artisans')} className="hover:text-white">Pour les Artisans</a></li>
