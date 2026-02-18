@@ -6,8 +6,9 @@ interface StructuredDataProps {
 
 export function StructuredData({ data }: StructuredDataProps) {
   useEffect(() => {
-    const scriptId = `structured-data-${JSON.stringify(data).substring(0, 50)}`;
-    let script = document.querySelector(`script[id="${scriptId}"]`);
+    const rawId = JSON.stringify(Array.isArray(data) ? data[0] : data).substring(0, 40);
+    const scriptId = `sd-${rawId.replace(/[^a-zA-Z0-9-]/g, '_')}`;
+    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
 
     if (!script) {
       script = document.createElement('script');
@@ -19,10 +20,7 @@ export function StructuredData({ data }: StructuredDataProps) {
     script.textContent = JSON.stringify(Array.isArray(data) ? data : [data]);
 
     return () => {
-      const existingScript = document.querySelector(`script[id="${scriptId}"]`);
-      if (existingScript) {
-        existingScript.remove();
-      }
+      document.getElementById(scriptId)?.remove();
     };
   }, [data]);
 
