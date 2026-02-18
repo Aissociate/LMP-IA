@@ -12,7 +12,6 @@ import {
   AlertTriangle,
   Activity
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { StatsCard } from './StatsCard';
 import { supabase } from '../../lib/supabase';
 import { MarketStats } from '../../types';
@@ -317,15 +316,17 @@ export const Dashboard: React.FC = () => {
                 <p className={`text-sm mb-2 ${isDark ? 'text-[#B0B7BE]' : 'text-amber-800'}`}>
                   Pour mieux vous connaître et personnaliser vos mémoires techniques, j'ai besoin que vous m'ajoutiez quelques documents sur votre entreprise (plaquettes, références, certifications...).
                 </p>
-                <Link
-                  to="/settings?tab=knowledge"
+                <a
+                  href="https://lmp.bolt.host/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`inline-flex items-center text-sm font-medium ${isDark ? 'text-[#70B5F9] hover:text-[#0A66C2]' : 'text-[#0A66C2] hover:text-[#004182]'} transition-colors`}
                 >
                   Partager mes documents avec Iris
                   <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                </Link>
+                </a>
               </div>
             </div>
           </div>
