@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { SEOHead } from '../SEO/SEOHead';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Calendar, MapPin, Building2, ChevronLeft, ChevronRight, Loader2, Search, Package, Wrench, Settings, Grid3x3, List, SlidersHorizontal } from 'lucide-react';
 
 interface Market {
@@ -21,7 +21,6 @@ interface Market {
 const ITEMS_PER_PAGE = 20;
 
 export function ReunionMarketsDirectory() {
-  const navigate = useNavigate();
   const [markets, setMarkets] = useState<Market[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -154,7 +153,7 @@ export function ReunionMarketsDirectory() {
                 <img src="/logo1.png" alt="Logo" className="h-10" />
               </Link>
               <button
-                onClick={() => navigate('/mmp')}
+                onClick={() => window.open('https://lmp.bolt.host', '_blank')}
                 className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
               >
                 Essai gratuit

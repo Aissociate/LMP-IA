@@ -115,7 +115,7 @@ export function PublicMarketPage() {
                 <img src="/logo1.png" alt="Logo" className="h-10" />
               </Link>
               <button
-                onClick={() => navigate('/mmp')}
+                onClick={() => window.open('https://lmp.bolt.host', '_blank')}
                 className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
               >
                 Essai gratuit
@@ -135,7 +135,7 @@ export function PublicMarketPage() {
               Recevez automatiquement les nouveaux marchés qui correspondent à votre activité
             </p>
             <button
-              onClick={() => navigate('/mmp')}
+              onClick={() => window.open('https://lmp.bolt.host', '_blank')}
               className="bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-orange-50 transition-colors shadow-lg"
             >
               Essayez gratuitement pendant 7 jours
