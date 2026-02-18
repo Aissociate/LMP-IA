@@ -604,16 +604,18 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto">
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-gray-900 aspect-video">
-            <video
-              src="/demo_lemarchepublic.mp4"
-              controls
-              className="w-full h-full"
-              poster="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1200"
-            >
-              Votre navigateur ne supporte pas la lecture de vidéos.
-            </video>
+        <div className="max-w-3xl mx-auto">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-gray-900 flex justify-center">
+            <iframe
+              src="https://www.facebook.com/plugins/video.php?height=304&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1347758950405127%2F&show_text=false&width=560&t=0"
+              width="560"
+              height="304"
+              style={{ border: 'none', overflow: 'hidden' }}
+              scrolling="no"
+              frameBorder="0"
+              allowFullScreen
+              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            />
           </div>
         </div>
       </Section>
