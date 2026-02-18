@@ -105,7 +105,7 @@ export function PublicMarketPage() {
       <SEOHead
         title={market.seo_title}
         description={market.seo_description}
-        canonical={`/marchepublics/974/${slug}`}
+        canonical={`https://lemarchepublic.fr/marchepublics/974/${slug}`}
       />
 
       <div className="min-h-screen bg-gray-50">

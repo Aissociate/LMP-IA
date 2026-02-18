@@ -54,9 +54,9 @@ export function SEOHead({
     updateMetaTag('googlebot', 'index, follow');
 
     updateMetaTag('geo.region', 'FR-RE');
-    updateMetaTag('geo.placename', 'La Réunion');
-    updateMetaTag('geo.position', '-21.115141;55.536384');
-    updateMetaTag('ICBM', '-21.115141, 55.536384');
+    updateMetaTag('geo.placename', 'Saint-Denis, La Réunion');
+    updateMetaTag('geo.position', '-20.8823;55.4504');
+    updateMetaTag('ICBM', '-20.8823, 55.4504');
 
     updateMetaTag('og:type', type, true);
     updateMetaTag('og:title', title, true);

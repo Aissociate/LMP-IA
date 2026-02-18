@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { SEOHead } from "../SEO/SEOHead";
+import { StructuredData, createServiceSchema, createBreadcrumbSchema } from "../SEO/StructuredData";
+import { FAQ, btpFAQs } from "../SEO/FAQ";
 
 const Button = ({ className = "", children, onClick, ...props }: any) => (
   <button
@@ -79,16 +82,27 @@ const Carousel = () => {
 export const LandingBTP: React.FC = () => {
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    document.title = "Marchés Publics BTP Réunion 974 | Communes, CINOR, TCO, CIREST | Le Marché Public.fr";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Remportez les marchés publics BTP à La Réunion : CINOR, TCO, CIREST, Région, communes 974. Assistant numérique pour mémoires techniques gagnants.');
-    }
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-orange-50/30 to-white">
+      <SEOHead
+        title="Marchés Publics BTP Réunion 974 | CINOR, TCO, CIREST | LeMarchéPublic.fr"
+        description="Remportez les marchés publics BTP à La Réunion : CINOR, TCO, CIREST, Région, communes 974. Iris génère vos mémoires techniques et BPU automatiquement. Essai 7 jours gratuit."
+        keywords="marchés publics BTP réunion, appels d'offres BTP 974, mémoire technique BTP, BPU BTP réunion, CINOR marchés, TCO marchés, CIREST marchés, travaux réunion"
+        canonical="https://lemarchepublic.fr/btp"
+      />
+      <StructuredData data={[
+        createServiceSchema({
+          name: "Assistant IA Marchés Publics BTP La Réunion",
+          description: "Génération automatique de mémoires techniques et BPU pour entreprises BTP réunionnaises. Veille 24/7 des appels d'offres BOAMP secteur BTP.",
+          serviceType: "Logiciel SaaS - Marchés Publics BTP",
+          areaServed: "La Réunion 974",
+          audience: "Entreprises BTP, constructeurs, artisans du bâtiment"
+        }),
+        createBreadcrumbSchema([
+          { name: "Accueil", url: "https://lemarchepublic.fr/" },
+          { name: "BTP", url: "https://lemarchepublic.fr/btp" }
+        ])
+      ]} />
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-2">
@@ -325,6 +339,8 @@ export const LandingBTP: React.FC = () => {
         </div>
         <Carousel />
       </Section>
+
+      <FAQ items={btpFAQs} title="Questions Fréquentes - Marchés Publics BTP Réunion" />
 
       {/* Footer CTA */}
       <Section className="py-12 bg-white border-t border-gray-200">

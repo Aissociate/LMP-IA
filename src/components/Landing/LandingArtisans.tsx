@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { SEOHead } from "../SEO/SEOHead";
+import { StructuredData, createServiceSchema, createBreadcrumbSchema } from "../SEO/StructuredData";
+import { FAQ, artisansFAQs } from "../SEO/FAQ";
 
 const Button = ({ className = "", children, onClick, ...props }: any) => (
   <button
@@ -79,16 +82,27 @@ const Carousel = () => {
 export const LandingArtisans: React.FC = () => {
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    document.title = "Marchés Publics Artisans Réunion 974 | CINOR, TCO, CIREST | Le Marché Public.fr";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Gagnez les marchés publics artisans à La Réunion : CINOR, TCO, CIREST, communes 974. Mémoires générés automatiquement en quelques clics.');
-    }
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-orange-50/30 to-white">
+      <SEOHead
+        title="Marchés Publics Artisans Réunion 974 | CINOR, TCO, CIREST | LeMarchéPublic.fr"
+        description="Gagnez les marchés publics artisans à La Réunion : CINOR, TCO, CIREST, communes 974. Iris génère vos mémoires techniques automatiquement en quelques clics. Sans compétences techniques."
+        keywords="marchés publics artisans réunion, appels d'offres artisans 974, mémoire technique artisan, marchés artisans CINOR, TCO artisans, rénovation marchés publics réunion"
+        canonical="https://lemarchepublic.fr/artisans"
+      />
+      <StructuredData data={[
+        createServiceSchema({
+          name: "Assistant IA Marchés Publics Artisans La Réunion",
+          description: "Solution clé en main pour artisans réunionnais souhaitant répondre aux marchés publics : génération de mémoires, BPU et veille des appels d'offres.",
+          serviceType: "Logiciel SaaS - Marchés Publics Artisans",
+          areaServed: "La Réunion 974",
+          audience: "Artisans, auto-entrepreneurs, micro-entreprises de La Réunion"
+        }),
+        createBreadcrumbSchema([
+          { name: "Accueil", url: "https://lemarchepublic.fr/" },
+          { name: "Artisans", url: "https://lemarchepublic.fr/artisans" }
+        ])
+      ]} />
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-2">
@@ -331,6 +345,8 @@ export const LandingArtisans: React.FC = () => {
         </div>
         <Carousel />
       </Section>
+
+      <FAQ items={artisansFAQs} title="Questions Fréquentes - Marchés Publics pour Artisans Réunion" />
 
       {/* Footer CTA */}
       <Section className="py-12 bg-white border-t border-gray-200">

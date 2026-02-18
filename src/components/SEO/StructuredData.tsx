@@ -47,19 +47,19 @@ export const organizationSchema = {
     '@type': 'GeoCircle',
     'geoMidpoint': {
       '@type': 'GeoCoordinates',
-      'latitude': '-21.115141',
-      'longitude': '55.536384'
+      'latitude': '-20.8823',
+      'longitude': '55.4504'
     },
     'geoRadius': '100000'
   },
   'geo': {
     '@type': 'GeoCoordinates',
-    'latitude': '-21.115141',
-    'longitude': '55.536384'
+    'latitude': '-20.8823',
+    'longitude': '55.4504'
   },
   'sameAs': [
     'https://www.facebook.com/lemarchepublic',
-    'https://www.linkedin.com/company/lemarchepublic'
+    'https://www.linkedin.com/company/mmpfr'
   ],
   'contactPoint': {
     '@type': 'ContactPoint',

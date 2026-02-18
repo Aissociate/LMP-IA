@@ -3,6 +3,9 @@ import { ArrowRight, Building2, Hammer, HardHat, Sparkles, TrendingUp, Clock, Ta
 import { useState, useEffect } from 'react';
 import { initAnalytics, trackClick } from '../../lib/analytics';
 import { MarketModelComparison } from './MarketModelComparison';
+import { SEOHead } from '../SEO/SEOHead';
+import { StructuredData, organizationSchema, websiteSchema, softwareApplicationSchema } from '../SEO/StructuredData';
+import { FAQ, generalFAQs } from '../SEO/FAQ';
 
 const VARIANTES = [
   {
@@ -61,6 +64,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-iris-bg">
+      <SEOHead
+        title="LeMarchéPublic.fr - Iris, Assistante IA pour Marchés Publics à La Réunion 974"
+        description="Iris surveille 100% des appels d'offres 974 en 24/7, analyse les DCE et rédige vos mémoires techniques automatiquement. Solution IA pour PME, BTP et artisans réunionnais. Essai 7 jours gratuit."
+        keywords="marchés publics réunion, appels d'offres 974, mémoire technique IA, BPU automatique, BOAMP réunion, Iris IA marchés publics, assistant IA 974, intelligence artificielle marchés publics La Réunion, veille marchés publics"
+        canonical="https://lemarchepublic.fr/"
+      />
+      <StructuredData data={[organizationSchema, websiteSchema, softwareApplicationSchema]} />
       {/* Header */}
       <header className="bg-iris-card shadow-subtle sticky top-0 z-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-2">
@@ -1162,6 +1172,8 @@ export default function Home() {
           </div>
         </div>
       </Section>
+
+      <FAQ items={generalFAQs} title="Questions Fréquentes sur Iris et LeMarchéPublic.fr" />
 
       {/* FOOTER */}
       <footer className="bg-gray-900 text-white py-12">

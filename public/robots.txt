@@ -1,0 +1,29 @@
+User-agent: *
+Allow: /
+Allow: /pme
+Allow: /btp
+Allow: /artisans
+Allow: /landing/pme
+Allow: /landing/btp
+Allow: /landing/artisans
+Allow: /cgv
+Allow: /mentions-legales
+Allow: /merci
+Allow: /recrutement
+Allow: /marchepublics/974
+Allow: /marchepublics/974/
+
+Disallow: /mmp
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /reset-password
+Disallow: /settings
+Disallow: /labo
+Disallow: /sourcing
+Disallow: /capture-lead
+Disallow: /collecte
+Disallow: /subscription
+
+Crawl-delay: 2
+
+Sitemap: https://lemarchepublic.fr/sitemap.xml

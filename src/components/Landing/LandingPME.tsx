@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { SEOHead } from "../SEO/SEOHead";
+import { StructuredData, createServiceSchema, createBreadcrumbSchema } from "../SEO/StructuredData";
+import { FAQ, pmeFAQs } from "../SEO/FAQ";
 
 const Button = ({ className = "", children, onClick, ...props }: any) => (
   <button
@@ -79,16 +82,27 @@ const Carousel = () => {
 export const LandingPME: React.FC = () => {
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    document.title = "Assistant Numérique Marchés Publics PME Réunion 974 | Le Marché Public.fr";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Gagnez plus de marchés publics PME à La Réunion avec votre assistant numérique : veille 24/7, alertes mail/SMS/WhatsApp, analyse juridique, génération mémoires. Essai 7 jours gratuit.');
-    }
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-orange-50/30 to-white">
+      <SEOHead
+        title="Assistant IA Marchés Publics PME Réunion 974 | LeMarchéPublic.fr"
+        description="Gagnez plus de marchés publics PME à La Réunion avec Iris : veille 24/7, alertes instantanées, analyse juridique, génération automatique de mémoires techniques. Essai 7 jours gratuit."
+        keywords="marchés publics PME réunion, appels d'offres PME 974, assistant numérique PME, veille marchés publics, alertes BOAMP réunion, mémoire technique PME"
+        canonical="https://lemarchepublic.fr/pme"
+      />
+      <StructuredData data={[
+        createServiceSchema({
+          name: "Assistant IA Marchés Publics PME La Réunion",
+          description: "Plateforme IA de veille et génération de documents pour PME réunionnaises souhaitant remporter plus de marchés publics.",
+          serviceType: "Logiciel SaaS - Marchés Publics PME",
+          areaServed: "La Réunion 974",
+          audience: "PME, TPE, petites et moyennes entreprises de La Réunion"
+        }),
+        createBreadcrumbSchema([
+          { name: "Accueil", url: "https://lemarchepublic.fr/" },
+          { name: "PME", url: "https://lemarchepublic.fr/pme" }
+        ])
+      ]} />
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-2">
@@ -265,6 +279,8 @@ export const LandingPME: React.FC = () => {
           </div>
         </div>
       </Section>
+
+      <FAQ items={pmeFAQs} title="Questions Fréquentes - Marchés Publics PME Réunion" />
 
       {/* CTA FINAL */}
       <Section className="py-16 bg-white">
