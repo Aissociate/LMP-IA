@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { MarketDetails } from './MarketDetails';
-import { FreeTrialModal } from './FreeTrialModal';
 import { SEOHead } from '../SEO/SEOHead';
 import { Loader2, AlertCircle } from 'lucide-react';
 
@@ -31,7 +30,6 @@ export function PublicMarketPage() {
   const [market, setMarket] = useState<Market | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchMarket = async () => {
@@ -117,7 +115,7 @@ export function PublicMarketPage() {
                 <img src="/logo1.png" alt="Logo" className="h-10" />
               </Link>
               <button
-                onClick={() => setShowModal(true)}
+                onClick={() => navigate('/mmp')}
                 className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
               >
                 Essai gratuit
@@ -137,15 +135,13 @@ export function PublicMarketPage() {
               Recevez automatiquement les nouveaux marchés qui correspondent à votre activité
             </p>
             <button
-              onClick={() => setShowModal(true)}
+              onClick={() => navigate('/mmp')}
               className="bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-orange-50 transition-colors shadow-lg"
             >
               Essayez gratuitement pendant 7 jours
             </button>
           </div>
         </div>
-
-        <FreeTrialModal isOpen={showModal} onClose={() => setShowModal(false)} />
       </div>
     </>
   );
