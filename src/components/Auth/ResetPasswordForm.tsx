@@ -72,8 +72,13 @@ export const ResetPasswordForm: React.FC = () => {
 
       setSuccess(true);
 
-      setTimeout(() => {
-        navigate('/login');
+      setTimeout(async () => {
+        await supabase.auth.signOut();
+        navigate('/login', {
+          state: {
+            message: 'Votre mot de passe a été réinitialisé. Vous pouvez maintenant vous connecter.'
+          }
+        });
       }, 3000);
     } catch (err: any) {
       console.error('Error resetting password:', err);

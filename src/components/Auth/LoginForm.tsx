@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { LogIn, Mail, Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
+import { useLocation } from 'react-router-dom';
 import { SecurityValidation } from '../../lib/securityValidation';
 
 interface LoginFormProps {
@@ -10,12 +11,22 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
   const { isDark } = useTheme();
+  const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const { signIn } = useAuth();
+
+  useEffect(() => {
+    const state = location.state as { message?: string } | null;
+    if (state?.message) {
+      setSuccessMessage(state.message);
+      setTimeout(() => setSuccessMessage(null), 10000);
+    }
+  }, [location.state]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,6 +135,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
               </button>
             </div>
           </div>
+
+          {successMessage && (
+            <div className={`${isDark ? 'bg-green-900/20 border-green-700 text-green-400' : 'bg-green-50 border-green-200 text-green-700'} border rounded-xl p-4 text-sm flex items-start gap-2`}>
+              <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <span>{successMessage}</span>
+            </div>
+          )}
 
           {error && (
             <div className={`${isDark ? 'bg-red-900/20 border-red-700 text-red-400' : 'bg-red-50 border-red-200 text-red-700'} border rounded-xl p-4 text-sm`}>
