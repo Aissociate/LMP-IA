@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Brain, Settings as SettingsIcon, MessageSquare, BarChart3, Bug, Video, UserCheck, CreditCard, RefreshCw, Users } from 'lucide-react';
+import { Shield, Brain, Settings as SettingsIcon, MessageSquare, BarChart3, Bug, Video, UserCheck, CreditCard, RefreshCw, Users, Clock, Key } from 'lucide-react';
 import { AIModelSelector } from './AIModelSelector';
 import { AIParameters } from './AIParameters';
 import { PromptManager } from './PromptManager';
@@ -10,9 +10,11 @@ import { UserImpersonation } from './UserImpersonation';
 import { SubscriptionManager } from './SubscriptionManager';
 import { MarketSyncMonitor } from './MarketSyncMonitor';
 import { CandidatureManager } from '../Settings/CandidatureManager';
+import { CronMonitor } from './CronMonitor';
+import { SecretsManager } from './SecretsManager';
 import { useTheme } from '../../hooks/useTheme';
 
-type AdminTab = 'ai-models' | 'ai-parameters' | 'prompts' | 'subscriptions' | 'candidatures' | 'marketing' | 'bugs' | 'videos' | 'impersonation' | 'market-sync';
+type AdminTab = 'ai-models' | 'ai-parameters' | 'prompts' | 'subscriptions' | 'candidatures' | 'marketing' | 'bugs' | 'videos' | 'impersonation' | 'market-sync' | 'cron-monitor' | 'secrets';
 
 const adminTabs = [
   { id: 'ai-models' as const, label: 'Modèles IA', icon: Brain },
@@ -20,6 +22,8 @@ const adminTabs = [
   { id: 'prompts' as const, label: 'Gestion des prompts', icon: MessageSquare },
   { id: 'subscriptions' as const, label: 'Abonnements', icon: CreditCard },
   { id: 'candidatures' as const, label: 'Candidatures', icon: Users },
+  { id: 'cron-monitor' as const, label: 'Monitoring CRON', icon: Clock },
+  { id: 'secrets' as const, label: 'Secrets Admin', icon: Key },
   { id: 'market-sync' as const, label: 'Synchronisation Marchés 974', icon: RefreshCw },
   { id: 'marketing' as const, label: 'Analytics Marketing', icon: BarChart3 },
   { id: 'bugs' as const, label: 'Gestion des bugs', icon: Bug },
@@ -43,6 +47,10 @@ export const Admin: React.FC = () => {
         return <SubscriptionManager />;
       case 'candidatures':
         return <CandidatureManager />;
+      case 'cron-monitor':
+        return <CronMonitor />;
+      case 'secrets':
+        return <SecretsManager />;
       case 'market-sync':
         return <MarketSyncMonitor />;
       case 'marketing':
