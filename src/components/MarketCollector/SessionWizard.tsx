@@ -5,6 +5,7 @@ import { sessionService, DonneurOrdre, Session, SessionWithProgress, SessionSumm
 import { MarketEntryForm } from './MarketEntryForm';
 import { SessionMarketsList } from './SessionMarketsList';
 import { SessionSummary } from './SessionSummary';
+import { MarketsChart } from './MarketsChart';
 import { supabase } from '../../lib/supabase';
 
 interface SessionWizardProps {
@@ -296,6 +297,10 @@ export const SessionWizard: React.FC<SessionWizardProps> = ({ isOpen, onClose, o
           >
             <X className="w-6 h-6" />
           </button>
+        </div>
+
+        <div className="px-4 pt-4 flex-shrink-0">
+          <MarketsChart operatorEmail={operatorEmail} />
         </div>
 
         <div className="p-4 overflow-y-auto flex-1">
