@@ -6,6 +6,7 @@ import { MarketModelComparison } from './MarketModelComparison';
 import { SEOHead } from '../SEO/SEOHead';
 import { StructuredData, organizationSchema, websiteSchema, softwareApplicationSchema } from '../SEO/StructuredData';
 import { FAQ, generalFAQs } from '../SEO/FAQ';
+import { LeadCaptureModal } from './LeadCaptureModal';
 
 const VARIANTES = [
   {
@@ -57,6 +58,7 @@ const Section = ({ children, className = "", id = "" }: { children: React.ReactN
 export default function Home() {
   const navigate = useNavigate();
   const [copy] = useState(() => VARIANTES[Math.floor(Math.random() * VARIANTES.length)]);
+  const [showLeadModal, setShowLeadModal] = useState(false);
 
   useEffect(() => {
     return initAnalytics('home');
@@ -80,7 +82,7 @@ export default function Home() {
           <Button
             onClick={() => {
               trackClick('home', 'cta', 'header_trial');
-              window.open('https://lmp.bolt.host/', '_blank');
+              setShowLeadModal(true);
             }}
             variant="primary"
             className="text-xs md:text-base px-3 py-2 md:px-6 md:py-3 bg-linkedin-500 hover:bg-linkedin-600"
@@ -116,7 +118,7 @@ export default function Home() {
               <Button
                 onClick={() => {
                   trackClick('home', 'cta', `hero_trial_${copy.id}`);
-                  window.open('https://lmp.bolt.host/', '_blank');
+                  setShowLeadModal(true);
                 }}
                 variant="primary"
                 className="text-lg px-8 py-4 bg-linkedin-500 hover:bg-linkedin-600 shadow-lg"
@@ -336,7 +338,7 @@ export default function Home() {
                   <Button
                     onClick={() => {
                       trackClick('home', 'cta', 'cv_trial');
-                      window.open('https://lmp.bolt.host/', '_blank');
+                      setShowLeadModal(true);
                     }}
                     className="bg-[#0A66C2] hover:bg-[#004182] text-white px-6 py-2 rounded-full font-semibold"
                   >
@@ -825,7 +827,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_trial');
-                window.open('https://lmp.bolt.host/', '_blank');
+                setShowLeadModal(true);
               }}
               className="w-full text-sm py-3 bg-[#0A66C2] hover:bg-[#004182] text-white rounded-full font-semibold"
             >
@@ -881,7 +883,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_bronze');
-                window.open('https://lmp.bolt.host/', '_blank');
+                setShowLeadModal(true);
               }}
               variant="outline"
               className="w-full text-sm py-2"
@@ -941,7 +943,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_argent');
-                window.open('https://lmp.bolt.host/', '_blank');
+                setShowLeadModal(true);
               }}
               variant="secondary"
               className="w-full text-sm py-2"
@@ -998,7 +1000,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'pricing_or');
-                window.open('https://lmp.bolt.host/', '_blank');
+                setShowLeadModal(true);
               }}
               variant="outline"
               className="w-full text-sm py-2 bg-white hover:bg-gray-50"
@@ -1148,7 +1150,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 trackClick('home', 'cta', 'final_trial');
-                window.open('https://lmp.bolt.host/', '_blank');
+                setShowLeadModal(true);
               }}
               variant="secondary"
               className="text-lg px-10 py-5 bg-white text-[#F77F00] hover:bg-gray-100 shadow-2xl"
@@ -1217,6 +1219,10 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {showLeadModal && (
+        <LeadCaptureModal onClose={() => setShowLeadModal(false)} />
+      )}
     </div>
   );
 }
