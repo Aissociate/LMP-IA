@@ -1,6 +1,6 @@
 import { openRouterService } from '../lib/openrouter';
 import { LogService } from './logService';
-import { ContextService, CompanyProfileContext } from './contextService';
+import { ContextService, CompanyProfileContext, UserProfileContext } from './contextService';
 import { supabase } from '../lib/supabase';
 
 interface GenerationParams {
@@ -12,6 +12,7 @@ interface GenerationParams {
   knowledgeContext: any[];
   imageAssets?: any[];
   companyProfile?: CompanyProfileContext | null;
+  userProfile?: UserProfileContext | null;
   useMarketContext: boolean;
   useKnowledgeContext: boolean;
   marketTitle: string;
@@ -85,6 +86,7 @@ export class AIGenerationService {
       knowledgeContext,
       imageAssets = [],
       companyProfile = null,
+      userProfile = null,
       useMarketContext,
       useKnowledgeContext,
       marketTitle,
@@ -94,6 +96,7 @@ export class AIGenerationService {
     this.logService.addLog(`Génération de la section: ${sectionTitle}`);
     this.logService.addLog(`Contextes utilisés:`);
     this.logService.addLog(`   Profil entreprise: ${companyProfile?.company_name ? `OUI (${companyProfile.company_name})` : 'NON'}`);
+    this.logService.addLog(`   Profil utilisateur: ${userProfile?.full_name ? `OUI (${userProfile.full_name})` : 'NON'}`);
     this.logService.addLog(`   Marché: ${useMarketContext && marketContext ? 'OUI' : 'NON'}`);
     this.logService.addLog(`   Base connaissance: ${useKnowledgeContext && knowledgeContext.length > 0 ? `OUI (${knowledgeContext.length} docs)` : 'NON'}`);
     this.logService.addLog(`   Images disponibles: ${imageAssets.length > 0 ? `OUI (${imageAssets.length} images)` : 'NON'}`);
@@ -110,7 +113,8 @@ export class AIGenerationService {
         useMarketContext,
         useKnowledgeContext,
         imageAssets,
-        companyProfile
+        companyProfile,
+        userProfile
       );
 
       this.logService.addLog('🤖 Envoi vers l\'IA...');

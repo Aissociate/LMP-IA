@@ -30,6 +30,17 @@ interface KnowledgeContext {
   extraction_error?: string;
 }
 
+export interface UserProfileContext {
+  full_name: string;
+  company: string;
+  company_name: string;
+  phone: string;
+  address: string;
+  activity_sectors: string[];
+  expertise_areas: string[];
+  geographical_zones: string[];
+}
+
 export interface CompanyProfileContext {
   company_name: string;
   legal_form: string;
@@ -137,6 +148,32 @@ export class ContextService {
       return profile;
     } catch (error) {
       console.error('Erreur lors du chargement du profil entreprise:', error);
+      return null;
+    }
+  }
+
+  async loadUserProfile(userId: string, supabase: any): Promise<UserProfileContext | null> {
+    try {
+      const { data: profile, error } = await supabase
+        .from('user_profiles')
+        .select('full_name, company, company_name, phone, address, activity_sectors, expertise_areas, geographical_zones')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (error) {
+        console.warn('[ContextService] Erreur chargement profil utilisateur:', error);
+        return null;
+      }
+
+      if (!profile) {
+        console.log('[ContextService] Aucun profil utilisateur trouvé');
+        return null;
+      }
+
+      console.log(`[ContextService] Profil utilisateur chargé: ${profile.full_name || 'sans nom'}`);
+      return profile;
+    } catch (error) {
+      console.error('Erreur lors du chargement du profil utilisateur:', error);
       return null;
     }
   }
@@ -297,6 +334,38 @@ export class ContextService {
     return sections.join('\n');
   }
 
+  private formatUserProfileForPrompt(userProfile: UserProfileContext): string {
+    const lines: string[] = [];
+
+    lines.push(`=== PROFIL DU RESPONSABLE / CONTACT ===`);
+
+    if (userProfile.full_name) {
+      lines.push(`NOM COMPLET: ${userProfile.full_name}`);
+    }
+    if (userProfile.company || userProfile.company_name) {
+      lines.push(`ENTREPRISE: ${userProfile.company_name || userProfile.company}`);
+    }
+    if (userProfile.phone) {
+      lines.push(`TÉLÉPHONE: ${userProfile.phone}`);
+    }
+    if (userProfile.address) {
+      lines.push(`ADRESSE: ${userProfile.address}`);
+    }
+    if (userProfile.activity_sectors?.length > 0) {
+      lines.push(`SECTEURS D'ACTIVITÉ: ${userProfile.activity_sectors.join(', ')}`);
+    }
+    if (userProfile.expertise_areas?.length > 0) {
+      lines.push(`DOMAINES D'EXPERTISE: ${userProfile.expertise_areas.join(', ')}`);
+    }
+    if (userProfile.geographical_zones?.length > 0) {
+      lines.push(`ZONES GÉOGRAPHIQUES: ${userProfile.geographical_zones.join(', ')}`);
+    }
+
+    lines.push(`=== FIN DU PROFIL CONTACT ===`);
+
+    return lines.join('\n');
+  }
+
   buildContextualPrompt(
     basePrompt: string,
     sectionTitle: string,
@@ -305,19 +374,28 @@ export class ContextService {
     useMarketContext: boolean,
     useKnowledgeContext: boolean,
     imageAssets: any[] = [],
-    companyProfile: CompanyProfileContext | null = null
+    companyProfile: CompanyProfileContext | null = null,
+    userProfile: UserProfileContext | null = null
   ): string {
     let contextualPrompt = `# ${sectionTitle}\n\n`;
 
-    if (companyProfile && companyProfile.company_name) {
-      const profileText = this.formatCompanyProfileForPrompt(companyProfile);
-      const companySection = `
-${profileText}
+    const hasCompanyProfile = companyProfile && companyProfile.company_name;
+    const hasUserProfile = userProfile && (userProfile.full_name || userProfile.activity_sectors?.length > 0 || userProfile.expertise_areas?.length > 0);
 
-**RÈGLE ABSOLUE:** Lorsque vous rédigez le mémoire technique, vous DEVEZ utiliser les informations ci-dessus pour identifier l'entreprise candidate. NE JAMAIS inventer de nom d'entreprise, d'adresse, de SIRET, de certifications ou de références projet. Si une information n'est pas fournie ci-dessus, ne l'inventez pas : omettez-la ou écrivez "[À compléter]".
+    if (hasCompanyProfile || hasUserProfile) {
+      let identitySection = '';
 
-`;
-      contextualPrompt = companySection + contextualPrompt;
+      if (hasCompanyProfile) {
+        identitySection += this.formatCompanyProfileForPrompt(companyProfile!);
+      }
+
+      if (hasUserProfile) {
+        identitySection += '\n\n' + this.formatUserProfileForPrompt(userProfile!);
+      }
+
+      identitySection += `\n\n**RÈGLE ABSOLUE:** Lorsque vous rédigez le mémoire technique, vous DEVEZ utiliser les informations ci-dessus pour identifier l'entreprise candidate et son responsable. NE JAMAIS inventer de nom d'entreprise, d'adresse, de SIRET, de certifications, de références projet ou de nom de contact. Si une information n'est pas fournie ci-dessus, ne l'inventez pas : omettez-la ou écrivez "[À compléter]".\n\n`;
+
+      contextualPrompt = identitySection + contextualPrompt;
     }
 
     if (useMarketContext && marketContext) {

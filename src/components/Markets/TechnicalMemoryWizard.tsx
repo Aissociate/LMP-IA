@@ -3,7 +3,7 @@ import { X, BookOpen, Download, Building, Target, Cog as Cogs, Calendar, Users, 
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
 import { Section } from '../../types/technicalMemory';
-import { ContextService, CompanyProfileContext } from '../../services/contextService';
+import { ContextService, CompanyProfileContext, UserProfileContext } from '../../services/contextService';
 import { LogService } from '../../services/logService';
 import { SectionService } from '../../services/sectionService';
 import { AIGenerationService } from '../../services/aiGenerationService';
@@ -194,6 +194,7 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
   const [knowledgeContext, setKnowledgeContext] = useState<any[]>([]);
   const [imageAssets, setImageAssets] = useState<any[]>([]);
   const [companyProfile, setCompanyProfile] = useState<CompanyProfileContext | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfileContext | null>(null);
   const [useMarketContext, setUseMarketContext] = useState(true);
   const [useKnowledgeContext, setUseKnowledgeContext] = useState(true);
   const [contextLoading, setContextLoading] = useState(true);
@@ -373,13 +374,15 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
     logService.addLog('Chargement des contextes...');
 
     try {
-      const [context, profile] = await Promise.all([
+      const [context, profile, uProfile] = await Promise.all([
         contextService.loadMarketContext(marketId, supabase),
-        contextService.loadCompanyProfile(user!.id, supabase)
+        contextService.loadCompanyProfile(user!.id, supabase),
+        contextService.loadUserProfile(user!.id, supabase)
       ]);
 
       setMarketContext(context);
       setCompanyProfile(profile);
+      setUserProfile(uProfile);
 
       if (profile?.company_name) {
         logService.addLog(`Profil entreprise chargé: ${profile.company_name}`);
@@ -391,6 +394,13 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
         }
       } else {
         logService.addLog('Aucun profil entreprise trouvé - les informations entreprise ne seront pas incluses');
+      }
+
+      if (uProfile?.full_name) {
+        logService.addLog(`Profil utilisateur chargé: ${uProfile.full_name}`);
+        if (uProfile.expertise_areas?.length > 0) {
+          logService.addLog(`   Expertises: ${uProfile.expertise_areas.join(', ')}`);
+        }
       }
 
       logService.addLog('Contexte marché chargé');
@@ -505,6 +515,7 @@ Consignes:
         knowledgeContext,
         imageAssets,
         companyProfile,
+        userProfile,
         useMarketContext,
         useKnowledgeContext,
         marketTitle
@@ -543,6 +554,7 @@ Consignes:
           knowledgeContext,
           imageAssets,
           companyProfile,
+          userProfile,
           useMarketContext,
           useKnowledgeContext,
           marketTitle
@@ -582,6 +594,7 @@ Consignes:
           knowledgeContext,
           imageAssets,
           companyProfile,
+          userProfile,
           useMarketContext,
           useKnowledgeContext,
           marketTitle
