@@ -262,16 +262,27 @@ ${profileData.reference_projects.map((p: any) =>
 ).join('\n')}
       `.trim();
 
-      // Add to knowledge_files table
+      // Delete old company profile from knowledge base (to avoid duplicates)
+      await supabase
+        .from('knowledge_files')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('name', 'Profil entreprise complet');
+
+      // Add updated profile to knowledge_files table with completed status
       await supabase
         .from('knowledge_files')
         .insert({
           user_id: user.id,
-          file_name: 'Profil entreprise complet',
-          file_type: 'text',
-          content: knowledgeText,
-          extracted_text: knowledgeText
+          name: 'Profil entreprise complet',
+          file_path: 'company_profile.txt',
+          file_size: knowledgeText.length,
+          category: 'company',
+          extracted_content: knowledgeText,
+          extraction_status: 'completed'
         });
+
+      console.log('✅ Profil entreprise ajouté à la base de connaissance avec succès');
     } catch (error) {
       console.error('Error adding to knowledge base:', error);
     }
