@@ -552,7 +552,7 @@ Consignes:
       const currentMemoryId = memoryId || await ensureMemoryRecord();
       if (!currentMemoryId || !user?.id) return;
 
-      const { data: existing } = await supabase
+      const { data: bySectionId } = await supabase
         .from('memo_sections')
         .select('id')
         .eq('market_id', marketId)
@@ -560,18 +560,38 @@ Consignes:
         .eq('section_id', sectionId)
         .maybeSingle();
 
+      let existing = bySectionId;
+
+      if (!existing) {
+        const { data: byTitle } = await supabase
+          .from('memo_sections')
+          .select('id')
+          .eq('market_id', marketId)
+          .eq('user_id', user.id)
+          .eq('title', title)
+          .maybeSingle();
+
+        existing = byTitle;
+      }
+
       if (existing) {
-        await supabase
+        const { error } = await supabase
           .from('memo_sections')
           .update({
             content,
             title,
+            section_id: sectionId,
             updated_at: new Date().toISOString()
           })
           .eq('id', existing.id);
+
+        if (error) {
+          logService.addLog(`Erreur sauvegarde auto "${title}": ${error.message}`);
+          return;
+        }
       } else {
         const sectionIndex = defaultSections.findIndex(s => s.id === sectionId);
-        await supabase
+        const { error } = await supabase
           .from('memo_sections')
           .insert({
             memory_id: currentMemoryId,
@@ -583,11 +603,17 @@ Consignes:
             order_index: sectionIndex >= 0 ? sectionIndex : 0,
             is_generated: true
           });
+
+        if (error) {
+          logService.addLog(`Erreur sauvegarde auto "${title}": ${error.message}`);
+          return;
+        }
       }
 
       logService.addLog(`Section "${title}" sauvegardee automatiquement`);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error auto-saving section:', error);
+      logService.addLog(`Erreur sauvegarde auto: ${error?.message || 'erreur inconnue'}`);
     }
   };
 
@@ -731,13 +757,29 @@ Consignes:
       for (const section of sectionsWithContent) {
         const sectionKey = defaultSections.find(ds => ds.title === section.title)?.id || section.id;
 
-        const { data: existing } = await supabase
+        let existing = null;
+
+        const { data: bySectionId } = await supabase
           .from('memo_sections')
           .select('id')
           .eq('market_id', marketId)
           .eq('user_id', user.id)
-          .or(`section_id.eq.${sectionKey},title.eq.${section.title}`)
+          .eq('section_id', sectionKey)
           .maybeSingle();
+
+        if (bySectionId) {
+          existing = bySectionId;
+        } else {
+          const { data: byTitle } = await supabase
+            .from('memo_sections')
+            .select('id')
+            .eq('market_id', marketId)
+            .eq('user_id', user.id)
+            .eq('title', section.title)
+            .maybeSingle();
+
+          existing = byTitle;
+        }
 
         if (existing) {
           const { error } = await supabase
@@ -750,7 +792,7 @@ Consignes:
             })
             .eq('id', existing.id);
 
-          if (error) throw error;
+          if (error) throw new Error(error.message);
         } else {
           const sectionIndex = defaultSections.findIndex(s => s.id === sectionKey);
           const { error } = await supabase
@@ -766,7 +808,7 @@ Consignes:
               is_generated: true
             });
 
-          if (error) throw error;
+          if (error) throw new Error(error.message);
         }
 
         savedCount++;
@@ -781,9 +823,9 @@ Consignes:
       logService.addLog(`Sauvegarde terminee: ${savedCount} sections au total`);
 
       alert('Memoire technique sauvegarde avec succes');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving memory:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
+      const errorMessage = error?.message || error?.error_description || JSON.stringify(error);
       logService.addLog(`Erreur: ${errorMessage}`);
       alert(`Erreur lors de la sauvegarde: ${errorMessage}`);
     } finally {
