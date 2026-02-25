@@ -1,6 +1,6 @@
 import { openRouterService } from '../lib/openrouter';
 import { LogService } from './logService';
-import { ContextService } from './contextService';
+import { ContextService, CompanyProfileContext } from './contextService';
 import { supabase } from '../lib/supabase';
 
 interface GenerationParams {
@@ -11,6 +11,7 @@ interface GenerationParams {
   marketContext: any;
   knowledgeContext: any[];
   imageAssets?: any[];
+  companyProfile?: CompanyProfileContext | null;
   useMarketContext: boolean;
   useKnowledgeContext: boolean;
   marketTitle: string;
@@ -83,27 +84,23 @@ export class AIGenerationService {
       marketContext,
       knowledgeContext,
       imageAssets = [],
+      companyProfile = null,
       useMarketContext,
       useKnowledgeContext,
       marketTitle,
       useMarketPro = false
     } = params;
 
-    this.logService.addLog(`🚀 Génération de la section: ${sectionTitle}`);
-    this.logService.addLog(`🤖 Modèle IA: Modèle sélectionné par l'admin`);
-    this.logService.addLog(`📊 Configuration: Utilisation du modèle configuré dans les paramètres`);
-    this.logService.addLog(`🎛️ Contextes utilisés:`);
-    this.logService.addLog(`   📋 Marché: ${useMarketContext && marketContext ? '✅ OUI' : '❌ NON'}`);
-    this.logService.addLog(`   🧠 Base connaissance: ${useKnowledgeContext && knowledgeContext.length > 0 ? `✅ OUI (${knowledgeContext.length} docs)` : '❌ NON'}`);
-    this.logService.addLog(`   🖼️ Images disponibles: ${imageAssets.length > 0 ? `✅ OUI (${imageAssets.length} images)` : '❌ NON'}`);
+    this.logService.addLog(`Génération de la section: ${sectionTitle}`);
+    this.logService.addLog(`Contextes utilisés:`);
+    this.logService.addLog(`   Profil entreprise: ${companyProfile?.company_name ? `OUI (${companyProfile.company_name})` : 'NON'}`);
+    this.logService.addLog(`   Marché: ${useMarketContext && marketContext ? 'OUI' : 'NON'}`);
+    this.logService.addLog(`   Base connaissance: ${useKnowledgeContext && knowledgeContext.length > 0 ? `OUI (${knowledgeContext.length} docs)` : 'NON'}`);
+    this.logService.addLog(`   Images disponibles: ${imageAssets.length > 0 ? `OUI (${imageAssets.length} images)` : 'NON'}`);
 
     try {
-      // Combiner le prompt global avec le prompt spécifique de la section
       const finalPrompt = this.buildFinalPrompt(globalPrompt, prompt, sectionTitle);
-      this.logService.addLog(`📝 Prompt final: ${finalPrompt.length} caractères`);
-      if (globalPrompt) {
-        this.logService.addLog(`🌐 Prompt global appliqué: ${globalPrompt.length} caractères`);
-      }
+      this.logService.addLog(`Prompt final: ${finalPrompt.length} caractères`);
 
       const contextualPrompt = this.contextService.buildContextualPrompt(
         finalPrompt,
@@ -112,7 +109,8 @@ export class AIGenerationService {
         knowledgeContext,
         useMarketContext,
         useKnowledgeContext,
-        imageAssets
+        imageAssets,
+        companyProfile
       );
 
       this.logService.addLog('🤖 Envoi vers l\'IA...');

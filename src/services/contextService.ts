@@ -30,6 +30,45 @@ interface KnowledgeContext {
   extraction_error?: string;
 }
 
+export interface CompanyProfileContext {
+  company_name: string;
+  legal_form: string;
+  siret: string;
+  naf_code: string;
+  creation_date: string;
+  address: string;
+  postal_code: string;
+  city: string;
+  region: string;
+  phone: string;
+  email: string;
+  website: string;
+  main_activity: string;
+  secondary_activities: string[];
+  certifications: string[];
+  insurance_info: {
+    company?: string;
+    policy_number?: string;
+    coverage_amount?: string;
+    expiry_date?: string;
+  };
+  workforce: number;
+  annual_turnover: string;
+  reference_projects: Array<{
+    name: string;
+    client: string;
+    year: string;
+    amount: string;
+    description: string;
+  }>;
+  geographical_coverage: string[];
+  equipment_list: string[];
+  subcontracting_capacity: boolean;
+  presentation: string;
+  differentiators: string;
+  target_markets: string[];
+}
+
 export class ContextService {
   private static instance: ContextService;
 
@@ -52,11 +91,10 @@ export class ContextService {
         throw new Error(`Erreur chargement marché: ${error.message}`);
       }
 
-      // Log du prompt global si présent
       if (market.global_memory_prompt) {
-        console.log(`[ContextService] 🌐 Prompt global détecté: ${market.global_memory_prompt.length} caractères`);
+        console.log(`[ContextService] Prompt global détecté: ${market.global_memory_prompt.length} caractères`);
       }
-      // Charger également les documents du marché avec leur contenu et analyses
+
       const { data: documents, error: documentsError } = await supabase
         .from('market_documents')
         .select('id, name, file_size, file_type, analysis_status, extracted_content, analysis_result, created_at')
@@ -77,6 +115,32 @@ export class ContextService {
     }
   }
 
+  async loadCompanyProfile(userId: string, supabase: any): Promise<CompanyProfileContext | null> {
+    try {
+      const { data: profile, error } = await supabase
+        .from('company_profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (error) {
+        console.warn('[ContextService] Erreur chargement profil entreprise:', error);
+        return null;
+      }
+
+      if (!profile) {
+        console.log('[ContextService] Aucun profil entreprise trouvé');
+        return null;
+      }
+
+      console.log(`[ContextService] Profil entreprise chargé: ${profile.company_name}`);
+      return profile;
+    } catch (error) {
+      console.error('Erreur lors du chargement du profil entreprise:', error);
+      return null;
+    }
+  }
+
   async loadImageAssets(userId: string, supabase: any): Promise<any[]> {
     try {
       const { data: assets, error } = await supabase
@@ -92,11 +156,7 @@ export class ContextService {
         return [];
       }
 
-      console.log(`[ContextService] 🖼️ ${assets.length} images chargées pour contexte`);
-      assets.forEach(asset => {
-        console.log(`[ContextService]   📷 ${asset.name}: ${asset.ai_description ? 'avec description IA' : 'sans description'}`);
-      });
-
+      console.log(`[ContextService] ${assets.length} images chargées pour contexte`);
       return assets;
     } catch (error) {
       console.error('Erreur lors du chargement des images:', error);
@@ -110,7 +170,7 @@ export class ContextService {
         .from('knowledge_files')
         .select('id, name, file_size, extracted_content, extraction_status, extraction_error')
         .eq('user_id', userId)
-        .eq('extraction_status', 'completed'); // Seulement les fichiers avec contenu extrait
+        .eq('extraction_status', 'completed');
 
       if (error) {
         throw new Error(`Erreur chargement base de connaissance: ${error.message}`);
@@ -120,18 +180,19 @@ export class ContextService {
         return [];
       }
 
-      // Utiliser directement le contenu extrait stocké en base
-      const knowledgeWithContent = knowledge.map(doc => ({
-        id: doc.id,
-        name: doc.name,
-        file_size: doc.file_size,
-        content: doc.extracted_content || '', // Contenu déjà extrait
-        extraction_error: doc.extraction_error
-      }));
+      const knowledgeWithContent = knowledge
+        .filter((doc: any) => doc.name !== 'Profil entreprise complet')
+        .map((doc: any) => ({
+          id: doc.id,
+          name: doc.name,
+          file_size: doc.file_size,
+          content: doc.extracted_content || '',
+          extraction_error: doc.extraction_error
+        }));
 
-      console.log(`[ContextService] ✅ ${knowledgeWithContent.length} documents chargés depuis la base`);
-      knowledgeWithContent.forEach(doc => {
-        console.log(`[ContextService]   📄 ${doc.name}: ${Math.round((doc.content?.length || 0) / 1000)}k caractères`);
+      console.log(`[ContextService] ${knowledgeWithContent.length} documents base de connaissance chargés`);
+      knowledgeWithContent.forEach((doc: KnowledgeContext) => {
+        console.log(`[ContextService]   ${doc.name}: ${Math.round((doc.content?.length || 0) / 1000)}k caractères`);
       });
 
       return knowledgeWithContent;
@@ -141,6 +202,101 @@ export class ContextService {
     }
   }
 
+  private formatCompanyProfileForPrompt(profile: CompanyProfileContext): string {
+    const sections: string[] = [];
+
+    sections.push(`=== PROFIL OFFICIEL DE L'ENTREPRISE CANDIDATE ===`);
+    sections.push(`(Ces informations sont RÉELLES et VÉRIFIÉES. Vous DEVEZ les utiliser telles quelles.)\n`);
+
+    if (profile.company_name) {
+      sections.push(`NOM DE L'ENTREPRISE: ${profile.company_name}`);
+    }
+    if (profile.legal_form) {
+      sections.push(`FORME JURIDIQUE: ${profile.legal_form}`);
+    }
+    if (profile.siret) {
+      sections.push(`SIRET: ${profile.siret}`);
+    }
+    if (profile.naf_code) {
+      sections.push(`CODE NAF: ${profile.naf_code}`);
+    }
+    if (profile.creation_date) {
+      sections.push(`DATE DE CRÉATION: ${profile.creation_date}`);
+    }
+    if (profile.workforce) {
+      sections.push(`EFFECTIF: ${profile.workforce} personnes`);
+    }
+    if (profile.annual_turnover) {
+      sections.push(`CHIFFRE D'AFFAIRES: ${profile.annual_turnover}`);
+    }
+
+    if (profile.address || profile.city) {
+      sections.push(`\nCOORDONNÉES:`);
+      if (profile.address) sections.push(`- Adresse: ${profile.address}`);
+      if (profile.postal_code || profile.city) sections.push(`- Ville: ${profile.postal_code || ''} ${profile.city || ''}`);
+      if (profile.region) sections.push(`- Région: ${profile.region}`);
+      if (profile.phone) sections.push(`- Téléphone: ${profile.phone}`);
+      if (profile.email) sections.push(`- Email: ${profile.email}`);
+      if (profile.website) sections.push(`- Site web: ${profile.website}`);
+    }
+
+    if (profile.main_activity) {
+      sections.push(`\nACTIVITÉ PRINCIPALE: ${profile.main_activity}`);
+    }
+    if (profile.secondary_activities?.length > 0) {
+      sections.push(`ACTIVITÉS SECONDAIRES: ${profile.secondary_activities.join(', ')}`);
+    }
+    if (profile.target_markets?.length > 0) {
+      sections.push(`MARCHÉS CIBLÉS: ${profile.target_markets.join(', ')}`);
+    }
+    if (profile.geographical_coverage?.length > 0) {
+      sections.push(`COUVERTURE GÉOGRAPHIQUE: Départements ${profile.geographical_coverage.join(', ')}`);
+    }
+
+    if (profile.certifications?.length > 0) {
+      sections.push(`\nCERTIFICATIONS ET QUALIFICATIONS:`);
+      profile.certifications.forEach(cert => sections.push(`- ${cert}`));
+    }
+
+    if (profile.equipment_list?.length > 0) {
+      sections.push(`\nMATÉRIEL ET ÉQUIPEMENTS:`);
+      profile.equipment_list.forEach(eq => sections.push(`- ${eq}`));
+    }
+
+    if (profile.insurance_info?.company) {
+      sections.push(`\nASSURANCE RC PROFESSIONNELLE:`);
+      if (profile.insurance_info.company) sections.push(`- Compagnie: ${profile.insurance_info.company}`);
+      if (profile.insurance_info.policy_number) sections.push(`- Police: ${profile.insurance_info.policy_number}`);
+      if (profile.insurance_info.coverage_amount) sections.push(`- Couverture: ${profile.insurance_info.coverage_amount}`);
+      if (profile.insurance_info.expiry_date) sections.push(`- Validité: ${profile.insurance_info.expiry_date}`);
+    }
+
+    sections.push(`\nCAPACITÉ DE SOUS-TRAITANCE: ${profile.subcontracting_capacity ? 'Oui' : 'Non'}`);
+
+    if (profile.presentation) {
+      sections.push(`\nPRÉSENTATION DE L'ENTREPRISE:\n${profile.presentation}`);
+    }
+
+    if (profile.differentiators) {
+      sections.push(`\nÉLÉMENTS DIFFÉRENCIANTS:\n${profile.differentiators}`);
+    }
+
+    if (profile.reference_projects?.length > 0) {
+      sections.push(`\nPROJETS DE RÉFÉRENCE:`);
+      profile.reference_projects.forEach((p, i) => {
+        sections.push(`${i + 1}. ${p.name}`);
+        if (p.client) sections.push(`   Client: ${p.client}`);
+        if (p.year) sections.push(`   Année: ${p.year}`);
+        if (p.amount) sections.push(`   Montant: ${p.amount}`);
+        if (p.description) sections.push(`   Description: ${p.description}`);
+      });
+    }
+
+    sections.push(`\n=== FIN DU PROFIL ENTREPRISE ===`);
+
+    return sections.join('\n');
+  }
+
   buildContextualPrompt(
     basePrompt: string,
     sectionTitle: string,
@@ -148,10 +304,22 @@ export class ContextService {
     knowledgeContext: KnowledgeContext[],
     useMarketContext: boolean,
     useKnowledgeContext: boolean,
-    imageAssets: any[] = []
+    imageAssets: any[] = [],
+    companyProfile: CompanyProfileContext | null = null
   ): string {
     let contextualPrompt = `# ${sectionTitle}\n\n`;
-    
+
+    if (companyProfile && companyProfile.company_name) {
+      const profileText = this.formatCompanyProfileForPrompt(companyProfile);
+      const companySection = `
+${profileText}
+
+**RÈGLE ABSOLUE:** Lorsque vous rédigez le mémoire technique, vous DEVEZ utiliser les informations ci-dessus pour identifier l'entreprise candidate. NE JAMAIS inventer de nom d'entreprise, d'adresse, de SIRET, de certifications ou de références projet. Si une information n'est pas fournie ci-dessus, ne l'inventez pas : omettez-la ou écrivez "[À compléter]".
+
+`;
+      contextualPrompt = companySection + contextualPrompt;
+    }
+
     if (useMarketContext && marketContext) {
       const marketInfo = `
 CONTEXTE DU MARCHÉ :
@@ -181,29 +349,24 @@ ${marketContext.documents.map(doc => {
 `;
       contextualPrompt = marketInfo + contextualPrompt;
     }
-    
+
     if (useKnowledgeContext && knowledgeContext.length > 0) {
-      // Filtrer uniquement les documents avec du contenu extrait avec succès
-      const validKnowledgeContext = knowledgeContext.filter(doc => 
-        doc.content && doc.content.trim().length > 50 // Minimum 50 caractères pour être utile
+      const validKnowledgeContext = knowledgeContext.filter(doc =>
+        doc.content && doc.content.trim().length > 50
       );
-      
-      if (validKnowledgeContext.length === 0) {
-        // Pas de documents valides, ne pas inclure de section knowledge
-        contextualPrompt += basePrompt;
-        return contextualPrompt;
-      }
-      
-      const knowledgeInfo = `
-BASE DE CONNAISSANCE ENTREPRISE :
+
+      if (validKnowledgeContext.length > 0) {
+        const knowledgeInfo = `
+DOCUMENTS DE LA BASE DE CONNAISSANCE ENTREPRISE :
 ${validKnowledgeContext.map(doc => {
-  return `## Document: ${doc.name} (${Math.round(doc.file_size / 1024)} KB)\n**Contenu:**\n${doc.content}\n\n`;
+  return `## Document: ${doc.name}\n${doc.content}\n`;
 }).join('\n')}
 
-**INSTRUCTIONS:** Utilisez le contenu de ces documents pour personnaliser le mémoire technique avec notre expertise, nos méthodes spécifiques, nos références projets et notre savoir-faire. Adaptez le vocabulaire et les approches selon notre style d'entreprise.
+**INSTRUCTIONS:** Utilisez le contenu de ces documents pour personnaliser le mémoire technique avec notre expertise réelle, nos méthodes spécifiques, nos références projets et notre savoir-faire. NE PAS inventer d'informations ; utilisez UNIQUEMENT ce qui est fourni ci-dessus.
 
 `;
-      contextualPrompt = knowledgeInfo + contextualPrompt;
+        contextualPrompt = knowledgeInfo + contextualPrompt;
+      }
     }
 
     if (imageAssets.length > 0) {
@@ -221,7 +384,7 @@ ${validAssets.map(asset => {
 
 **INSTRUCTIONS POUR LES IMAGES:**
 - Si une image de cette bibliothèque illustre parfaitement le sujet de cette section, INSÉREZ son code d'insertion dans le contenu généré.
-- Placez l'image à l'endroit le plus pertinent du texte (par exemple après un paragraphe qu'elle illustre).
+- Placez l'image à l'endroit le plus pertinent du texte.
 - N'insérez des images QUE si elles sont vraiment pertinentes pour cette section spécifique.
 - Utilisez UNIQUEMENT les codes d'insertion fournis ci-dessus (format: ![nom](asset:id)).
 

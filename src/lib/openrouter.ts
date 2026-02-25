@@ -148,21 +148,25 @@ class OpenRouterService {
     marketContext?: string,
     useMarketPro: boolean = false
   ): Promise<string> {
-    // Cette méthode utilise désormais l'edge function ai-generation
-    // qui respecte le modèle sélectionné par l'admin
-    const systemPrompt = `Tu es un expert en rédaction de mémoires techniques pour les marchés publics.
-    Tu dois rédiger du contenu professionnel, structuré et convaincant pour la section "${sectionTitle}".
+    const systemPrompt = `Tu es un expert en rédaction de mémoires techniques pour les marchés publics français.
+Tu dois rédiger du contenu professionnel, structuré et convaincant pour la section "${sectionTitle}".
 
-    Le contenu doit être :
-    - Professionnel et adapté au contexte des marchés publics
-    - Structuré avec des titres et sous-titres
-    - Convaincant et mettant en valeur l'expertise
-    - Concret avec des exemples et références
-    - Respectueux des codes et normes du secteur public`;
+RÈGLES IMPÉRATIVES :
+1. Utilise UNIQUEMENT les informations fournies dans le contexte (profil entreprise, base de connaissance, documents du marché).
+2. NE JAMAIS inventer de nom d'entreprise, SIRET, adresse, certifications, références projets ou tout autre fait concret.
+3. Si une information n'est pas disponible dans le contexte fourni, écris "[À compléter]" plutôt que d'inventer.
+4. Cite les vraies certifications, les vrais projets de référence, les vrais équipements de l'entreprise tels que fournis.
+5. Adapte le contenu au marché spécifique mentionné dans le contexte.
+
+Le contenu doit être :
+- Professionnel et adapté au contexte des marchés publics
+- Structuré avec des titres et sous-titres en Markdown
+- Convaincant et mettant en valeur l'expertise RÉELLE de l'entreprise
+- Concret avec les références et certifications RÉELLES fournies
+- Respectueux des codes et normes du secteur public`;
 
     const userPrompt = `${marketContext ? `Contexte du marché: ${marketContext}\n\n` : ''}${prompt}`;
 
-    // Utilise le modèle admin par défaut (pas de paramètre model)
     return this.generateContent(userPrompt, systemPrompt, { maxTokens: 100000 });
   }
 }

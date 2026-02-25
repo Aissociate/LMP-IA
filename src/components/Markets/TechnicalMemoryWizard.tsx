@@ -3,7 +3,7 @@ import { X, BookOpen, Download, Building, Target, Cog as Cogs, Calendar, Users, 
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
 import { Section } from '../../types/technicalMemory';
-import { ContextService } from '../../services/contextService';
+import { ContextService, CompanyProfileContext } from '../../services/contextService';
 import { LogService } from '../../services/logService';
 import { SectionService } from '../../services/sectionService';
 import { AIGenerationService } from '../../services/aiGenerationService';
@@ -193,6 +193,7 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
   const [marketContext, setMarketContext] = useState<any>(null);
   const [knowledgeContext, setKnowledgeContext] = useState<any[]>([]);
   const [imageAssets, setImageAssets] = useState<any[]>([]);
+  const [companyProfile, setCompanyProfile] = useState<CompanyProfileContext | null>(null);
   const [useMarketContext, setUseMarketContext] = useState(true);
   const [useKnowledgeContext, setUseKnowledgeContext] = useState(true);
   const [contextLoading, setContextLoading] = useState(true);
@@ -369,36 +370,51 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
 
   const loadContexts = async () => {
     setContextLoading(true);
-    logService.addLog('🔄 Chargement des contextes...');
+    logService.addLog('Chargement des contextes...');
 
     try {
-      const context = await contextService.loadMarketContext(marketId, supabase);
+      const [context, profile] = await Promise.all([
+        contextService.loadMarketContext(marketId, supabase),
+        contextService.loadCompanyProfile(user!.id, supabase)
+      ]);
+
       setMarketContext(context);
-      logService.addLog('✅ Contexte marché chargé');
+      setCompanyProfile(profile);
+
+      if (profile?.company_name) {
+        logService.addLog(`Profil entreprise chargé: ${profile.company_name}`);
+        if (profile.certifications?.length > 0) {
+          logService.addLog(`   ${profile.certifications.length} certifications`);
+        }
+        if (profile.reference_projects?.length > 0) {
+          logService.addLog(`   ${profile.reference_projects.length} projets de référence`);
+        }
+      } else {
+        logService.addLog('Aucun profil entreprise trouvé - les informations entreprise ne seront pas incluses');
+      }
+
+      logService.addLog('Contexte marché chargé');
 
       if (context?.global_memory_prompt && !localStorage.getItem(`global-prompt-${marketId}`)) {
         setGlobalPrompt(context.global_memory_prompt);
-        logService.addLog(`🌐 Prompt global du marché chargé (${context.global_memory_prompt.length} caractères)`);
+        logService.addLog(`Prompt global du marché chargé (${context.global_memory_prompt.length} caractères)`);
       }
 
-      // Charger le contexte de la base de connaissances
       if (useKnowledgeContext) {
         const knowledgeCtx = await contextService.loadKnowledgeContext(user!.id, supabase);
         setKnowledgeContext(knowledgeCtx);
-        logService.addLog(`✅ Base de connaissances chargée (${knowledgeCtx.length} documents)`);
+        logService.addLog(`Base de connaissances chargée (${knowledgeCtx.length} documents)`);
       }
 
-      // Charger les images disponibles
       const assets = await contextService.loadImageAssets(user!.id, supabase);
       setImageAssets(assets);
-      logService.addLog(`✅ Images chargées (${assets.length} images)`);
+      logService.addLog(`Images chargées (${assets.length} images)`);
 
-      // Déclencher l'analyse du format idéal après le chargement du contexte
       if (context) {
         setTimeout(() => analyzeIdealFormat(), 100);
       }
     } catch (error) {
-      logService.addLog(`❌ Erreur chargement contextes: ${(error as Error).message}`);
+      logService.addLog(`Erreur chargement contextes: ${(error as Error).message}`);
     } finally {
       setContextLoading(false);
     }
@@ -488,6 +504,7 @@ Consignes:
         marketContext,
         knowledgeContext,
         imageAssets,
+        companyProfile,
         useMarketContext,
         useKnowledgeContext,
         marketTitle
@@ -525,6 +542,7 @@ Consignes:
           marketContext,
           knowledgeContext,
           imageAssets,
+          companyProfile,
           useMarketContext,
           useKnowledgeContext,
           marketTitle
@@ -547,7 +565,6 @@ Consignes:
 
     setGeneratingAll(true);
 
-    // Marquer TOUTES les sections comme en cours de génération et vider leur contenu
     const updatedSections = sections.map(section => ({
       ...section,
       isGenerating: true,
@@ -564,6 +581,7 @@ Consignes:
           marketContext,
           knowledgeContext,
           imageAssets,
+          companyProfile,
           useMarketContext,
           useKnowledgeContext,
           marketTitle
