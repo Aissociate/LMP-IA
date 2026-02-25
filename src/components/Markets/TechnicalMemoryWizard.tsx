@@ -184,6 +184,9 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
   const [showDisclaimerModal, setShowDisclaimerModal] = useState(false);
   const [pendingExportType, setPendingExportType] = useState<'word' | 'pdf' | null>(null);
 
+  // Memory record
+  const [memoryId, setMemoryId] = useState<string | null>(null);
+
   // Subscription state
   const [subscriptionInfo, setSubscriptionInfo] = useState<any>(null);
   const [loadingSubscription, setLoadingSubscription] = useState(true);
@@ -215,9 +218,51 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
     return unsubscribe;
   }, [activeSection, sections, adminPrompts]);
 
+  const ensureMemoryRecord = async (): Promise<string | null> => {
+    if (memoryId) return memoryId;
+
+    try {
+      const { data: existing } = await supabase
+        .from('technical_memories')
+        .select('id')
+        .eq('market_id', marketId)
+        .eq('user_id', user!.id)
+        .maybeSingle();
+
+      if (existing) {
+        setMemoryId(existing.id);
+        return existing.id;
+      }
+
+      const { data: created, error } = await supabase
+        .from('technical_memories')
+        .insert({
+          market_id: marketId,
+          user_id: user!.id,
+          title: marketTitle,
+          status: 'draft'
+        })
+        .select('id')
+        .single();
+
+      if (error) {
+        console.error('Error creating technical memory:', error);
+        return null;
+      }
+
+      setMemoryId(created.id);
+      logService.addLog('Session mémoire technique initialisée');
+      return created.id;
+    } catch (error) {
+      console.error('Error ensuring memory record:', error);
+      return null;
+    }
+  };
+
   React.useEffect(() => {
     if (isOpen) {
       if (user && user.id) {
+        ensureMemoryRecord();
         checkSubscription();
         loadContexts();
         loadExistingSections();
@@ -262,39 +307,40 @@ export const TechnicalMemoryWizard: React.FC<TechnicalMemoryWizardProps> = ({
 
   const loadExistingSections = async () => {
     setSectionsLoading(true);
-    logService.addLog('🔄 Chargement des sections sauvegardées...');
-    
+    logService.addLog('Chargement des sections sauvegardees...');
+
     try {
       const { data: existingSections, error } = await supabase
         .from('memo_sections')
-        .select('id, title, content, created_at')
+        .select('id, title, section_id, content, created_at')
         .eq('market_id', marketId);
 
       if (error) {
-        logService.addLog(`❌ Erreur chargement sections: ${error.message}`);
+        logService.addLog(`Erreur chargement sections: ${error.message}`);
         throw error;
       }
 
       if (existingSections && existingSections.length > 0) {
-        logService.addLog(`✅ ${existingSections.length} sections trouvées en base`);
-        
-        // Mettre à jour les sections avec le contenu sauvegardé
+        logService.addLog(`${existingSections.length} sections trouvees en base`);
+
         setSections(prev => prev.map(section => {
-          const existingSection = existingSections.find(es => es.title === section.title);
+          const existingSection = existingSections.find(
+            es => es.section_id === section.id || es.title === section.title
+          );
           if (existingSection) {
-            logService.addLog(`   📄 Section "${section.title}" restaurée (${Math.round(existingSection.content.length / 1000)}k chars)`);
+            logService.addLog(`   Section "${section.title}" restauree (${Math.round((existingSection.content?.length || 0) / 1000)}k chars)`);
             return {
               ...section,
-              content: existingSection.content
+              content: existingSection.content || ''
             };
           }
           return section;
         }));
       } else {
-        logService.addLog('📝 Aucune section sauvegardée pour ce marché');
+        logService.addLog('Aucune section sauvegardee pour ce marche');
       }
     } catch (error) {
-      logService.addLog(`❌ Erreur lors du chargement des sections: ${(error as Error).message}`);
+      logService.addLog(`Erreur lors du chargement des sections: ${(error as Error).message}`);
     } finally {
       setSectionsLoading(false);
     }
@@ -474,27 +520,74 @@ Consignes:
     }
   };
 
+  const saveTimers = React.useRef<Record<string, NodeJS.Timeout>>({});
+
   const handleSectionUpdate = async (sectionId: string, updates: Partial<Section>) => {
-    setSections(prev => sectionService.updateSection(prev, sectionId, updates));
-    
-    // Sauvegarder en base si le contenu a changé
-    if (updates.content !== undefined) {
-      try {
-        const section = sections.find(s => s.id === sectionId);
+    setSections(prev => {
+      const updated = sectionService.updateSection(prev, sectionId, updates);
+
+      if (updates.content !== undefined && updates.content.length > 0) {
+        const section = updated.find(s => s.id === sectionId);
         if (section) {
-          await supabase
-            .from('memo_sections')
-            .upsert({
-              market_id: marketId,
-              section_id: sectionId,
-              section_title: section.title,
-              content: updates.content,
-              updated_at: new Date().toISOString()
-            }, { onConflict: 'market_id,section_id' });
+          const isGenerated = updates.isGenerating === false;
+          if (isGenerated) {
+            saveSectionToDb(sectionId, section.title, updates.content);
+          } else {
+            if (saveTimers.current[sectionId]) {
+              clearTimeout(saveTimers.current[sectionId]);
+            }
+            saveTimers.current[sectionId] = setTimeout(() => {
+              saveSectionToDb(sectionId, section.title, updates.content!);
+            }, 2000);
+          }
         }
-      } catch (error) {
-        console.error('Error saving section:', error);
       }
+
+      return updated;
+    });
+  };
+
+  const saveSectionToDb = async (sectionId: string, title: string, content: string) => {
+    try {
+      const currentMemoryId = memoryId || await ensureMemoryRecord();
+      if (!currentMemoryId || !user?.id) return;
+
+      const { data: existing } = await supabase
+        .from('memo_sections')
+        .select('id')
+        .eq('market_id', marketId)
+        .eq('user_id', user.id)
+        .eq('section_id', sectionId)
+        .maybeSingle();
+
+      if (existing) {
+        await supabase
+          .from('memo_sections')
+          .update({
+            content,
+            title,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', existing.id);
+      } else {
+        const sectionIndex = defaultSections.findIndex(s => s.id === sectionId);
+        await supabase
+          .from('memo_sections')
+          .insert({
+            memory_id: currentMemoryId,
+            market_id: marketId,
+            user_id: user.id,
+            section_id: sectionId,
+            title,
+            content,
+            order_index: sectionIndex >= 0 ? sectionIndex : 0,
+            is_generated: true
+          });
+      }
+
+      logService.addLog(`Section "${title}" sauvegardee automatiquement`);
+    } catch (error) {
+      console.error('Error auto-saving section:', error);
     }
   };
 
@@ -611,13 +704,13 @@ Consignes:
 
   const handleSaveMemory = async () => {
     if (!user?.id) {
-      alert('Utilisateur non connecté');
+      alert('Utilisateur non connecte');
       return;
     }
 
     const sectionsWithContent = sectionService.getCompletedSections(sections);
     if (sectionsWithContent.length === 0) {
-      alert('Aucune section avec du contenu à sauvegarder');
+      alert('Aucune section avec du contenu a sauvegarder');
       return;
     }
 
@@ -626,120 +719,72 @@ Consignes:
     setShowLogs(true);
 
     try {
-      logService.addLog('💾 Début de la sauvegarde du mémoire technique...');
+      logService.addLog('Debut de la sauvegarde du memoire technique...');
 
-      // Créer ou récupérer le mémoire technique
-      logService.addLog('🔍 Vérification du mémoire technique...');
-      let memoryId: string;
-
-      const { data: existingMemory } = await supabase
-        .from('technical_memories')
-        .select('id')
-        .eq('market_id', marketId)
-        .eq('user_id', user!.id)
-        .maybeSingle();
-
-      if (existingMemory) {
-        memoryId = existingMemory.id;
-        logService.addLog('✓ Mémoire technique existant trouvé');
-      } else {
-        logService.addLog('📝 Création du mémoire technique...');
-        const { data: newMemory, error: memoryError } = await supabase
-          .from('technical_memories')
-          .insert({
-            market_id: marketId,
-            user_id: user!.id,
-            title: marketTitle,
-            status: 'draft'
-          })
-          .select('id')
-          .single();
-
-        if (memoryError) {
-          logService.addLog(`❌ Erreur création mémoire: ${memoryError.message}`);
-          throw memoryError;
-        }
-
-        memoryId = newMemory.id;
-        logService.addLog('✅ Mémoire technique créé');
+      const currentMemoryId = memoryId || await ensureMemoryRecord();
+      if (!currentMemoryId) {
+        throw new Error('Impossible de creer la session memoire technique');
       }
 
-      // Vérifier les sections existantes
-      logService.addLog('🔍 Vérification des sections existantes...');
-      const { data: existingSections, error: checkError } = await supabase
-        .from('memo_sections')
-        .select('id, title')
-        .eq('market_id', marketId);
+      let savedCount = 0;
 
-      if (checkError) {
-        logService.addLog(`❌ Erreur vérification: ${checkError.message}`);
-        throw checkError;
-      }
+      for (const section of sectionsWithContent) {
+        const sectionKey = defaultSections.find(ds => ds.title === section.title)?.id || section.id;
 
-      logService.addLog(`✓ ${existingSections?.length || 0} sections trouvées en base`);
-
-      // Identifier les sections à insérer ou mettre à jour
-      const existingSectionTitles = new Set(existingSections?.map(s => s.title) || []);
-      const sectionsToInsert = sectionsWithContent.filter(s => !existingSectionTitles.has(s.title));
-      const sectionsToUpdate = sectionsWithContent.filter(s => existingSectionTitles.has(s.title));
-
-      // Insérer les nouvelles sections
-      if (sectionsToInsert.length > 0) {
-        logService.addLog(`📝 Insertion de ${sectionsToInsert.length} nouvelles sections...`);
-
-        const insertData = sectionsToInsert.map((section, index) => ({
-          memory_id: memoryId,
-          market_id: marketId,
-          user_id: user!.id,
-          title: section.title,
-          content: section.content,
-          order_index: index,
-          is_generated: true
-        }));
-
-        const { error: insertError } = await supabase
+        const { data: existing } = await supabase
           .from('memo_sections')
-          .insert(insertData);
+          .select('id')
+          .eq('market_id', marketId)
+          .eq('user_id', user.id)
+          .or(`section_id.eq.${sectionKey},title.eq.${section.title}`)
+          .maybeSingle();
 
-        if (insertError) {
-          logService.addLog(`❌ Erreur insertion: ${insertError.message}`);
-          throw insertError;
-        }
-
-        logService.addLog(`✅ ${sectionsToInsert.length} sections insérées`);
-      }
-
-      // Mettre à jour les sections existantes
-      if (sectionsToUpdate.length > 0) {
-        logService.addLog(`🔄 Mise à jour de ${sectionsToUpdate.length} sections...`);
-
-        for (const section of sectionsToUpdate) {
-          const { error: updateError } = await supabase
+        if (existing) {
+          const { error } = await supabase
             .from('memo_sections')
             .update({
               content: section.content,
+              section_id: sectionKey,
+              title: section.title,
               updated_at: new Date().toISOString()
             })
-            .eq('market_id', marketId)
-            .eq('title', section.title);
+            .eq('id', existing.id);
 
-          if (updateError) {
-            logService.addLog(`❌ Erreur mise à jour section ${section.title}: ${updateError.message}`);
-            throw updateError;
-          }
+          if (error) throw error;
+        } else {
+          const sectionIndex = defaultSections.findIndex(s => s.id === sectionKey);
+          const { error } = await supabase
+            .from('memo_sections')
+            .insert({
+              memory_id: currentMemoryId,
+              market_id: marketId,
+              user_id: user.id,
+              section_id: sectionKey,
+              title: section.title,
+              content: section.content,
+              order_index: sectionIndex >= 0 ? sectionIndex : 0,
+              is_generated: true
+            });
+
+          if (error) throw error;
         }
 
-        logService.addLog(`✅ ${sectionsToUpdate.length} sections mises à jour`);
+        savedCount++;
+        logService.addLog(`Section "${section.title}" sauvegardee (${savedCount}/${sectionsWithContent.length})`);
       }
 
-      logService.addLog(`✅ Sauvegarde terminée: ${sectionsWithContent.length} sections au total`);
-      logService.addLog('💡 Le mémoire technique est maintenant disponible pour les documents économiques');
+      await supabase
+        .from('technical_memories')
+        .update({ updated_at: new Date().toISOString() })
+        .eq('id', currentMemoryId);
 
-      alert('Mémoire technique sauvegardé avec succès');
+      logService.addLog(`Sauvegarde terminee: ${savedCount} sections au total`);
+
+      alert('Memoire technique sauvegarde avec succes');
     } catch (error) {
       console.error('Error saving memory:', error);
       const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
-      logService.addLog(`❌ Erreur: ${errorMessage}`);
+      logService.addLog(`Erreur: ${errorMessage}`);
       alert(`Erreur lors de la sauvegarde: ${errorMessage}`);
     } finally {
       setSaving(false);
