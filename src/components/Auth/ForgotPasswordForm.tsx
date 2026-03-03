@@ -78,7 +78,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onBack }
 
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mx-auto mb-4">
-            <img src="/image.png" alt="Le Marché Public.fr" className="h-16 w-auto" />
+            <img src="https://assets.cdn.filesafe.space/Khh3gHoXw8rbmLrz89s4/media/69a71c884cf19949ce193972.png" alt="Le Marché Public.fr" className="h-16 w-auto" />
           </div>
           <h1 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
             Mot de passe oublié ?

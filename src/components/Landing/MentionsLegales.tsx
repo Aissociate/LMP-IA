@@ -15,7 +15,7 @@ export function MentionsLegales() {
             <ArrowLeft className="w-5 h-5" />
             Retour à l'accueil
           </button>
-          <img src="/image.png" alt="Le Marché Public.fr" className="h-16 w-auto object-contain" />
+          <img src="https://assets.cdn.filesafe.space/Khh3gHoXw8rbmLrz89s4/media/69a71c884cf19949ce193972.png" alt="Le Marché Public.fr" className="h-16 w-auto object-contain" />
         </div>
       </header>
 

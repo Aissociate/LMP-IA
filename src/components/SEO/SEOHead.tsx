@@ -19,7 +19,7 @@ export function SEOHead({
   title = "LeMarchéPublic.fr - Plateforme IA pour Remporter vos Marchés Publics à La Réunion 974",
   description = "Gagnez plus de marchés publics à La Réunion avec notre IA. Génération automatique de mémoires techniques, BPU, veille 24/7 des appels d'offres. Solution pour PME, BTP et artisans réunionnais.",
   keywords = "marchés publics réunion, appels d'offres 974, mémoire technique IA, BPU automatique, BOAMP réunion, intelligence artificielle marchés publics, dématérialisation marchés publics, sourcing marchés publics",
-  ogImage = "https://lemarchepublic.fr/image.png",
+  ogImage = "https://assets.cdn.filesafe.space/Khh3gHoXw8rbmLrz89s4/media/69a71c884cf19949ce193972.png",
   canonical,
   type = 'website',
   author = "LeMarchéPublic.fr",

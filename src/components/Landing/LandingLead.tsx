@@ -277,7 +277,7 @@ export const LandingLead: React.FC = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 md:h-20 items-center justify-center">
             <div className="flex items-center gap-3 cursor-pointer transition-transform hover:scale-105" onClick={() => navigate("/")}>
-              <img src="/image.png" alt="Logo" className="h-10 md:h-12 w-auto object-contain" />
+              <img src="https://assets.cdn.filesafe.space/Khh3gHoXw8rbmLrz89s4/media/69a71c884cf19949ce193972.png" alt="Logo" className="h-10 md:h-12 w-auto object-contain" />
             </div>
           </div>
         </div>
@@ -884,7 +884,7 @@ export const LandingLead: React.FC = () => {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:64px_64px]"></div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <img src="/image.png" alt="Logo" className="h-12 w-auto mx-auto mb-4" />
+            <img src="https://assets.cdn.filesafe.space/Khh3gHoXw8rbmLrz89s4/media/69a71c884cf19949ce193972.png" alt="Logo" className="h-12 w-auto mx-auto mb-4" />
             <p className="text-gray-400 mb-2">
               © 2025 LeMarchéPublic.fr - Tous droits réservés
             </p>

@@ -113,7 +113,7 @@ export const Recrutement: React.FC = () => {
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <img src="/image.png" alt="Le Marché Public.fr" className="h-[120px] w-auto" />
+            <img src="https://assets.cdn.filesafe.space/Khh3gHoXw8rbmLrz89s4/media/69a71c884cf19949ce193972.png" alt="Le Marché Public.fr" className="h-[120px] w-auto" />
           </div>
           <Button
             onClick={() => window.location.href = '/'}
