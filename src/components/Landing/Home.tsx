@@ -75,9 +75,9 @@ export default function Home() {
       <StructuredData data={[organizationSchema, websiteSchema, softwareApplicationSchema]} />
       {/* Header */}
       <header className="bg-iris-card shadow-subtle sticky top-0 z-50 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-2">
+        <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex justify-between items-center gap-2">
           <div className="flex items-center flex-shrink-0">
-            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-16 md:h-24 lg:h-[120px] w-auto object-contain" />
+            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-12 md:h-16 w-auto object-contain" />
           </div>
           <Button
             onClick={() => {
