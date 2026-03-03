@@ -72,7 +72,7 @@ export const ResetPasswordForm: React.FC = () => {
       <div className={`${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white'} rounded-2xl shadow-2xl p-8 transition-colors duration-200`}>
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mx-auto mb-4">
-            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-16 w-auto" />
+            <img src="/image.png" alt="Le Marché Public.fr" className="h-16 w-auto" />
           </div>
           <h1 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
             Nouveau mot de passe

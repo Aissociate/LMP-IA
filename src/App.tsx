@@ -51,7 +51,7 @@ function AppContent() {
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-200 border-t-orange-600"></div>
           <div className="flex items-center gap-2">
-            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-12 w-auto" />
+            <img src="/image.png" alt="Le Marché Public.fr" className="h-12 w-auto" />
             <span className={`font-bold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>Le Marché Public.fr</span>
           </div>
         </div>

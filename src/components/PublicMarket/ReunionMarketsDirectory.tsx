@@ -150,7 +150,7 @@ export function ReunionMarketsDirectory() {
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <Link to="/" className="flex items-center space-x-3">
-                <img src="/logo1.png" alt="Logo" className="h-10" />
+                <img src="/image.png" alt="Logo" className="h-10" />
               </Link>
               <button
                 onClick={() => window.open('https://lmp.bolt.host', '_blank')}

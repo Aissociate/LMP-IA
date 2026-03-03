@@ -33,7 +33,7 @@ export const organizationSchema = {
   'name': 'LeMarchéPublic.fr',
   'alternateName': 'Le Marché Public',
   'url': 'https://lemarchepublic.fr',
-  'logo': 'https://lemarchepublic.fr/logo1.png',
+  'logo': 'https://lemarchepublic.fr/image.png',
   'description': 'Plateforme IA pour remporter les marchés publics à La Réunion. Génération automatique de mémoires techniques, BPU, et veille 24/7 des appels d\'offres.',
   'address': {
     '@type': 'PostalAddress',
@@ -78,7 +78,7 @@ export const websiteSchema = {
     'name': 'LeMarchéPublic.fr',
     'logo': {
       '@type': 'ImageObject',
-      'url': 'https://lemarchepublic.fr/logo1.png'
+      'url': 'https://lemarchepublic.fr/image.png'
     }
   },
   'potentialAction': {
@@ -203,7 +203,7 @@ export function createArticleSchema(article: {
       'name': 'LeMarchéPublic.fr',
       'logo': {
         '@type': 'ImageObject',
-        'url': 'https://lemarchepublic.fr/logo1.png'
+        'url': 'https://lemarchepublic.fr/image.png'
       }
     },
     'articleSection': article.section || 'Marchés Publics',

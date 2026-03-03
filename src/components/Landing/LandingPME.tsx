@@ -107,7 +107,7 @@ export const LandingPME: React.FC = () => {
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-2">
           <div className="flex items-center flex-shrink-0">
-            <img src="/logo1.png" alt="Le Marché Public.fr" className="h-16 md:h-24 lg:h-[120px] w-auto object-contain" />
+            <img src="/image.png" alt="Le Marché Public.fr" className="h-16 md:h-24 lg:h-[120px] w-auto object-contain" />
           </div>
           <Button
             onClick={() => window.open('https://lmp.bolt.host/', '_blank')}
