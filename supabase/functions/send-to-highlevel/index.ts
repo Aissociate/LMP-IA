@@ -6,8 +6,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Client-Info, Apikey',
 };
 
-const GHL_API_KEY = 'pit-1a9fedf2-0e4b-4317-ba9c-89d9dd57a0d3';
-const GHL_LOCATION_ID = 'Khh3gHoXw8rbmLrz89s4';
 const GHL_API_URL = 'https://services.leadconnectorhq.com/contacts/';
 
 interface ContactPayload {
@@ -25,6 +23,17 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
+    const GHL_API_KEY = Deno.env.get('GHL_API_KEY');
+    const GHL_LOCATION_ID = Deno.env.get('GHL_LOCATION_ID');
+
+    if (!GHL_API_KEY || !GHL_LOCATION_ID) {
+      console.error('Missing GHL environment variables');
+      return new Response(JSON.stringify({ error: 'Configuration manquante' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const body: ContactPayload = await req.json();
 
     if (!body.email) {
