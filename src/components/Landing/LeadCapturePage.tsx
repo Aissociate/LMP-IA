@@ -177,6 +177,27 @@ export const LeadCapturePage: React.FC = () => {
 
       if (error) throw error;
 
+      try {
+        const nameParts = leadData.contact_person_name.trim().split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+        await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-to-highlevel`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            email: leadData.email,
+            phone: leadData.phone,
+            companyName: leadData.company_name,
+            tags: ['iris-lead', 'lead-page'],
+          }),
+        });
+      } catch {}
+
       setShowSuccess(true);
 
       setTimeout(() => {

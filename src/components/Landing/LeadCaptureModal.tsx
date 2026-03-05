@@ -69,6 +69,24 @@ export const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ onClose }) =
       if (dbError) throw dbError;
 
       try {
+        await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-to-highlevel`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            firstName: form.first_name.trim(),
+            lastName: form.last_name.trim(),
+            email: form.email.trim().toLowerCase(),
+            phone: form.phone.trim(),
+            companyName: form.company_name.trim(),
+            tags: ['iris-lead', 'modal-hero'],
+          }),
+        });
+      } catch {}
+
+      try {
         trackFacebookEvent('Lead', { content_name: 'hero_cta', content_category: 'trial' });
       } catch {}
 
