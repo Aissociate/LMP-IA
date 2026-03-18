@@ -31,6 +31,7 @@ import { BugReportButton } from './components/Common/BugReportButton';
 import { PublicMarketPage } from './components/PublicMarket/PublicMarketPage';
 import { ReunionMarketsDirectory } from './components/PublicMarket/ReunionMarketsDirectory';
 import { SubscriptionSelection } from './components/Subscription/SubscriptionSelection';
+import { ProspectsAdmin } from './components/AdminProspects/ProspectsAdmin';
 
 type AuthMode = 'login' | 'signup';
 type AppTab = 'dashboard' | 'recherche-marches' | 'surveillance-marches' | 'marche' | 'coffre-fort' | 'assistant' | 'parametres' | 'admin' | 'labo';
@@ -42,7 +43,7 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const location = useLocation();
 
-  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/capture-lead', '/mmp', '/cgv', '/mentions-legales', '/merci', '/recrutement', '/collecte', '/subscription', '/reset-password'];
+  const publicRoutes = ['/', '/home', '/pme', '/btp', '/artisans', '/landing/pme', '/landing/btp', '/landing/artisans', '/lead', '/capture-lead', '/mmp', '/cgv', '/mentions-legales', '/merci', '/recrutement', '/collecte', '/subscription', '/reset-password', '/admin-prospects'];
   const isPublicRoute = publicRoutes.includes(location.pathname) || location.pathname.startsWith('/marchepublics/974');
 
   if (loading && !isPublicRoute) {
@@ -107,6 +108,7 @@ function AppContent() {
           <ResetPasswordForm />
         </div>
       } />
+      <Route path="/admin-prospects" element={<ProspectsAdmin />} />
       <Route path="/marchepublics/974" element={<ReunionMarketsDirectory />} />
       <Route path="/marchepublics/974/:slug" element={<PublicMarketPage />} />
       <Route path="/mmp" element={
