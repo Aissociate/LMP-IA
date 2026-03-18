@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LogIn, LogOut, Users, Search, Download, Eye, X, ChevronDown, ChevronUp, RefreshCw } from 'lucide-react';
+import { LogIn, LogOut, Users, Search, Download, Eye, X, ChevronDown, ChevronUp, RefreshCw, Send, CheckCircle, AlertCircle } from 'lucide-react';
 
 const SESSION_KEY = 'prospects_admin_creds';
 const EDGE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-prospects`;
@@ -28,6 +28,8 @@ interface Lead {
   status: string;
 }
 
+type SyncState = 'idle' | 'loading' | 'success' | 'error';
+
 export function ProspectsAdmin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
@@ -41,6 +43,8 @@ export function ProspectsAdmin() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [sortField, setSortField] = useState<keyof Lead>('created_at');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
+  const [syncStates, setSyncStates] = useState<Record<string, SyncState>>({});
+  const [syncErrors, setSyncErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const stored = sessionStorage.getItem(SESSION_KEY);
@@ -105,6 +109,29 @@ export function ProspectsAdmin() {
     sessionStorage.removeItem(SESSION_KEY);
     setIsAuthenticated(false);
     setLeads([]);
+  }
+
+  async function syncToGHL(lead: Lead) {
+    setSyncStates(s => ({ ...s, [lead.id]: 'loading' }));
+    setSyncErrors(e => { const n = { ...e }; delete n[lead.id]; return n; });
+    try {
+      const res = await fetch(EDGE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${ANON_KEY}` },
+        body: JSON.stringify({ username, password, action: 'sync_ghl', lead_id: lead.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur GHL');
+      setSyncStates(s => ({ ...s, [lead.id]: 'success' }));
+      setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, status: 'contacte' } : l));
+      if (selectedLead?.id === lead.id) setSelectedLead(prev => prev ? { ...prev, status: 'contacte' } : null);
+      setTimeout(() => setSyncStates(s => ({ ...s, [lead.id]: 'idle' })), 3000);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Erreur';
+      setSyncStates(s => ({ ...s, [lead.id]: 'error' }));
+      setSyncErrors(e => ({ ...e, [lead.id]: msg }));
+      setTimeout(() => setSyncStates(s => ({ ...s, [lead.id]: 'idle' })), 5000);
+    }
   }
 
   function handleSort(field: keyof Lead) {
@@ -214,6 +241,8 @@ export function ProspectsAdmin() {
     );
   }
 
+  const synced = leads.filter(l => l.status === 'contacte').length;
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
@@ -224,7 +253,9 @@ export function ProspectsAdmin() {
             </div>
             <div>
               <h1 className="font-bold text-white text-lg leading-none">Prospects</h1>
-              <p className="text-slate-500 text-xs mt-0.5">{leads.length} enregistrement{leads.length > 1 ? 's' : ''}</p>
+              <p className="text-slate-500 text-xs mt-0.5">
+                {leads.length} total &middot; {synced} envoyé{synced > 1 ? 's' : ''} vers GHL
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -306,40 +337,41 @@ export function ProspectsAdmin() {
                         </div>
                       </th>
                     ))}
-                    <th className="px-4 py-3 text-left">Détail</th>
+                    <th className="px-4 py-3 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/50">
-                  {filtered.map(lead => (
-                    <tr key={lead.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
-                        {new Date(lead.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-                      </td>
-                      <td className="px-4 py-3 text-white font-medium">{lead.first_name || '-'}</td>
-                      <td className="px-4 py-3 text-white font-medium">{lead.last_name || '-'}</td>
-                      <td className="px-4 py-3 text-blue-400">{lead.email || '-'}</td>
-                      <td className="px-4 py-3 text-slate-300">{lead.phone || '-'}</td>
-                      <td className="px-4 py-3 text-slate-300 font-medium">{lead.company_name || '-'}</td>
-                      <td className="px-4 py-3 text-slate-400">{lead.city || '-'}</td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                          lead.status === 'converti' ? 'bg-green-500/15 text-green-400' :
-                          lead.status === 'contacte' ? 'bg-blue-500/15 text-blue-400' :
-                          'bg-slate-700 text-slate-400'
-                        }`}>
-                          {lead.status || 'nouveau'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <button
-                          onClick={() => setSelectedLead(lead)}
-                          className="p-1.5 text-slate-500 hover:text-orange-400 hover:bg-orange-500/10 rounded-lg transition-all"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {filtered.map(lead => {
+                    const syncState = syncStates[lead.id] || 'idle';
+                    return (
+                      <tr key={lead.id} className="hover:bg-slate-800/40 transition-colors">
+                        <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
+                          {new Date(lead.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                        </td>
+                        <td className="px-4 py-3 text-white font-medium">{lead.first_name || '-'}</td>
+                        <td className="px-4 py-3 text-white font-medium">{lead.last_name || '-'}</td>
+                        <td className="px-4 py-3 text-blue-400">{lead.email || '-'}</td>
+                        <td className="px-4 py-3 text-slate-300">{lead.phone || '-'}</td>
+                        <td className="px-4 py-3 text-slate-300 font-medium">{lead.company_name || '-'}</td>
+                        <td className="px-4 py-3 text-slate-400">{lead.city || '-'}</td>
+                        <td className="px-4 py-3">
+                          <StatusBadge status={lead.status} />
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => setSelectedLead(lead)}
+                              className="p-1.5 text-slate-500 hover:text-orange-400 hover:bg-orange-500/10 rounded-lg transition-all"
+                              title="Voir le détail"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </button>
+                            <SyncButton state={syncState} error={syncErrors[lead.id]} onClick={() => syncToGHL(lead)} />
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -355,9 +387,20 @@ export function ProspectsAdmin() {
                 <h2 className="font-bold text-white text-lg">{[selectedLead.first_name, selectedLead.last_name].filter(Boolean).join(' ') || 'Prospect'}</h2>
                 <p className="text-slate-400 text-sm">{selectedLead.company_name || 'Entreprise non renseignée'}</p>
               </div>
-              <button onClick={() => setSelectedLead(null)} className="p-2 text-slate-500 hover:text-white hover:bg-slate-800 rounded-lg transition-all">
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <StatusBadge status={selectedLead.status} />
+                  <SyncButton
+                    state={syncStates[selectedLead.id] || 'idle'}
+                    error={syncErrors[selectedLead.id]}
+                    onClick={() => syncToGHL(selectedLead)}
+                    label="Envoyer vers HighLevel"
+                  />
+                </div>
+                <button onClick={() => setSelectedLead(null)} className="p-2 text-slate-500 hover:text-white hover:bg-slate-800 rounded-lg transition-all">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
             <div className="p-5 space-y-5">
               <Section title="Contact">
@@ -395,6 +438,58 @@ export function ProspectsAdmin() {
         </div>
       )}
     </div>
+  );
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const s = status || 'nouveau';
+  const styles: Record<string, string> = {
+    converti: 'bg-green-500/15 text-green-400',
+    contacte: 'bg-blue-500/15 text-blue-400',
+    nouveau: 'bg-slate-700 text-slate-400',
+  };
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${styles[s] || styles.nouveau}`}>
+      {s}
+    </span>
+  );
+}
+
+function SyncButton({ state, error, onClick, label }: { state: SyncState; error?: string; onClick: () => void; label?: string }) {
+  if (state === 'success') {
+    return (
+      <span className="flex items-center gap-1 text-xs text-green-400 font-medium px-2 py-1">
+        <CheckCircle className="w-3.5 h-3.5" />
+        {label ? 'Envoyé !' : ''}
+      </span>
+    );
+  }
+  if (state === 'error') {
+    return (
+      <span className="flex items-center gap-1 text-xs text-red-400 font-medium px-2 py-1" title={error}>
+        <AlertCircle className="w-3.5 h-3.5" />
+        {label ? 'Erreur GHL' : ''}
+      </span>
+    );
+  }
+  return (
+    <button
+      onClick={onClick}
+      disabled={state === 'loading'}
+      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+        label
+          ? 'bg-orange-500 hover:bg-orange-600 text-white disabled:opacity-50'
+          : 'text-slate-500 hover:text-orange-400 hover:bg-orange-500/10 disabled:opacity-40'
+      }`}
+      title={label || 'Envoyer vers HighLevel'}
+    >
+      {state === 'loading' ? (
+        <div className="w-3.5 h-3.5 border-2 border-current/30 border-t-current rounded-full animate-spin" />
+      ) : (
+        <Send className="w-3.5 h-3.5" />
+      )}
+      {label && (state === 'loading' ? 'Envoi...' : label)}
+    </button>
   );
 }
 
