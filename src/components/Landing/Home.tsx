@@ -1214,8 +1214,14 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
+          <div className="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-400">
             <p>© 2025 Le Marché Public. Tous droits réservés. Iris est une marque déposée.</p>
+            <button
+              onClick={() => navigate('/admin-prospects')}
+              className="text-xs text-gray-600 hover:text-gray-400 transition-colors"
+            >
+              Espace Admin
+            </button>
           </div>
         </div>
       </footer>

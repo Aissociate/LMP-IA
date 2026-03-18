@@ -8,8 +8,10 @@ const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 interface Lead {
   id: string;
   created_at: string;
-  first_name: string;
-  last_name: string;
+  first_name?: string;
+  last_name?: string;
+  contact_person_name?: string;
+  contact_person_role?: string;
   email: string;
   phone: string;
   company_name: string;
@@ -21,11 +23,52 @@ interface Lead {
   postal_code: string;
   website: string;
   main_activity: string;
-  workforce_range: string;
-  turnover_range: string;
-  company_presentation: string;
+  workforce?: number;
+  workforce_range?: string;
+  annual_turnover?: string;
+  turnover_range?: string;
+  presentation?: string;
+  company_presentation?: string;
   differentiators: string;
   status: string;
+}
+
+function getFirstName(lead: Lead): string {
+  if (lead.first_name) return lead.first_name;
+  if (lead.contact_person_name) {
+    const parts = lead.contact_person_name.trim().split(/\s+/);
+    return parts[0] || '';
+  }
+  return '';
+}
+
+function getLastName(lead: Lead): string {
+  if (lead.last_name) return lead.last_name;
+  if (lead.contact_person_name) {
+    const parts = lead.contact_person_name.trim().split(/\s+/);
+    return parts.slice(1).join(' ') || '';
+  }
+  return '';
+}
+
+function getFullName(lead: Lead): string {
+  const first = getFirstName(lead);
+  const last = getLastName(lead);
+  return [first, last].filter(Boolean).join(' ') || lead.contact_person_name || '';
+}
+
+function getPresentation(lead: Lead): string {
+  return lead.presentation || lead.company_presentation || '';
+}
+
+function getWorkforce(lead: Lead): string {
+  if (lead.workforce_range) return lead.workforce_range;
+  if (lead.workforce) return String(lead.workforce);
+  return '';
+}
+
+function getTurnover(lead: Lead): string {
+  return lead.turnover_range || lead.annual_turnover || '';
 }
 
 type SyncState = 'idle' | 'loading' | 'success' | 'error';
@@ -147,8 +190,8 @@ export function ProspectsAdmin() {
     const headers = ['Date', 'Prénom', 'Nom', 'Email', 'Téléphone', 'Entreprise', 'SIRET', 'Ville', 'Activité', 'Statut'];
     const rows = filtered.map(l => [
       new Date(l.created_at).toLocaleDateString('fr-FR'),
-      l.first_name || '',
-      l.last_name || '',
+      getFirstName(l),
+      getLastName(l),
       l.email || '',
       l.phone || '',
       l.company_name || '',
@@ -175,6 +218,7 @@ export function ProspectsAdmin() {
         (l.email || '').toLowerCase().includes(q) ||
         (l.first_name || '').toLowerCase().includes(q) ||
         (l.last_name || '').toLowerCase().includes(q) ||
+        (l.contact_person_name || '').toLowerCase().includes(q) ||
         (l.company_name || '').toLowerCase().includes(q) ||
         (l.city || '').toLowerCase().includes(q) ||
         (l.phone || '').toLowerCase().includes(q)
@@ -348,8 +392,8 @@ export function ProspectsAdmin() {
                         <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
                           {new Date(lead.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                         </td>
-                        <td className="px-4 py-3 text-white font-medium">{lead.first_name || '-'}</td>
-                        <td className="px-4 py-3 text-white font-medium">{lead.last_name || '-'}</td>
+                        <td className="px-4 py-3 text-white font-medium">{getFirstName(lead) || '-'}</td>
+                        <td className="px-4 py-3 text-white font-medium">{getLastName(lead) || '-'}</td>
                         <td className="px-4 py-3 text-blue-400">{lead.email || '-'}</td>
                         <td className="px-4 py-3 text-slate-300">{lead.phone || '-'}</td>
                         <td className="px-4 py-3 text-slate-300 font-medium">{lead.company_name || '-'}</td>
@@ -384,7 +428,7 @@ export function ProspectsAdmin() {
           <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between p-5 border-b border-slate-800 sticky top-0 bg-slate-900">
               <div>
-                <h2 className="font-bold text-white text-lg">{[selectedLead.first_name, selectedLead.last_name].filter(Boolean).join(' ') || 'Prospect'}</h2>
+                <h2 className="font-bold text-white text-lg">{getFullName(selectedLead) || 'Prospect'}</h2>
                 <p className="text-slate-400 text-sm">{selectedLead.company_name || 'Entreprise non renseignée'}</p>
               </div>
               <div className="flex items-center gap-2">
@@ -417,12 +461,14 @@ export function ProspectsAdmin() {
                 <Field label="SIRET" value={selectedLead.siret} />
                 <Field label="Code NAF" value={selectedLead.naf_code} />
                 <Field label="Activité principale" value={selectedLead.main_activity} />
-                <Field label="Effectif" value={selectedLead.workforce_range} />
-                <Field label="CA" value={selectedLead.turnover_range} />
+                <Field label="Effectif" value={getWorkforce(selectedLead)} />
+                <Field label="CA" value={getTurnover(selectedLead)} />
+                <Field label="Contact" value={selectedLead.contact_person_name} />
+                <Field label="Fonction" value={selectedLead.contact_person_role} />
               </Section>
-              {selectedLead.company_presentation && (
+              {getPresentation(selectedLead) && (
                 <Section title="Présentation">
-                  <p className="text-slate-300 text-sm leading-relaxed">{selectedLead.company_presentation}</p>
+                  <p className="text-slate-300 text-sm leading-relaxed">{getPresentation(selectedLead)}</p>
                 </Section>
               )}
               {selectedLead.differentiators && (
