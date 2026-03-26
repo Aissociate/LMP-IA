@@ -166,9 +166,9 @@ Deno.serve(async (req: Request) => {
     const requestData: OpenRouterRequest = {
       model: selectedModel,
       messages,
-      temperature: body.temperature ?? settingsMap.temperature ?? 0.7,
-      max_tokens: requestedMaxTokens,
-      top_p: body.topP ?? settingsMap.top_p ?? 1.0,
+      temperature: Number(body.temperature ?? settingsMap.temperature ?? 0.7),
+      max_tokens: Number(requestedMaxTokens),
+      top_p: Number(body.topP ?? settingsMap.top_p ?? 1.0),
       stream: false,
       reasoning
     };
