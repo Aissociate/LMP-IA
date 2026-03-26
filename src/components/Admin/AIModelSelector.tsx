@@ -30,6 +30,13 @@ const availableModels: AIModel[] = [
     description: 'Nouveau modèle Gemini 3 Pro avec capacités avancées',
     context_length: 2097152,
     pricing: { prompt: 0.000002, completion: 0.000008 }
+  },
+  {
+    id: 'google/gemini-3.1-flash-lite-preview',
+    name: 'Gemini 3.1 Flash Lite Preview',
+    description: 'Modèle Gemini 3.1 Flash Lite ultra-rapide et économique',
+    context_length: 1048576,
+    pricing: { prompt: 0.0000005, completion: 0.000001 }
   }
 ];
 
