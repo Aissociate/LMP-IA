@@ -15,12 +15,13 @@ import {
   ExternalLink,
   Share2,
   Eye,
-  Bookmark
+  Bookmark,
+  Copy
 } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
-import { boampService } from '../../services/boampService';
+import { boampService, type DeduplicationStats } from '../../services/boampService';
 import { BOAMPSearchParams, BOAMPMarket, BOAMPSearchResult } from '../../types/boamp';
 import { MarketSearchFilters } from './MarketSearchFilters';
 import { MarketSearchCompact } from './MarketSearchCompact';
@@ -57,6 +58,7 @@ export const MarketSearch: React.FC = () => {
   const [logs, setLogs] = useState<Array<{ type: 'info' | 'error' | 'success'; message: string; timestamp: Date }>>([]);
   const [showLogs, setShowLogs] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [dedupStats, setDedupStats] = useState<DeduplicationStats | null>(null);
 
   const getTodayDate = () => {
     const today = new Date();
@@ -219,10 +221,19 @@ export const MarketSearch: React.FC = () => {
 
       const result = await boampService.searchMarketsWithManual(searchParams);
 
-      addLog('success', `${result.total} résultat(s) trouvé(s) - ${result.markets.length} marché(s) dans cette page`);
+      if (result.deduplicationStats) {
+        setDedupStats(result.deduplicationStats);
+        if (result.deduplicationStats.removedCount > 0) {
+          addLog('info', `Doublons filtrés: ${result.deduplicationStats.removedCount} doublon(s) supprimé(s) sur ${result.deduplicationStats.totalBefore} résultats`);
+        }
+      } else {
+        setDedupStats(null);
+      }
+
+      addLog('success', `${result.total} résultat(s) unique(s) trouvé(s)`);
 
       if (result.total > 0 && result.markets.length === 0) {
-        addLog('error', `⚠️ L'API BOAMP retourne ${result.total} résultats mais aucun marché dans le tableau. Problème potentiel avec l'API BOAMP.`);
+        addLog('error', `L'API BOAMP retourne des résultats mais aucun marché dans le tableau. Problème potentiel avec l'API BOAMP.`);
       }
 
       setSearchResult(result);
@@ -697,7 +708,7 @@ export const MarketSearch: React.FC = () => {
 
       {searchResult && (
         <>
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-4">
             <div className="flex gap-6">
               <button
                 onClick={() => setActiveTab('active')}
@@ -734,6 +745,18 @@ export const MarketSearch: React.FC = () => {
               </button>
             </div>
           </div>
+
+          {dedupStats && dedupStats.removedCount > 0 && (
+            <div className={`flex items-center gap-3 px-4 py-2.5 rounded-lg mb-4 ${
+              isDark ? 'bg-amber-900/20 border border-amber-800/30' : 'bg-amber-50 border border-amber-200'
+            }`}>
+              <Copy className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-amber-400' : 'text-amber-600'}`} />
+              <p className={`text-sm ${isDark ? 'text-amber-300' : 'text-amber-800'}`}>
+                <span className="font-semibold">{dedupStats.removedCount} doublon{dedupStats.removedCount > 1 ? 's' : ''}</span> {dedupStats.removedCount > 1 ? 'ont ete filtres' : 'a ete filtre'} automatiquement
+                <span className={`${isDark ? 'text-amber-400/70' : 'text-amber-600'}`}> ({dedupStats.totalBefore} resultats bruts → {dedupStats.totalAfter} uniques)</span>
+              </p>
+            </div>
+          )}
 
           {loading ? (
             <div className="space-y-4">

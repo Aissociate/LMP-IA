@@ -13,7 +13,8 @@ import {
   Shield,
   Sparkles,
   Database,
-  TrendingUp
+  TrendingUp,
+  Copy
 } from 'lucide-react';
 import { BOAMPMarket } from '../../types/boamp';
 import { marketSentinelService } from '../../services/marketSentinelService';
@@ -103,6 +104,8 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
   const daysRemaining = getDaysRemaining(market.deadline);
   const isManualMarket = market.rawData?.isManualMarket === true || market.id.startsWith('manual-');
   const relevanceScore = market.rawData?.relevanceScore;
+  const duplicateCount = market.rawData?._duplicateCount || 1;
+  const duplicateSources = market.rawData?._duplicateSources || [];
 
   const highlightedTitle = searchQuery ? highlightSearchTerms(market.title, searchQuery) : market.title;
   const highlightedClient = searchQuery ? highlightSearchTerms(market.client, searchQuery) : market.client;
@@ -245,6 +248,17 @@ export const MarketSearchCompact: React.FC<MarketSearchCompactProps> = ({
               >
                 <Database className="w-3 h-3" />
                 BDD Locale
+              </span>
+            )}
+            {duplicateCount > 1 && (
+              <span
+                className={`px-2 py-0.5 rounded text-xs font-medium flex items-center gap-1 ${
+                  isDark ? 'bg-amber-900/30 text-amber-400' : 'bg-amber-100 text-amber-700'
+                }`}
+                title={`Ce marche apparait ${duplicateCount} fois dans les resultats (sources: ${duplicateSources.join(', ')})`}
+              >
+                <Copy className="w-3 h-3" />
+                {duplicateCount}x sources
               </span>
             )}
             <span

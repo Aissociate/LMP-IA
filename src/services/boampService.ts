@@ -2,6 +2,136 @@ import { BOAMPSearchParams, BOAMPMarket, BOAMPSearchResult } from '../types/boam
 import { supabase } from '../lib/supabase';
 import { DeduplicationService } from './deduplicationService';
 
+function normalizeText(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function generateDeduplicationKey(market: BOAMPMarket): string {
+  const title = normalizeText(market.title).substring(0, 80);
+  const client = normalizeText(market.client).substring(0, 40);
+  return `${title}|${client}`;
+}
+
+function areSimilarMarkets(a: BOAMPMarket, b: BOAMPMarket): boolean {
+  const titleA = normalizeText(a.title);
+  const titleB = normalizeText(b.title);
+  if (titleA === titleB && normalizeText(a.client) === normalizeText(b.client)) return true;
+
+  if (titleA.length < 10 || titleB.length < 10) return false;
+
+  const wordsA = new Set(titleA.split(' ').filter(w => w.length > 3));
+  const wordsB = new Set(titleB.split(' ').filter(w => w.length > 3));
+  if (wordsA.size === 0 || wordsB.size === 0) return false;
+
+  let common = 0;
+  for (const w of wordsA) {
+    if (wordsB.has(w)) common++;
+  }
+  const similarity = common / Math.max(wordsA.size, wordsB.size);
+
+  if (similarity >= 0.8 && normalizeText(a.client) === normalizeText(b.client)) return true;
+
+  if (similarity >= 0.7 && a.deadline && b.deadline && a.deadline === b.deadline) return true;
+
+  return false;
+}
+
+export interface DeduplicationStats {
+  totalBefore: number;
+  totalAfter: number;
+  removedCount: number;
+  groups: number;
+}
+
+function deduplicateResults(markets: BOAMPMarket[]): { markets: BOAMPMarket[]; stats: DeduplicationStats } {
+  if (markets.length === 0) {
+    return { markets: [], stats: { totalBefore: 0, totalAfter: 0, removedCount: 0, groups: 0 } };
+  }
+
+  const seen = new Map<string, number>();
+  const result: BOAMPMarket[] = [];
+  let groupCount = 0;
+
+  for (const market of markets) {
+    const ref = market.reference?.toLowerCase().trim();
+    if (ref && ref !== 'n/a') {
+      const existingIdx = seen.get(`ref:${ref}`);
+      if (existingIdx !== undefined) {
+        const existing = result[existingIdx];
+        const count = (existing.rawData?._duplicateCount || 1) + 1;
+        const sources = existing.rawData?._duplicateSources || [existing.rawData?.source || 'boamp'];
+        const currentSource = market.rawData?.source || 'boamp';
+        if (!sources.includes(currentSource)) sources.push(currentSource);
+        result[existingIdx] = {
+          ...existing,
+          rawData: { ...existing.rawData, _duplicateCount: count, _duplicateSources: sources }
+        };
+        continue;
+      }
+    }
+
+    const dedupKey = generateDeduplicationKey(market);
+    const existingKeyIdx = seen.get(`key:${dedupKey}`);
+    if (existingKeyIdx !== undefined) {
+      const existing = result[existingKeyIdx];
+      const count = (existing.rawData?._duplicateCount || 1) + 1;
+      const sources = existing.rawData?._duplicateSources || [existing.rawData?.source || 'boamp'];
+      const currentSource = market.rawData?.source || 'boamp';
+      if (!sources.includes(currentSource)) sources.push(currentSource);
+      result[existingKeyIdx] = {
+        ...existing,
+        rawData: { ...existing.rawData, _duplicateCount: count, _duplicateSources: sources }
+      };
+      continue;
+    }
+
+    let foundSimilar = false;
+    for (let i = result.length - 1; i >= Math.max(0, result.length - 30); i--) {
+      if (areSimilarMarkets(market, result[i])) {
+        const existing = result[i];
+        const count = (existing.rawData?._duplicateCount || 1) + 1;
+        const sources = existing.rawData?._duplicateSources || [existing.rawData?.source || 'boamp'];
+        const currentSource = market.rawData?.source || 'boamp';
+        if (!sources.includes(currentSource)) sources.push(currentSource);
+        result[i] = {
+          ...existing,
+          rawData: { ...existing.rawData, _duplicateCount: count, _duplicateSources: sources }
+        };
+        foundSimilar = true;
+        break;
+      }
+    }
+
+    if (!foundSimilar) {
+      const idx = result.length;
+      result.push({
+        ...market,
+        rawData: { ...market.rawData, _duplicateCount: 1, _duplicateSources: [market.rawData?.source || 'boamp'] }
+      });
+      if (ref && ref !== 'n/a') seen.set(`ref:${ref}`, idx);
+      seen.set(`key:${dedupKey}`, idx);
+    }
+  }
+
+  groupCount = result.filter(m => (m.rawData?._duplicateCount || 1) > 1).length;
+
+  return {
+    markets: result,
+    stats: {
+      totalBefore: markets.length,
+      totalAfter: result.length,
+      removedCount: markets.length - result.length,
+      groups: groupCount
+    }
+  };
+}
+
 class BOAMPService {
   private getEdgeFunctionUrl(): string {
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -543,21 +673,23 @@ class BOAMPService {
     }
   }
 
-  async searchMarketsWithManual(params: BOAMPSearchParams): Promise<BOAMPSearchResult> {
+  async searchMarketsWithManual(params: BOAMPSearchParams): Promise<BOAMPSearchResult & { deduplicationStats?: DeduplicationStats }> {
     try {
       const publicMarkets = await this.searchPublicMarkets(params);
 
       const boampResult = await this.searchMarkets(params);
 
-      const existingReferences = new Set(publicMarkets.map(m => m.reference));
-      const newBoampMarkets = boampResult.markets.filter(m => !existingReferences.has(m.reference));
+      const existingReferences = new Set(publicMarkets.map(m => m.reference?.toLowerCase().trim()));
+      const newBoampMarkets = boampResult.markets.filter(m => !existingReferences.has(m.reference?.toLowerCase().trim()));
 
-      const allMarkets = [...publicMarkets, ...newBoampMarkets];
+      const allMarketsRaw = [...publicMarkets, ...newBoampMarkets];
+
+      const { markets: dedupedMarkets, stats: dedupStats } = deduplicateResults(allMarketsRaw);
 
       const sortField = params.sortBy || 'publication_date';
       const sortOrder = params.sortOrder || 'desc';
 
-      allMarkets.sort((a, b) => {
+      dedupedMarkets.sort((a, b) => {
         let valueA: any, valueB: any;
 
         if (sortField === 'deadline') {
@@ -577,16 +709,17 @@ class BOAMPService {
         return valueB - valueA;
       });
 
-      const total = allMarkets.length;
+      const total = dedupedMarkets.length;
       const limit = params.limit || 20;
 
-      console.log(`[BOAMP Service] Unified search: ${publicMarkets.length} from public_markets (${publicMarkets.filter(m => m.rawData?.source === 'manual').length} manual), ${newBoampMarkets.length} new from BOAMP API`);
+      console.log(`[BOAMP Service] Unified search: ${publicMarkets.length} from public_markets, ${newBoampMarkets.length} new from BOAMP API. Dedup: ${dedupStats.removedCount} doublons supprimés (${dedupStats.groups} groupes)`);
 
       return {
-        markets: allMarkets,
+        markets: dedupedMarkets,
         total,
         page: params.page || 1,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / limit),
+        deduplicationStats: dedupStats
       };
     } catch (error) {
       console.error('[BOAMP Service] Error in searchMarketsWithManual:', error);
