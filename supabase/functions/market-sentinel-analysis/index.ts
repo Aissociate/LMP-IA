@@ -142,14 +142,18 @@ Réponds UNIQUEMENT avec le JSON, sans texte additionnel.`;
     }, {} as Record<string, any>) || {};
 
     const selectedModel = settingsMap.selected_ai_model || 'openai/gpt-3.5-turbo';
-    const reasoningEnabled = settingsMap.reasoning_enabled !== undefined ? settingsMap.reasoning_enabled : true;
+    const reasoningEnabled = settingsMap.reasoning_enabled !== undefined
+      ? String(settingsMap.reasoning_enabled) === 'true'
+      : true;
 
     let reasoning = undefined;
     if (reasoningEnabled) {
       reasoning = {
         effort: settingsMap.reasoning_effort || 'medium',
         enabled: true,
-        exclude: settingsMap.reasoning_exclude !== undefined ? settingsMap.reasoning_exclude : false,
+        exclude: settingsMap.reasoning_exclude !== undefined
+          ? String(settingsMap.reasoning_exclude) === 'true'
+          : false,
       };
     }
 
