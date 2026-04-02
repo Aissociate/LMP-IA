@@ -1508,7 +1508,7 @@ Consignes:
           onClose={() => setShowImageLibrary(false)}
           onInsertImage={(imageCode) => {
             const currentSection = sections.find(s => s.id === activeSection);
-            if (currentSection && currentSection.isEditing) {
+            if (currentSection) {
               const updatedContent = currentSection.content + '\n\n' + imageCode;
               setSections(sections.map(s =>
                 s.id === activeSection

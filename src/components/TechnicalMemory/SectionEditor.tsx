@@ -25,7 +25,7 @@ const convertMarkdownToHtml = async (text: string): Promise<string> => {
             .from('report_assets')
             .select('file_url, name')
             .eq('id', assetId)
-            .single();
+            .maybeSingle();
           
           if (error || !asset) {
             processedText = processedText.replace(fullMatch, `[IMAGE NON TROUVÉE: ${alt || 'Image'} - ID: ${assetId}]`);
@@ -232,7 +232,7 @@ const convertMarkdownToHtml = async (text: string): Promise<string> => {
       if (currentParagraph.length > 0) {
         const joined = currentParagraph.join(' ');
         // Ne pas encapsuler dans <p> si c'est déjà un élément de bloc
-        if (joined.match(/^<(h[1-6]|ul|ol|table|div|blockquote|pre|hr)/)) {
+        if (joined.match(/^<(h[1-6]|ul|ol|table|div|blockquote|pre|hr|img)/)) {
           paragraphs.push(joined);
         } else {
           paragraphs.push(`<p class="mb-4 text-gray-700 leading-relaxed text-justify">${joined}</p>`);
@@ -241,7 +241,7 @@ const convertMarkdownToHtml = async (text: string): Promise<string> => {
       }
     }
     // Si c'est un élément de bloc complet, l'ajouter directement
-    else if (line.match(/^<(h[1-6]|ul|ol|table|div|blockquote|pre|hr)/)) {
+    else if (line.match(/^<(h[1-6]|ul|ol|table|div|blockquote|pre|hr|img)/)) {
       // Terminer le paragraphe en cours s'il existe
       if (currentParagraph.length > 0) {
         const joined = currentParagraph.join(' ');
@@ -259,7 +259,7 @@ const convertMarkdownToHtml = async (text: string): Promise<string> => {
   // Ajouter le dernier paragraphe s'il existe
   if (currentParagraph.length > 0) {
     const joined = currentParagraph.join(' ');
-    if (joined.match(/^<(h[1-6]|ul|ol|table|div|blockquote|pre|hr)/)) {
+    if (joined.match(/^<(h[1-6]|ul|ol|table|div|blockquote|pre|hr|img)/)) {
       paragraphs.push(joined);
     } else {
       paragraphs.push(`<p class="mb-4 text-gray-700 leading-relaxed text-justify">${joined}</p>`);
