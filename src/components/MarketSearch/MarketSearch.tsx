@@ -280,7 +280,7 @@ export const MarketSearch: React.FC = () => {
         cpv_code: market.cpvCode,
         url: market.url,
         raw_data: market.rawData,
-        is_imported_to_markets: false
+        is_imported_to_markets: true
       });
 
       if (error) {
@@ -292,8 +292,33 @@ export const MarketSearch: React.FC = () => {
         return;
       }
 
+      const deadline = market.deadline
+        ? new Date(market.deadline).toISOString().split('T')[0]
+        : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+      const { data: existing } = await supabase
+        .from('markets')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('reference', market.reference)
+        .maybeSingle();
+
+      if (!existing) {
+        await supabase.from('markets').insert({
+          title: market.title || 'Marché sans titre',
+          reference: market.reference || `REF-${Date.now()}`,
+          client: market.client || 'Client non spécifié',
+          deadline: deadline,
+          budget: market.amount || 0,
+          description: market.description || '',
+          status: 'en_cours',
+          user_id: user.id,
+          global_memory_prompt: ''
+        });
+      }
+
       setFavorites(prev => new Set([...prev, market.reference]));
-      alert('Marché ajouté aux favoris avec succès');
+      alert('Marché ajouté aux favoris et à vos marchés');
     } catch (error) {
       console.error('Error adding to favorites:', error);
       alert('Erreur lors de l\'ajout aux favoris');
@@ -311,6 +336,12 @@ export const MarketSearch: React.FC = () => {
         .eq('boamp_reference', reference);
 
       if (error) throw error;
+
+      await supabase
+        .from('markets')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('reference', reference);
 
       setFavorites(prev => {
         const newSet = new Set(prev);
